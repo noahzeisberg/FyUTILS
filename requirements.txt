@@ -1,0 +1,6 @@
+datetime
+paramiko
+requests
+colorama
+pypresence
+getpass
