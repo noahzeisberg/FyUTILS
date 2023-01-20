@@ -4,7 +4,6 @@ import os
 import platform
 import random
 import socket
-import subprocess
 import sys
 import threading
 import time
@@ -43,26 +42,26 @@ def prefix(type):
 
 
 def update_status(status):
-    os.system("title FyUTILS " + str(version) + " - " + username + "@" + device + " - " + status)
+    os.system("title FyUTILS " + version + " - " + username + "@" + device + " - " + status)
     try:
         rpc.update(
             state=status, details=username + "@" + device, small_image="python",
             large_image="main",
             buttons=[{"label": "Get FyUTILS", "url": "https://github.com/NoahOnFyre/FyUTILS/releases/latest"}],
-            small_text="Python", large_text="FyUTILS v" + str(version),
+            small_text="Python", large_text="FyUTILS v" + version,
             start=int(rpc_start_time))
     except:
         None
 
 
 def update_ssh_status(status):
-    os.system("title FyUTILS " + str(version) + " - " + username + "@" + device + " - " + status)
+    os.system("title FyUTILS " + version + " - " + username + "@" + device + " - " + status)
     try:
         rpc.update(
             state="[SSH] " + status, details=username + "@" + device, small_image="python",
             large_image="main",
             buttons=[{"label": "Get FyUTILS", "url": "https://github.com/NoahOnFyre/FyUTILS/releases/latest"}],
-            small_text="Python", large_text="FyUTILS v" + str(version),
+            small_text="Python", large_text="FyUTILS v" + version,
             start=int(rpc_start_time))
     except:
         None
@@ -93,7 +92,7 @@ def menu():
     time.sleep(0.03)
     print(accent_color() + "║ " + accent_color() + "[" + color() + "VAR" + accent_color() + "] " + text_color() + "Directory: " + current_dir)
     time.sleep(0.03)
-    print(accent_color() + "║ " + accent_color() + "[" + color() + "VAR" + accent_color() + "] " + text_color() + "Version: " + str(version))
+    print(accent_color() + "║ " + accent_color() + "[" + color() + "VAR" + accent_color() + "] " + text_color() + "Version: " + version)
     time.sleep(0.03)
     print(accent_color() + "╚" + "═"*119)
 
@@ -109,8 +108,8 @@ try:
     print(prefix("INIT") + "Device: " + device)
     current_dir = sys.path.__getitem__(0)
     print(prefix("INIT") + "Directory: " + current_dir)
-    version = 1.0
-    print(prefix("INIT") + "Version: " + str(version))
+    version = "1.0.0"
+    print(prefix("INIT") + "Version: " + version)
 except:
     print(prefix("ERROR") + "Failed to get system variables!")
     print(prefix("INIT") + "Setting default values...")
@@ -122,7 +121,7 @@ except:
     current_dir = "\\"
     print(prefix("INIT") + "Directory: " + current_dir)
     version = 1.0
-    print(prefix("INIT") + "Version: " + str(version))
+    print(prefix("INIT") + "Version: " + version)
     time.sleep(0.5)
 
 # Discord RPC initialisation
@@ -130,9 +129,11 @@ try:
     print(prefix("INIT") + "Initializing discord rich presence... (RPC)")
     rpc = Presence("1005822803997638696")
     print(prefix("INIT") + "Presence ID set to: '1005822803997638696'.")
-    rpc.connect()
     print(prefix("INIT") + "Connecting to discord...")
+    rpc.connect()
+    print(prefix("INIT") + "Discord is connected...")
     rpc_start_time = time.time()
+    print(prefix("INIT") + "Discord start timestamp set...")
     update_status("Starting up...")
 except:
     print(prefix("ERROR") + "Can't connect with the discord RPC.")
@@ -216,7 +217,7 @@ while True:
                         result = sock.connect_ex((scantarget, scanport))
                         print(prefix("INFO") + "Scanning Port... " + color() + str(scanport), end='\r')
                         if result == 0:
-                            print(prefix("SUCCESS") + "Port " + color() + str(scanport) + text_color() + " is open!                ")
+                            print(prefix("INFO") + "Port " + color() + str(scanport) + text_color() + " is open!                ")
                         sock.close()
                     print("\n")
                 except KeyboardInterrupt:
@@ -271,7 +272,7 @@ while True:
             while True:
                 try:
                     update_ssh_status("Idle")
-                    ssh_cmd = input(accent_color() + "╔═══[" + Fore.LIGHTMAGENTA_EX + ssh_user + accent_color() + "@" + Fore.LIGHTMAGENTA_EX + ssh_server + accent_color() + ":" + Fore.LIGHTMAGENTA_EX + str(ssh_port) + accent_color() + "]═══(" + color() + "FySSH " + text_color() + str(version) + accent_color() + ")" + "\n" + "╚═══" + accent_color() + "> " + text_color())
+                    ssh_cmd = input(accent_color() + "╔═══[" + Fore.LIGHTMAGENTA_EX + ssh_user + accent_color() + "@" + Fore.LIGHTMAGENTA_EX + ssh_server + accent_color() + ":" + Fore.LIGHTMAGENTA_EX + str(ssh_port) + accent_color() + "]═══(" + color() + "FySSH " + text_color() + version + accent_color() + ")" + "\n" + "╚═══" + accent_color() + "> " + text_color())
                     ssh_stdin, ssh_stdout, ssh_stderr = ssh.exec_command(ssh_cmd)
                     update_ssh_status("Running: " + ssh_cmd)
                     print("")
@@ -305,8 +306,8 @@ while True:
                     while True:
                         display_ping = time.time()
                         requests.get(display_target)
-                        print(prefix("SUCCESS") + f"Ping request succeed! - Ping: {time.time() - display_ping : 0.2f}ms")
-                        time.sleep(0.25)
+                        print(prefix("INFO") + f"Ping request succeed! - Ping: {time.time() - display_ping : 0.2f}s")
+                        time.sleep(0.5)
                 except requests.exceptions.ConnectionError:
                     print(prefix("ERROR") + "Could not connect to '" + display_target + "'. Check your spelling and try again!")
                     print(prefix("INFO") + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
