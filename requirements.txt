@@ -3,4 +3,5 @@ paramiko
 requests
 colorama
 pypresence
-getpass
+pwinput
+pytube
