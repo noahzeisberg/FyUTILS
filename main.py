@@ -112,7 +112,7 @@ try:
     print(prefix("INIT") + "Start time: " + str(start_time))
     current_dir = sys.path.__getitem__(0)
     print(prefix("INIT") + "Directory: " + current_dir)
-    version = "1.0.0"
+    version = "1.1.1"
     print(prefix("INIT") + "Version: " + version)
 except:
     print(prefix("ERROR") + "Failed to get system variables!")
@@ -124,9 +124,9 @@ except:
     print(prefix("INIT") + "Device: " + device)
     start_time = "0"
     print(prefix("INIT") + "Start time: " + start_time)
-    current_dir = "\\"
+    current_dir = "C:\\"
     print(prefix("INIT") + "Directory: " + current_dir)
-    version = 1.0
+    version = "VERSION"
     print(prefix("INIT") + "Version: " + version)
     time.sleep(0.5)
 
@@ -180,7 +180,17 @@ while True:
             current_thread_name = "FyUTILS"
         else:
             current_thread_name = threading.current_thread().name
-        cmd = input(accent_color() + "╔═══[" + color() + username + accent_color() + "@" + text_color() + device + accent_color() + "]══(" + color() + current_thread_name + accent_color() + "/" + text_color() + version + accent_color() + ")\n" + accent_color() + "╚═══> " + text_color())
+
+        if os.getcwd() == current_dir:
+            cwd_abbreviation = "#"
+        elif os.getcwd() == "C:\\":
+            cwd_abbreviation = "/"
+        elif os.getcwd() == user_dir:
+            cwd_abbreviation = "~"
+        else:
+            cwd_abbreviation = os.getcwd()
+        cmd = input(accent_color() + "╔═══[" + color() + username + accent_color() + "@" + text_color() + device + accent_color() + "]══(" + color() + current_thread_name + accent_color() + "/" + text_color() + version + accent_color() + ")══[" + text_color() + cwd_abbreviation + accent_color() + "]\n" +
+                    accent_color() + "╚═══> " + text_color())
     except KeyboardInterrupt:
         try:
             update_status("Shutting down...")
@@ -206,7 +216,6 @@ while True:
                 print(accent_color() + "╚" + "═" * 119)
                 print("")
                 try:
-                    os.system("ncpa.cpl")
                     for i in range(sys.maxsize):
                         try:
                             sock.send(random.randbytes(10240))
@@ -516,4 +525,11 @@ while True:
             menu()
 
         case _:
-            os.system(cmd)
+            if cmd.startswith("cd "):
+                try:
+                    os.chdir(cmd.replace("cd ", ""))
+                    print(Fore.WHITE + cmd.replace("cd ", ""))
+                except:
+                    print(prefix("ERROR") + "Couldn't change directory to \"" + cmd.replace("cd ", "") + "\".")
+            else:
+                os.system(cmd)
