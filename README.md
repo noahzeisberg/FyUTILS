@@ -42,4 +42,16 @@ SSH is the short form of [Secure Shell](https://de.wikipedia.org/wiki/Secure_She
 
 `restart` will just restart FyUTILS. It's useful for applying an update or something.
 
-### This documentation was created on the 1/20/23 at 10:08pm. It can happen that I forget to update this documentation if a new update releases. :D
+## Calc and Calculate
+
+`calc` is a simple calculator. You can use `calculate` too. Example: `║ Calculate > 1+1`
+
+`[19:06:35] [FyUTILS/INFO] 1+1 is 2`
+
+## Fetch
+
+`fetch` can be used for downloading files and websites. Its argument is the URL of the file/website.
+
+## YouTube
+
+`youtube` lets you download a YouTube video. The arguments of this commands are just the YouTube URL of the video.
