@@ -112,7 +112,7 @@ try:
     print(prefix("INIT") + "Start time: " + str(start_time))
     current_dir = sys.path.__getitem__(0)
     print(prefix("INIT") + "Directory: " + current_dir)
-    version = "1.1.2"
+    version = "1.1.4"
     print(prefix("INIT") + "Version: " + version)
 except:
     print(prefix("ERROR") + "Failed to get system variables!")
