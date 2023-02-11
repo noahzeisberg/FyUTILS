@@ -167,6 +167,7 @@ except:
 
 print(prefix("INIT") + "Init phase complete!")
 update_status("Initialisation completed!")
+os.system("pause")
 print("")
 
 # INIT PHASE END
@@ -184,7 +185,7 @@ while True:
         if os.getcwd() == current_dir:
             cwd_abbreviation = "#"
         elif os.getcwd() == "C:\\":
-            cwd_abbreviation = "/"
+            cwd_abbreviation = "\\"
         elif os.getcwd() == user_dir:
             cwd_abbreviation = "~"
         else:
@@ -290,6 +291,45 @@ while True:
                 print("\n" + prefix("INFO") + "Canceling Action...")
             except:
                 print("")
+                print(accent_color() + "╚" + "═" * 119)
+
+        case "checkport":
+            print("")
+            print(accent_color() + "╔" + "═" * 119)
+            try:
+                checktarget = input(accent_color() + "║ " + text_color() + "Target IP" + accent_color() + " > " + text_color())
+                checkport = int(input(accent_color() + "║ " + text_color() + "Target port" + accent_color() + " > " + text_color()))
+                activity_start = time.time()
+                print(accent_color() + "╚" + "═" * 119)
+                update_status("Checking port " + str(checkport) + " on " + checktarget)
+                print("")
+                try:
+                    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                    result = sock.connect_ex((checktarget, checkport))
+                    if result == 0:
+                        print(prefix("INFO") + "Port " + color() + str(checkport) + text_color() + " is open!")
+                    else:
+                        print(prefix("ERROR") + "Port " + color() + str(checkport) + text_color() + " is not open!")
+                    sock.close()
+                except KeyboardInterrupt:
+                    print(prefix("INFO") + "Canceling Action...")
+                    print(prefix("INFO") + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
+                    print("")
+                except Exception as e:
+                    print(prefix("ERROR") + "An error occoured while trying to execute this command correctly.")
+                    print(prefix("ERROR") + str(e))
+                    print(prefix("INFO") + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
+                try:
+                    sock.close()
+                    time.sleep(0.1)
+                except:
+                    print(prefix("ERROR") + "Cannot disconnect from target!")
+                print(prefix("INFO") + "Cleaning up...")
+            except KeyboardInterrupt:
+                print("")
+                print(accent_color() + "╚" + "═" * 119)
+                print("\n" + prefix("INFO") + "Canceling Action...")
+            except:
                 print(accent_color() + "╚" + "═" * 119)
 
         case "ssh":
@@ -434,6 +474,11 @@ while True:
             print(accent_color() + "╔" + "═" * 119)
             try:
                 youtube_url = input(accent_color() + "║ " + text_color() + "Enter URL" + accent_color() + " > " + text_color())
+                youtube_format = input(accent_color() + "║ " + text_color() + "Enter format (default: mp4)" + accent_color() + " > " + text_color())
+                if youtube_format == "":
+                    youtube_format = "mp4"
+                else:
+                    youtube_format = youtube_format
                 print(accent_color() + "╚" + "═" * 119)
                 try:
                     print("")
@@ -444,7 +489,7 @@ while True:
                         os.makedirs(download_content_dir)
                         print(prefix("INFO") + "Media directory created!")
                     print(prefix("INFO") + "Download started!")
-                    youtube.streams.filter(progressive=True, file_extension='mp4').order_by('resolution').desc().first().download(download_content_dir)
+                    youtube.streams.filter(progressive=True, file_extension=youtube_format).order_by('resolution').desc().first().download(download_content_dir)
                     print(prefix("INFO") + f"Download finished in {time.time() - activity_start: 0.2f} seconds!")
                     os.system("start explorer.exe " + download_content_dir)
                 except KeyboardInterrupt:
@@ -516,12 +561,15 @@ while True:
                 None
 
         case "clear":
+            update_status("Reloading...")
             menu()
 
         case "rl":
+            update_status("Reloading...")
             menu()
 
         case "cls":
+            update_status("Reloading...")
             menu()
 
         case _:
