@@ -1,7 +1,10 @@
+import concurrent.futures
 import datetime
+import multiprocessing
 import os
 import platform
 import random
+import shutil
 import socket
 import sys
 import threading
@@ -10,6 +13,7 @@ import time
 import paramiko
 import requests
 import pwinput
+import yaml
 from colorama import Fore, init
 from pypresence import Presence
 from pathlib import Path
@@ -39,6 +43,10 @@ def prefix(type):
         return accent_color() + "[" + color() + datetime.datetime.now().strftime("%H:%M:%S") + accent_color() + "]" + " " + accent_color() + "[" + text_color() + current_thread_name + accent_color() + "/" + Fore.RED + "ERROR" + accent_color() + "] " + text_color()
     elif type == "INIT":
         return accent_color() + "[" + color() + datetime.datetime.now().strftime("%H:%M:%S") + accent_color() + "]" + " " + accent_color() + "[" + text_color() + current_thread_name + accent_color() + "/" + color() + "INIT" + accent_color() + "] " + text_color()
+    elif type == "FUEL":
+        return accent_color() + "[" + color() + datetime.datetime.now().strftime("%H:%M:%S") + accent_color() + "]" + " " + accent_color() + "[" + text_color() + current_thread_name + accent_color() + "/" + Fore.LIGHTMAGENTA_EX + "FUEL" + accent_color() + "] " + text_color()
+    elif type == "SHIELD":
+        return accent_color() + "[" + color() + datetime.datetime.now().strftime("%H:%M:%S") + accent_color() + "]" + " " + accent_color() + "[" + text_color() + current_thread_name + accent_color() + "/" + Fore.YELLOW + "SHIELD" + accent_color() + "] " + text_color()
     else:
         return accent_color() + "[" + color() + datetime.datetime.now().strftime("%H:%M:%S") + accent_color() + "]" + " " + accent_color() + "[" + text_color() + current_thread_name + accent_color() + "/" + Fore.WHITE + str(type).upper() + accent_color() + "] " + text_color()
 
@@ -92,8 +100,6 @@ def menu():
     time.sleep(0.015)
     print(accent_color() + "║ " + accent_color() + "[" + color() + "VAR" + accent_color() + "] " + text_color() + "Device: " + device)
     time.sleep(0.015)
-    print(accent_color() + "║ " + accent_color() + "[" + color() + "VAR" + accent_color() + "] " + text_color() + "Directory: " + current_dir)
-    time.sleep(0.015)
     print(accent_color() + "║ " + accent_color() + "[" + color() + "VAR" + accent_color() + "] " + text_color() + "Version: " + version)
     time.sleep(0.015)
     print(accent_color() + "╚" + "═"*119)
@@ -112,8 +118,10 @@ try:
     print(prefix("INIT") + "Start time: " + str(start_time))
     current_dir = sys.path.__getitem__(0)
     print(prefix("INIT") + "Directory: " + current_dir)
-    version = "1.1.4"
+    version = "1.2.0"
     print(prefix("INIT") + "Version: " + version)
+    threads = multiprocessing.cpu_count()
+    print(prefix("INIT") + "ThreadWorkers: " + str(threads))
 except:
     print(prefix("ERROR") + "Failed to get system variables!")
     print(prefix("INIT") + "Setting default values...")
@@ -128,6 +136,8 @@ except:
     print(prefix("INIT") + "Directory: " + current_dir)
     version = "VERSION"
     print(prefix("INIT") + "Version: " + version)
+    threads = 1
+    print(prefix("INIT") + "ThreadWorkers: " + str(threads))
     time.sleep(0.5)
 
 # Additional variables initialisation
@@ -139,14 +149,18 @@ try:
     print(prefix("INIT") + "Releases: " + releases)
     user_dir = str(Path.home())
     print(prefix("INIT") + "User specific directory: " + user_dir)
-    appdata_dir = user_dir + "\\AppData\\Roaming\\FyUTILS\\"
+    appdata_dir = user_dir + "\\AppData"
     print(prefix("INIT") + "AppData directory: " + appdata_dir)
-    tmp_dir = user_dir + "\\AppData\\Roaming\\FyUTILS\\tmp"
+    fyutils_appdata_dir = user_dir + "\\AppData\\Roaming\\FyUTILS\\"
+    print(prefix("INIT") + "FyUTILS AppData directory: " + fyutils_appdata_dir)
+    tmp_dir = user_dir + "\\AppData\\Roaming\\FyUTILS\\tmp\\"
     print(prefix("INIT") + "Temp files directory: " + tmp_dir)
     download_url = releases + "/download/" + version + "/main.py"
     print(prefix("INIT") + "Download URL: " + download_url)
     download_content_dir = current_dir + "\\DownloadedContent\\"
     print(prefix("INIT") + "Download Content Location: " + download_content_dir)
+    fuel_content_dir = current_dir + "\\FUELS\\"
+    print(prefix("INIT") + "FUEL Content Location: " + fuel_content_dir)
 except:
     print(prefix("ERROR") + "Failed to set additional variables!")
     print(prefix("ERROR") + "FyUTILS may crash, when you try to execute actions needing those variables!")
@@ -165,9 +179,19 @@ except:
     print(prefix("ERROR") + "Can't connect with the discord RPC.")
     time.sleep(0.5)
 
+# Multithreading initialisation
+
+print(prefix("INIT") + "Initializing multithreading...")
+print(prefix("INIT") + "Setting up ThreadPoolExecutor with " + str(threads) + " threads ...")
+executor = concurrent.futures.ThreadPoolExecutor(threads, "Worker-")
+for i in range(threads):
+    print(prefix("INIT") + "Worker-" + str(i+1) + " is online!")
+    time.sleep(0.015)
+time.sleep(0.5)
+
 print(prefix("INIT") + "Init phase complete!")
 update_status("Initialisation completed!")
-os.system("pause")
+time.sleep(0.03)
 print("")
 
 # INIT PHASE END
@@ -185,9 +209,11 @@ while True:
         if os.getcwd() == current_dir:
             cwd_abbreviation = "#"
         elif os.getcwd() == "C:\\":
-            cwd_abbreviation = "\\"
+            cwd_abbreviation = "/"
         elif os.getcwd() == user_dir:
             cwd_abbreviation = "~"
+        elif os.getcwd() == appdata_dir:
+            cwd_abbreviation = "@"
         else:
             cwd_abbreviation = os.getcwd()
         cmd = input(accent_color() + "╔═══[" + color() + username + accent_color() + "@" + text_color() + device + accent_color() + "]══(" + color() + current_thread_name + accent_color() + "/" + text_color() + version + accent_color() + ")══[" + text_color() + cwd_abbreviation + accent_color() + "]\n" +
@@ -206,21 +232,21 @@ while True:
             print("")
             print(accent_color() + "╔" + "═" * 119)
             try:
-                floodtarget = input(
+                flood_target = input(
                     accent_color() + "║ " + text_color() + "Target IP" + accent_color() + " > " + text_color())
-                floodport = int(input(
+                flood_port = int(input(
                     accent_color() + "║ " + text_color() + "Target port" + accent_color() + " > " + text_color()))
                 activity_start = time.time()
-                update_status(floodtarget + ":" + str(floodport))
+                update_status(flood_target + ":" + str(flood_port))
                 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-                sock.connect((floodtarget, floodport))
+                sock.connect((flood_target, flood_port))
                 print(accent_color() + "╚" + "═" * 119)
                 print("")
                 try:
                     for i in range(sys.maxsize):
                         try:
                             sock.send(random.randbytes(10240))
-                            print(prefix("INFO") + "Attacking target: " + color() + floodtarget + accent_color() + ":" + color() + str(floodport) + text_color() + "..." + accent_color() + " - " + text_color() + "Attack: " + color() + str(i + 1) + accent_color(), end='\r')
+                            print(prefix("INFO") + "Attacking target: " + color() + flood_target + accent_color() + ":" + color() + str(flood_port) + text_color() + "..." + accent_color() + " - " + text_color() + "Attack: " + color() + str(i + 1) + accent_color(), end='\r')
                         except socket.error:
                             print("")
                             print(prefix("ERROR") + "Request " + color() + str(i) + text_color() + " failed.", end='\r')
@@ -251,9 +277,9 @@ while True:
             print("")
             print(accent_color() + "╔" + "═" * 119)
             try:
-                scantarget = input(accent_color() + "║ " + text_color() + "Target IP" + accent_color() + " > " + text_color())
+                scan_target = input(accent_color() + "║ " + text_color() + "Target IP" + accent_color() + " > " + text_color())
                 activity_start = time.time()
-                update_status(scantarget)
+                update_status(scan_target)
                 print(accent_color() + "╚" + "═" * 119)
                 print("")
                 try:
@@ -262,13 +288,13 @@ while True:
                     print(prefix("INFO") + "Preparing scan..", end='\r')
                     time.sleep(0.1)
                     print(prefix("INFO") + "Preparing scan...", end='\r')
-                    for scanport in range(1, 65535):
+                    for scan_port in range(1, 65535):
                         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                         socket.setdefaulttimeout(0.05)
-                        result = sock.connect_ex((scantarget, scanport))
-                        print(prefix("INFO") + "Scanning Port... " + color() + str(scanport), end='\r')
+                        result = sock.connect_ex((scan_target, scan_port))
+                        print(prefix("INFO") + "Scanning Port... " + color() + str(scan_port), end='\r')
                         if result == 0:
-                            print(prefix("INFO") + "Port " + color() + str(scanport) + text_color() + " is open!                ")
+                            print(prefix("INFO") + "Port " + color() + str(scan_port) + text_color() + " is open!                ")
                         sock.close()
                     print("\n")
                 except KeyboardInterrupt:
@@ -297,19 +323,19 @@ while True:
             print("")
             print(accent_color() + "╔" + "═" * 119)
             try:
-                checktarget = input(accent_color() + "║ " + text_color() + "Target IP" + accent_color() + " > " + text_color())
-                checkport = int(input(accent_color() + "║ " + text_color() + "Target port" + accent_color() + " > " + text_color()))
+                check_target = input(accent_color() + "║ " + text_color() + "Target IP" + accent_color() + " > " + text_color())
+                check_port = int(input(accent_color() + "║ " + text_color() + "Target port" + accent_color() + " > " + text_color()))
                 activity_start = time.time()
                 print(accent_color() + "╚" + "═" * 119)
-                update_status("Checking port " + str(checkport) + " on " + checktarget)
+                update_status("Checking port " + str(check_port) + " on " + check_target)
                 print("")
                 try:
                     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-                    result = sock.connect_ex((checktarget, checkport))
+                    result = sock.connect_ex((check_target, check_port))
                     if result == 0:
-                        print(prefix("INFO") + "Port " + color() + str(checkport) + text_color() + " is open!")
+                        print(prefix("INFO") + "Port " + color() + str(check_port) + text_color() + " is open!")
                     else:
-                        print(prefix("ERROR") + "Port " + color() + str(checkport) + text_color() + " is not open!")
+                        print(prefix("ERROR") + "Port " + color() + str(check_port) + text_color() + " is not open!")
                     sock.close()
                 except KeyboardInterrupt:
                     print(prefix("INFO") + "Canceling Action...")
@@ -399,7 +425,6 @@ while True:
                 print("")
                 print(accent_color() + "╚" + "═" * 119)
 
-
         case "display":
             print("")
             print(accent_color() + "╔" + "═" * 119)
@@ -442,7 +467,7 @@ while True:
                 activity_start = time.time()
                 update_status("Fetching: " + fetch_url)
                 try:
-                    fetch_content = requests.get(fetch_url).text
+                    fetch_content = requests.get(fetch_url).content.decode()
                     print(prefix("INFO") + "Content of " + fetch_url + " cached!")
                     if not os.path.exists(download_content_dir):
                         os.makedirs(download_content_dir)
@@ -543,6 +568,45 @@ while True:
                     print(prefix("ERROR") + str(e))
                     print("")
 
+        case "fuel":
+            print("")
+            print(accent_color() + "╔" + "═" * 119)
+            try:
+                fuel_installation_path = input(accent_color() + "║ " + text_color() + "Path of FUEL" + accent_color() + " > " + text_color())
+                print(accent_color() + "╚" + "═" * 119)
+                print("")
+                print(prefix("FUEL") + "Installation process started!")
+                time.sleep(0.03)
+                print(prefix("FUEL") + "Using \"" + fuel_installation_path + "\" as installation file.")
+                time.sleep(0.15)
+                print(prefix("FUEL") + "Checking FUEL directory...")
+                if not os.path.exists(fuel_content_dir):
+                    os.makedirs(fuel_content_dir)
+                time.sleep(0.5)
+                print(prefix("FUEL") + "Checking FUEL config file...")
+                try:
+                    fuel_config = open(fuel_content_dir + "\\config.yml", "x")
+                except:
+                    fuel_config = open(fuel_content_dir + "\\config.yml", "r+")
+                print(prefix("FUEL") + "Installing to: " + fuel_content_dir + "...")
+                time.sleep(0.75)
+                shutil.copy(fuel_installation_path, fuel_content_dir)
+                print(prefix("FUEL") + "FUEL copied to destination directory.")
+                print(prefix("FUEL") + "Origin: " + fuel_installation_path)
+                print(prefix("FUEL") + "Destination: " + fuel_content_dir)
+                fuel = os.path.basename(fuel_installation_path).split("/")[-1]
+                fuel_path = fuel_content_dir + "\\" + fuel
+                print(prefix("FUEL") + "FUEL \"" + fuel + "\" successfuly installed to \"" + fuel_content_dir + "\".")
+
+            except KeyboardInterrupt:
+                print("")
+                print(accent_color() + "╚" + "═" * 119)
+                print("\n" + prefix("INFO") + "Canceling Action...")
+            except Exception as e:
+                print("\n" + prefix("ERROR") + "An error occoured while trying to execute this command correctly.")
+                print(prefix("ERROR") + str(e))
+                print("")
+
         case "restart":
             os.system("start " + current_dir + "\\main.py")
             sys.exit()
@@ -556,6 +620,8 @@ while True:
                 update_status("Shutting down...")
                 print(prefix("INFO") + "Shutting down FyUTILS...")
                 time.sleep(1)
+                update_status("FyUTILS stopped!")
+                print(prefix("INFO") + "FyUTILS stopped!")
                 sys.exit()
             except KeyboardInterrupt:
                 None
@@ -575,8 +641,17 @@ while True:
         case _:
             if cmd.startswith("cd "):
                 try:
-                    os.chdir(cmd.replace("cd ", ""))
-                    print(Fore.WHITE + cmd.replace("cd ", ""))
+                    cdir = cmd.replace("cd ", "")
+                    if cdir == "~":
+                        cdir = user_dir
+                    elif cdir == "/":
+                        cdir = "C:\\"
+                    elif cdir == "#":
+                        cdir = current_dir
+                    elif cdir == "@":
+                        cdir = appdata_dir
+                    os.chdir(cdir)
+                    print(Fore.WHITE + cdir)
                 except:
                     print(prefix("ERROR") + "Couldn't change directory to \"" + cmd.replace("cd ", "") + "\".")
             else:
