@@ -55,3 +55,7 @@ SSH is the short form of [Secure Shell](https://de.wikipedia.org/wiki/Secure_She
 ## YouTube
 
 `youtube` lets you download a YouTube video. The arguments of this commands are just the YouTube URL of the video.
+
+## FUEL
+
+`fuel` lets you easily add FUELS to FyUTILS. You just need to enter the path of the FUEL and it will be copied to the FUEL save directory.
