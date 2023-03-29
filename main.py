@@ -590,6 +590,12 @@ while True:
                     print(prefix("ERROR") + str(e))
                     print("")
 
+        case "fuels":
+            print("")
+            print(prefix("FUEL") + "Active FUELS:")
+            for file in fuel_list:
+                print(prefix("FUEL") + file)
+
         case "fuel":
             print("")
             print(accent_color() + "╔" + "═" * 119)
@@ -614,14 +620,13 @@ while True:
                 time.sleep(0.05)
                 print(prefix("FUEL") + "Destination: " + fuel_content_dir)
                 fuel_name = os.path.basename(fuel_installation_path).split("/")[-1]
-                fuel_path = fuel_content_dir + "\\" + fuel_name
+                fuel_path = fuel_content_dir + fuel_name
                 print(prefix("FUEL") + "FUEL \"" + fuel_name + "\" successfuly installed to \"" + fuel_content_dir + "\".")
                 time.sleep(0.25)
                 print(prefix("FUEL") + "Adding FUEL to FyUTILS...")
-                for file in os.listdir(fuel_content_dir):
-                    fuel_list.append(file)
-                    resolve_fuel_informations(file)
-                    time.sleep(0.05)
+                fuel_list.append(fuel_path)
+                resolve_fuel_informations(fuel_path)
+                time.sleep(0.05)
                 print(prefix("FUEL") + "Active FUELS: " + str(fuel_list).replace("[", "").replace("]", "").replace("'", ""))
 
             except KeyboardInterrupt:
