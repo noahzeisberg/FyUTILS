@@ -1,5 +1,6 @@
 import concurrent.futures
 import datetime
+import json
 import multiprocessing
 import os
 import platform
@@ -11,15 +12,22 @@ import threading
 import time
 
 import paramiko
+import psutil
 import requests
 import pwinput
-import yaml
 from colorama import Fore, init
 from pypresence import Presence
 from pathlib import Path
 from pytube import YouTube
 
 init(convert=True)
+
+"""
+FyUTILS SPECIFIC EXIT-CODES:
+0: Successful exit (without error)
+1024: Variable error (missing variable)
+2048: Initialization error (something went wrong during initialization)
+"""
 
 
 def color(): return Fore.LIGHTBLUE_EX
@@ -56,7 +64,7 @@ def update_status(status):
     try:
         rpc.update(
             state=status, details=username + "@" + device, small_image="python",
-            large_image="main",
+            large_image="large",
             buttons=[{"label": "Get FyUTILS", "url": "https://github.com/NoahOnFyre/FyUTILS/releases/latest"}],
             small_text="Python", large_text="FyUTILS v" + version,
             start=int(start_time))
@@ -65,16 +73,39 @@ def update_status(status):
 
 
 def update_ssh_status(status):
-    os.system("title FyUTILS " + version + " - " + username + "@" + device + " - " + status)
+    os.system("title FyUTILS " + version + " - " + ssh_user + "@" + ssh_server + " - " + status)
     try:
         rpc.update(
-            state="[SSH] " + status, details=username + "@" + device, small_image="python",
-            large_image="main",
+            state="[REMOTE] " + status, details=ssh_user + "@" + ssh_server, small_image="ssh",
+            large_image="large",
             buttons=[{"label": "Get FyUTILS", "url": "https://github.com/NoahOnFyre/FyUTILS/releases/latest"}],
             small_text="Python", large_text="FyUTILS v" + version,
             start=int(start_time))
     except:
         None
+
+
+def resolve_fuel_informations(file):
+    fuel = open(fuel_content_dir + "\\" + file)
+    fuel_json = json.load(fuel)
+    fuel_command = fuel_json["command_name"]
+    fuel_type = fuel_json["type"]
+    fuel_content = fuel_json["content"]
+    print(prefix("FUEL") + "FUEL information of: " + file)
+    print(prefix("FUEL") + "FUEL command name: " + fuel_command)
+    print(prefix("FUEL") + "FUEL type: " + fuel_type)
+    print(prefix("FUEL") + "FUEL content: " + fuel_content)
+    register_fuel(fuel_command, fuel_type, fuel_content)
+
+
+def register_fuel(command_name, type, content):
+    execute_string = ""
+    if type == "system":
+        execute_string = "os.system('" + content + "')"
+    elif type == "default" or type == "python":
+        execute_string = content
+    globals()["FUEL_SPECIFIC_COMMAND_VARIABLE_" + command_name] = execute_string
+    fuel_command_list.append(command_name)
 
 
 def menu():
@@ -122,27 +153,6 @@ try:
     print(prefix("INIT") + "Version: " + version)
     threads = multiprocessing.cpu_count()
     print(prefix("INIT") + "ThreadWorkers: " + str(threads))
-except:
-    print(prefix("ERROR") + "Failed to get system variables!")
-    print(prefix("INIT") + "Setting default values...")
-    time.sleep(0.05)
-    username = "USERNAME"
-    print(prefix("INIT") + "Username: " + username)
-    device = "DEVICE"
-    print(prefix("INIT") + "Device: " + device)
-    start_time = "0"
-    print(prefix("INIT") + "Start time: " + start_time)
-    current_dir = "C:\\"
-    print(prefix("INIT") + "Directory: " + current_dir)
-    version = "VERSION"
-    print(prefix("INIT") + "Version: " + version)
-    threads = 1
-    print(prefix("INIT") + "ThreadWorkers: " + str(threads))
-    time.sleep(0.5)
-
-# Additional variables initialisation
-try:
-    print(prefix("INIT") + "Initializing additional variables...")
     repository = "https://github.com/NoahOnFyre/FyUTILS"
     print(prefix("INIT") + "Repository: " + repository)
     releases = repository + "/releases"
@@ -161,10 +171,16 @@ try:
     print(prefix("INIT") + "Download Content Location: " + download_content_dir)
     fuel_content_dir = current_dir + "\\FUELS\\"
     print(prefix("INIT") + "FUEL Content Location: " + fuel_content_dir)
-except:
-    print(prefix("ERROR") + "Failed to set additional variables!")
-    print(prefix("ERROR") + "FyUTILS may crash, when you try to execute actions needing those variables!")
-    time.sleep(2.5)
+    cpu = platform.processor()
+    print(prefix("INIT") + "CPU: " + cpu)
+    memory_amount = psutil.virtual_memory().total
+    print(prefix("INIT") + "Memory amount: " + str(round(memory_amount/1024/1024)) + "MB")
+except Exception as e:
+    print(prefix("ERROR") + "Failed to get system variables!")
+    print(prefix("ERROR") + "Shutting down...")
+    print(e)
+    os.system("pause")
+    sys.exit(2048)
 
 # Discord RPC initialisation
 try:
@@ -189,9 +205,20 @@ for i in range(threads):
     time.sleep(0.015)
 time.sleep(0.5)
 
+# FUEL initialisation
+
+print(prefix("INIT") + "Initializing FUELS...")
+fuel_list = []
+fuel_command_list = []
+for file in os.listdir(fuel_content_dir):
+    fuel_list.append(file)
+    resolve_fuel_informations(file)
+print(prefix("INIT") + "Active FUELS: " + str(fuel_list).replace("[", "").replace("]", "").replace("'", ""))
+print(prefix("INIT") + "FUELS initialised")
+
 print(prefix("INIT") + "Init phase complete!")
 update_status("Initialisation completed!")
-time.sleep(0.03)
+time.sleep(0.5)
 print("")
 
 # INIT PHASE END
@@ -223,7 +250,7 @@ while True:
             update_status("Shutting down...")
             print("\n" + prefix("INFO") + "Shutting down FyUTILS...")
             time.sleep(1)
-            sys.exit()
+            sys.exit(0)
         except KeyboardInterrupt:
             continue
 
@@ -361,7 +388,7 @@ while True:
         case "ssh":
             print("")
             print(accent_color() + "╔" + "═" * 119)
-            update_ssh_status("Logging in...")
+            update_status("Starting FySSH service...")
             try:
                 ssh_server = input(accent_color() + "║ " + text_color() + "Host IP" + accent_color() + " > " + text_color())
                 ssh_port = input(accent_color() + "║ " + text_color() + "Host port (default: 22)" + accent_color() + " > " + text_color())
@@ -499,11 +526,6 @@ while True:
             print(accent_color() + "╔" + "═" * 119)
             try:
                 youtube_url = input(accent_color() + "║ " + text_color() + "Enter URL" + accent_color() + " > " + text_color())
-                youtube_format = input(accent_color() + "║ " + text_color() + "Enter format (default: mp4)" + accent_color() + " > " + text_color())
-                if youtube_format == "":
-                    youtube_format = "mp4"
-                else:
-                    youtube_format = youtube_format
                 print(accent_color() + "╚" + "═" * 119)
                 try:
                     print("")
@@ -514,7 +536,7 @@ while True:
                         os.makedirs(download_content_dir)
                         print(prefix("INFO") + "Media directory created!")
                     print(prefix("INFO") + "Download started!")
-                    youtube.streams.filter(progressive=True, file_extension=youtube_format).order_by('resolution').desc().first().download(download_content_dir)
+                    youtube.streams.filter(progressive=True, file_extension="mp4").order_by('resolution').desc().first().download(download_content_dir)
                     print(prefix("INFO") + f"Download finished in {time.time() - activity_start: 0.2f} seconds!")
                     os.system("start explorer.exe " + download_content_dir)
                 except KeyboardInterrupt:
@@ -583,20 +605,15 @@ while True:
                 if not os.path.exists(fuel_content_dir):
                     os.makedirs(fuel_content_dir)
                 time.sleep(0.5)
-                print(prefix("FUEL") + "Checking FUEL config file...")
-                try:
-                    fuel_config = open(fuel_content_dir + "\\config.yml", "x")
-                except:
-                    fuel_config = open(fuel_content_dir + "\\config.yml", "r+")
                 print(prefix("FUEL") + "Installing to: " + fuel_content_dir + "...")
                 time.sleep(0.75)
                 shutil.copy(fuel_installation_path, fuel_content_dir)
                 print(prefix("FUEL") + "FUEL copied to destination directory.")
                 print(prefix("FUEL") + "Origin: " + fuel_installation_path)
                 print(prefix("FUEL") + "Destination: " + fuel_content_dir)
-                fuel = os.path.basename(fuel_installation_path).split("/")[-1]
-                fuel_path = fuel_content_dir + "\\" + fuel
-                print(prefix("FUEL") + "FUEL \"" + fuel + "\" successfuly installed to \"" + fuel_content_dir + "\".")
+                fuel_name = os.path.basename(fuel_installation_path).split("/")[-1]
+                fuel_path = fuel_content_dir + "\\" + fuel_name
+                print(prefix("FUEL") + "FUEL \"" + fuel_name + "\" successfuly installed to \"" + fuel_content_dir + "\".")
 
             except KeyboardInterrupt:
                 print("")
@@ -609,11 +626,11 @@ while True:
 
         case "restart":
             os.system("start " + current_dir + "\\main.py")
-            sys.exit()
+            sys.exit(0)
 
         case "rs":
             os.system("start " + current_dir + "\\main.py")
-            sys.exit()
+            sys.exit(0)
 
         case "exit":
             try:
@@ -622,7 +639,7 @@ while True:
                 time.sleep(1)
                 update_status("FyUTILS stopped!")
                 print(prefix("INFO") + "FyUTILS stopped!")
-                sys.exit()
+                sys.exit(0)
             except KeyboardInterrupt:
                 None
 
@@ -639,6 +656,9 @@ while True:
             menu()
 
         case _:
+            if fuel_command_list.__contains__(cmd.lower()):
+                exec(globals()["FUEL_SPECIFIC_COMMAND_VARIABLE_" + cmd.lower()])
+                continue
             if cmd.startswith("cd "):
                 try:
                     cdir = cmd.replace("cd ", "")
@@ -656,3 +676,4 @@ while True:
                     print(prefix("ERROR") + "Couldn't change directory to \"" + cmd.replace("cd ", "") + "\".")
             else:
                 os.system(cmd)
+                
