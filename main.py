@@ -149,7 +149,7 @@ try:
     print(prefix("INIT") + "Start time: " + str(start_time))
     current_dir = sys.path.__getitem__(0)
     print(prefix("INIT") + "Directory: " + current_dir)
-    version = "1.2.0"
+    version = "1.2.1"
     print(prefix("INIT") + "Version: " + version)
     threads = multiprocessing.cpu_count()
     print(prefix("INIT") + "ThreadWorkers: " + str(threads))
@@ -609,11 +609,20 @@ while True:
                 time.sleep(0.75)
                 shutil.copy(fuel_installation_path, fuel_content_dir)
                 print(prefix("FUEL") + "FUEL copied to destination directory.")
+                time.sleep(0.05)
                 print(prefix("FUEL") + "Origin: " + fuel_installation_path)
+                time.sleep(0.05)
                 print(prefix("FUEL") + "Destination: " + fuel_content_dir)
                 fuel_name = os.path.basename(fuel_installation_path).split("/")[-1]
                 fuel_path = fuel_content_dir + "\\" + fuel_name
                 print(prefix("FUEL") + "FUEL \"" + fuel_name + "\" successfuly installed to \"" + fuel_content_dir + "\".")
+                time.sleep(0.25)
+                print(prefix("FUEL") + "Adding FUEL to FyUTILS...")
+                for file in os.listdir(fuel_content_dir):
+                    fuel_list.append(file)
+                    resolve_fuel_informations(file)
+                    time.sleep(0.05)
+                print(prefix("FUEL") + "Active FUELS: " + str(fuel_list).replace("[", "").replace("]", "").replace("'", ""))
 
             except KeyboardInterrupt:
                 print("")
@@ -652,6 +661,10 @@ while True:
             menu()
 
         case "cls":
+            update_status("Reloading...")
+            menu()
+
+        case "reload":
             update_status("Reloading...")
             menu()
 
