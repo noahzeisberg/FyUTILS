@@ -59,3 +59,7 @@ SSH is the short form of [Secure Shell](https://de.wikipedia.org/wiki/Secure_She
 ## FUEL
 
 `fuel` lets you easily add FUELS to FyUTILS. You just need to enter the path of the FUEL and it will be copied to the FUEL save directory.
+
+## FUELs
+
+`fuels` will list every FUEL that is currently installed and running.
