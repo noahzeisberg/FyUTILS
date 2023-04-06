@@ -1,5 +1,9 @@
 {
     "command_name": "test",
     "type": "default",
-    "content": "print(prefix('INFO') + 'Test message from FUEL')"
+    "content": [
+        "print(prefix('INFO') + 'Test message from FUEL')",
+        "time.sleep(2)",
+        "print('Hello World')"
+    ]
 }
