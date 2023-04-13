@@ -1,5 +1,5 @@
 # FyUTILS
-A simple python hacking terminal application for windows with some more commands than in the default windows command prompt.
+A simple python hacking and utility terminal application for windows with an integrated package manager, community driven librarys and plenty of other features.
 
 # Light documentation (Getting started)
 
