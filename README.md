@@ -5,7 +5,7 @@ A simple python hacking and utility terminal application for windows with an int
 
 ## Getting started with FyUTILS
 
-Please make sure you're using FyUTILS in a Windows environment since it's "native" for windows only. Most
+Please make sure you're using FyUTILS in a Windows environment since it's "native" for windows only. The most features will be available on linux and macos too, but they're not tested or maintained.
 
 First, open up a command prompt window as administrator and go to the directory, your main.py is located:
 
@@ -20,7 +20,9 @@ Note: The requirements file won't work for any legacy versions. Every version wh
 Now you can start FyUTILS by double-clicking on the "main.py" file.
 Once the initialisation process has passed, you should have an input field. There you can execute any windows default command, but there are some special commands.
 But before the explanation, you need to know how to execute commands.
+
 The format of every command is the same: `command_name arg1 arg2 arg3 ...` and so on.
+
 So there is one command name and then the arguments. Those are most likely not more than 5. The average amount of arguments is 1-3.
 Some command doesn't even need an argument, like `ls` or `restart`.
 
