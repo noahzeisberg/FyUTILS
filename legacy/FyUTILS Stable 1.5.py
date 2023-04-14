@@ -14,7 +14,6 @@ try:
     import re
     import subprocess
     import winreg
-    import whois
     from datetime import datetime
     from colorama import Fore, init
     from pypresence import Presence
@@ -414,10 +413,8 @@ while True:
                 print(Fore.LIGHTBLACK_EX + "╚" + "═" * 119)
                 print("")
                 try:
-                    whois_data = whois.whois(whois_target)
                     print(Fore.LIGHTBLACK_EX + "╔" + "═" * 119)
                     print(Fore.LIGHTBLACK_EX + "║ " + Fore.WHITE + "FyUTILS WHOIS Service @ " + whois_target)
-                    print(Fore.LIGHTBLACK_EX + "║ " + Fore.WHITE + whois_data.text)
                     print(Fore.LIGHTBLACK_EX + "╚" + "═" * 119)
                 except KeyboardInterrupt:
                     print("\n" + prefix("INFO") + Fore.WHITE + "Canceling Action...")
