@@ -140,7 +140,7 @@ try:
     print(prefix("INIT") + "Start time: " + str(start_time))
     current_dir = sys.path.__getitem__(0)
     print(prefix("INIT") + "Directory: " + current_dir)
-    version = "1.4.3"
+    version = "1.4.4"
     print(prefix("INIT") + "Version: " + version)
     threads = multiprocessing.cpu_count()
     print(prefix("INIT") + "ThreadWorkers: " + str(threads))
