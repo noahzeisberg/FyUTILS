@@ -99,39 +99,23 @@ def resolve_fuel_information(file):
 
 def menu():
     os.system("cls")
-    time.sleep(5/1000)
     print(color + "  __________               _____  __   ________   ________   ______       ________")
-    time.sleep(5/1000)
     print(color + "  ___  ____/  _____  __    __  / / /   ___  __/   ____  _/   ___  /       __  ___/")
-    time.sleep(5/1000)
     print(color + "  __  /_      __  / / /    _  / / /    __  /       __  /     __  /        _____ \ ")
-    time.sleep(5/1000)
     print(color + "  _  __/      _  /_/ /     / /_/ /     _  /       __/ /      _  /___      ____/ / ")
-    time.sleep(5/1000)
     print(color + "  /_/         _\__, /      \____/      /_/        /___/      /_____/      /____/  ")
     print(color + "             ___/  /")
-    time.sleep(5/1000)
-    print(color + "            /_____/ " + " "*5 + accent_color + "v" + text_color + version.replace(".", accent_color + "." + text_color) + accent_color + " | " + text_color + "Made by NoahOnFyre")
-    time.sleep(5/1000)
+    print(color + "            /_____/ " + " "*8 + accent_color + "v" + text_color + version.replace(".", accent_color + "." + text_color) + accent_color + " | " + text_color + "Made by NoahOnFyre")
     print("")
-    time.sleep(5/1000)
     print(accent_color + "╔" + "═"*119)
-    time.sleep(5/1000)
     print(accent_color + "║ " + accent_color + "[" + color + "VAR" + accent_color + "] " + text_color + "Username: " + username)
-    time.sleep(5/1000)
     print(accent_color + "║ " + accent_color + "[" + color + "VAR" + accent_color + "] " + text_color + "Device: " + device)
-    time.sleep(5/1000)
     print(accent_color + "║ " + accent_color + "[" + color + "VAR" + accent_color + "] " + text_color + "Version: " + version)
-    time.sleep(5/1000)
     if update_available:
         print(accent_color + "╠" + "═"*119)
-        time.sleep(5/1000)
         print(accent_color + "║ " + accent_color + "[" + color + "UPDATE" + accent_color + "] " + text_color + "A new version of FyUTILS is available! Install it now using \"update\".")
-        time.sleep(5/1000)
         print(accent_color + "║ " + accent_color + "[" + color + "UPDATE" + accent_color + "] " + text_color + "Current version: " + Fore.RED + version)
-        time.sleep(5/1000)
         print(accent_color + "║ " + accent_color + "[" + color + "UPDATE" + accent_color + "] " + text_color + "Target version: " + Fore.GREEN + newest_version)
-        time.sleep(5/1000)
     print(accent_color + "╚" + "═"*119)
 
 
@@ -304,7 +288,6 @@ try:
                         except socket.error:
                             print("")
                             print(prefix("ERROR") + "Request " + color + str(i) + text_color + " failed.", end='\r')
-                            time.sleep(0.1)
                     print("\n")
                 except KeyboardInterrupt:
                     print("\n" + prefix("INFO") + "Canceling Action...")
@@ -315,7 +298,6 @@ try:
                     print(prefix("INFO") + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
                 try:
                     sock.close()
-                    time.sleep(0.1)
                 except:
                     print(prefix("ERROR") + "Cannot disconnect from target!")
                 print(prefix("INFO") + "Cleaning up...")
@@ -352,7 +334,6 @@ try:
                     print(prefix("INFO") + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
                 try:
                     sock.close()
-                    time.sleep(0.1)
                 except:
                     print(prefix("ERROR") + "Cannot disconnect from target!")
                 print(prefix("INFO") + "Cleaning up...")
@@ -385,7 +366,6 @@ try:
                     print(prefix("INFO") + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
                 try:
                     sock.close()
-                    time.sleep(0.1)
                 except:
                     print(prefix("ERROR") + "Cannot disconnect from target!")
                 print(prefix("INFO") + "Cleaning up...")
@@ -442,7 +422,6 @@ try:
                 print(prefix("INFO") + "Disconnecting from " + color + ssh_server + accent_color + ":" + color + str(ssh_port) + text_color + "...")
                 try:
                     ssh.close()
-                    time.sleep(0.1)
                 except:
                     print(prefix("ERROR") + "Cannot disconnect from target!")
                 print(prefix("INFO") + "Cleaning up...\n")
@@ -614,7 +593,7 @@ try:
                 newest_file_content = requests.get(release_download_url).content
                 open(current_dir + "\\main.py", mode="wb").write(newest_file_content)
                 print(prefix("INFO") + "Update successfully installed!")
-                time.sleep(0.25)
+                time.sleep(1)
                 print(prefix("INFO") + "Restarting FyUTILS...")
                 os.system("start " + current_dir + "\\main.py")
                 sys.exit(512)
