@@ -6,3 +6,4 @@ pypresence~=4.2.1
 pwinput~=1.0.2
 pytube~=12.1.2
 psutil~=5.9.4
+scapy~=2.5.0

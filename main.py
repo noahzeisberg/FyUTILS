@@ -18,6 +18,7 @@ from colorama import Fore, init
 from pypresence import Presence
 from pathlib import Path
 from pytube import YouTube
+import scapy.layers.l2 as scapy
 
 init(convert=True)
 
@@ -337,7 +338,41 @@ try:
                 except:
                     print(prefix("ERROR") + "Cannot disconnect from target!")
                 print(prefix("INFO") + "Cleaning up...")
-                print("")
+
+            case "arp":
+                if len(args) != 1:
+                    print(prefix("ERROR") + "Unexpected arguments for command \"" + cmd + "\"")
+                    continue
+                activity_start = time.time()
+                arp_target = args[0]
+                update_status("ARP scanning in " + arp_target + "...")
+
+                try:
+                    print(prefix("INFO") + "Make sure you have WinPcap or Npcap installed!")
+                    print(prefix("INFO") + "Initialising ARP service...")
+                    arp = scapy.ARP(pdst=arp_target + "/24")
+                    arp_ether = scapy.Ether(dst="ff:ff:ff:ff:ff:ff")
+                    arp_packet = arp_ether/arp
+                    print(prefix("INFO") + "Sending ARP packets...")
+                    arp_content = scapy.srp(arp_packet, timeout=2, verbose=0)[0]
+                    arp_clients = []
+                    print(prefix("INFO") + "Receiving data from " + arp_target + "...")
+                    for sent, received in arp_content:
+                        arp_clients += [[received.psrc, received.hwsrc]]
+                    print(prefix("INFO") + "Processing received data...")
+                    print(prefix("INFO") + "Data received and processed.")
+                    arp_client_count = len(arp_clients)
+                    for i in range(arp_client_count):
+                        print(prefix("INFO") + accent_color + "[" + color + str(i) + accent_color + "] " + text_color + "IP: " + arp_clients[i][0] + " MAC: " + arp_clients[i][1])
+                except KeyboardInterrupt:
+                    print(prefix("INFO") + "Canceling Action...")
+                    print(prefix("INFO") + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
+                    print("")
+                except Exception as e:
+                    print(prefix("ERROR") + "An error occurred while trying to execute this command correctly.")
+                    print(prefix("ERROR") + str(e))
+                    print(prefix("INFO") + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
+
 
             case "checkport":
                 if len(args) != 2:
@@ -689,7 +724,7 @@ try:
 
             case "cd":
                 if len(args) != 1:
-                    print(prefix("ERROR") + "Unexpected arguments for command \"" + cmd + "\"")
+                    print(prefix("INFO") + os.getcwd().replace("C:\\", "/").replace("\\", "/").replace(":", "").lower())
                     continue
                 change_dir = args[0]
                 activity_start = time.time()
