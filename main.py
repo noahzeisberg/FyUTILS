@@ -93,8 +93,11 @@ def resolve_fuel_information(file):
 
         case "MIXIN":
             print(prefix("FUEL") + "Injecting from " + file)
-            for line in fuel_json["mixin"]:
+            for line in list(fuel_json["mixin"]):
                 exec(line)
+
+        case _:
+            print(prefix("FUEL") + "FUEL type is not supported by this version.")
     fuel.close()
 
 
