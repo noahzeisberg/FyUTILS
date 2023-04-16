@@ -59,10 +59,10 @@ def update_status(status):
 
 
 def update_ssh_status(status):
-    os.system("title FyUTILS " + version + " - " + ssh_user + "@" + ssh_server + " - " + status)
+    os.system("title FyUTILS " + version + " - " + user + "@" + server + " - " + status)
     try:
         rpc.update(
-            state="[REMOTE] " + status, details=ssh_user + "@" + ssh_server, small_image="ssh",
+            state="[REMOTE] " + status, details=user + "@" + server, small_image="ssh",
             large_image="large",
             buttons=[{"label": "Get FyUTILS", "url": "https://github.com/NoahOnFyre/FyUTILS/releases/latest"},
                      {"label": "View Project", "url": "https://github.com/NoahOnFyre/FyUTILS/"}],
@@ -104,22 +104,38 @@ def resolve_fuel_information(file):
 def menu():
     os.system("cls")
     print(color + "  __________               _____  __   ________   ________   ______       ________")
+    time.sleep(1/1000)
     print(color + "  ___  ____/  _____  __    __  / / /   ___  __/   ____  _/   ___  /       __  ___/")
+    time.sleep(1/1000)
     print(color + "  __  /_      __  / / /    _  / / /    __  /       __  /     __  /        _____ \ ")
+    time.sleep(1/1000)
     print(color + "  _  __/      _  /_/ /     / /_/ /     _  /       __/ /      _  /___      ____/ / ")
+    time.sleep(1/1000)
     print(color + "  /_/         _\__, /      \____/      /_/        /___/      /_____/      /____/  ")
+    time.sleep(1/1000)
     print(color + "             ___/  /")
+    time.sleep(1/1000)
     print(color + "            /_____/ " + " "*8 + accent_color + "v" + text_color + version.replace(".", accent_color + "." + text_color) + accent_color + " | " + text_color + "Made by NoahOnFyre")
+    time.sleep(1/1000)
     print("")
+    time.sleep(1/1000)
     print(accent_color + "╔" + "═"*119)
+    time.sleep(1/1000)
     print(accent_color + "║ " + accent_color + "[" + color + "VAR" + accent_color + "] " + text_color + "Username: " + username)
+    time.sleep(1/1000)
     print(accent_color + "║ " + accent_color + "[" + color + "VAR" + accent_color + "] " + text_color + "Device: " + device)
+    time.sleep(1/1000)
     print(accent_color + "║ " + accent_color + "[" + color + "VAR" + accent_color + "] " + text_color + "Version: " + version)
+    time.sleep(1/1000)
     if update_available:
         print(accent_color + "╠" + "═"*119)
+        time.sleep(1/1000)
         print(accent_color + "║ " + accent_color + "[" + color + "UPDATE" + accent_color + "] " + text_color + "A new version of FyUTILS is available! Install it now using \"update\".")
+        time.sleep(1/1000)
         print(accent_color + "║ " + accent_color + "[" + color + "UPDATE" + accent_color + "] " + text_color + "Current version: " + Fore.RED + version)
+        time.sleep(1/1000)
         print(accent_color + "║ " + accent_color + "[" + color + "UPDATE" + accent_color + "] " + text_color + "Target version: " + Fore.GREEN + newest_version)
+        time.sleep(1/1000)
     print(accent_color + "╚" + "═"*119)
 
 
@@ -277,18 +293,18 @@ try:
                 if len(args) != 2:
                     print(prefix("ERROR") + "Unexpected arguments for command \"" + cmd + "\"")
                     continue
-                flood_target = args[0]
-                flood_port = int(args[1])
+                target = args[0]
+                port = int(args[1])
                 activity_start = time.time()
-                update_status("Flooding " + flood_target + ":" + str(flood_port))
+                update_status("Flooding " + target + ":" + str(port))
 
                 try:
                     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-                    sock.connect((flood_target, flood_port))
+                    sock.connect((target, port))
                     for i in range(sys.maxsize):
                         try:
                             sock.send(random.randbytes(10240))
-                            print(prefix("INFO") + "Attacking target: " + color + flood_target + accent_color + ":" + color + str(flood_port) + text_color + "..." + accent_color + " - " + text_color + "Attack: " + color + str(i + 1) + accent_color, end='\r')
+                            print(prefix("INFO") + "Attacking target: " + color + target + accent_color + ":" + color + str(port) + text_color + "..." + accent_color + " - " + text_color + "Attack: " + color + str(i + 1) + accent_color, end='\r')
                         except socket.error:
                             print("")
                             print(prefix("ERROR") + "Request " + color + str(i) + text_color + " failed.", end='\r')
@@ -310,9 +326,9 @@ try:
                 if len(args) != 1:
                     print(prefix("ERROR") + "Unexpected arguments for command \"" + cmd + "\"")
                     continue
-                scan_target = args[0]
+                target = args[0]
                 activity_start = time.time()
-                update_status("Scanning on " + scan_target)
+                update_status("Scanning on " + target)
 
                 try:
                     print(prefix("INFO") + "Preparing scan.", end='\r')
@@ -320,13 +336,13 @@ try:
                     print(prefix("INFO") + "Preparing scan..", end='\r')
                     time.sleep(0.1)
                     print(prefix("INFO") + "Preparing scan...", end='\r')
-                    for scan_port in range(1, 65535):
+                    for port in range(1, 65535):
                         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                         socket.setdefaulttimeout(0.05)
-                        result = sock.connect_ex((scan_target, scan_port))
-                        print(prefix("INFO") + "Scanning Port... " + color + str(scan_port), end='\r')
+                        result = sock.connect_ex((target, port))
+                        print(prefix("INFO") + "Scanning Port... " + color + str(port), end='\r')
                         if result == 0:
-                            print(prefix("INFO") + "Port " + color + str(scan_port) + text_color + " is open!                ")
+                            print(prefix("INFO") + "Port " + color + str(port) + text_color + " is open!                ")
                         sock.close()
                     print("\n")
                 except KeyboardInterrupt:
@@ -347,26 +363,26 @@ try:
                     print(prefix("ERROR") + "Unexpected arguments for command \"" + cmd + "\"")
                     continue
                 activity_start = time.time()
-                arp_target = args[0]
-                update_status("ARP scanning in " + arp_target + "...")
+                target = args[0]
+                update_status("ARP scanning in " + target + "...")
 
                 try:
                     print(prefix("INFO") + "Make sure you have WinPcap or Npcap installed!")
                     print(prefix("INFO") + "Initialising ARP service...")
-                    arp = scapy.ARP(pdst=arp_target + "/24")
-                    arp_ether = scapy.Ether(dst="ff:ff:ff:ff:ff:ff")
-                    arp_packet = arp_ether/arp
+                    arp = scapy.ARP(pdst=target + "/24")
+                    ether = scapy.Ether(dst="ff:ff:ff:ff:ff:ff")
+                    packet = ether/arp
                     print(prefix("INFO") + "Sending ARP packets...")
-                    arp_content = scapy.srp(arp_packet, timeout=2, verbose=0)[0]
-                    arp_clients = []
-                    print(prefix("INFO") + "Receiving data from " + arp_target + "...")
-                    for sent, received in arp_content:
-                        arp_clients += [[received.psrc, received.hwsrc]]
+                    content = scapy.srp(packet, timeout=2, verbose=0)[0]
+                    clients = []
+                    print(prefix("INFO") + "Receiving data from " + target + "...")
+                    for sent, received in content:
+                        clients += [[received.psrc, received.hwsrc]]
                     print(prefix("INFO") + "Processing received data...")
                     print(prefix("INFO") + "Data received and processed.")
-                    arp_client_count = len(arp_clients)
-                    for i in range(arp_client_count):
-                        print(prefix("INFO") + accent_color + "[" + color + str(i) + accent_color + "] " + text_color + "IP: " + arp_clients[i][0] + " MAC: " + arp_clients[i][1])
+                    client_count = len(clients)
+                    for i in range(client_count):
+                        print(prefix("INFO") + accent_color + "[" + color + str(i) + accent_color + "] " + text_color + "IP: " +  clients[i][0] + " MAC: " + clients[i][1])
                 except KeyboardInterrupt:
                     print(prefix("INFO") + "Canceling Action...")
                     print(prefix("INFO") + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
@@ -381,18 +397,18 @@ try:
                 if len(args) != 2:
                     print(prefix("ERROR") + "Unexpected arguments for command \"" + cmd + "\"")
                     continue
-                check_target = args[0]
-                check_port = int(args[1])
+                target = args[0]
+                port = int(args[1])
                 activity_start = time.time()
-                update_status("Checking" + flood_target + ":" + str(flood_port))
+                update_status("Checking" + target + ":" + str(port))
 
                 try:
                     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-                    result = sock.connect_ex((check_target, check_port))
+                    result = sock.connect_ex((target, port))
                     if result == 0:
-                        print(prefix("INFO") + "Port " + color + str(check_port) + text_color + " is open!")
+                        print(prefix("INFO") + "Port " + color + str(port) + text_color + " is open!")
                     else:
-                        print(prefix("ERROR") + "Port " + color + str(check_port) + text_color + " is not open!")
+                        print(prefix("ERROR") + "Port " + color + str(port) + text_color + " is not open!")
                     sock.close()
                 except KeyboardInterrupt:
                     print(prefix("INFO") + "Canceling Action...")
@@ -412,13 +428,13 @@ try:
                 if len(args) != 3:
                     print(prefix("ERROR") + "Unexpected arguments for command \"" + cmd + "\"")
                     continue
-                ssh_server = args[0]
-                ssh_port = int(args[1])
-                ssh_user = args[2]
+                server = args[0]
+                port = int(args[1])
+                user = args[2]
                 activity_start = time.time()
                 update_status("Starting FySSH service...")
 
-                print(prefix("INFO") + "Connecting to " + ssh_server + ":" + str(ssh_port) + " as " + ssh_user)
+                print(prefix("INFO") + "Connecting to " + server + ":" + str(port) + " as " + user)
                 print(prefix("INFO") + "Creating SSH client...")
                 ssh = paramiko.SSHClient()
                 print(prefix("INFO") + "Loading host keys...")
@@ -426,15 +442,15 @@ try:
                 print(prefix("INFO") + "Adding policy...")
                 ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
                 print(prefix("INFO") + "Requesting user's password...")
-                ssh_password = pwinput.pwinput(text_color + "Enter password" + accent_color + " > " + text_color, "*")
+                password = pwinput.pwinput(text_color + "Enter password" + accent_color + " > " + text_color, "*")
                 print(prefix("INFO") + "Connecting...")
                 print("")
                 try:
-                    ssh.connect(ssh_server, port=ssh_port, username=ssh_user, password=ssh_password)
+                    ssh.connect(server, port=port, username=user, password=password)
                     while True:
                         try:
                             update_ssh_status("Idle")
-                            ssh_cmd = input(accent_color + "╔═══[" + Fore.LIGHTMAGENTA_EX + ssh_user + accent_color + "@" + Fore.LIGHTMAGENTA_EX + ssh_server + accent_color + ":" + Fore.LIGHTMAGENTA_EX + str(ssh_port) + accent_color + "]═══(" + color + "FySSH " + text_color + version + accent_color + ")" + "\n" + "╚═══" + accent_color + "> " + text_color)
+                            ssh_cmd = input(accent_color + "╔═══[" + Fore.LIGHTMAGENTA_EX + user + accent_color + "@" + Fore.LIGHTMAGENTA_EX + server + accent_color + ":" + Fore.LIGHTMAGENTA_EX + str(port) + accent_color + "]═══(" + color + "FySSH " + text_color + version + accent_color + ")" + "\n" + "╚═══" + accent_color + "> " + text_color)
                             ssh_stdin, ssh_stdout, ssh_stderr = ssh.exec_command(ssh_cmd)
                             update_ssh_status("Running: " + ssh_cmd)
                             print("")
@@ -457,7 +473,7 @@ try:
                     continue
 
                 print(prefix("INFO") + f"Time elapsed: {time.time() - activity_start : 0.2f}s")
-                print(prefix("INFO") + "Disconnecting from " + color + ssh_server + accent_color + ":" + color + str(ssh_port) + text_color + "...")
+                print(prefix("INFO") + "Disconnecting from " + color + server + accent_color + ":" + color + str(port) + text_color + "...")
                 try:
                     ssh.close()
                 except:
@@ -468,21 +484,21 @@ try:
                 if len(args) != 2:
                     print(prefix("ERROR") + "Unexpected arguments for command \"" + cmd + "\"")
                     continue
-                fetch_url = args[0]
-                fetch_file_name = args[1]
+                url = args[0]
+                filename = args[1]
                 activity_start = time.time()
-                update_status("Fetching: " + fetch_url)
+                update_status("Fetching: " + url)
 
                 try:
-                    print(prefix("INFO") + "Fetching " + fetch_url + "...")
-                    fetch_content = requests.get(fetch_url).content
-                    print(prefix("INFO") + "Content of " + fetch_url + " cached!")
+                    print(prefix("INFO") + "Fetching " + url + "...")
+                    fetch_content = requests.get(url).content
+                    print(prefix("INFO") + "Content of " + url + " cached!")
                     if not os.path.exists(download_content_dir):
                         os.makedirs(download_content_dir)
-                    print(prefix("INFO") + "Writing content of " + fetch_url + " from cache to local storage!")
+                    print(prefix("INFO") + "Writing content of " + url + " from cache to local storage!")
 
                     try:
-                        open(download_content_dir + "\\" + fetch_file_name, mode="xb").write(fetch_content)
+                        open(download_content_dir + "\\" + filename, mode="xb").write(fetch_content)
                         os.system("start explorer.exe " + download_content_dir)
                     except Exception as e:
                         print("\n" + prefix("ERROR") + "Could not save content to file.")
@@ -503,12 +519,12 @@ try:
                 if len(args) != 1:
                     print(prefix("ERROR") + "Unexpected arguments for command \"" + cmd + "\"")
                     continue
-                youtube_url = args[0]
+                url = args[0]
                 activity_start = time.time()
-                update_status("Downloading: " + youtube_url)
+                update_status("Downloading: " + url)
 
                 try:
-                    youtube = YouTube(youtube_url)
+                    youtube = YouTube(url)
                     update_status("Downloading: " + youtube.title.title())
                     if not os.path.exists(download_content_dir):
                         os.makedirs(download_content_dir)
@@ -543,12 +559,12 @@ try:
 
                 if fuel_action == "install":
                     print(prefix("FUEL") + "Installation process started!")
-                    fuel_file_name = fuel_location + ".json"
+                    filename = fuel_location + ".json"
                     print(prefix("FUEL") + "Using \"" + fuel_location + "\" as target package.")
                     print(prefix("FUEL") + "Checking FUEL directory...")
                     if not os.path.exists(fuel_content_dir):
                         os.makedirs(fuel_content_dir)
-                    if os.path.exists(fuel_content_dir + fuel_file_name):
+                    if os.path.exists(fuel_content_dir + filename):
                         print(prefix("ERROR") + "Package \"" + fuel_location + "\" installation failed!")
                         print(prefix("ERROR") + "Error: Package is already installed.")
                         continue
@@ -557,7 +573,7 @@ try:
                     fuel_repo_contents = requests.get("https://api.github.com/repos/NoahOnFyre/FUELS/contents/").json()
                     for i in range(len(fuel_repo_contents)):
                         fuel_download_url = ""
-                        if fuel_repo_contents[i]["name"] == fuel_file_name:
+                        if fuel_repo_contents[i]["name"] == filename:
                             fuel_download_url = fuel_repo_contents[i]["download_url"]
                             break
                         else:
@@ -569,10 +585,10 @@ try:
                     print(prefix("FUEL") + "Fetching FUEL from NoahOnFyre/FUELS...")
                     fuel_file_content = requests.get(fuel_download_url).content
                     print(prefix("FUEL") + "Writing content to file...")
-                    local_fuel_file = open(fuel_content_dir + fuel_file_name, mode="xb")
+                    local_fuel_file = open(fuel_content_dir + filename, mode="xb")
                     local_fuel_file.write(fuel_file_content)
                     local_fuel_file.close()
-                    local_fuel_file = open(fuel_content_dir + fuel_file_name, mode="rt")
+                    local_fuel_file = open(fuel_content_dir + filename, mode="rt")
                     print(prefix("FUEL") + "FUEL " + Fore.LIGHTMAGENTA_EX + fuel_location + text_color + " successfuly installed to \"" + fuel_content_dir + "\".")
                     print(prefix("FUEL") + "Adding FUEL to FyUTILS...")
                     local_fuel_file_json = json.load(local_fuel_file)
@@ -587,30 +603,30 @@ try:
                             print(prefix("FUEL") + "Closing stashed files...")
                             local_fuel_file.close()
                             print(prefix("FUEL") + "Deleting temporary files...")
-                            os.remove(fuel_content_dir + fuel_file_name)
+                            os.remove(fuel_content_dir + filename)
                             print(prefix("FUEL") + "Installation cancelled!")
                             print(prefix("FUEL") + f"Done! Took{time.time() - activity_start: 0.2f}s to cancel package installation of " + Fore.LIGHTMAGENTA_EX + fuel_location + text_color + "!")
                             continue
 
-                    fuel_list.append(fuel_file_name)
+                    fuel_list.append(filename)
                     print(prefix("FUEL") + f"Done! Took{time.time() - activity_start: 0.2f}s to install package " + Fore.LIGHTMAGENTA_EX + fuel_location + text_color + "!")
 
                 elif fuel_action == "remove":
-                    fuel_file_name = fuel_location + ".json"
-                    print(prefix("FUEL") + "Unregistering " + fuel_content_dir + fuel_file_name + "...")
-                    if os.path.exists(fuel_content_dir + fuel_file_name):
-                        if json.load(open(fuel_content_dir + fuel_file_name))["properties"]["type"] == "DEFAULT":
-                            fuel_command_list.remove(json.load(open(fuel_content_dir + fuel_file_name))["properties"]["command_name"])
-                        fuel_list.remove(fuel_file_name)
+                    filename = fuel_location + ".json"
+                    print(prefix("FUEL") + "Unregistering " + fuel_content_dir + filename + "...")
+                    if os.path.exists(fuel_content_dir + filename):
+                        if json.load(open(fuel_content_dir + filename))["properties"]["type"] == "DEFAULT":
+                            fuel_command_list.remove(json.load(open(fuel_content_dir + filename))["properties"]["command_name"])
+                        fuel_list.remove(filename)
                     else:
-                        print(prefix("ERROR") + "Package \"" + fuel_content_dir + fuel_file_name + "\" remove failed!")
+                        print(prefix("ERROR") + "Package \"" + fuel_content_dir + filename + "\" remove failed!")
                         print(prefix("ERROR") + "Error: Local package not found.")
                         continue
-                    print(prefix("FUEL") + "Deleting " + fuel_content_dir + fuel_file_name + "...")
-                    if os.path.exists(fuel_content_dir + fuel_file_name):
-                        os.remove(fuel_content_dir + fuel_file_name)
+                    print(prefix("FUEL") + "Deleting " + fuel_content_dir + filename + "...")
+                    if os.path.exists(fuel_content_dir + filename):
+                        os.remove(fuel_content_dir + filename)
                     else:
-                        print(prefix("ERROR") + "Package \"" + fuel_content_dir + fuel_file_name + "\" remove failed!")
+                        print(prefix("ERROR") + "Package \"" + fuel_content_dir + filename + "\" remove failed!")
                         print(prefix("ERROR") + "Error: Local package not found.")
                         continue
                     print(prefix("FUEL") + f"Done! Took{time.time() - activity_start: 0.2f}s to remove package " + Fore.LIGHTMAGENTA_EX + fuel_location)
@@ -627,6 +643,8 @@ try:
                     print("")
 
             case "update":
+                update_status("Updating FyUTILS...")
+
                 print(prefix("INFO") + "Update found! Updating to " + newest_version + "...")
                 newest_file_content = requests.get(release_download_url).content
                 open(current_dir + "\\main.py", mode="wb").write(newest_file_content)
@@ -640,20 +658,20 @@ try:
                 if len(args) != 1:
                     print(prefix("ERROR") + "Unexpected arguments for command \"" + cmd + "\"")
                     continue
-                edit_file_path = args[0]
+                filepath = args[0]
                 activity_start = time.time()
-                update_status("Editing " + edit_file_path + "...")
+                update_status("Editing " + filepath + "...")
 
-                if not os.path.exists(edit_file_path):
+                if not os.path.exists(filepath):
                     print(prefix("ERROR") + "File not found!")
-                    create_file_confirmation = input(prefix("INFO") + "Do you want to let FyUTILS create a new file? (y/n): ")
-                    if create_file_confirmation.lower() == "n":
+                    confirmation = input(prefix("INFO") + "Do you want to let FyUTILS create a new file? (y/n): ")
+                    if confirmation.lower() == "n":
                         continue
-                    edit_file = open(edit_file_path, "x+")
+                    edit_file = open(filepath, "x+")
                     print(prefix("INFO") + "File created successfuly.")
                     print(prefix("INFO") + "End file editing by entering \"END\".")
                 else:
-                    edit_file = open(edit_file_path, "w+")
+                    edit_file = open(filepath, "w+")
                     print(prefix("INFO") + "File opened successfuly.")
                     print(prefix("INFO") + "End file editing by entering \"END\".")
                 edit_string = ""
@@ -667,10 +685,10 @@ try:
                         print("END")
                         print("")
                         break
-                print(prefix("INFO") + "Writing cached content to " + edit_file_path + "...")
+                print(prefix("INFO") + "Writing cached content to " + filepath + "...")
                 edit_file.writelines(edit_string)
-                print(prefix("INFO") + "Saving file to " + edit_file_path + "...")
-                print(prefix("INFO") + "Closing " + edit_file_path + "...")
+                print(prefix("INFO") + "Saving file to " + filepath + "...")
+                print(prefix("INFO") + "Closing " + filepath + "...")
                 edit_file.close()
                 print(prefix("INFO") + "File is saved and closed!")
                 print(prefix("INFO") + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
