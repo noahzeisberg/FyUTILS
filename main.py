@@ -39,8 +39,6 @@ def prefix(type):
         return accent_color + "[" + color + datetime.datetime.now().strftime("%H:%M:%S") + accent_color + "]" + " " + accent_color + "[" + text_color + current_thread_name + accent_color + "/" + Fore.LIGHTMAGENTA_EX + "FUEL" + accent_color + "] " + text_color
     elif type == "SHIELD":
         return accent_color + "[" + color + datetime.datetime.now().strftime("%H:%M:%S") + accent_color + "]" + " " + accent_color + "[" + text_color + current_thread_name + accent_color + "/" + Fore.YELLOW + "SHIELD" + accent_color + "] " + text_color
-    elif type == "RECOVERY":
-        return accent_color + "[" + color + datetime.datetime.now().strftime("%H:%M:%S") + accent_color + "]" + " " + accent_color + "[" + text_color + current_thread_name + accent_color + "/" + Fore.RED + "RECOVERY" + accent_color + "] " + text_color
     else:
         return accent_color + "[" + color + datetime.datetime.now().strftime("%H:%M:%S") + accent_color + "]" + " " + accent_color + "[" + text_color + current_thread_name + accent_color + "/" + Fore.WHITE + str(type).upper() + accent_color + "] " + text_color
 
@@ -391,7 +389,6 @@ try:
                     print(prefix("ERROR") + "An error occurred while trying to execute this command correctly.")
                     print(prefix("ERROR") + str(e))
                     print(prefix("INFO") + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
-
 
             case "checkport":
                 if len(args) != 2:
