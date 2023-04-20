@@ -9,6 +9,7 @@ import socket
 import sys
 import threading
 import time
+import traceback
 
 import paramiko
 import psutil
@@ -71,7 +72,7 @@ def update_ssh_status(status):
 
 
 def resolve_fuel_information(file):
-    fuel = open(fuel_content_dir + file)
+    fuel = open(fuel_content_dir + file, mode="rt")
     fuel_json = json.load(fuel)
     print(prefix("FUEL") + "FUEL information of: " + file)
     print(prefix("FUEL") + "FUEL name: " + fuel_json["name"])
@@ -87,12 +88,7 @@ def resolve_fuel_information(file):
             print(prefix("FUEL") + "Body enabled: " + str(fuel_json["body"]["enabled"]))
             print(prefix("FUEL") + "Argument length: " + str(fuel_json["head"]["argument_length"]))
             print(prefix("FUEL") + "Command status: " + fuel_json["head"]["status"])
-            fuel_command_list.append(fuel_json["properties"]["command_name"])
-
-        case "MIXIN":
-            print(prefix("FUEL") + "Injecting from " + file)
-            for line in list(fuel_json["mixin"]):
-                exec(line)
+            fuels.update({fuel_json["properties"]["command_name"]: fuel_content_dir + file})
 
         case _:
             print(prefix("FUEL") + "FUEL type is not supported by this version.")
@@ -165,13 +161,13 @@ try:
     print(prefix("INIT") + "User specific directory: " + user_dir)
     appdata_dir = user_dir + "\\AppData"
     print(prefix("INIT") + "AppData directory: " + appdata_dir)
-    fyutils_appdata_dir = user_dir + "\\AppData\\Roaming\\FyUTILS\\"
-    print(prefix("INIT") + "FyUTILS AppData directory: " + fyutils_appdata_dir)
+    fyutils_dir = appdata_dir + "\\Roaming\\FyUTILS\\"
+    print(prefix("INIT") + "FyUTILS AppData directory: " + fyutils_dir)
     tmp_dir = user_dir + "\\AppData\\Roaming\\FyUTILS\\tmp\\"
     print(prefix("INIT") + "Temp files directory: " + tmp_dir)
-    download_content_dir = current_dir + "\\DownloadedContent\\"
+    download_content_dir = fyutils_dir + "content\\"
     print(prefix("INIT") + "Download Content Location: " + download_content_dir)
-    fuel_content_dir = current_dir + "\\FUELS\\"
+    fuel_content_dir = fyutils_dir + "fuels\\"
     print(prefix("INIT") + "FUEL Content Location: " + fuel_content_dir)
     cpu = platform.processor()
     print(prefix("INIT") + "CPU: " + cpu)
@@ -181,8 +177,8 @@ try:
     print(prefix("INIT") + "Memory amount: " + str(round(memory_amount/1024/1024)) + "MB")
 except Exception as e:
     print(prefix("ERROR") + "Failed to get system variables!")
+    print(traceback.format_exc())
     print(prefix("ERROR") + "Shutting down...")
-    print(e)
     os.system("pause")
     sys.exit(2048)
 
@@ -237,12 +233,12 @@ for i in range(threads):
 # FUEL initialization
 
 print(prefix("INIT") + "Initializing FUELS...")
-fuel_list = []
-fuel_command_list = []
+fuels = {}
+if not os.path.exists(fuel_content_dir):
+    os.makedirs(fuel_content_dir)
 for file in os.listdir(fuel_content_dir):
-    fuel_list.append(file)
     resolve_fuel_information(file)
-print(prefix("INIT") + "Active FUELS: " + str(fuel_list).replace("[", "").replace("]", "").replace("'", ""))
+
 print(prefix("INIT") + "FUELS initialized")
 
 print(prefix("INIT") + "Initialization phase completed!")
@@ -542,8 +538,8 @@ try:
 
             case "fuels":
                 print(prefix("FUEL") + "Active FUELS:")
-                for file in fuel_list:
-                    print(prefix("FUEL") + file)
+                for path in fuels.values():
+                    print(prefix("FUEL") + path.removesuffix(".json").removeprefix(fuel_content_dir))
 
             case "fuel":
                 if len(args) != 2:
@@ -590,31 +586,16 @@ try:
                     print(prefix("FUEL") + "Adding FUEL to FyUTILS...")
                     local_fuel_file_json = json.load(local_fuel_file)
                     if local_fuel_file_json["properties"]["type"] == "DEFAULT":
-                        fuel_command_list.append(local_fuel_file_json["properties"]["command_name"])
-                    else:
-                        print(prefix("FUEL") + Fore.RED + "WARNING: You're installing a mixin that can change the code of FyUTILS.")
-                        print(prefix("FUEL") + Fore.RED + "Therefore you'll lose any warranty for this software.")
-                        mixin_confirmation = input(prefix("FUEL") + "Do you want to continue installing? (y/n): ")
-                        if mixin_confirmation.lower() == "n":
-                            print(prefix("FUEL") + "Cancelling installation of " + Fore.LIGHTMAGENTA_EX + fuel_location + text_color + "...")
-                            print(prefix("FUEL") + "Closing stashed files...")
-                            local_fuel_file.close()
-                            print(prefix("FUEL") + "Deleting temporary files...")
-                            os.remove(fuel_content_dir + filename)
-                            print(prefix("FUEL") + "Installation cancelled!")
-                            print(prefix("FUEL") + f"Done! Took{time.time() - activity_start: 0.2f}s to cancel package installation of " + Fore.LIGHTMAGENTA_EX + fuel_location + text_color + "!")
-                            continue
-
-                    fuel_list.append(filename)
+                        fuels.update({local_fuel_file_json["properties"]["command_name"]: fuel_content_dir + filename})
                     print(prefix("FUEL") + f"Done! Took{time.time() - activity_start: 0.2f}s to install package " + Fore.LIGHTMAGENTA_EX + fuel_location + text_color + "!")
 
                 elif fuel_action == "remove":
                     filename = fuel_location + ".json"
                     print(prefix("FUEL") + "Unregistering " + fuel_content_dir + filename + "...")
                     if os.path.exists(fuel_content_dir + filename):
-                        if json.load(open(fuel_content_dir + filename))["properties"]["type"] == "DEFAULT":
-                            fuel_command_list.remove(json.load(open(fuel_content_dir + filename))["properties"]["command_name"])
-                        fuel_list.remove(filename)
+                        temp = open(fuel_content_dir + filename)
+                        fuels.pop(json.load(temp)["properties"]["command_name"])
+                        temp.close()
                     else:
                         print(prefix("ERROR") + "Package \"" + fuel_content_dir + filename + "\" remove failed!")
                         print(prefix("ERROR") + "Error: Local package not found.")
@@ -699,6 +680,9 @@ try:
                 update_status("Calculating " + calculation)
 
                 print(prefix("INFO") + calculation + " is " + str(eval(calculation)))
+
+            case "read":
+                print("")
 
             case "ls":
                 try:
@@ -810,31 +794,30 @@ try:
                 sys.exit(0)
 
             case _:
-                if fuel_command_list.__contains__(cmd):
-                    for file in fuel_list:
-                        json_fuel_file = json.load(open(fuel_content_dir + file, "r"))
-                        if json_fuel_file["properties"]["command_name"] == cmd:
-                            if json_fuel_file["head"]["enabled"]:
-                                if len(args) != json_fuel_file["head"]["argument_length"]:
-                                    print(prefix("ERROR") + "Unexpected arguments for command \"" + cmd + "\"")
-                                    continue
-                                for entry in range(len(json_fuel_file["head"]["arguments"])):
-                                    exec(list(json_fuel_file["head"]["arguments"]).__getitem__(entry) + " = args[" + str(entry) + "]")
-                                activity_start = time.time()
-                                update_status(json_fuel_file["head"]["status"])
+                if fuels.keys().__contains__(cmd.lower()):
+                    fuel_file = open(fuels.get(cmd.lower()), mode="rt")
+                    json_fuel_file = json.load(fuel_file)
+                    if json_fuel_file["head"]["enabled"]:
+                        if len(args) != json_fuel_file["head"]["argument_length"]:
+                            print(prefix("ERROR") + "Unexpected arguments for command \"" + cmd + "\"")
+                            continue
+                        for entry in range(len(json_fuel_file["head"]["arguments"])):
+                            exec(list(json_fuel_file["head"]["arguments"]).__getitem__(entry) + " = args[" + str(entry) + "]")
+                        activity_start = time.time()
+                        update_status(json_fuel_file["head"]["status"])
 
-                            if json_fuel_file["body"]["enabled"]:
-                                for line in list(json_fuel_file["body"]["content"]):
-                                    exec(line)
-                    continue
+                    if json_fuel_file["body"]["enabled"]:
+                        for line in list(json_fuel_file["body"]["content"]):
+                            exec(line)
 
-                arg_string = " "
-                for entry in args:
-                    arg_string = arg_string + entry + " "
-                os.system(cmd + arg_string)
+                else:
+                    arg_string = " "
+                    for entry in args:
+                        arg_string += entry + " "
+                    os.system(cmd + arg_string)
 except Exception as e:
     os.system("title FyUTILS Crash Handler - Crash Log")
     print(prefix("ERROR") + "FyUTILS CRASH LOG @ " + datetime.datetime.now().strftime("%H:%M:%S"))
-    print(prefix("ERROR") + "Error: " + str(e))
+    print(prefix("ERROR") + "Error: " + traceback.format_exc())
     os.system("pause")
     sys.exit(1024)
