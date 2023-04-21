@@ -31,17 +31,17 @@ def prefix(type):
         current_thread_name = threading.current_thread().name
 
     if type == "INFO":
-        return accent_color + "[" + color + datetime.datetime.now().strftime("%H:%M:%S") + accent_color + "]" + " " + accent_color + "[" + text_color + current_thread_name + accent_color + "/" + Fore.LIGHTGREEN_EX + "INFO" + accent_color + "] " + text_color
+        return accent_color() + "[" + color() + datetime.datetime.now().strftime("%H:%M:%S") + accent_color() + "]" + " " + accent_color() + "[" + text_color() + current_thread_name + accent_color() + "/" + Fore.LIGHTGREEN_EX + "INFO" + accent_color() + "] " + text_color()
     elif type == "ERROR":
-        return accent_color + "[" + color + datetime.datetime.now().strftime("%H:%M:%S") + accent_color + "]" + " " + accent_color + "[" + text_color + current_thread_name + accent_color + "/" + Fore.RED + "ERROR" + accent_color + "] " + text_color
+        return accent_color() + "[" + color() + datetime.datetime.now().strftime("%H:%M:%S") + accent_color() + "]" + " " + accent_color() + "[" + text_color() + current_thread_name + accent_color() + "/" + Fore.RED + "ERROR" + accent_color() + "] " + text_color()
     elif type == "INIT":
-        return accent_color + "[" + color + datetime.datetime.now().strftime("%H:%M:%S") + accent_color + "]" + " " + accent_color + "[" + text_color + current_thread_name + accent_color + "/" + color + "INIT" + accent_color + "] " + text_color
+        return accent_color() + "[" + color() + datetime.datetime.now().strftime("%H:%M:%S") + accent_color() + "]" + " " + accent_color() + "[" + text_color() + current_thread_name + accent_color() + "/" + color() + "INIT" + accent_color() + "] " + text_color()
     elif type == "FUEL":
-        return accent_color + "[" + color + datetime.datetime.now().strftime("%H:%M:%S") + accent_color + "]" + " " + accent_color + "[" + text_color + current_thread_name + accent_color + "/" + Fore.LIGHTMAGENTA_EX + "FUEL" + accent_color + "] " + text_color
+        return accent_color() + "[" + color() + datetime.datetime.now().strftime("%H:%M:%S") + accent_color() + "]" + " " + accent_color() + "[" + text_color() + current_thread_name + accent_color() + "/" + Fore.LIGHTMAGENTA_EX + "FUEL" + accent_color() + "] " + text_color()
     elif type == "SHIELD":
-        return accent_color + "[" + color + datetime.datetime.now().strftime("%H:%M:%S") + accent_color + "]" + " " + accent_color + "[" + text_color + current_thread_name + accent_color + "/" + Fore.YELLOW + "SHIELD" + accent_color + "] " + text_color
+        return accent_color() + "[" + color() + datetime.datetime.now().strftime("%H:%M:%S") + accent_color() + "]" + " " + accent_color() + "[" + text_color() + current_thread_name + accent_color() + "/" + Fore.YELLOW + "SHIELD" + accent_color() + "] " + text_color()
     else:
-        return accent_color + "[" + color + datetime.datetime.now().strftime("%H:%M:%S") + accent_color + "]" + " " + accent_color + "[" + text_color + current_thread_name + accent_color + "/" + Fore.WHITE + str(type).upper() + accent_color + "] " + text_color
+        return accent_color() + "[" + color() + datetime.datetime.now().strftime("%H:%M:%S") + accent_color() + "]" + " " + accent_color() + "[" + text_color() + current_thread_name + accent_color() + "/" + Fore.WHITE + str(type).upper() + accent_color() + "] " + text_color()
 
 
 def update_status(status):
@@ -95,42 +95,51 @@ def resolve_fuel_information(file):
     fuel.close()
 
 
+def color(): return src_color
+
+
+def accent_color(): return src_accent_color
+
+
+def text_color(): return src_text_color
+
+
 def menu():
     os.system("cls")
-    print(color + "  __________               _____  __   ________   ________   ______       ________")
+    print(color() + "  __________               _____  __   ________   ________   ______       ________")
     time.sleep(1/1000)
-    print(color + "  ___  ____/  _____  __    __  / / /   ___  __/   ____  _/   ___  /       __  ___/")
+    print(color() + "  ___  ____/  _____  __    __  / / /   ___  __/   ____  _/   ___  /       __  ___/")
     time.sleep(1/1000)
-    print(color + "  __  /_      __  / / /    _  / / /    __  /       __  /     __  /        _____ \ ")
+    print(color() + "  __  /_      __  / / /    _  / / /    __  /       __  /     __  /        _____ \ ")
     time.sleep(1/1000)
-    print(color + "  _  __/      _  /_/ /     / /_/ /     _  /       __/ /      _  /___      ____/ / ")
+    print(color() + "  _  __/      _  /_/ /     / /_/ /     _  /       __/ /      _  /___      ____/ / ")
     time.sleep(1/1000)
-    print(color + "  /_/         _\__, /      \____/      /_/        /___/      /_____/      /____/  ")
+    print(color() + "  /_/         _\__, /      \____/      /_/        /___/      /_____/      /____/  ")
     time.sleep(1/1000)
-    print(color + "             ___/  /")
+    print(color() + "             ___/  /")
     time.sleep(1/1000)
-    print(color + "            /_____/ " + " "*8 + accent_color + "v" + text_color + version.replace(".", accent_color + "." + text_color) + accent_color + " | " + text_color + "Made by NoahOnFyre")
+    print(color() + "            /_____/ " + " "*8 + accent_color() + "v" + text_color() + version.replace(".", accent_color() + "." + text_color()) + accent_color() + " | " + text_color() + "Made by NoahOnFyre")
     time.sleep(1/1000)
     print("")
     time.sleep(1/1000)
-    print(accent_color + "╔" + "═"*119)
+    print(accent_color() + "╔" + "═"*119)
     time.sleep(1/1000)
-    print(accent_color + "║ " + accent_color + "[" + color + "VAR" + accent_color + "] " + text_color + "Username: " + username)
+    print(accent_color() + "║ " + accent_color() + "[" + color() + "VAR" + accent_color() + "] " + text_color() + "Username: " + username)
     time.sleep(1/1000)
-    print(accent_color + "║ " + accent_color + "[" + color + "VAR" + accent_color + "] " + text_color + "Device: " + device)
+    print(accent_color() + "║ " + accent_color() + "[" + color() + "VAR" + accent_color() + "] " + text_color() + "Device: " + device)
     time.sleep(1/1000)
-    print(accent_color + "║ " + accent_color + "[" + color + "VAR" + accent_color + "] " + text_color + "Version: " + version)
+    print(accent_color() + "║ " + accent_color() + "[" + color() + "VAR" + accent_color() + "] " + text_color() + "Version: " + version)
     time.sleep(1/1000)
     if update_available:
-        print(accent_color + "╠" + "═"*119)
+        print(accent_color() + "╠" + "═"*119)
         time.sleep(1/1000)
-        print(accent_color + "║ " + accent_color + "[" + color + "UPDATE" + accent_color + "] " + text_color + "A new version of FyUTILS is available! Install it now using \"update\".")
+        print(accent_color() + "║ " + accent_color() + "[" + color() + "UPDATE" + accent_color() + "] " + text_color() + "A new version of FyUTILS is available! Install it now using \"update\".")
         time.sleep(1/1000)
-        print(accent_color + "║ " + accent_color + "[" + color + "UPDATE" + accent_color + "] " + text_color + "Current version: " + Fore.RED + version)
+        print(accent_color() + "║ " + accent_color() + "[" + color() + "UPDATE" + accent_color() + "] " + text_color() + "Current version: " + Fore.RED + version)
         time.sleep(1/1000)
-        print(accent_color + "║ " + accent_color + "[" + color + "UPDATE" + accent_color + "] " + text_color + "Target version: " + Fore.GREEN + newest_version)
+        print(accent_color() + "║ " + accent_color() + "[" + color() + "UPDATE" + accent_color() + "] " + text_color() + "Target version: " + Fore.GREEN + newest_version)
         time.sleep(1/1000)
-    print(accent_color + "╚" + "═"*119)
+    print(accent_color() + "╚" + "═"*119)
 
 
 # INIT PHASE
@@ -138,9 +147,9 @@ os.system("title FyUTILS")
 
 # Color initialization
 
-color = Fore.LIGHTBLUE_EX
-accent_color = Fore.LIGHTBLACK_EX
-text_color = Fore.WHITE
+src_color = Fore.LIGHTBLUE_EX
+src_accent_color = Fore.LIGHTBLACK_EX
+src_text_color = Fore.WHITE
 
 # Variable initialization
 try:
@@ -206,7 +215,6 @@ try:
         update_available = False
 except Exception as e:
     print(prefix("ERROR") + "Checking for updates failed. Please check your internet connection.")
-    print(prefix("ERROR") + "Possible error: " + str(e))
     update_available = False
 
 # Discord RPC initialization
@@ -267,8 +275,8 @@ try:
                 cwd_abbreviation = "@"
             else:
                 cwd_abbreviation = os.getcwd().replace("C:\\", "/").replace("\\", "/").replace(":", "").lower()
-            request = input(accent_color + "╔═══[" + color + username + accent_color + "@" + text_color + device + accent_color + "]══(" + color + current_thread_name + accent_color + "/" + text_color + version + accent_color + ")══[" + text_color + cwd_abbreviation + accent_color + "]\n" +
-                            accent_color + "╚═══> " + text_color).split(" ")
+            request = input(accent_color() + "╔═══[" + color() + username + accent_color() + "@" + text_color() + device + accent_color() + "]══(" + color() + current_thread_name + accent_color() + "/" + text_color() + version + accent_color() + ")══[" + text_color() + cwd_abbreviation + accent_color() + "]\n" +
+                            accent_color() + "╚═══> " + text_color()).split(" ")
             cmd = request[0].lower()
             request.__delitem__(0)
             args = request
@@ -298,10 +306,10 @@ try:
                     for i in range(sys.maxsize):
                         try:
                             sock.send(random.randbytes(10240))
-                            print(prefix("INFO") + "Attacking target: " + color + target + accent_color + ":" + color + str(port) + text_color + "..." + accent_color + " - " + text_color + "Attack: " + color + str(i + 1) + accent_color, end='\r')
+                            print(prefix("INFO") + "Attacking target: " + color() + target + accent_color() + ":" + color() + str(port) + text_color() + "..." + accent_color() + " - " + text_color() + "Attack: " + color() + str(i + 1) + accent_color(), end='\r')
                         except socket.error:
                             print("")
-                            print(prefix("ERROR") + "Request " + color + str(i) + text_color + " failed.", end='\r')
+                            print(prefix("ERROR") + "Request " + color() + str(i) + text_color() + " failed.", end='\r')
                     print("\n")
                 except KeyboardInterrupt:
                     print("\n" + prefix("INFO") + "Canceling Action...")
@@ -334,9 +342,9 @@ try:
                         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                         socket.setdefaulttimeout(0.05)
                         result = sock.connect_ex((target, port))
-                        print(prefix("INFO") + "Scanning Port... " + color + str(port), end='\r')
+                        print(prefix("INFO") + "Scanning Port... " + color() + str(port), end='\r')
                         if result == 0:
-                            print(prefix("INFO") + "Port " + color + str(port) + text_color + " is open!                ")
+                            print(prefix("INFO") + "Port " + color() + str(port) + text_color() + " is open!                ")
                         sock.close()
                     print("\n")
                 except KeyboardInterrupt:
@@ -376,7 +384,7 @@ try:
                     print(prefix("INFO") + "Data received and processed.")
                     client_count = len(clients)
                     for i in range(client_count):
-                        print(prefix("INFO") + accent_color + "[" + color + str(i) + accent_color + "] " + text_color + "IP: " +  clients[i][0] + " MAC: " + clients[i][1])
+                        print(prefix("INFO") + accent_color() + "[" + color() + str(i) + accent_color() + "] " + text_color() + "IP: " +  clients[i][0] + " MAC: " + clients[i][1])
                 except KeyboardInterrupt:
                     print(prefix("INFO") + "Canceling Action...")
                     print(prefix("INFO") + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
@@ -399,9 +407,9 @@ try:
                     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                     result = sock.connect_ex((target, port))
                     if result == 0:
-                        print(prefix("INFO") + "Port " + color + str(port) + text_color + " is open!")
+                        print(prefix("INFO") + "Port " + color() + str(port) + text_color() + " is open!")
                     else:
-                        print(prefix("ERROR") + "Port " + color + str(port) + text_color + " is not open!")
+                        print(prefix("ERROR") + "Port " + color() + str(port) + text_color() + " is not open!")
                     sock.close()
                 except KeyboardInterrupt:
                     print(prefix("INFO") + "Canceling Action...")
@@ -435,7 +443,7 @@ try:
                 print(prefix("INFO") + "Adding policy...")
                 ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
                 print(prefix("INFO") + "Requesting user's password...")
-                password = pwinput.pwinput(text_color + "Enter password" + accent_color + " > " + text_color, "*")
+                password = pwinput.pwinput(text_color() + "Enter password" + accent_color() + " > " + text_color(), "*")
                 print(prefix("INFO") + "Connecting...")
                 print("")
                 try:
@@ -443,7 +451,7 @@ try:
                     while True:
                         try:
                             update_ssh_status("Idle")
-                            ssh_cmd = input(accent_color + "╔═══[" + Fore.LIGHTMAGENTA_EX + user + accent_color + "@" + Fore.LIGHTMAGENTA_EX + server + accent_color + ":" + Fore.LIGHTMAGENTA_EX + str(port) + accent_color + "]═══(" + color + "FySSH " + text_color + version + accent_color + ")" + "\n" + "╚═══" + accent_color + "> " + text_color)
+                            ssh_cmd = input(accent_color() + "╔═══[" + Fore.LIGHTMAGENTA_EX + user + accent_color() + "@" + Fore.LIGHTMAGENTA_EX + server + accent_color() + ":" + Fore.LIGHTMAGENTA_EX + str(port) + accent_color() + "]═══(" + color() + "FySSH " + text_color() + version + accent_color() + ")" + "\n" + "╚═══" + accent_color() + "> " + text_color())
                             ssh_stdin, ssh_stdout, ssh_stderr = ssh.exec_command(ssh_cmd)
                             update_ssh_status("Running: " + ssh_cmd)
                             print("")
@@ -466,7 +474,7 @@ try:
                     continue
 
                 print(prefix("INFO") + f"Time elapsed: {time.time() - activity_start : 0.2f}s")
-                print(prefix("INFO") + "Disconnecting from " + color + server + accent_color + ":" + color + str(port) + text_color + "...")
+                print(prefix("INFO") + "Disconnecting from " + color() + server + accent_color() + ":" + color() + str(port) + text_color() + "...")
                 try:
                     ssh.close()
                 except:
@@ -582,12 +590,12 @@ try:
                     local_fuel_file.write(fuel_file_content)
                     local_fuel_file.close()
                     local_fuel_file = open(fuel_content_dir + filename, mode="rt")
-                    print(prefix("FUEL") + "FUEL " + Fore.LIGHTMAGENTA_EX + fuel_location + text_color + " successfuly installed to \"" + fuel_content_dir + "\".")
+                    print(prefix("FUEL") + "FUEL " + Fore.LIGHTMAGENTA_EX + fuel_location + text_color() + " successfuly installed to \"" + fuel_content_dir + "\".")
                     print(prefix("FUEL") + "Adding FUEL to FyUTILS...")
                     local_fuel_file_json = json.load(local_fuel_file)
                     if local_fuel_file_json["properties"]["type"] == "DEFAULT":
                         fuels.update({local_fuel_file_json["properties"]["command_name"]: fuel_content_dir + filename})
-                    print(prefix("FUEL") + f"Done! Took{time.time() - activity_start: 0.2f}s to install package " + Fore.LIGHTMAGENTA_EX + fuel_location + text_color + "!")
+                    print(prefix("FUEL") + f"Done! Took{time.time() - activity_start: 0.2f}s to install package " + Fore.LIGHTMAGENTA_EX + fuel_location + text_color() + "!")
 
                 elif fuel_action == "remove":
                     filename = fuel_location + ".json"
@@ -613,7 +621,7 @@ try:
                     None
                 except KeyboardInterrupt:
                     print("")
-                    print(accent_color + "╚" + "═" * 119)
+                    print(accent_color() + "╚" + "═" * 119)
                     print("\n" + prefix("INFO") + "Canceling Action...")
                 except Exception as e:
                     print("\n" + prefix("ERROR") + "An error occoured while trying to execute this command correctly.")
@@ -690,9 +698,9 @@ try:
                     for file in os.listdir(os.getcwd()):
                         if file.startswith("."):
                             if os.path.isfile(file):
-                                print(prefix("INFO") + accent_color + file)
+                                print(prefix("INFO") + accent_color() + file)
                             elif os.path.isdir(file):
-                                print(prefix("INFO") + accent_color + "/" + file)
+                                print(prefix("INFO") + accent_color() + "/" + file)
                         elif os.path.isfile(file):
                             print(prefix("INFO") + file)
                         elif os.path.isdir(file):
@@ -703,17 +711,6 @@ try:
                     print("")
 
             case "exit":
-                update_status("Shutting down...")
-                print(prefix("INFO") + "Shutting down FyUTILS...")
-                try:
-                    time.sleep(1)
-                except KeyboardInterrupt:
-                    print(prefix("INFO") + "Canceling action")
-                    continue
-                print("logout")
-                sys.exit(0)
-
-            case "quit":
                 update_status("Shutting down...")
                 print(prefix("INFO") + "Shutting down FyUTILS...")
                 try:
@@ -776,11 +773,6 @@ try:
                 os.system("cls")
                 menu()
 
-            case "reload":
-                update_status("Reloading...")
-                os.system("cls")
-                menu()
-
             case "restart":
                 print("logout")
                 os.system("start " + current_dir + "\\main.py")
@@ -802,13 +794,12 @@ try:
                             print(prefix("ERROR") + "Unexpected arguments for command \"" + cmd + "\"")
                             continue
                         for entry in range(len(json_fuel_file["head"]["arguments"])):
-                            exec(list(json_fuel_file["head"]["arguments"]).__getitem__(entry) + " = args[" + str(entry) + "]")
+                            exec(list(json_fuel_file["head"]["arguments"])[entry] + " = args[" + str(entry) + "]")
                         activity_start = time.time()
                         update_status(json_fuel_file["head"]["status"])
 
                     if json_fuel_file["body"]["enabled"]:
-                        for line in list(json_fuel_file["body"]["content"]):
-                            exec(line)
+                        exec("\n".join(list(json_fuel_file["body"]["content"])))
 
                 else:
                     arg_string = " "
