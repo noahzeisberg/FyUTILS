@@ -3,10 +3,47 @@
 
 A simple python hacking and utility terminal application for windows with an integrated package manager, community driven libraries and plenty of other features.
 
+## Table of contents (TOC)
+* [FyUTILS](#fyutils)
+  * [Table of contents (TOC)](#table-of-contents-toc)
+  * [Authors and Contributors](#authors-and-contributors)
+* [Documentation](#documentation)
+  * [Prerequisites](#prerequisites)
+  * [Stable installation (Recommended)](#stable-installation-recommended)
+  * [Developer installation](#developer-installation)
+  * [First Launch](#first-launch)
+  * [How to use](#how-to-use)
+  * [Commands](#commands)
+    * [Flood](#flood)
+    * [Portscan](#portscan)
+    * [ARP](#arp)
+    * [Checkport](#checkport)
+    * [SSH](#ssh)
+    * [Fetch](#fetch)
+    * [YouTube](#youtube)
+    * [FUELS](#fuels)
+    * [FUEL](#fuel)
+    * [Update](#update)
+    * [Edit](#edit)
+    * [Calc](#calc)
+    * [Read](#read)
+    * [LS](#ls)
+    * [Exit](#exit)
+    * [CD](#cd)
+    * [Clear & rl](#clear--rl)
+    * [Restart & rs](#restart--rs)
+* [License](#license)
+* [Things used in FyUTILS](#things-used-in-fyutils)
+  * [Languages](#languages)
+  * [Updating System](#updating-system)
+  * [Rich Presence libraries](#rich-presence-libraries)
+  * [Networking libraries](#networking-libraries)
+  * [Utility libraries](#utility-libraries)
+  * [Development tools](#development-tools)
+
 ## Authors and Contributors
 
 - [@NoahOnFyre](https://www.github.com/NoahOnFyre) (Project Owner)
-
 
 # Documentation
 This Documentation will guide you through the installation, the first launch and configuration and the daily use of FyUTILS.
