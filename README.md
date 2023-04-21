@@ -1,108 +1,227 @@
+
 # FyUTILS
-A simple python hacking and utility terminal application for windows with an integrated package manager, community driven librarys and plenty of other features.
+
+A simple python hacking and utility terminal application for windows with an integrated package manager, community driven libraries and plenty of other features.
+
+## Authors and Contributors
+
+- [@NoahOnFyre](https://www.github.com/NoahOnFyre) (Project Owner)
 
 
+# Documentation
+This Documentation will guide you through the installation, the first launch and configuration and the daily use of FyUTILS.
 
-## Getting started with FyUTILS
+## Prerequisites
 
-Please make sure you're using FyUTILS in a Windows environment since it's "native" for windows only. The most features will be available on linux and macos too, but they're not tested or maintained.
+**NOTE:** This tool is made for Windows. Many features **won't** work on **Linux** or **macOS**. The documentation will only guide you through the installation steps on Windows 11 (on Windows 10 and earlier it's literally the same process).
+If you don't already have **Python 3.10 or higher** with **PIP** installed, you can download it [here](https://www.python.org/downloads/)
 
-First, open up a command prompt window as administrator and go to the directory, your main.py is located:
+If you want to install the developer version, make sure you have [Git](https://git-scm.com) installed on your PC.
 
-`cd path/to/fyutils/directory`
+## Stable installation (Recommended)
 
-Then, you need to install the PyPi librarys by running:
+To install the latest stable FyUTILS version, download all assets of a published release.
+We always recommend you to use the latest version of FyUTILS, so we can guarantee you the latest features, bugfixes and fixed security vulnerabilities. You can find the latest release [here](https://github.com/NoahOnFyre/FyUTILS/releases/latest).
+Put your downloaded files into a directory of your choice, open up PowerShell or Command Prompt in this directory and run the following command:
 
-`pip install -r requirements.txt`
+```
+pip install -r requirements.txt
+```
 
-Note: The requirements file won't work for any legacy versions. Every version whose librarys can be installed with those files, can be found in the [Release Section](https://github.com/NoahOnFyre/FyUTILS/releases)
+## Developer installation
+Using the newest version that may be in development will give you the newest features, but may contain bugs or vulnerabilities.
 
-Now you can start FyUTILS by double-clicking on the "main.py" file.
-Once the initialisation process has passed, you should have an input field. There you can execute any windows default command, but there are some special commands.
-But before the explanation, you need to know how to execute commands.
+Open up PowerShell or Command Prompt and clone the GitHub repository by running:
+```
+git clone https://github.com/NoahOnFyre/FyUTILS %userprofile%\Desktop\FyUTILS
+```
+If the command causes errors, check if your desktop is locally stored on your machine or on OneDrive. If so, just use:
 
-The format of every command is the same: `command_name arg1 arg2 arg3 ...` and so on.
+```
+git clone https://github.com/NoahOnFyre/FyUTILS %userprofile%\OneDrive\Desktop\FyUTILS
+```
 
-So there is one command name and then the arguments. Those are most likely not more than 5. The average amount of arguments is 1-3.
-Some command doesn't even need an argument, like `ls` or `restart`.
+Go into your directory using:
+```
+cd %userprofile%\Desktop\FyUTILS
+```
+or
 
-## Flood
+```
+cd %userprofile%\OneDrive\Desktop\FyUTILS
+```
 
-The first one I'd like to talk about is the `flood` command. You can use it to send very big data packages to a target IP/domain. Everything you have to enter is the IP/domain and the port you want to send these packages to.
+Now run the following command to install the dependencies from the requirement.txt file.
+```
+pip install -r requirements.txt
+```
+## First Launch
 
-Usage: `flood <target> <port>`
+After installing the dependencies for FyUTILS you can start it by either entering:
+```
+python main.py
+```
+or by just double-clicking on the **main.py**.
+## How to use
+FyUTILS has a very large amount of commands you can execute and try out. But some important information you need is the structure of commands.
 
-## Portscan
+Every command you'll execute in FyUTILS is structured in different units. We take for example the `flood` command. Here you can see a basic operation with the command:
 
-The name of the `portscan` command already tells you what you can do with this command. You have to enter a target IP/domain and FyUTILS will get all open ports on this target. These port numbers you can use for the `flood` command.
+```
+flood 82.169.42.61 80
+```
 
-Usage: `portscan <target>`
+What this command does will be explained later, but you can see we have several spaces which **structure** the request. So let's put them in a table and go through them.
 
-## Exit
+| Used in example | Abbreviation | Required | Description                                 |
+|-----------------|--------------|----------|---------------------------------------------|
+| flood           | command      | true     | The command you want to run.                |
+| 82.169.42.61    | target       | true     | The IP address or the domain of the target. |
+| 80              | port         | true     | The port of the target you want to attack.  |
+When an argument is required it will be bordered by < and >.
+When it isn't required it will be bordered by [ and ]
 
-I think I don't need to explain you the usage of the `exit` command, right?
+Every command is structured like this, but all of them have a different amount of arguments. Some commands can also have no arguments like `ls`.
+## Commands
+The commands in FyUTILS are very simple. Below, there's a list of all commands and the arguments they take.
 
-Usage: `exit`
+### Flood
+```
+flood <target> <port>
+```
+Flood will launch a denial of service attack on target:port. It can be very powerful, so be aware, because you'll maybe lose internet connection for a few seconds or minutes.
+### Portscan
+```
+portscan <target>
+```
+Portscan scans for opened ports on the target.
+### ARP
+```
+arp <target>
+```
+ARP (Address resolution protocol) scans for devices in the given network and lists up its IP address and MAC address.
+### Checkport
+```
+checkport <target> <port>
+```
+Checkport checks if the port on the target is open. You can use this tool to double-check a port you resolved using `portscan`.
+### SSH
+```
+ssh <host> <port> <username>
+```
+SSH will initiate a secure shell connection to the host on the specified port with the given credentials (Username & Password)
 
-## Clear, Reload and Rl
+You'll have to enter a password after running the commands. Your input will be censored.
+### Fetch
+```
+fetch <url> <filename>
+```
+Fetch downloads a file or a website, that can be saved to a file in your content directory. You need to specify the name of the file too.
+### YouTube
+```
+youtube <video_url>
+```
+This command will download the highest definition file of a YouTube video (most likely HD).
+### FUELS
+```
+fuels
+```
+FUELS lists all the installed and registered FUELs associated with FyUTILS.
+### FUEL
+```
+fuel <install/remove> <package_name>
+```
+The FUEL command has multiple different actions. One of them is `fuel install`. It will install a verified FUEL, found in [NoahOnFyre/FUELS](https://github.com/NoahOnFyre/FUELS) and register it. `fuel remove` will unregister and delete the FUEL.
+### Update
+```
+update
+```
+The update command automatically updates FyUTILS to the newest version found in the [Releases section](https://github.com/NoahOnFyre/FyUTILS/releases).
+### Edit
+```
+edit <file>
+```
+Using edit, you can easily edit files using your terminal. If the file doesn't exist, you can either cancel the process or let FyUTILS create a new file and open it.
+### Calc
+```
+calc <calculation>
+```
+With calc, you can calculate any calculation like 3*7 or 20+1.
 
-The base command for the action is the `clear` command. This is the only command, that have a large amount of aliases to use. Some of them are `reload` and `rl`.
+WARNING: Decimal calculations are currently NOT supported and may produce false results.
+### Read
+```
+read <file>
+```
+You can read files with this command. It's very similar to the `edit` command.
+### LS
+```
+ls
+```
+`ls` does the same thing, it does in a UNIX environment. It'll list all files in the directory you're currently in.
+### Exit
+```
+exit
+```
+I think I don't need to explain what this command does.
+### CD
+```
+cd [directory]
+```
+`cd` changes your current working directory to the directory in argument one. In this case, argument one is not necessary, so if you leave it out, `cd` will just return the directory you're currently in.
 
-Usage: `clear`, `reload`, `rl`
+DISCLAIMER: FyUTILS modifies the paths of directory and files to feel more like a UNIX environment.
+### Clear & rl
+```
+clear / rl
+```
+Reloads FyUTILS
+### Restart & rs
+```
+restart / rs
+```
+Restarts FyUTILS
 
-## SSH
+# License
 
-The `ssh` command will run an SSH session on the target with the given credentials.
-SSH is the short form of [Secure Shell](https://de.wikipedia.org/wiki/Secure_Shell).
+[FyUTILS Exclusive Publishing License (FUEPL)](https://github.com/NoahOnFyre/FyUTILS/blob/master/LICENSE)
 
-Usage: `ssh <server> <port> <username>`
+# Things used in FyUTILS
+All tools, languages and whatever I used for FyUTILS
+### Languages
+| Language | Used for            |
+|----------|---------------------|
+| Python   | Client Application  |
+| JSON     | Libraries (FUELS)   |
+| Batch    | System interactions |
+| Markdown | Documentation       |
 
-NOTE: You'll have to enter your password shortly after running the command. It will be censored on enter.
+### Updating System
+- [GitHub API](https://api.github.com)
 
-## Restart
+### Rich Presence libraries
+- DiscordRPC (pypresence)
 
-`restart` will just restart FyUTILS. It's useful for applying an update or something.
+### Networking libraries
+- Requests (requests)
+- Scapy (scapy)
+- SSH (paramiko)
+- PyTube (pytube)
 
-Usage: `restart`
+### Utility libraries
+- Colorama (colorama)
+- DateTime (datetime)
+- PowerShell Util (psutil)
+- Password Input (pwinput)
 
-## Calc
+### Development tools
 
-`calc` is a simple calculator. Just enter for example `calc 9*2`
+| Used for                                  | Tool                                                                                         |
+|-------------------------------------------|----------------------------------------------------------------------------------------------|
+| Code writing & Debugging                  | [PyCharm](https://jetbrains.com/pycharm/download)                                            |
+| Documentation                             | [PyCharm](https://jetbrains.com/pycharm/download) & [Visual Studio Code](https://vscode.dev) |
+| FUEL Development                          | [Visual Studio Code](https://vscode.dev)                                                     |
+| Version control, Publishing, Distribution | [GitHub](https://github.com)                                                                 |
 
-Usage: `calc <calculation>`
 
-## Fetch
-
-`fetch` can be used for downloading files and websites.
-
-Usage: `fetch <url> <filename>`
-
-## YouTube
-
-`youtube` lets you download a YouTube video.
-
-Usage: `youtube <video_url>`
-
-## FUEL
-
-`fuel` lets you easily add FUELS to FyUTILS.
-
-Usage: `fuel <install/remove/add> <fuel_name>`
-
-## FUELs
-
-`fuels` will list every FUEL that is currently installed and running.
-
-Usage: `fuels`
-
-## Edit
-
-Using `edit` you can write content to files. If the file doesn't exists, you can either create it or cancel the process.
-
-Usage: `edit <filename>`
-
-## LS
-
-`ls` does the same thing `ls` does in a UNIX environment. It lists all files in a directory. Hidden files or folders will be slightly gray, directories are green and marked with a slash in front of the name and normal files are white.
-
-Usage: `ls`
+Thanks to the creators of these tools and libraries and to everyone supporting me during development through issues and other contributions. ❤️
