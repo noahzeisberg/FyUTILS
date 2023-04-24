@@ -19,6 +19,7 @@ A simple python hacking and utility terminal application for windows with an int
     * [ARP](#arp)
     * [Checkport](#checkport)
     * [SSH](#ssh)
+    * [Phone](#phone)
     * [Fetch](#fetch)
     * [YouTube](#youtube)
     * [FUELS](#fuels)
@@ -149,6 +150,11 @@ ssh <host> <port> <username>
 SSH will initiate a secure shell connection to the host on the specified port with the given credentials (Username & Password)
 
 You'll have to enter a password after running the commands. Your input will be censored.
+### Phone
+```
+phone <phone_number>
+```
+Phone shows you some information about a specified phone number.
 ### Fetch
 ```
 fetch <url> <filename>
@@ -246,6 +252,7 @@ All tools, languages and whatever I used for FyUTILS
 - PyTube (pytube)
 
 ### Utility libraries
+- PhoneNumbers (phonenumbers)
 - Colorama (colorama)
 - DateTime (datetime)
 - PowerShell Util (psutil)
