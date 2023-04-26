@@ -162,7 +162,7 @@ try:
     print(prefix("INIT") + "Device: " + device)
     start_time = time.time()
     print(prefix("INIT") + "Start time: " + str(start_time))
-    current_dir = sys.path.__getitem__(0)
+    current_dir = sys.path[0]
     print(prefix("INIT") + "Directory: " + current_dir)
     version = "1.5.0"
     print(prefix("INIT") + "Version: " + version)
@@ -545,8 +545,6 @@ try:
                     print(prefix("INFO") + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
                     print("")
 
-
-
             case "youtube":
                 if len(args) != 1:
                     print(prefix("ERROR") + "Unexpected arguments for command \"" + cmd + "\"")
@@ -831,7 +829,6 @@ try:
 
                     if json_fuel_file["body"]["enabled"]:
                         exec("\n".join(list(json_fuel_file["body"]["content"])))
-
                 else:
                     arg_string = " "
                     for entry in args:
