@@ -116,6 +116,7 @@ What this command does will be explained later, but you can see we have several 
 | flood           | command      | true     | The command you want to run.                |
 | 82.169.42.61    | target       | true     | The IP address or the domain of the target. |
 | 80              | port         | true     | The port of the target you want to attack.  |
+
 When an argument is required it will be bordered by < and >.
 When it isn't required it will be bordered by [ and ]
 
