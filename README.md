@@ -215,6 +215,11 @@ cd [directory]
 `cd` changes your current working directory to the directory in argument one. In this case, argument one is not necessary, so if you leave it out, `cd` will just return the directory you're currently in.
 
 DISCLAIMER: FyUTILS modifies the paths of directory and files to feel more like a UNIX environment.
+### Raise
+```
+raise
+```
+Raises an exception (primarily used for debug purposes)
 ### Clear & rl
 ```
 clear / rl
