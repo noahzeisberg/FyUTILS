@@ -31,6 +31,7 @@ A simple python hacking and utility terminal application for windows with an int
     * [LS](#ls)
     * [Exit](#exit)
     * [CD](#cd)
+    * [Raise](#raise)
     * [Clear & rl](#clear--rl)
     * [Restart & rs](#restart--rs)
 * [License](#license)
