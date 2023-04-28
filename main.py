@@ -120,7 +120,7 @@ def menu():
     time.sleep(1/1000)
     print(color() + "             ___/  /")
     time.sleep(1/1000)
-    print(color() + "            /_____/ " + " "*8 + accent_color() + "v" + text_color() + version.replace(".", accent_color() + "." + text_color()) + accent_color() + " | " + text_color() + "Made by NoahOnFyre")
+    print(color() + "            /_____/ " + " "*5 + accent_color() + "v" + text_color() + version.replace(".", accent_color() + "." + text_color()) + accent_color() + " | " + text_color() + "Made by NoahOnFyre")
     time.sleep(1/1000)
     print("")
     time.sleep(1/1000)
@@ -811,6 +811,10 @@ try:
                     print(prefix("ERROR") + str(e))
                     print("")
 
+            case "raise":
+                update_status("Raising exception...")
+                raise Exception("Executed by raise command.")
+
             case "clear":
                 update_status("Reloading...")
                 os.system("cls")
@@ -856,6 +860,11 @@ try:
 except Exception as e:
     os.system("title FyUTILS Crash Handler - Crash Log")
     print(prefix("ERROR") + "FyUTILS CRASH LOG @ " + datetime.datetime.now().strftime("%H:%M:%S"))
-    print(prefix("ERROR") + "Error: " + traceback.format_exc())
+    print(prefix("ERROR") + "Error: " + str(e))
+    temp = open(fyutils_dir + "crash.log", "w+")
+    temp.writelines("CRASH LOG OF " + datetime.datetime.now().strftime("%H:%M:%S") + "\n" + traceback.format_exc())
+    temp.close()
+    print(prefix("ERROR") + "The full crash log has been saved to: " + fyutils_dir + "crash.log")
+    os.system("start explorer.exe " + fyutils_dir)
     os.system("pause")
     sys.exit(1024)
