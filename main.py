@@ -120,7 +120,7 @@ def menu():
     time.sleep(1/1000)
     print(color() + "             ___/  /")
     time.sleep(1/1000)
-    print(color() + "            /_____/ " + " "*8 + accent_color() + "v" + text_color() + version.replace(".", accent_color() + "." + text_color()) + accent_color() + " | " + text_color() + "Made by NoahOnFyre")
+    print(color() + "            /_____/ " + " "*5 + accent_color() + "v" + text_color() + version.replace(".", accent_color() + "." + text_color()) + accent_color() + " | " + text_color() + "Made by NoahOnFyre")
     time.sleep(1/1000)
     print("")
     time.sleep(1/1000)
@@ -164,7 +164,7 @@ try:
     print(prefix("INIT") + "Start time: " + str(start_time))
     current_dir = sys.path[0]
     print(prefix("INIT") + "Directory: " + current_dir)
-    version = "1.5.0"
+    version = "1.5.1"
     print(prefix("INIT") + "Version: " + version)
     threads = multiprocessing.cpu_count()
     print(prefix("INIT") + "ThreadWorkers: " + str(threads))
@@ -472,7 +472,7 @@ try:
                     print(prefix("ERROR") + "Can't connect to SSH host. Please make sure, that the requested port is open.")
                     print(prefix("ERROR") + "SSH error: " + str(e))
                     print(prefix("INFO") + f"Time elapsed: {time.time() - activity_start : 0.2f}s")
-                    print(prefix("INFO") + "Cleaning up...\n")
+                    print(prefix("INFO") + "Cleaning up...")
                     continue
 
                 print(prefix("INFO") + f"Time elapsed: {time.time() - activity_start : 0.2f}s")
@@ -481,7 +481,7 @@ try:
                     ssh.close()
                 except:
                     print(prefix("ERROR") + "Cannot disconnect from target!")
-                print(prefix("INFO") + "Cleaning up...\n")
+                print(prefix("INFO") + "Cleaning up...")
 
             case "fetch":
                 if len(args) != 2:
@@ -682,29 +682,29 @@ try:
                     confirmation = input(prefix("INFO") + "Do you want to let FyUTILS create a new file? (y/n): ")
                     if confirmation.lower() == "n":
                         continue
-                    edit_file = open(filepath, "x+")
+                    file = open(filepath, "x+")
                     print(prefix("INFO") + "File created successfuly.")
                     print(prefix("INFO") + "End file editing by entering \"END\".")
                 else:
-                    edit_file = open(filepath, "w+")
+                    file = open(filepath, "w+")
                     print(prefix("INFO") + "File opened successfuly.")
                     print(prefix("INFO") + "End file editing by entering \"END\".")
-                edit_string = ""
-                for i in range(sys.maxsize):
+                string = ""
+                for i in range(1, sys.maxsize):
                     try:
-                        edit_line = input(str(i) + ": ")
-                        if edit_line == "END":
+                        line = input(str(i) + ": ")
+                        if line == "END":
                             break
-                        edit_string = edit_string + edit_line + "\n"
+                        string = string + line + "\n"
                     except KeyboardInterrupt:
                         print("END")
                         print("")
                         break
                 print(prefix("INFO") + "Writing cached content to " + filepath + "...")
-                edit_file.writelines(edit_string)
+                file.writelines(string)
                 print(prefix("INFO") + "Saving file to " + filepath + "...")
                 print(prefix("INFO") + "Closing " + filepath + "...")
-                edit_file.close()
+                file.close()
                 print(prefix("INFO") + "File is saved and closed!")
                 print(prefix("INFO") + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
 
@@ -719,7 +719,26 @@ try:
                 print(prefix("INFO") + calculation + " is " + str(eval(calculation)))
 
             case "read":
-                print("")
+                if len(args) != 1:
+                    print(prefix("ERROR") + "Unexpected arguments for command \"" + cmd + "\"")
+                    continue
+                filepath = args[0]
+                activity_start = time.time()
+                update_status("Reading " + filepath + "...")
+
+                if not os.path.exists(filepath):
+                    print(prefix("ERROR") + "File not found!")
+                    continue
+                else:
+                    file = open(filepath, "rt")
+                    print(prefix("INFO") + "File opened successfuly.")
+                i = 1
+                for line in file.readlines():
+                    print(str(i) + ": " + line, end="\r")
+                    i += 1
+                print(prefix("INFO") + "Closing " + filepath + "...")
+                file.close()
+                print(prefix("INFO") + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
 
             case "ls":
                 try:
@@ -792,6 +811,10 @@ try:
                     print(prefix("ERROR") + str(e))
                     print("")
 
+            case "raise":
+                update_status("Raising exception...")
+                raise Exception("Executed by raise command.")
+
             case "clear":
                 update_status("Reloading...")
                 os.system("cls")
@@ -837,6 +860,11 @@ try:
 except Exception as e:
     os.system("title FyUTILS Crash Handler - Crash Log")
     print(prefix("ERROR") + "FyUTILS CRASH LOG @ " + datetime.datetime.now().strftime("%H:%M:%S"))
-    print(prefix("ERROR") + "Error: " + traceback.format_exc())
+    print(prefix("ERROR") + "Error: " + str(e))
+    temp = open(fyutils_dir + "crash.log", "w+")
+    temp.writelines("CRASH LOG OF " + datetime.datetime.now().strftime("%H:%M:%S") + "\n" + traceback.format_exc())
+    temp.close()
+    print(prefix("ERROR") + "The full crash log has been saved to: " + fyutils_dir + "crash.log")
+    os.system("start explorer.exe " + fyutils_dir)
     os.system("pause")
     sys.exit(1024)

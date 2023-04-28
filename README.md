@@ -31,6 +31,7 @@ A simple python hacking and utility terminal application for windows with an int
     * [LS](#ls)
     * [Exit](#exit)
     * [CD](#cd)
+    * [Raise](#raise)
     * [Clear & rl](#clear--rl)
     * [Restart & rs](#restart--rs)
 * [License](#license)
@@ -215,6 +216,11 @@ cd [directory]
 `cd` changes your current working directory to the directory in argument one. In this case, argument one is not necessary, so if you leave it out, `cd` will just return the directory you're currently in.
 
 DISCLAIMER: FyUTILS modifies the paths of directory and files to feel more like a UNIX environment.
+### Raise
+```
+raise
+```
+Raises an exception (primarily used for debug purposes)
 ### Clear & rl
 ```
 clear / rl
