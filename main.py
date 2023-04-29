@@ -92,6 +92,12 @@ def resolve_fuel_information(file):
             print(prefix("FUEL") + "Command status: " + fuel_json["head"]["status"])
             fuels.update({fuel_json["properties"]["command_name"]: fuel_content_dir + file})
 
+        case "MIXIN":
+            print(prefix("FUEL") + "WARNING: If you are a FUEL developer, please use a")
+            print(prefix("FUEL") + "default FUEL and use a command for your injection.")
+            print(prefix("FUEL") + "Support for mixins injecting on initialisation will be added soon.")
+            time.sleep(2.5)
+
         case _:
             print(prefix("FUEL") + "FUEL type is not supported by this version.")
     fuel.close()
