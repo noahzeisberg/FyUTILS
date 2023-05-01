@@ -238,14 +238,6 @@ except:
     print(prefix("ERROR") + "Can't connect with the discord RPC.")
     time.sleep(0.25)
 
-# Multithreading initialization
-
-print(prefix("INIT") + "Initializing multithreading...")
-print(prefix("INIT") + "Setting up ThreadPoolExecutor with " + str(threads) + " threads ...")
-executor = concurrent.futures.ThreadPoolExecutor(threads, "Worker-")
-for i in range(threads):
-    print(prefix("INIT") + "Worker-" + str(i+1) + " is online!")
-
 # FUEL initialization
 
 print(prefix("INIT") + "Initializing FUELS...")
