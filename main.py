@@ -5,6 +5,7 @@ import multiprocessing
 import os
 import platform
 import random
+import shutil
 import socket
 import sys
 import threading
@@ -170,7 +171,7 @@ try:
     print(prefix("INIT") + "Start time: " + str(start_time))
     current_dir = sys.path[0]
     print(prefix("INIT") + "Directory: " + current_dir)
-    version = "1.5.3"
+    version = "1.5.4"
     print(prefix("INIT") + "Version: " + version)
     threads = multiprocessing.cpu_count()
     print(prefix("INIT") + "ThreadWorkers: " + str(threads))
@@ -618,6 +619,27 @@ try:
                     local_fuel_file.close()
                     local_fuel_file = open(fuel_content_dir + filename, mode="rt")
                     print(prefix("FUEL") + "FUEL " + Fore.LIGHTMAGENTA_EX + fuel_location + text_color() + " successfuly installed to \"" + fuel_content_dir + "\".")
+                    print(prefix("FUEL") + "Adding FUEL to FyUTILS...")
+                    local_fuel_file_json = json.load(local_fuel_file)
+                    if local_fuel_file_json["properties"]["type"] == "DEFAULT":
+                        fuels.update({local_fuel_file_json["properties"]["command_name"]: fuel_content_dir + filename})
+                    print(prefix("FUEL") + f"Done! Took{time.time() - activity_start: 0.2f}s to install package " + Fore.LIGHTMAGENTA_EX + fuel_location + text_color() + "!")
+
+                elif fuel_action == "add":
+                    print(prefix("FUEL") + "Installation process started!")
+                    filename = os.path.basename(fuel_location).split("/")[-1]
+                    print(prefix("FUEL") + "Checking FUEL directory...")
+                    if not os.path.exists(fuel_content_dir):
+                        os.makedirs(fuel_content_dir)
+                    if os.path.exists(fuel_content_dir + filename):
+                        print(prefix("ERROR") + "Package \"" + fuel_location + "\" installation failed!")
+                        print(prefix("ERROR") + "Error: Package is already installed.")
+                        continue
+                    print(prefix("FUEL") + "Installing to: " + fuel_content_dir + "...")
+                    print(prefix("FUEL") + "Copying FUEL from " + fuel_location + "...")
+                    shutil.copy(fuel_location, fuel_content_dir)
+                    local_fuel_file = open(fuel_content_dir + filename)
+                    print(prefix("FUEL") + "FUEL " + Fore.LIGHTMAGENTA_EX + filename + text_color() + " successfuly copied to \"" + fuel_content_dir + "\".")
                     print(prefix("FUEL") + "Adding FUEL to FyUTILS...")
                     local_fuel_file_json = json.load(local_fuel_file)
                     if local_fuel_file_json["properties"]["type"] == "DEFAULT":
