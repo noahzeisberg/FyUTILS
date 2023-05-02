@@ -131,9 +131,16 @@ Here you can find everything you need to understand the **prefix** in FyUTILS.
 
 Here's an example:
 
-| Used in example | Description |
-|-----------------|-------------|
-|                 |             |
+```
+[16:32:00] [FyUTILS/INFO] Stuff after prefix like text.
+```
+
+| Used in example               | Description                                      |
+|-------------------------------|--------------------------------------------------|
+| 16:32:00                      | Current time based on your timezone etc.         |
+| FyUTILS/                      | Name of the program (is FyUTILS at every time)   |
+| INFO                          | Logging level (e.g. INFO, ERROR, INIT, etc.)     |
+| Stuff after prefix like text. | Stuff after the prefix (I think this is obvious) |
 
 ## FUELS
 FUELS (FyUTILS extending libraries) are simple lightweight scripts that can add a certain behaviour or action when you execute a command.
