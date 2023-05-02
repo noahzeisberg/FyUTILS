@@ -580,7 +580,7 @@ try:
             case "fuels":
                 print(prefix("FUEL") + "Active FUELS:")
                 for path in fuels.values():
-                    print(prefix("FUEL") + path.removeprefix(fuel_content_dir))
+                    print(prefix("FUEL") + os.path.basename(path).split("/")[-1])
 
             case "fuel":
                 if len(args) != 2:
