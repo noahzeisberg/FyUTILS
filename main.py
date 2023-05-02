@@ -41,7 +41,7 @@ def prefix(type):
     elif type == "INIT":
         return accent_color() + "[" + color() + datetime.datetime.now().strftime("%H:%M:%S") + accent_color() + "]" + " " + accent_color() + "[" + text_color() + current_thread_name + accent_color() + "/" + color() + "INIT" + accent_color() + "] " + text_color()
     elif type == "FUEL":
-        return accent_color() + "[" + color() + datetime.datetime.now().strftime("%H:%M:%S") + accent_color() + "]" + " " + accent_color() + "[" + text_color() + current_thread_name + accent_color() + "/" + Fore.LIGHTMAGENTA_EX + "FUEL" + accent_color() + "] " + text_color()
+        return accent_color() + "[" + color() + datetime.datetime.now().strftime("%H:%M:%S") + accent_color() + "]" + " " + accent_color() + "[" + text_color() + current_thread_name + accent_color() + "/" + fuel_color() + "FUEL" + accent_color() + "] " + text_color()
     elif type == "SHIELD":
         return accent_color() + "[" + color() + datetime.datetime.now().strftime("%H:%M:%S") + accent_color() + "]" + " " + accent_color() + "[" + text_color() + current_thread_name + accent_color() + "/" + Fore.YELLOW + "SHIELD" + accent_color() + "] " + text_color()
     else:
@@ -108,6 +108,9 @@ def resolve_fuel_information(file):
 def color(): return src_color
 
 
+def fuel_color(): return src_fuel_color
+
+
 def accent_color(): return src_accent_color
 
 
@@ -158,6 +161,7 @@ os.system("title FyUTILS")
 # Color initialization
 
 src_color = Fore.LIGHTBLUE_EX
+src_fuel_color = Fore.LIGHTMAGENTA_EX
 src_accent_color = Fore.LIGHTBLACK_EX
 src_text_color = Fore.WHITE
 
@@ -453,7 +457,7 @@ try:
                     while True:
                         try:
                             update_ssh_status("Idle")
-                            ssh_cmd = input(accent_color() + "╔═══[" + Fore.LIGHTMAGENTA_EX + user + accent_color() + "@" + Fore.LIGHTMAGENTA_EX + server + accent_color() + ":" + Fore.LIGHTMAGENTA_EX + str(port) + accent_color() + "]═══(" + color() + "FySSH " + text_color() + version + accent_color() + ")" + "\n" + "╚═══" + accent_color() + "> " + text_color())
+                            ssh_cmd = input(accent_color() + "╔═══[" + fuel_color() + user + accent_color() + "@" + fuel_color() + server + accent_color() + ":" + fuel_color() + str(port) + accent_color() + "]═══(" + color() + "FySSH " + text_color() + version + accent_color() + ")" + "\n" + "╚═══" + accent_color() + "> " + text_color())
                             ssh_stdin, ssh_stdout, ssh_stderr = ssh.exec_command(ssh_cmd)
                             update_ssh_status("Running: " + ssh_cmd)
                             print("")
@@ -594,12 +598,12 @@ try:
                 if fuel_action == "install":
                     print(prefix("FUEL") + "Installation process started!")
                     filename = fuel_location + ".json"
-                    print(prefix("FUEL") + "Using \"" + fuel_location + "\" as target package.")
+                    print(prefix("FUEL") + "Using \"" + filename + "\" as target package.")
                     print(prefix("FUEL") + "Checking FUEL directory...")
                     if not os.path.exists(fuel_content_dir):
                         os.makedirs(fuel_content_dir)
                     if os.path.exists(fuel_content_dir + filename):
-                        print(prefix("ERROR") + "Package \"" + fuel_location + "\" installation failed!")
+                        print(prefix("ERROR") + "Package \"" + filename + "\" installation failed!")
                         print(prefix("ERROR") + "Error: Package is already installed.")
                         continue
                     print(prefix("FUEL") + "Installing to: " + fuel_content_dir + "...")
@@ -613,7 +617,7 @@ try:
                         else:
                             continue
                     if fuel_download_url == "":
-                        print(prefix("ERROR") + "Package \"" + fuel_location + "\" installation failed!")
+                        print(prefix("ERROR") + "Package \"" + filename + "\" installation failed!")
                         print(prefix("ERROR") + "Error: Package not found.")
                         continue
                     print(prefix("FUEL") + "Fetching FUEL from NoahOnFyre/FUELS...")
@@ -623,12 +627,12 @@ try:
                     local_fuel_file.write(fuel_file_content)
                     local_fuel_file.close()
                     local_fuel_file = open(fuel_content_dir + filename, mode="rt")
-                    print(prefix("FUEL") + "FUEL " + Fore.LIGHTMAGENTA_EX + fuel_location + text_color() + " successfuly installed to \"" + fuel_content_dir + "\".")
+                    print(prefix("FUEL") + "FUEL " + fuel_color() + filename + text_color() + " successfuly installed to \"" + fuel_content_dir + "\".")
                     print(prefix("FUEL") + "Adding FUEL to FyUTILS...")
                     local_fuel_file_json = json.load(local_fuel_file)
                     if local_fuel_file_json["properties"]["type"] == "DEFAULT":
                         fuels.update({local_fuel_file_json["properties"]["command_name"]: fuel_content_dir + filename})
-                    print(prefix("FUEL") + f"Done! Took{time.time() - activity_start: 0.2f}s to install package " + Fore.LIGHTMAGENTA_EX + fuel_location + text_color() + "!")
+                    print(prefix("FUEL") + f"Done! Took{time.time() - activity_start: 0.2f}s to install package " + fuel_color() + fuel_location + text_color() + "!")
 
                 elif fuel_action == "add":
                     if len(args) == 1:
@@ -646,12 +650,12 @@ try:
                     print(prefix("FUEL") + "Copying FUEL from " + fuel_location + "...")
                     shutil.copy(fuel_location, fuel_content_dir)
                     local_fuel_file = open(fuel_content_dir + filename)
-                    print(prefix("FUEL") + "FUEL " + Fore.LIGHTMAGENTA_EX + filename + text_color() + " successfuly copied to \"" + fuel_content_dir + "\".")
+                    print(prefix("FUEL") + "FUEL " + fuel_color() + filename + text_color() + " successfuly copied to \"" + fuel_content_dir + "\".")
                     print(prefix("FUEL") + "Adding FUEL to FyUTILS...")
                     local_fuel_file_json = json.load(local_fuel_file)
                     if local_fuel_file_json["properties"]["type"] == "DEFAULT":
                         fuels.update({local_fuel_file_json["properties"]["command_name"]: fuel_content_dir + filename})
-                    print(prefix("FUEL") + f"Done! Took{time.time() - activity_start: 0.2f}s to install package " + Fore.LIGHTMAGENTA_EX + fuel_location + text_color() + "!")
+                    print(prefix("FUEL") + f"Done! Took{time.time() - activity_start: 0.2f}s to install package " + fuel_color() + fuel_location + text_color() + "!")
 
                 elif fuel_action == "remove":
                     if len(args) == 1:
@@ -676,7 +680,7 @@ try:
                         print(prefix("ERROR") + "Package \"" + filename + "\" remove failed!")
                         print(prefix("ERROR") + "Error: Local package not found.")
                         continue
-                    print(prefix("FUEL") + f"Done! Took{time.time() - activity_start: 0.2f}s to remove package " + Fore.LIGHTMAGENTA_EX + fuel_location)
+                    print(prefix("FUEL") + f"Done! Took{time.time() - activity_start: 0.2f}s to remove package " + fuel_color() + filename)
 
                 try:
                     None
