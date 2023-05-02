@@ -1,4 +1,3 @@
-import concurrent.futures
 import datetime
 import json
 import multiprocessing
@@ -10,19 +9,21 @@ import socket
 import sys
 import threading
 import time
+import tkinter.filedialog
 import traceback
+from pathlib import Path
+import easygui
 
 import paramiko
-import psutil
-import requests
-import pwinput
 import phonenumbers
-from phonenumbers import geocoder, carrier, timezone
-from colorama import Fore, init
-from pypresence import Presence
-from pathlib import Path
-from pytube import YouTube
+import psutil
+import pwinput
+import requests
 import scapy.layers.l2 as scapy
+from colorama import Fore, init
+from phonenumbers import geocoder, carrier, timezone
+from pypresence import Presence
+from pytube import YouTube
 
 init(convert=True)
 
@@ -579,12 +580,16 @@ try:
 
             case "fuel":
                 if len(args) != 2:
-                    print(prefix("ERROR") + "Unexpected arguments for command \"" + cmd + "\"")
-                    continue
+                    if len(args) == 1 and (args[0] == "add" or args[0] == "remove"):
+                        None
+                    else:
+                        print(prefix("ERROR") + "Unexpected arguments for command \"" + cmd + "\"")
+                        continue
                 fuel_action = args[0]
-                fuel_location = args[1]
+                if len(args) == 2:
+                    fuel_location = args[1]
                 activity_start = time.time()
-                update_status("Installing FUEL " + fuel_location + "...")
+                update_status("Installing FUEL...")
 
                 if fuel_action == "install":
                     print(prefix("FUEL") + "Installation process started!")
@@ -626,6 +631,8 @@ try:
                     print(prefix("FUEL") + f"Done! Took{time.time() - activity_start: 0.2f}s to install package " + Fore.LIGHTMAGENTA_EX + fuel_location + text_color() + "!")
 
                 elif fuel_action == "add":
+                    if len(args) == 1:
+                        fuel_location = easygui.fileopenbox(msg="Import FUEL into FyUTILS", title="FUEL Managment Utilities", filetypes=[["*.json", "FUEL files"]], multiple=False)
                     print(prefix("FUEL") + "Installation process started!")
                     filename = os.path.basename(fuel_location).split("/")[-1]
                     print(prefix("FUEL") + "Checking FUEL directory...")
@@ -647,21 +654,25 @@ try:
                     print(prefix("FUEL") + f"Done! Took{time.time() - activity_start: 0.2f}s to install package " + Fore.LIGHTMAGENTA_EX + fuel_location + text_color() + "!")
 
                 elif fuel_action == "remove":
-                    filename = fuel_location + ".json"
+                    if len(args) == 1:
+                        os.chdir(fuel_content_dir)
+                        fuel_location = easygui.fileopenbox(msg="Removing FUEL from FyUTILS", title="FUEL Managment Utilities", filetypes=[["*.json", "FUEL files"]], multiple=False)
+                        os.chdir(current_dir)
+                    filename = os.path.basename(fuel_location).split("/")[-1]
                     print(prefix("FUEL") + "Unregistering " + fuel_content_dir + filename + "...")
                     if os.path.exists(fuel_content_dir + filename):
                         temp = open(fuel_content_dir + filename)
                         fuels.pop(json.load(temp)["properties"]["command_name"])
                         temp.close()
                     else:
-                        print(prefix("ERROR") + "Package \"" + fuel_content_dir + filename + "\" remove failed!")
+                        print(prefix("ERROR") + "Package \"" + filename + "\" remove failed!")
                         print(prefix("ERROR") + "Error: Local package not found.")
                         continue
-                    print(prefix("FUEL") + "Deleting " + fuel_content_dir + filename + "...")
+                    print(prefix("FUEL") + "Deleting " + filename + "...")
                     if os.path.exists(fuel_content_dir + filename):
                         os.remove(fuel_content_dir + filename)
                     else:
-                        print(prefix("ERROR") + "Package \"" + fuel_content_dir + filename + "\" remove failed!")
+                        print(prefix("ERROR") + "Package \"" + filename + "\" remove failed!")
                         print(prefix("ERROR") + "Error: Local package not found.")
                         continue
                     print(prefix("FUEL") + f"Done! Took{time.time() - activity_start: 0.2f}s to remove package " + Fore.LIGHTMAGENTA_EX + fuel_location)
