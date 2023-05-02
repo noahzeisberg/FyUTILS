@@ -580,7 +580,7 @@ try:
             case "fuels":
                 print(prefix("FUEL") + "Active FUELS:")
                 for path in fuels.values():
-                    print(prefix("FUEL") + path.removesuffix(".json").removeprefix(fuel_content_dir))
+                    print(prefix("FUEL") + path.removeprefix(fuel_content_dir))
 
             case "fuel":
                 if len(args) != 2:
@@ -655,7 +655,7 @@ try:
                     local_fuel_file_json = json.load(local_fuel_file)
                     if local_fuel_file_json["properties"]["type"] == "DEFAULT":
                         fuels.update({local_fuel_file_json["properties"]["command_name"]: fuel_content_dir + filename})
-                    print(prefix("FUEL") + f"Done! Took{time.time() - activity_start: 0.2f}s to install package " + fuel_color() + fuel_location + text_color() + "!")
+                    print(prefix("FUEL") + f"Done! Took{time.time() - activity_start: 0.2f}s to install package " + fuel_color() + filename + text_color() + "!")
 
                 elif fuel_action == "remove":
                     if len(args) == 1:
