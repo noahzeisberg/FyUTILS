@@ -655,9 +655,10 @@ try:
 
                 elif fuel_action == "remove":
                     if len(args) == 1:
+                        temp = os.getcwd()
                         os.chdir(fuel_content_dir)
                         fuel_location = easygui.fileopenbox(msg="Removing FUEL from FyUTILS", title="FUEL Managment Utilities", filetypes=[["*.json", "FUEL files"]], multiple=False)
-                        os.chdir(current_dir)
+                        os.chdir(temp)
                     filename = os.path.basename(fuel_location).split("/")[-1]
                     print(prefix("FUEL") + "Unregistering " + fuel_content_dir + filename + "...")
                     if os.path.exists(fuel_content_dir + filename):
