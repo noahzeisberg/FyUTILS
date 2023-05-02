@@ -135,6 +135,13 @@ Here's an example:
 |-----------------|-------------|
 |                 |             |
 
+## FUELS
+FUELS (FyUTILS extending libraries) are simple lightweight scripts that can add a certain behaviour or action when you execute a command.
+At the moment you can contribute by [Forking](https://github.com/NoahOnFyre/FUELS/fork) the repository, add your FUEL and create a [Pull Request](https://github.com/NoahOnFyre/FUELS/pulls) by clicking on **Contribute** and then on **New pull request**.
+Then you have to wait for a FUEL or project maintainer to verify that your FUEL is safe and doesn't contain malware or other malicious stuff.
+When you want to update your FUEL, make sure that your fork is up-to-date with **master** on NoahOnFyre/FUELS. You can ensure this by clicking on **Sync fork** and then on **Update branch**.
+
+Information about contributing to FUELS in the official repository may be outdated.
 
 ## Commands
 The commands in FyUTILS are very simple. Below, there's a list of all commands and the arguments they take.
