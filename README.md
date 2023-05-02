@@ -22,6 +22,7 @@ A simple python hacking and utility terminal application for windows with an int
     * [Phone](#phone)
     * [Fetch](#fetch)
     * [YouTube](#youtube)
+    * [Log](#log)
     * [FUELS](#fuels)
     * [FUEL](#fuel)
     * [Update](#update)
