@@ -577,6 +577,9 @@ try:
                     print(prefix("INFO") + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
                     print("")
 
+            case "log":
+                os.system("explorer.exe /select,\"" + fyutils_dir + "crash.log" + "\"")
+
             case "fuels":
                 print(prefix("FUEL") + "Active FUELS:")
                 for path in fuels.values():
