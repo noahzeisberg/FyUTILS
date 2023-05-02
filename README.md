@@ -47,6 +47,7 @@ A simple python hacking and utility terminal application for windows with an int
 ## Authors and Contributors
 
 - [@NoahOnFyre](https://www.github.com/NoahOnFyre) (Project Owner)
+- (coming soon) [@LucaOnFyre](https://www.github.com/LucaOnFyre) (Repository maintainer)
 
 # Documentation
 This Documentation will guide you through the installation, the first launch and configuration and the daily use of FyUTILS.
