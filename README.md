@@ -122,6 +122,18 @@ When an argument is required it will be bordered by < and >.
 When it isn't required it will be bordered by [ and ]
 
 Every command is structured like this, but all of them have a different amount of arguments. Some commands can also have no arguments like `ls`.
+
+## Prefix
+
+Here you can find everything you need to understand the **prefix** in FyUTILS.
+
+Here's an example:
+
+| Used in example | Description |
+|-----------------|-------------|
+|                 |             |
+
+
 ## Commands
 The commands in FyUTILS are very simple. Below, there's a list of all commands and the arguments they take.
 
@@ -167,6 +179,11 @@ Fetch downloads a file or a website, that can be saved to a file in your content
 youtube <video_url>
 ```
 This command will download the highest definition file of a YouTube video (most likely HD).
+### Log
+```
+log
+```
+Opens the folder, your log files are in and automatically highlights the **crash.log**
 ### FUELS
 ```
 fuels
