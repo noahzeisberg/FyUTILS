@@ -141,6 +141,8 @@ def menu():
     time.sleep(1/1000)
     print(accent_color() + "║ " + accent_color() + "[" + color() + "VAR" + accent_color() + "] " + text_color() + "Device: " + device)
     time.sleep(1/1000)
+    print(accent_color() + "║ " + accent_color() + "[" + color() + "VAR" + accent_color() + "] " + text_color() + "Private IP: " + private_ip)
+    time.sleep(1/1000)
     print(accent_color() + "║ " + accent_color() + "[" + color() + "VAR" + accent_color() + "] " + text_color() + "Version: " + version)
     time.sleep(1/1000)
     if update_available:
