@@ -180,6 +180,8 @@ try:
     print(prefix("INIT") + "Version: " + version)
     threads = multiprocessing.cpu_count()
     print(prefix("INIT") + "ThreadWorkers: " + str(threads))
+    private_ip = socket.gethostbyname(socket.gethostname())
+    print(prefix("INIT") + "Private IP: " + private_ip)
     user_dir = str(Path.home())
     print(prefix("INIT") + "User specific directory: " + user_dir)
     appdata_dir = user_dir + "\\AppData"
