@@ -238,6 +238,7 @@ try:
             release_download_url = newest_release["assets"][r]["browser_download_url"]
             break
         else:
+            release_download_url = ""
             continue
     newest_version = newest_release["tag_name"]
     if version_is_newer(newest_version):
