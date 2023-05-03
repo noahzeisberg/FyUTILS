@@ -184,13 +184,13 @@ try:
     print(prefix("INIT") + "User specific directory: " + user_dir)
     appdata_dir = user_dir + "\\AppData"
     print(prefix("INIT") + "AppData directory: " + appdata_dir)
-    fyutils_dir = appdata_dir + "\\Roaming\\FyUTILS\\"
-    print(prefix("INIT") + "FyUTILS AppData directory: " + fyutils_dir)
+    main_dir = appdata_dir + "\\Roaming\\FyUTILS\\"
+    print(prefix("INIT") + "FyUTILS AppData directory: " + main_dir)
     tmp_dir = user_dir + "\\AppData\\Roaming\\FyUTILS\\tmp\\"
     print(prefix("INIT") + "Temp files directory: " + tmp_dir)
-    download_content_dir = fyutils_dir + "content\\"
+    download_content_dir = main_dir + "content\\"
     print(prefix("INIT") + "Download Content Location: " + download_content_dir)
-    fuel_content_dir = fyutils_dir + "fuels\\"
+    fuel_content_dir = main_dir + "fuels\\"
     print(prefix("INIT") + "FUEL Content Location: " + fuel_content_dir)
     cpu = platform.processor()
     print(prefix("INIT") + "CPU: " + cpu)
@@ -578,7 +578,7 @@ try:
                     print("")
 
             case "log":
-                os.system("explorer.exe /select,\"" + fyutils_dir + "crash.log" + "\"")
+                os.system("explorer.exe /select,\"" + main_dir + "crash.log" + "\"")
 
             case "fuels":
                 print(prefix("FUEL") + "Active FUELS:")
@@ -900,10 +900,10 @@ except Exception as e:
     os.system("title FyUTILS Crash Handler - Crash Log")
     print(prefix("ERROR") + "FyUTILS CRASH LOG @ " + datetime.datetime.now().strftime("%H:%M:%S"))
     print(prefix("ERROR") + "Error: " + str(e))
-    temp = open(fyutils_dir + "crash.log", "w+")
+    temp = open(main_dir + "crash.log", "w+")
     temp.writelines("FyUTILS - Traceback crash log of  " + datetime.datetime.now().strftime("%H:%M:%S") + "\n" + "="*50 + "\n\n" + traceback.format_exc())
     temp.close()
-    print(prefix("ERROR") + "The full crash log has been saved to: " + fyutils_dir + "crash.log")
-    os.system("explorer.exe /select,\"" + fyutils_dir + "crash.log" + "\"")
+    print(prefix("ERROR") + "The full crash log has been saved to: " + main_dir + "crash.log")
+    os.system("explorer.exe /select,\"" + main_dir + "crash.log" + "\"")
     os.system("pause")
     sys.exit(1024)
