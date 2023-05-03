@@ -27,24 +27,15 @@ from pytube import YouTube
 init(convert=True)
 
 
-def prefix(type):
-    if threading.current_thread().name == "MainThread":
-        current_thread_name = "FyUTILS"
+def prefix(level: str, protocol: str = "FyUTILS"):
+    if level == "INFO":
+        return accent_color() + "[" + color() + datetime.datetime.now().strftime("%H:%M:%S") + accent_color() + "]" + " " + accent_color() + "[" + text_color() + protocol + accent_color() + "/" + true_color() + level.upper() + accent_color() + "] " + text_color()
+    elif level == "WARN":
+        return accent_color() + "[" + color() + datetime.datetime.now().strftime("%H:%M:%S") + accent_color() + "]" + " " + accent_color() + "[" + text_color() + protocol + accent_color() + "/" + warn_color() + level.upper() + accent_color() + "] " + text_color()
+    elif level == "ERROR":
+        return accent_color() + "[" + color() + datetime.datetime.now().strftime("%H:%M:%S") + accent_color() + "]" + " " + accent_color() + "[" + text_color() + protocol + accent_color() + "/" + false_color() + level.upper() + accent_color() + "] " + text_color()
     else:
-        current_thread_name = threading.current_thread().name
-
-    if type == "INFO":
-        return accent_color() + "[" + color() + datetime.datetime.now().strftime("%H:%M:%S") + accent_color() + "]" + " " + accent_color() + "[" + text_color() + current_thread_name + accent_color() + "/" + true_color() + "INFO" + accent_color() + "] " + text_color()
-    elif type == "ERROR":
-        return accent_color() + "[" + color() + datetime.datetime.now().strftime("%H:%M:%S") + accent_color() + "]" + " " + accent_color() + "[" + text_color() + current_thread_name + accent_color() + "/" + false_color() + "ERROR" + accent_color() + "] " + text_color()
-    elif type == "INIT":
-        return accent_color() + "[" + color() + datetime.datetime.now().strftime("%H:%M:%S") + accent_color() + "]" + " " + accent_color() + "[" + text_color() + current_thread_name + accent_color() + "/" + color() + "INIT" + accent_color() + "] " + text_color()
-    elif type == "FUEL":
-        return accent_color() + "[" + color() + datetime.datetime.now().strftime("%H:%M:%S") + accent_color() + "]" + " " + accent_color() + "[" + text_color() + current_thread_name + accent_color() + "/" + fuel_color() + "FUEL" + accent_color() + "] " + text_color()
-    elif type == "SHIELD":
-        return accent_color() + "[" + color() + datetime.datetime.now().strftime("%H:%M:%S") + accent_color() + "]" + " " + accent_color() + "[" + text_color() + current_thread_name + accent_color() + "/" + shield_color() + "SHIELD" + accent_color() + "] " + text_color()
-    else:
-        return accent_color() + "[" + color() + datetime.datetime.now().strftime("%H:%M:%S") + accent_color() + "]" + " " + accent_color() + "[" + text_color() + current_thread_name + accent_color() + "/" + text_color() + str(type).upper() + accent_color() + "] " + text_color()
+        return false_color() + "PREFIX TYPE NOT SUPPORTED. SEE https://github.com/NoahOnFyre/FyUTILS#prefix"
 
 
 def version_is_newer(value):
@@ -97,30 +88,30 @@ def update_ssh_status(status):
 def resolve_fuel_information(file):
     fuel = open(fuel_content_dir + file, mode="rt")
     fuel_json = json.load(fuel)
-    print(prefix("FUEL") + "FUEL information of: " + file)
-    print(prefix("FUEL") + "FUEL name: " + fuel_json["name"])
-    print(prefix("FUEL") + "FUEL version: v" + fuel_json["version"])
-    print(prefix("FUEL") + "FUEL author: " + fuel_json["author"])
-    print(prefix("FUEL") + "FUEL description: " + fuel_json["description"])
-    print(prefix("FUEL") + "FUEL format: " + str(fuel_json["format"]))
-    print(prefix("FUEL") + "FUEL type: " + fuel_json["properties"]["type"])
+    print(prefix("INFO", "FUEL") + "FUEL information of: " + file)
+    print(prefix("INFO", "FUEL") + "FUEL name: " + fuel_json["name"])
+    print(prefix("INFO", "FUEL") + "FUEL version: v" + fuel_json["version"])
+    print(prefix("INFO", "FUEL") + "FUEL author: " + fuel_json["author"])
+    print(prefix("INFO", "FUEL") + "FUEL description: " + fuel_json["description"])
+    print(prefix("INFO", "FUEL") + "FUEL format: " + str(fuel_json["format"]))
+    print(prefix("INFO", "FUEL") + "FUEL type: " + fuel_json["properties"]["type"])
     match fuel_json["properties"]["type"]:
         case "DEFAULT":
-            print(prefix("FUEL") + "FUEL command name: " + fuel_json["properties"]["command_name"])
-            print(prefix("FUEL") + "Head enabled: " + str(fuel_json["head"]["enabled"]))
-            print(prefix("FUEL") + "Body enabled: " + str(fuel_json["body"]["enabled"]))
-            print(prefix("FUEL") + "Argument length: " + str(fuel_json["head"]["argument_length"]))
-            print(prefix("FUEL") + "Command status: " + fuel_json["head"]["status"])
+            print(prefix("INFO", "FUEL") + "FUEL command name: " + fuel_json["properties"]["command_name"])
+            print(prefix("INFO", "FUEL") + "Head enabled: " + str(fuel_json["head"]["enabled"]))
+            print(prefix("INFO", "FUEL") + "Body enabled: " + str(fuel_json["body"]["enabled"]))
+            print(prefix("INFO", "FUEL") + "Argument length: " + str(fuel_json["head"]["argument_length"]))
+            print(prefix("INFO", "FUEL") + "Command status: " + fuel_json["head"]["status"])
             fuels.update({fuel_json["properties"]["command_name"]: fuel_content_dir + file})
 
         case "MIXIN":
-            print(prefix("FUEL") + "WARNING: If you are a FUEL developer, please use a")
-            print(prefix("FUEL") + "default FUEL and use a command for your injection.")
-            print(prefix("FUEL") + "Support for mixins injecting on initialisation will be added soon.")
+            print(prefix("INFO", "FUEL") + "WARNING: If you are a FUEL developer, please use a")
+            print(prefix("INFO", "FUEL") + "default FUEL and use a command for your injection.")
+            print(prefix("INFO", "FUEL") + "Support for mixins injecting on initialisation will be added soon.")
             time.sleep(2.5)
 
         case _:
-            print(prefix("FUEL") + "FUEL type is not supported by this version.")
+            print(prefix("ERROR", "FUEL") + "FUEL type is not supported by this version.")
     fuel.close()
 
 
@@ -142,7 +133,7 @@ def true_color(): return src_true_color
 def false_color(): return src_false_color
 
 
-def shield_color(): return src_shield_color
+def warn_color(): return src_warn_color
 
 
 def menu():
@@ -169,8 +160,6 @@ def menu():
     time.sleep(1/1000)
     print(accent_color() + "║ " + accent_color() + "[" + color() + "VAR" + accent_color() + "] " + text_color() + "Device: " + device)
     time.sleep(1/1000)
-    print(accent_color() + "║ " + accent_color() + "[" + color() + "VAR" + accent_color() + "] " + text_color() + "Private IP: " + private_ip)
-    time.sleep(1/1000)
     print(accent_color() + "║ " + accent_color() + "[" + color() + "VAR" + accent_color() + "] " + text_color() + "Version: " + version)
     time.sleep(1/1000)
     if update_available:
@@ -186,7 +175,8 @@ def menu():
 # INIT PHASE
 os.system("title FyUTILS")
 
-# Color initialization
+# Color initialisation
+print(prefix("INFO", "Init") + "Initializing colors...")
 
 src_color = Fore.LIGHTBLUE_EX
 src_fuel_color = Fore.LIGHTMAGENTA_EX
@@ -194,55 +184,54 @@ src_accent_color = Fore.LIGHTBLACK_EX
 src_text_color = Fore.WHITE
 src_true_color = Fore.GREEN
 src_false_color = Fore.RED
-src_shield_color = Fore.YELLOW
+src_warn_color = Fore.YELLOW
 
-# Variable initialization
+# Variable initialisation
 try:
-    print(prefix("INIT") + "Initializing system variables...")
+    print(prefix("INFO", "Init") + "Initializing system variables...")
     username = os.getlogin()
-    print(prefix("INIT") + "Username: " + username)
+    print(prefix("INFO", "Init") + "Username: " + username)
     device = platform.node()
-    print(prefix("INIT") + "Device: " + device)
+    print(prefix("INFO", "Init") + "Device: " + device)
     start_time = time.time()
-    print(prefix("INIT") + "Start time: " + str(start_time))
+    print(prefix("INFO", "Init") + "Start time: " + str(start_time))
     current_dir = sys.path[0]
-    print(prefix("INIT") + "Directory: " + current_dir)
+    print(prefix("INFO", "Init") + "Directory: " + current_dir)
     version = "1.6.0"
-    print(prefix("INIT") + "Version: " + version)
+    print(prefix("INFO", "Init") + "Version: " + version)
     threads = multiprocessing.cpu_count()
-    print(prefix("INIT") + "ThreadWorkers: " + str(threads))
+    print(prefix("INFO", "Init") + "ThreadWorkers: " + str(threads))
     private_ip = socket.gethostbyname(socket.gethostname())
-    print(prefix("INIT") + "Private IP: " + private_ip)
+    print(prefix("INFO", "Init") + "Private IP: " + private_ip)
     user_dir = str(Path.home())
-    print(prefix("INIT") + "User specific directory: " + user_dir)
+    print(prefix("INFO", "Init") + "User specific directory: " + user_dir)
     appdata_dir = user_dir + "\\AppData"
-    print(prefix("INIT") + "AppData directory: " + appdata_dir)
+    print(prefix("INFO", "Init") + "AppData directory: " + appdata_dir)
     main_dir = appdata_dir + "\\Roaming\\FyUTILS\\"
-    print(prefix("INIT") + "FyUTILS AppData directory: " + main_dir)
+    print(prefix("INFO", "Init") + "FyUTILS AppData directory: " + main_dir)
     tmp_dir = user_dir + "\\AppData\\Roaming\\FyUTILS\\tmp\\"
-    print(prefix("INIT") + "Temp files directory: " + tmp_dir)
+    print(prefix("INFO", "Init") + "Temp files directory: " + tmp_dir)
     download_content_dir = main_dir + "content\\"
-    print(prefix("INIT") + "Download Content Location: " + download_content_dir)
+    print(prefix("INFO", "Init") + "Download Content Location: " + download_content_dir)
     fuel_content_dir = main_dir + "fuels\\"
-    print(prefix("INIT") + "FUEL Content Location: " + fuel_content_dir)
+    print(prefix("INFO", "Init") + "FUEL Content Location: " + fuel_content_dir)
     cpu = platform.processor()
-    print(prefix("INIT") + "CPU: " + cpu)
+    print(prefix("INFO", "Init") + "CPU: " + cpu)
     releases = "https://api.github.com/repos/NoahOnFyre/FyUTILS/releases"
-    print(prefix("INIT") + "Releases URL: " + releases)
+    print(prefix("INFO", "Init") + "Releases URL: " + releases)
     memory_amount = psutil.virtual_memory().total
-    print(prefix("INIT") + "Memory amount: " + str(round(memory_amount/1024/1024)) + "MB")
+    print(prefix("INFO", "Init") + "Memory amount: " + str(round(memory_amount/1024/1024)) + "MB")
 except Exception as e:
-    print(prefix("ERROR") + "Failed to get system variables!")
+    print(prefix("ERROR", "Init") + "Failed to get system variables!")
     print(traceback.format_exc())
-    print(prefix("ERROR") + "Shutting down...")
+    print(prefix("ERROR", "Init") + "Shutting down...")
     os.system("pause")
     sys.exit(2048)
 
 # Update checker
-print(prefix("INIT") + "Checking for updates...")
+print(prefix("INFO", "Updater") + "Checking for updates...")
 try:
     releases_json = requests.get(releases).json()
-    newest_release = releases_json[0]
     newest_release = releases_json[0]
     for r in range(len(newest_release["assets"])):
         if newest_release["assets"][r]["name"] == "main.py":
@@ -253,45 +242,47 @@ try:
             continue
     newest_version = newest_release["tag_name"]
     if version_is_newer(newest_version):
-        print(prefix("INIT") + "A new version of FyUTILS is available!")
-        print(prefix("INIT") + "Current version identifier: " + version)
-        print(prefix("INIT") + "Newest version identifier: " + newest_version)
+        print(prefix("INFO", "Updater") + "A new version of FyUTILS is available!")
+        print(prefix("INFO", "Updater") + "Current version identifier: " + version)
+        print(prefix("INFO", "Updater") + "Newest version identifier: " + newest_version)
         update_available = True
     else:
-        print(prefix("INIT") + "No update found!")
-        print(prefix("INIT") + "Current version identifier: " + version)
-        print(prefix("INIT") + "Newest version identifier: " + newest_version)
+        print(prefix("INFO", "Updater") + "No update found!")
+        print(prefix("INFO", "Updater") + "Current version identifier: " + version)
+        print(prefix("INFO", "Updater") + "Newest version identifier: " + newest_version)
         update_available = False
 except Exception as e:
-    print(prefix("ERROR") + "Checking for updates failed. Please check your internet connection.")
+    print(prefix("ERROR", "Updater") + "Checking for updates failed. Please check your internet connection.")
     update_available = False
 
-# Discord RPC initialization
+# Discord RPC initialisation
 try:
-    print(prefix("INIT") + "Initializing discord rich presence... (RPC)")
+    print(prefix("INFO", "RichPresence") + "Initializing discord rich presence... (RPC)")
     rpc = Presence("1005822803997638696")
-    print(prefix("INIT") + "Presence ID set to: '1005822803997638696'.")
-    print(prefix("INIT") + "Connecting to discord...")
+    print(prefix("INFO", "RichPresence") + "Presence ID set to: '1005822803997638696'.")
+    print(prefix("INFO", "RichPresence") + "Connecting to discord...")
     rpc.connect()
-    print(prefix("INIT") + "Discord is connected...")
+    print(prefix("INFO", "RichPresence") + "Discord is connected...")
     update_status("Starting up...")
 except:
-    print(prefix("ERROR") + "Can't connect with the discord RPC.")
+    print(prefix("ERROR", "RichPresence") + "Can't connect with the discord RPC.")
     time.sleep(0.25)
 
-# FUEL initialization
+# FUEL initialisation
 
-print(prefix("INIT") + "Initializing FUELS...")
+print(prefix("INFO", "FUEL") + "Initialising FUELS...")
 fuels = {}
 if not os.path.exists(fuel_content_dir):
     os.makedirs(fuel_content_dir)
 for file in os.listdir(fuel_content_dir):
     resolve_fuel_information(file)
 
-print(prefix("INIT") + "FUELS initialized")
+print(prefix("INFO", "FUEL") + "FUELS initialized")
 
-print(prefix("INIT") + "Initialization phase completed!")
-update_status("Initialization phase completed!")
+print(prefix("INFO", "Init") + "Initialisation phase completed!")
+update_status("Initialisation phase completed!")
+
+time.sleep(5)
 
 # INIT PHASE END
 
@@ -301,11 +292,6 @@ try:
         print("")
         update_status("Idle")
         try:
-            if threading.current_thread().name == "MainThread":
-                current_thread_name = "FyUTILS"
-            else:
-                current_thread_name = threading.current_thread().name
-
             if os.getcwd() == current_dir:
                 cwd_abbreviation = "#"
             elif os.getcwd() == "C:\\":
@@ -316,7 +302,7 @@ try:
                 cwd_abbreviation = "@"
             else:
                 cwd_abbreviation = os.getcwd().replace("C:\\", "/").replace("\\", "/").replace(":", "").lower()
-            request = input(accent_color() + "╔═══[" + color() + username + accent_color() + "@" + text_color() + device + accent_color() + "]══(" + color() + current_thread_name + accent_color() + "/" + text_color() + version + accent_color() + ")══[" + text_color() + cwd_abbreviation + accent_color() + "]\n" +
+            request = input(accent_color() + "╔═══[" + color() + username + accent_color() + "@" + text_color() + device + accent_color() + "]══(" + color() + "FyUTILS" + accent_color() + "/" + text_color() + version + accent_color() + ")══[" + text_color() + cwd_abbreviation + accent_color() + "]\n" +
                             accent_color() + "╚═══> " + text_color()).split(" ")
             cmd = request[0].lower()
             request.__delitem__(0)
@@ -612,9 +598,9 @@ try:
                 os.system("explorer.exe /select,\"" + main_dir + "crash.log" + "\"")
 
             case "fuels":
-                print(prefix("FUEL") + "Active FUELS:")
+                print(prefix("INFO") + "Active FUELS:")
                 for path in fuels.values():
-                    print(prefix("FUEL") + os.path.basename(path).split("/")[-1])
+                    print(prefix("INFO") + os.path.basename(path).split("/")[-1])
 
             case "fuel":
                 if len(args) != 2:
@@ -630,18 +616,18 @@ try:
                 update_status("Installing FUEL...")
 
                 if fuel_action == "install":
-                    print(prefix("FUEL") + "Installation process started!")
+                    print(prefix("INFO") + "Installation process started!")
                     filename = fuel_location + ".json"
-                    print(prefix("FUEL") + "Using \"" + filename + "\" as target package.")
-                    print(prefix("FUEL") + "Checking FUEL directory...")
+                    print(prefix("INFO") + "Using \"" + filename + "\" as target package.")
+                    print(prefix("INFO") + "Checking FUEL directory...")
                     if not os.path.exists(fuel_content_dir):
                         os.makedirs(fuel_content_dir)
                     if os.path.exists(fuel_content_dir + filename):
                         print(prefix("ERROR") + "Package \"" + filename + "\" installation failed!")
                         print(prefix("ERROR") + "Error: Package is already installed.")
                         continue
-                    print(prefix("FUEL") + "Installing to: " + fuel_content_dir + "...")
-                    print(prefix("FUEL") + "Checking FUEL in NoahOnFyre/FUELS...")
+                    print(prefix("INFO") + "Installing to: " + fuel_content_dir + "...")
+                    print(prefix("INFO") + "Checking FUEL in NoahOnFyre/FUELS...")
                     fuel_repo_contents = requests.get("https://api.github.com/repos/NoahOnFyre/FUELS/contents/").json()
                     for i in range(len(fuel_repo_contents)):
                         fuel_download_url = ""
@@ -654,42 +640,42 @@ try:
                         print(prefix("ERROR") + "Package \"" + filename + "\" installation failed!")
                         print(prefix("ERROR") + "Error: Package not found.")
                         continue
-                    print(prefix("FUEL") + "Fetching FUEL from NoahOnFyre/FUELS...")
+                    print(prefix("INFO") + "Fetching FUEL from NoahOnFyre/FUELS...")
                     fuel_file_content = requests.get(fuel_download_url).content
-                    print(prefix("FUEL") + "Writing content to file...")
+                    print(prefix("INFO") + "Writing content to file...")
                     local_fuel_file = open(fuel_content_dir + filename, mode="xb")
                     local_fuel_file.write(fuel_file_content)
                     local_fuel_file.close()
                     local_fuel_file = open(fuel_content_dir + filename, mode="rt")
-                    print(prefix("FUEL") + "FUEL " + fuel_color() + filename + text_color() + " successfuly installed to \"" + fuel_content_dir + "\".")
-                    print(prefix("FUEL") + "Adding FUEL to FyUTILS...")
+                    print(prefix("INFO") + "FUEL " + fuel_color() + filename + text_color() + " successfuly installed to \"" + fuel_content_dir + "\".")
+                    print(prefix("INFO") + "Adding FUEL to FyUTILS...")
                     local_fuel_file_json = json.load(local_fuel_file)
                     if local_fuel_file_json["properties"]["type"] == "DEFAULT":
                         fuels.update({local_fuel_file_json["properties"]["command_name"]: fuel_content_dir + filename})
-                    print(prefix("FUEL") + f"Done! Took{time.time() - activity_start: 0.2f}s to install package " + fuel_color() + fuel_location + text_color() + "!")
+                    print(prefix("INFO") + f"Done! Took{time.time() - activity_start: 0.2f}s to install package " + fuel_color() + fuel_location + text_color() + "!")
 
                 elif fuel_action == "add":
                     if len(args) == 1:
                         fuel_location = easygui.fileopenbox(msg="Import FUEL into FyUTILS", title="FUEL Managment Utilities", filetypes=[["*.json", "FUEL files"]], multiple=False)
-                    print(prefix("FUEL") + "Installation process started!")
+                    print(prefix("INFO") + "Installation process started!")
                     filename = os.path.basename(fuel_location).split("/")[-1]
-                    print(prefix("FUEL") + "Checking FUEL directory...")
+                    print(prefix("INFO") + "Checking FUEL directory...")
                     if not os.path.exists(fuel_content_dir):
                         os.makedirs(fuel_content_dir)
                     if os.path.exists(fuel_content_dir + filename):
                         print(prefix("ERROR") + "Package \"" + fuel_location + "\" installation failed!")
                         print(prefix("ERROR") + "Error: Package is already installed.")
                         continue
-                    print(prefix("FUEL") + "Installing to: " + fuel_content_dir + "...")
-                    print(prefix("FUEL") + "Copying FUEL from " + fuel_location + "...")
+                    print(prefix("INFO") + "Installing to: " + fuel_content_dir + "...")
+                    print(prefix("INFO") + "Copying FUEL from " + fuel_location + "...")
                     shutil.copy(fuel_location, fuel_content_dir)
                     local_fuel_file = open(fuel_content_dir + filename)
-                    print(prefix("FUEL") + "FUEL " + fuel_color() + filename + text_color() + " successfuly copied to \"" + fuel_content_dir + "\".")
-                    print(prefix("FUEL") + "Adding FUEL to FyUTILS...")
+                    print(prefix("INFO") + "FUEL " + fuel_color() + filename + text_color() + " successfuly copied to \"" + fuel_content_dir + "\".")
+                    print(prefix("INFO") + "Adding FUEL to FyUTILS...")
                     local_fuel_file_json = json.load(local_fuel_file)
                     if local_fuel_file_json["properties"]["type"] == "DEFAULT":
                         fuels.update({local_fuel_file_json["properties"]["command_name"]: fuel_content_dir + filename})
-                    print(prefix("FUEL") + f"Done! Took{time.time() - activity_start: 0.2f}s to install package " + fuel_color() + filename + text_color() + "!")
+                    print(prefix("INFO") + f"Done! Took{time.time() - activity_start: 0.2f}s to install package " + fuel_color() + filename + text_color() + "!")
 
                 elif fuel_action == "remove":
                     if len(args) == 1:
@@ -698,7 +684,7 @@ try:
                         fuel_location = easygui.fileopenbox(msg="Removing FUEL from FyUTILS", title="FUEL Managment Utilities", filetypes=[["*.json", "FUEL files"]], multiple=False)
                         os.chdir(temp)
                     filename = os.path.basename(fuel_location).split("/")[-1]
-                    print(prefix("FUEL") + "Unregistering " + fuel_content_dir + filename + "...")
+                    print(prefix("INFO") + "Unregistering " + fuel_content_dir + filename + "...")
                     if os.path.exists(fuel_content_dir + filename):
                         temp = open(fuel_content_dir + filename)
                         fuels.pop(json.load(temp)["properties"]["command_name"])
@@ -707,14 +693,14 @@ try:
                         print(prefix("ERROR") + "Package \"" + filename + "\" remove failed!")
                         print(prefix("ERROR") + "Error: Local package not found.")
                         continue
-                    print(prefix("FUEL") + "Deleting " + filename + "...")
+                    print(prefix("INFO") + "Deleting " + filename + "...")
                     if os.path.exists(fuel_content_dir + filename):
                         os.remove(fuel_content_dir + filename)
                     else:
                         print(prefix("ERROR") + "Package \"" + filename + "\" remove failed!")
                         print(prefix("ERROR") + "Error: Local package not found.")
                         continue
-                    print(prefix("FUEL") + f"Done! Took{time.time() - activity_start: 0.2f}s to remove package " + fuel_color() + filename)
+                    print(prefix("INFO") + f"Done! Took{time.time() - activity_start: 0.2f}s to remove package " + fuel_color() + filename)
 
                 try:
                     None
@@ -731,18 +717,18 @@ try:
                 update_status("Updating FyUTILS...")
 
                 if update_available:
-                    print(prefix("INFO") + "Update found!")
-                    print(prefix("INFO") + "Version Comparison: " + false_color() + version + accent_color() + " => " + true_color() + newest_version + text_color() + "...")
+                    print(prefix("INFO", "Updater") + "Update found!")
+                    print(prefix("INFO", "Updater") + "Version Comparison: " + false_color() + version + accent_color() + " => " + true_color() + newest_version + text_color() + "...")
                     newest_file_content = requests.get(release_download_url).content
                     open(current_dir + "\\main.py", mode="wb").write(newest_file_content)
-                    print(prefix("INFO") + "Update successfully installed!")
+                    print(prefix("INFO", "Updater") + "Update successfully installed!")
                     time.sleep(1)
-                    print(prefix("INFO") + "Restarting FyUTILS...")
+                    print(prefix("INFO", "Updater") + "Restarting FyUTILS...")
                     os.system("start " + current_dir + "\\main.py")
                     sys.exit(512)
                 else:
-                    print(prefix("INFO") + "You're running the latest version of FyUTILS!")
-                    print(prefix("INFO") + "Version comparison: " + true_color() + version + accent_color() + " = " + true_color() + newest_version + text_color() + "...")
+                    print(prefix("INFO", "Updater") + "You're running the latest version of FyUTILS!")
+                    print(prefix("INFO", "Updater") + "Version comparison: " + true_color() + version + accent_color() + " = " + true_color() + newest_version + text_color() + "...")
 
             case "edit":
                 if len(args) != 1:
@@ -879,7 +865,7 @@ try:
                     elif os.getcwd() == appdata_dir:
                         cwd_abbreviation = "@"
                     else:
-                        cwd_abbreviation = os.getcwd().replace("C:\\", "/").replace("\\", "/").replace(":", "").lower()
+                        cwd_abbreviation = os.getcwd()
                     print(prefix("INFO") + cwd_abbreviation)
                 except Exception as e:
                     print("\n" + prefix("ERROR") + "An error occoured while trying to execute this command correctly.")
@@ -934,12 +920,12 @@ try:
                     os.system(cmd + arg_string)
 except Exception as e:
     os.system("title FyUTILS Crash Handler - Crash Log")
-    print(prefix("ERROR") + "FyUTILS CRASH LOG @ " + datetime.datetime.now().strftime("%H:%M:%S"))
-    print(prefix("ERROR") + "Error: " + str(e))
+    print(prefix("ERROR", "Crash") + "FyUTILS CRASH LOG @ " + datetime.datetime.now().strftime("%H:%M:%S"))
+    print(prefix("ERROR", "Crash") + "Error: " + str(e))
     temp = open(main_dir + "crash.log", "w+")
     temp.writelines("FyUTILS - Traceback crash log of  " + datetime.datetime.now().strftime("%H:%M:%S") + "\n" + "="*50 + "\n\n" + traceback.format_exc())
     temp.close()
-    print(prefix("ERROR") + "The full crash log has been saved to: " + main_dir + "crash.log")
+    print(prefix("ERROR", "Crash") + "The full crash log has been saved to: " + main_dir + "crash.log")
     os.system("explorer.exe /select,\"" + main_dir + "crash.log" + "\"")
     os.system("pause")
     sys.exit(1024)
