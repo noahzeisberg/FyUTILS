@@ -34,17 +34,17 @@ def prefix(type):
         current_thread_name = threading.current_thread().name
 
     if type == "INFO":
-        return accent_color() + "[" + color() + datetime.datetime.now().strftime("%H:%M:%S") + accent_color() + "]" + " " + accent_color() + "[" + text_color() + current_thread_name + accent_color() + "/" + Fore.LIGHTGREEN_EX + "INFO" + accent_color() + "] " + text_color()
+        return accent_color() + "[" + color() + datetime.datetime.now().strftime("%H:%M:%S") + accent_color() + "]" + " " + accent_color() + "[" + text_color() + current_thread_name + accent_color() + "/" + true_color() + "INFO" + accent_color() + "] " + text_color()
     elif type == "ERROR":
-        return accent_color() + "[" + color() + datetime.datetime.now().strftime("%H:%M:%S") + accent_color() + "]" + " " + accent_color() + "[" + text_color() + current_thread_name + accent_color() + "/" + Fore.RED + "ERROR" + accent_color() + "] " + text_color()
+        return accent_color() + "[" + color() + datetime.datetime.now().strftime("%H:%M:%S") + accent_color() + "]" + " " + accent_color() + "[" + text_color() + current_thread_name + accent_color() + "/" + false_color() + "ERROR" + accent_color() + "] " + text_color()
     elif type == "INIT":
         return accent_color() + "[" + color() + datetime.datetime.now().strftime("%H:%M:%S") + accent_color() + "]" + " " + accent_color() + "[" + text_color() + current_thread_name + accent_color() + "/" + color() + "INIT" + accent_color() + "] " + text_color()
     elif type == "FUEL":
         return accent_color() + "[" + color() + datetime.datetime.now().strftime("%H:%M:%S") + accent_color() + "]" + " " + accent_color() + "[" + text_color() + current_thread_name + accent_color() + "/" + fuel_color() + "FUEL" + accent_color() + "] " + text_color()
     elif type == "SHIELD":
-        return accent_color() + "[" + color() + datetime.datetime.now().strftime("%H:%M:%S") + accent_color() + "]" + " " + accent_color() + "[" + text_color() + current_thread_name + accent_color() + "/" + Fore.YELLOW + "SHIELD" + accent_color() + "] " + text_color()
+        return accent_color() + "[" + color() + datetime.datetime.now().strftime("%H:%M:%S") + accent_color() + "]" + " " + accent_color() + "[" + text_color() + current_thread_name + accent_color() + "/" + shield_color() + "SHIELD" + accent_color() + "] " + text_color()
     else:
-        return accent_color() + "[" + color() + datetime.datetime.now().strftime("%H:%M:%S") + accent_color() + "]" + " " + accent_color() + "[" + text_color() + current_thread_name + accent_color() + "/" + Fore.WHITE + str(type).upper() + accent_color() + "] " + text_color()
+        return accent_color() + "[" + color() + datetime.datetime.now().strftime("%H:%M:%S") + accent_color() + "]" + " " + accent_color() + "[" + text_color() + current_thread_name + accent_color() + "/" + text_color() + str(type).upper() + accent_color() + "] " + text_color()
 
 
 def version_is_newer(value):
@@ -136,6 +136,15 @@ def accent_color(): return src_accent_color
 def text_color(): return src_text_color
 
 
+def true_color(): return src_true_color
+
+
+def false_color(): return src_false_color
+
+
+def shield_color(): return src_shield_color
+
+
 def menu():
     os.system("cls")
     print(color() + "  __________               _____  __   ________   ________   ______       ________")
@@ -169,7 +178,7 @@ def menu():
         time.sleep(1/1000)
         print(accent_color() + "║ " + accent_color() + "[" + color() + "UPDATE" + accent_color() + "] " + text_color() + "A new version of FyUTILS is available! Install it now using \"update\".")
         time.sleep(1/1000)
-        print(accent_color() + "║ " + accent_color() + "[" + color() + "UPDATE" + accent_color() + "] " + text_color() + Fore.RED + version + accent_color() + " => " + Fore.GREEN + newest_version + text_color())
+        print(accent_color() + "║ " + accent_color() + "[" + color() + "UPDATE" + accent_color() + "] " + text_color() + false_color() + version + accent_color() + " => " + true_color() + newest_version + text_color())
         time.sleep(1/1000)
     print(accent_color() + "╚" + "═"*119)
 
@@ -183,6 +192,9 @@ src_color = Fore.LIGHTBLUE_EX
 src_fuel_color = Fore.LIGHTMAGENTA_EX
 src_accent_color = Fore.LIGHTBLACK_EX
 src_text_color = Fore.WHITE
+src_true_color = Fore.GREEN
+src_false_color = Fore.RED
+src_shield_color = Fore.YELLOW
 
 # Variable initialization
 try:
@@ -195,7 +207,7 @@ try:
     print(prefix("INIT") + "Start time: " + str(start_time))
     current_dir = sys.path[0]
     print(prefix("INIT") + "Directory: " + current_dir)
-    version = "1.5.8"
+    version = "1.6.0"
     print(prefix("INIT") + "Version: " + version)
     threads = multiprocessing.cpu_count()
     print(prefix("INIT") + "ThreadWorkers: " + str(threads))
@@ -720,7 +732,7 @@ try:
 
                 if update_available:
                     print(prefix("INFO") + "Update found!")
-                    print(prefix("INFO") + "Version Comparison: " + Fore.RED + version + accent_color() + " => " + Fore.GREEN + newest_version + text_color() + "...")
+                    print(prefix("INFO") + "Version Comparison: " + false_color() + version + accent_color() + " => " + true_color() + newest_version + text_color() + "...")
                     newest_file_content = requests.get(release_download_url).content
                     open(current_dir + "\\main.py", mode="wb").write(newest_file_content)
                     print(prefix("INFO") + "Update successfully installed!")
@@ -730,7 +742,7 @@ try:
                     sys.exit(512)
                 else:
                     print(prefix("INFO") + "You're running the latest version of FyUTILS!")
-                    print(prefix("INFO") + "Version comparison: " + Fore.GREEN + version + accent_color() + " = " + Fore.GREEN + newest_version + text_color() + "...")
+                    print(prefix("INFO") + "Version comparison: " + true_color() + version + accent_color() + " = " + true_color() + newest_version + text_color() + "...")
 
             case "edit":
                 if len(args) != 1:
@@ -815,7 +827,7 @@ try:
                         elif os.path.isfile(file):
                             print(prefix("INFO") + file)
                         elif os.path.isdir(file):
-                            print(prefix("INFO") + Fore.GREEN + "/" + file)
+                            print(prefix("INFO") + true_color() + "/" + file)
                 except Exception as e:
                     print("\n" + prefix("ERROR") + "An error occoured while trying to execute this command correctly.")
                     print(prefix("ERROR") + str(e))
