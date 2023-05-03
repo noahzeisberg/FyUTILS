@@ -165,9 +165,9 @@ portscan <target>
 Portscan scans for opened ports on the target.
 ### ARP
 ```
-arp <target>
+arp
 ```
-ARP (Address resolution protocol) scans for devices in the given network and lists up its IP address and MAC address.
+ARP (Address resolution protocol) scans for devices in your current network and lists up its IP address and MAC address.
 ### Checkport
 ```
 checkport <target> <port>
