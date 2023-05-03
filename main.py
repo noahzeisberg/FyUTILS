@@ -369,30 +369,26 @@ try:
                 print(prefix("INFO") + "Cleaning up...")
 
             case "arp":
-                if len(args) != 1:
-                    print(prefix("ERROR") + "Unexpected arguments for command \"" + cmd + "\"")
-                    continue
                 activity_start = time.time()
-                target = args[0]
-                update_status("ARP scanning in " + target + "...")
+                update_status("ARP scanning in " + private_ip + "...")
 
                 try:
                     print(prefix("INFO") + "Make sure you have WinPcap or Npcap installed!")
                     print(prefix("INFO") + "Initialising ARP service...")
-                    arp = scapy.ARP(pdst=target + "/24")
+                    arp = scapy.ARP(pdst=private_ip + "/24")
                     ether = scapy.Ether(dst="ff:ff:ff:ff:ff:ff")
                     packet = ether/arp
                     print(prefix("INFO") + "Sending ARP packets...")
                     content = scapy.srp(packet, timeout=2, verbose=0)[0]
                     clients = []
-                    print(prefix("INFO") + "Receiving data from " + target + "...")
+                    print(prefix("INFO") + "Receiving data from " + private_ip + "...")
                     for sent, received in content:
                         clients += [[received.psrc, received.hwsrc]]
                     print(prefix("INFO") + "Processing received data...")
                     print(prefix("INFO") + "Data received and processed.")
                     client_count = len(clients)
                     for i in range(client_count):
-                        print(prefix("INFO") + accent_color() + "[" + color() + str(i) + accent_color() + "] " + text_color() + "IP: " +  clients[i][0] + " MAC: " + clients[i][1])
+                        print(prefix("INFO") + accent_color() + "[" + color() + str(i) + accent_color() + "] " + text_color() + "IP: " + clients[i][0] + " MAC: " + clients[i][1])
                 except KeyboardInterrupt:
                     print(prefix("INFO") + "Canceling Action...")
                     print(prefix("INFO") + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
