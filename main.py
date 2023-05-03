@@ -59,6 +59,9 @@ def version_is_newer(value):
     second_minor = second_split[1]
     second_patch = second_split[2]
 
+    if version == value:
+        return False
+
     if major <= second_major:
         if minor <= second_minor:
             if patch <= second_patch:
@@ -193,7 +196,7 @@ try:
     print(prefix("INIT") + "Start time: " + str(start_time))
     current_dir = sys.path[0]
     print(prefix("INIT") + "Directory: " + current_dir)
-    version = "1.6.0"
+    version = "1.5.7"
     print(prefix("INIT") + "Version: " + version)
     threads = multiprocessing.cpu_count()
     print(prefix("INIT") + "ThreadWorkers: " + str(threads))
@@ -229,6 +232,7 @@ print(prefix("INIT") + "Checking for updates...")
 try:
     releases_json = requests.get(releases).json()
     newest_release = releases_json[0]
+    newest_release = releases_json[0]
     for r in range(len(newest_release["assets"])):
         if newest_release["assets"][r]["name"] == "main.py":
             release_download_url = newest_release["assets"][r]["browser_download_url"]
@@ -236,7 +240,7 @@ try:
         else:
             continue
     newest_version = newest_release["tag_name"]
-    if version != newest_version:
+    if version_is_newer(newest_version):
         print(prefix("INIT") + "A new version of FyUTILS is available!")
         print(prefix("INIT") + "Current version identifier: " + version)
         print(prefix("INIT") + "Newest version identifier: " + newest_version)
@@ -714,15 +718,19 @@ try:
             case "update":
                 update_status("Updating FyUTILS...")
 
-                print(prefix("INFO") + "Update found!")
-                print(prefix("INFO") + "Update: " + Fore.RED + version + accent_color() + " => " + Fore.GREEN + newest_version + text_color() + "...")
-                newest_file_content = requests.get(release_download_url).content
-                open(current_dir + "\\main.py", mode="wb").write(newest_file_content)
-                print(prefix("INFO") + "Update successfully installed!")
-                time.sleep(1)
-                print(prefix("INFO") + "Restarting FyUTILS...")
-                os.system("start " + current_dir + "\\main.py")
-                sys.exit(512)
+                if update_available:
+                    print(prefix("INFO") + "Update found!")
+                    print(prefix("INFO") + "Version Comparison: " + Fore.RED + version + accent_color() + " => " + Fore.GREEN + newest_version + text_color() + "...")
+                    newest_file_content = requests.get(release_download_url).content
+                    open(current_dir + "\\main.py", mode="wb").write(newest_file_content)
+                    print(prefix("INFO") + "Update successfully installed!")
+                    time.sleep(1)
+                    print(prefix("INFO") + "Restarting FyUTILS...")
+                    os.system("start " + current_dir + "\\main.py")
+                    sys.exit(512)
+                else:
+                    print(prefix("ERROR") + "You're running the latest version of FyUTILS!")
+                    print(prefix("INFO") + "Version comparison: " + Fore.GREEN + version + accent_color() + " = " + Fore.GREEN + newest_version + text_color() + "...")
 
             case "edit":
                 if len(args) != 1:
