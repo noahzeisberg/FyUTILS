@@ -9,7 +9,6 @@ import socket
 import sys
 import threading
 import time
-import tkinter.filedialog
 import traceback
 from pathlib import Path
 import easygui
@@ -196,7 +195,7 @@ try:
     print(prefix("INIT") + "Start time: " + str(start_time))
     current_dir = sys.path[0]
     print(prefix("INIT") + "Directory: " + current_dir)
-    version = "1.5.7"
+    version = "1.5.8"
     print(prefix("INIT") + "Version: " + version)
     threads = multiprocessing.cpu_count()
     print(prefix("INIT") + "ThreadWorkers: " + str(threads))
@@ -730,7 +729,7 @@ try:
                     os.system("start " + current_dir + "\\main.py")
                     sys.exit(512)
                 else:
-                    print(prefix("ERROR") + "You're running the latest version of FyUTILS!")
+                    print(prefix("INFO") + "You're running the latest version of FyUTILS!")
                     print(prefix("INFO") + "Version comparison: " + Fore.GREEN + version + accent_color() + " = " + Fore.GREEN + newest_version + text_color() + "...")
 
             case "edit":
