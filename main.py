@@ -48,6 +48,23 @@ def prefix(type):
         return accent_color() + "[" + color() + datetime.datetime.now().strftime("%H:%M:%S") + accent_color() + "]" + " " + accent_color() + "[" + text_color() + current_thread_name + accent_color() + "/" + Fore.WHITE + str(type).upper() + accent_color() + "] " + text_color()
 
 
+def version_is_newer(value):
+    split = str(version).split(".")
+    major = split[0]
+    minor = split[1]
+    patch = split[2]
+
+    second_split = str(value).split(".")
+    second_major = second_split[0]
+    second_minor = second_split[1]
+    second_patch = second_split[2]
+
+    if major <= second_major:
+        if minor <= second_minor:
+            if patch <= second_patch:
+                return True
+
+
 def update_status(status):
     os.system("title FyUTILS " + version + " - " + username + "@" + device + " - " + status)
     try:
@@ -150,9 +167,7 @@ def menu():
         time.sleep(1/1000)
         print(accent_color() + "║ " + accent_color() + "[" + color() + "UPDATE" + accent_color() + "] " + text_color() + "A new version of FyUTILS is available! Install it now using \"update\".")
         time.sleep(1/1000)
-        print(accent_color() + "║ " + accent_color() + "[" + color() + "UPDATE" + accent_color() + "] " + text_color() + "Current version: " + Fore.RED + version)
-        time.sleep(1/1000)
-        print(accent_color() + "║ " + accent_color() + "[" + color() + "UPDATE" + accent_color() + "] " + text_color() + "Target version: " + Fore.GREEN + newest_version)
+        print(accent_color() + "║ " + accent_color() + "[" + color() + "UPDATE" + accent_color() + "] " + text_color() + Fore.RED + version + accent_color() + " => " + Fore.GREEN + newest_version + text_color())
         time.sleep(1/1000)
     print(accent_color() + "╚" + "═"*119)
 
@@ -178,7 +193,7 @@ try:
     print(prefix("INIT") + "Start time: " + str(start_time))
     current_dir = sys.path[0]
     print(prefix("INIT") + "Directory: " + current_dir)
-    version = "1.5.7"
+    version = "1.6.0"
     print(prefix("INIT") + "Version: " + version)
     threads = multiprocessing.cpu_count()
     print(prefix("INIT") + "ThreadWorkers: " + str(threads))
@@ -699,7 +714,8 @@ try:
             case "update":
                 update_status("Updating FyUTILS...")
 
-                print(prefix("INFO") + "Update found! Updating to " + newest_version + "...")
+                print(prefix("INFO") + "Update found!")
+                print(prefix("INFO") + "Update: " + Fore.RED + version + accent_color() + " => " + Fore.GREEN + newest_version + text_color() + "...")
                 newest_file_content = requests.get(release_download_url).content
                 open(current_dir + "\\main.py", mode="wb").write(newest_file_content)
                 print(prefix("INFO") + "Update successfully installed!")
