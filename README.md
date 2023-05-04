@@ -137,12 +137,12 @@ Here's an example:
 [16:32:00] [FyUTILS/INFO] Stuff after prefix like text.
 ```
 
-| Used in example               | Description                                      |
-|-------------------------------|--------------------------------------------------|
-| 16:32:00                      | Current time based on your timezone etc.         |
-| FyUTILS/                      | Name of the program (is FyUTILS at every time)   |
-| INFO                          | Logging level (e.g. INFO, ERROR, INIT, etc.)     |
-| Stuff after prefix like text. | Stuff after the prefix (I think this is obvious) |
+| Used in example               | Description                                                                                |
+|-------------------------------|--------------------------------------------------------------------------------------------|
+| 16:32:00                      | Current time based on your timezone etc.                                                   |
+| FyUTILS/                      | Protocol layer (Some short, additional information about what FyUTILS is doing right now.) |
+| INFO                          | Logging level (e.g. INFO, ERROR or WARN)                                                   |
+| Stuff after prefix like text. | Stuff after the prefix (I think this is obvious)                                           |
 
 ## FUELS
 FUELS (FyUTILS extending libraries) are simple lightweight scripts that can add a certain behaviour or action when you execute a command.
