@@ -175,8 +175,6 @@ def menu():
 os.system("title FyUTILS")
 
 # Color initialisation
-print(prefix("INFO", "Init") + "Initializing colors...")
-
 src_color = Fore.LIGHTBLUE_EX
 src_fuel_color = Fore.LIGHTMAGENTA_EX
 src_accent_color = Fore.LIGHTBLACK_EX
@@ -251,7 +249,8 @@ try:
         print(prefix("INFO", "Updater") + "Newest version identifier: " + newest_version)
         update_available = False
 except Exception as e:
-    print(prefix("ERROR", "Updater") + "Checking for updates failed. Please check your internet connection.")
+    print(prefix("WARN", "Updater") + "Checking for updates failed. Please check your internet connection.")
+    print(prefix("WARN", "Updater") + "You won't recieve any updates without internet connection.")
     update_available = False
 
 # Discord RPC initialisation
@@ -264,7 +263,7 @@ try:
     print(prefix("INFO", "RichPresence") + "Discord is connected...")
     update_status("Starting up...")
 except:
-    print(prefix("ERROR", "RichPresence") + "Can't connect with the discord RPC.")
+    print(prefix("WARN", "RichPresence") + "Can't connect with the discord RPC.")
     time.sleep(0.25)
 
 # FUEL initialisation
@@ -280,8 +279,6 @@ print(prefix("INFO", "FUEL") + "FUELS initialized")
 
 print(prefix("INFO", "Init") + "Initialisation phase completed!")
 update_status("Initialisation phase completed!")
-
-time.sleep(5)
 
 # INIT PHASE END
 
@@ -335,7 +332,7 @@ try:
                             print(prefix("INFO") + "Attacking target: " + color() + target + accent_color() + ":" + color() + str(port) + text_color() + "..." + accent_color() + " - " + text_color() + "Attack: " + color() + str(i + 1) + accent_color(), end='\r')
                         except socket.error:
                             print("")
-                            print(prefix("ERROR") + "Request " + color() + str(i) + text_color() + " failed.", end='\r')
+                            print(prefix("WARN") + "Request " + color() + str(i) + text_color() + " failed.", end='\r')
                     print("\n")
                 except KeyboardInterrupt:
                     print("\n" + prefix("INFO") + "Canceling Action...")
@@ -347,7 +344,7 @@ try:
                 try:
                     sock.close()
                 except:
-                    print(prefix("ERROR") + "Cannot disconnect from target!")
+                    print(prefix("WARN") + "Cannot disconnect from target!")
                 print(prefix("INFO") + "Cleaning up...")
 
             case "portscan":
@@ -383,7 +380,7 @@ try:
                 try:
                     sock.close()
                 except:
-                    print(prefix("ERROR") + "Cannot disconnect from target!")
+                    print(prefix("WARN") + "Cannot disconnect from target!")
                 print(prefix("INFO") + "Cleaning up...")
 
             case "arp":
@@ -431,7 +428,7 @@ try:
                     if result == 0:
                         print(prefix("INFO") + "Port " + color() + str(port) + text_color() + " is open!")
                     else:
-                        print(prefix("ERROR") + "Port " + color() + str(port) + text_color() + " is not open!")
+                        print(prefix("WARN") + "Port " + color() + str(port) + text_color() + " is not open!")
                     sock.close()
                 except KeyboardInterrupt:
                     print(prefix("INFO") + "Canceling Action...")
@@ -444,7 +441,7 @@ try:
                 try:
                     sock.close()
                 except:
-                    print(prefix("ERROR") + "Cannot disconnect from target!")
+                    print(prefix("WARN") + "Cannot disconnect from target!")
                 print(prefix("INFO") + "Cleaning up...")
 
             case "ssh":
@@ -458,7 +455,7 @@ try:
                 update_status("Starting FySSH service...")
 
                 print(prefix("INFO") + "Connecting to " + server + ":" + str(port) + " as " + user)
-                print(prefix("INFO") + "Creating SSH client...")
+                print(prefix("INFO") + "Initialising SSH client...")
                 ssh = paramiko.SSHClient()
                 print(prefix("INFO") + "Loading host keys...")
                 ssh.load_system_host_keys()
@@ -485,7 +482,7 @@ try:
                             print("\n" + prefix("INFO") + "Canceling Action...")
                             break
                         except Exception as e:
-                            print("\n" + prefix("ERROR") + "An error occoured while trying to execute this command correctly.")
+                            print("\n" + prefix("ERROR") + "An error occurred while trying to execute this command correctly.")
                             print(prefix("ERROR") + str(e))
                             print("")
                 except Exception as e:
@@ -500,7 +497,7 @@ try:
                 try:
                     ssh.close()
                 except:
-                    print(prefix("ERROR") + "Cannot disconnect from target!")
+                    print(prefix("WARN") + "Cannot disconnect from target!")
                 print(prefix("INFO") + "Cleaning up...")
 
             case "fetch":
@@ -533,7 +530,7 @@ try:
                     print("\n" + prefix("INFO") + "Canceling Action...")
                     print(prefix("INFO") + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
                 except Exception as e:
-                    print("\n" + prefix("ERROR") + "An error occoured while trying to execute this command correctly.")
+                    print("\n" + prefix("ERROR") + "An error occurred while trying to execute this command correctly.")
                     print(prefix("ERROR") + str(e))
                     print(prefix("INFO") + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
                     print("")
@@ -560,7 +557,7 @@ try:
                     print("\n" + prefix("INFO") + "Canceling Action...")
                     print(prefix("INFO") + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
                 except Exception as e:
-                    print("\n" + prefix("ERROR") + "An error occoured while trying to execute this command correctly.")
+                    print("\n" + prefix("ERROR") + "An error occurred while trying to execute this command correctly.")
                     print(prefix("ERROR") + str(e))
                     print(prefix("INFO") + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
                     print("")
@@ -588,7 +585,7 @@ try:
                     print("\n" + prefix("INFO") + "Canceling Action...")
                     print(prefix("INFO") + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
                 except Exception as e:
-                    print("\n" + prefix("ERROR") + "An error occoured while trying to execute this command correctly.")
+                    print("\n" + prefix("ERROR") + "An error occurred while trying to execute this command correctly.")
                     print(prefix("ERROR") + str(e))
                     print(prefix("INFO") + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
                     print("")
@@ -701,17 +698,6 @@ try:
                         continue
                     print(prefix("INFO") + f"Done! Took{time.time() - activity_start: 0.2f}s to remove package " + fuel_color() + filename)
 
-                try:
-                    None
-                except KeyboardInterrupt:
-                    print("")
-                    print(accent_color() + "╚" + "═" * 119)
-                    print("\n" + prefix("INFO") + "Canceling Action...")
-                except Exception as e:
-                    print("\n" + prefix("ERROR") + "An error occoured while trying to execute this command correctly.")
-                    print(prefix("ERROR") + str(e))
-                    print("")
-
             case "update":
                 update_status("Updating FyUTILS...")
 
@@ -727,7 +713,7 @@ try:
                     sys.exit(512)
                 else:
                     print(prefix("INFO", "Updater") + "You're running the latest version of FyUTILS!")
-                    print(prefix("INFO", "Updater") + "Version comparison: " + true_color() + version + accent_color() + " = " + true_color() + newest_version + text_color() + "...")
+                    print(prefix("INFO", "Updater") + "Version comparison: " + true_color() + version + accent_color() + " == " + true_color() + newest_version + text_color() + "...")
 
             case "edit":
                 if len(args) != 1:
@@ -738,7 +724,7 @@ try:
                 update_status("Editing " + filepath + "...")
 
                 if not os.path.exists(filepath):
-                    print(prefix("ERROR") + "File not found!")
+                    print(prefix("WARN") + "File not found!")
                     confirmation = input(prefix("INFO") + "Do you want to let FyUTILS create a new file? (y/n): ")
                     if confirmation.lower() == "n":
                         continue
@@ -791,7 +777,7 @@ try:
                     continue
                 else:
                     file = open(filepath, "rt")
-                    print(prefix("INFO") + "File opened successfuly.")
+                    print(prefix("INFO") + "File opened successfully.")
                 i = 1
                 for line in file.readlines():
                     print(str(i) + ": " + line, end="\r")
@@ -814,7 +800,7 @@ try:
                         elif os.path.isdir(file):
                             print(prefix("INFO") + true_color() + "/" + file)
                 except Exception as e:
-                    print("\n" + prefix("ERROR") + "An error occoured while trying to execute this command correctly.")
+                    print("\n" + prefix("ERROR") + "An error occurred while trying to execute this command correctly.")
                     print(prefix("ERROR") + str(e))
                     print("")
 
@@ -831,7 +817,7 @@ try:
 
             case "cd":
                 if len(args) != 1:
-                    print(prefix("INFO") + os.getcwd().replace("C:\\", "/").replace("\\", "/").replace(":", "").lower())
+                    print(prefix("INFO") + os.getcwd())
                     continue
                 change_dir = args[0]
                 activity_start = time.time()
@@ -867,7 +853,7 @@ try:
                         cwd_abbreviation = os.getcwd()
                     print(prefix("INFO") + cwd_abbreviation)
                 except Exception as e:
-                    print("\n" + prefix("ERROR") + "An error occoured while trying to execute this command correctly.")
+                    print("\n" + prefix("ERROR") + "An error occurred while trying to execute this command correctly.")
                     print(prefix("ERROR") + str(e))
                     print("")
 
