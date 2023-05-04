@@ -151,7 +151,7 @@ def menu():
     time.sleep(1/1000)
     print(color() + "             ___/  /")
     time.sleep(1/1000)
-    print(color() + "            /_____/ " + " "*5 + accent_color() + "v" + text_color() + version.replace(".", accent_color() + "." + text_color()) + accent_color() + " | " + text_color() + "Made by NoahOnFyre")
+    print(color() + "            /_____/ " + " "*10 + accent_color() + "v" + text_color() + version.replace(".", accent_color() + "." + text_color()) + accent_color() + " | " + text_color() + "Made by NoahOnFyre")
     time.sleep(1/1000)
     print("")
     time.sleep(1/1000)
@@ -369,7 +369,7 @@ try:
                         result = sock.connect_ex((target, port))
                         print(prefix("INFO") + "Scanning Port... " + color() + str(port), end='\r')
                         if result == 0:
-                            print(prefix("INFO") + "Port " + color() + str(port) + text_color() + " is open!                ")
+                            print(prefix("INFO") + "Port " + color() + str(port) + text_color() + " is open!" + " "*50)
                         sock.close()
                     print("\n")
                 except KeyboardInterrupt:
