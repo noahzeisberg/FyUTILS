@@ -11,14 +11,13 @@ import time
 import traceback
 from pathlib import Path
 import easygui
-
 import paramiko
 import phonenumbers
 import psutil
 import pwinput
 import requests
 import scapy.layers.l2 as scapy
-from colorama import Fore, init
+from colorama import Fore, Back, init
 from phonenumbers import geocoder, carrier, timezone
 from pypresence import Presence
 from pytube import YouTube
@@ -135,6 +134,9 @@ def false_color(): return src_false_color
 def warn_color(): return src_warn_color
 
 
+def pause(level: str = "INFO", protocol: str = "FyUTILS"): input(prefix(level.upper(), protocol) + "Press enter to continue. ")
+
+
 def menu():
     os.system("cls")
     print(color() + "  __________               _____  __   ________   ________   ______       ________")
@@ -194,7 +196,7 @@ try:
     print(prefix("INFO", "Init") + "Start time: " + str(start_time))
     current_dir = sys.path[0]
     print(prefix("INFO", "Init") + "Directory: " + current_dir)
-    version = "1.6.0"
+    version = "1.6.1"
     print(prefix("INFO", "Init") + "Version: " + version)
     threads = multiprocessing.cpu_count()
     print(prefix("INFO", "Init") + "ThreadWorkers: " + str(threads))
@@ -222,7 +224,7 @@ except Exception as e:
     print(prefix("ERROR", "Init") + "Failed to get system variables!")
     print(traceback.format_exc())
     print(prefix("ERROR", "Init") + "Shutting down...")
-    os.system("pause")
+    pause()
     sys.exit(2048)
 
 # Update checker
@@ -912,5 +914,5 @@ except Exception as e:
     temp.close()
     print(prefix("ERROR", "Crash") + "The full crash log has been saved to: " + main_dir + "crash.log")
     os.system("explorer.exe /select,\"" + main_dir + "crash.log" + "\"")
-    os.system("pause")
+    pause("ERROR", "Crash")
     sys.exit(1024)
