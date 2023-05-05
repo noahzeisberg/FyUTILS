@@ -40,6 +40,7 @@ A simple python hacking and utility terminal application for windows with an int
 * [License](#license)
 * [Things used in FyUTILS](#things-used-in-fyutils)
     * [Languages](#languages)
+    * [APIs](#apis)
     * [Updating System](#updating-system)
     * [Rich Presence libraries](#rich-presence-libraries)
     * [Networking libraries](#networking-libraries)
@@ -48,8 +49,10 @@ A simple python hacking and utility terminal application for windows with an int
 
 ## Authors and Contributors
 
-- [@NoahOnFyre](https://www.github.com/NoahOnFyre) (Project Owner)
-- (coming soon) [@LucaOnFyre](https://www.github.com/LucaOnFyre) (Repository maintainer)
+- Project owner: [@NoahOnFyre](https://www.github.com/NoahOnFyre)
+- Issues: [@NoahOnFyre](https://www.github.com/NoahOnFyre)
+- Maintainer: [@NoahOnFyre](https://www.github.com/NoahOnFyre)
+- Documentation writing: [@NoahOnFyre](https://www.github.com/NoahOnFyre)
 
 # Documentation
 This Documentation will guide you through the installation, the first launch and configuration and the daily use of FyUTILS.
@@ -165,6 +168,11 @@ Flood will launch a denial of service attack on target:port. It can be very powe
 portscan <target>
 ```
 Portscan scans for opened ports on the target.
+### Resolve
+```
+resolve <ip/phone> <target>
+```
+Resolves information about the specified target.
 ### ARP
 ```
 arp
@@ -182,11 +190,6 @@ ssh <host> <port> <username>
 SSH will initiate a secure shell connection to the host on the specified port with the given credentials (Username & Password)
 
 You'll have to enter a password after running the commands. Your input will be censored.
-### Phone
-```
-phone <phone_number>
-```
-Phone shows you some information about a specified phone number.
 ### Fetch
 ```
 fetch <url> <filename>
@@ -280,6 +283,10 @@ All tools, languages and whatever I used for FyUTILS
 | JSON     | Libraries (FUELS)   |
 | Batch    | System interactions |
 | Markdown | Documentation       |
+
+### APIs
+- [IP WhoIs](http://ipwho.is/)
+- [Ipify](http://ipify.org/)
 
 ### Updating System
 - [GitHub API](https://api.github.com)
