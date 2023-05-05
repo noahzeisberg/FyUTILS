@@ -9,4 +9,3 @@ psutil~=5.9.4
 scapy~=2.5.0
 keyboard~=0.13.5
 phonenumbers~=8.13.10
-easygui~=0.98.3
