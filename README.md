@@ -3,9 +3,11 @@
 
 A simple python hacking and utility terminal application for windows with an integrated package manager, community driven libraries and plenty of other features.
 
-![Language](https://img.shields.io/badge/dynamic/json?color=blue&label=Language&query=language&url=https%3A%2F%2Fapi.github.com%2Frepos%2FNoahOnFyre%2FFyUTILS)
-![Latest version](https://img.shields.io/badge/dynamic/json?color=brightgreen&label=Latest%20release&query=0.name&url=https%3A%2F%2Fapi.github.com%2Frepos%2FNoahOnFyre%2FFyUTILS%2Ftags)
-![Open issues](https://img.shields.io/badge/dynamic/json?color=brightgreen&label=Issues%20open&query=open_issues_count&url=https%3A%2F%2Fapi.github.com%2Frepos%2FNoahOnFyre%2FFyUTILS)
+![Language](https://img.shields.io/badge/dynamic/json?color=blue&label=Language&query=language&url=https%3A%2F%2Fapi.github.com%2Frepos%2FNoahOnFyre%2FFyUTILS&style=for-the-badge)
+![GitHub all releases](https://img.shields.io/github/downloads/NoahOnFyre/FyUTILS/total?style=for-the-badge)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/NoahOnFyre/FyUTILS?style=for-the-badge)
+![GitHub issues](https://img.shields.io/github/issues-raw/NoahOnFyre/FyUTILS?style=for-the-badge)
+![GitHub contributors](https://img.shields.io/github/contributors/NoahOnFyre/FyUTILS?style=for-the-badge)
 
 ## Table of contents (TOC)
 * [FyUTILS](#fyutils)
