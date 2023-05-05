@@ -10,7 +10,6 @@ import sys
 import time
 import traceback
 from pathlib import Path
-import easygui
 import paramiko
 import phonenumbers
 import psutil
@@ -613,11 +612,8 @@ try:
 
             case "fuel":
                 if len(args) != 2:
-                    if len(args) == 1 and (args[0] == "add" or args[0] == "remove"):
-                        None
-                    else:
-                        print(prefix("ERROR") + "Unexpected arguments for command \"" + cmd + "\"")
-                        continue
+                    print(prefix("ERROR") + "Unexpected arguments for command \"" + cmd + "\"")
+                    continue
                 fuel_action = args[0]
                 if len(args) == 2:
                     fuel_location = args[1]
@@ -664,8 +660,6 @@ try:
                     print(prefix("INFO") + f"Done! Took{time.time() - activity_start: 0.2f}s to install package " + fuel_color() + fuel_location + text_color() + "!")
 
                 elif fuel_action == "add":
-                    if len(args) == 1:
-                        fuel_location = easygui.fileopenbox(msg="Import FUEL into FyUTILS", title="FUEL Managment Utilities", filetypes=[["*.json", "FUEL files"]], multiple=False)
                     print(prefix("INFO") + "Installation process started!")
                     filename = os.path.basename(fuel_location).split("/")[-1]
                     print(prefix("INFO") + "Checking FUEL directory...")
@@ -687,11 +681,6 @@ try:
                     print(prefix("INFO") + f"Done! Took{time.time() - activity_start: 0.2f}s to install package " + fuel_color() + filename + text_color() + "!")
 
                 elif fuel_action == "remove":
-                    if len(args) == 1:
-                        temp = os.getcwd()
-                        os.chdir(fuel_content_dir)
-                        fuel_location = easygui.fileopenbox(msg="Removing FUEL from FyUTILS", title="FUEL Managment Utilities", filetypes=[["*.json", "FUEL files"]], multiple=False)
-                        os.chdir(temp)
                     filename = os.path.basename(fuel_location).split("/")[-1]
                     print(prefix("INFO") + "Unregistering " + fuel_content_dir + filename + "...")
                     if os.path.exists(fuel_content_dir + filename):
