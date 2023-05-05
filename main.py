@@ -188,6 +188,7 @@ src_warn_color = Fore.YELLOW
 
 # Variable initialisation
 try:
+    # User specific stuff
     print(prefix("INFO", "Init") + "Initializing system variables...")
     username = os.getlogin()
     print(prefix("INFO", "Init") + "Username: " + username)
@@ -205,6 +206,18 @@ try:
     print(prefix("INFO", "Init") + "ThreadWorkers: " + str(threads))
     private_ip = socket.gethostbyname(socket.gethostname())
     print(prefix("INFO", "Init") + "Private IP: " + private_ip)
+
+    # OS specific stuff.
+    operating_system = platform.system()
+    print(prefix("INFO", "Init") + "Operating System: " + operating_system)
+    os_version = platform.version()
+    print(prefix("INFO", "Init") + "OS version: " + os_version)
+
+    # Python specific stuff
+    python_version = platform.python_version()
+    print(prefix("INFO", "Init") + "Python version: " + python_version)
+
+    # Directory and URL specific stuff
     user_dir = str(Path.home())
     print(prefix("INFO", "Init") + "User specific directory: " + user_dir)
     appdata_dir = user_dir + "\\AppData"
@@ -217,17 +230,19 @@ try:
     print(prefix("INFO", "Init") + "Download Content Location: " + download_content_dir)
     fuel_content_dir = main_dir + "fuels\\"
     print(prefix("INFO", "Init") + "FUEL Content Location: " + fuel_content_dir)
-    cpu = platform.processor()
-    print(prefix("INFO", "Init") + "CPU: " + cpu)
     releases = "https://api.github.com/repos/NoahOnFyre/FyUTILS/releases"
     print(prefix("INFO", "Init") + "Releases URL: " + releases)
+
+    # System components specific stuff
+    cpu = platform.processor()
+    print(prefix("INFO", "Init") + "CPU: " + cpu)
     memory_amount = psutil.virtual_memory().total
     print(prefix("INFO", "Init") + "Memory amount: " + str(round(memory_amount/1024/1024)) + "MB")
 except Exception as e:
     print(prefix("ERROR", "Init") + "Failed to get system variables!")
     print(traceback.format_exc())
     print(prefix("ERROR", "Init") + "Shutting down...")
-    pause()
+    pause("ERROR", "Init")
     sys.exit(2048)
 
 # Update checker
@@ -255,14 +270,15 @@ try:
         update_available = False
 except Exception as e:
     print(prefix("WARN", "Updater") + "Checking for updates failed. Please check your internet connection.")
-    print(prefix("WARN", "Updater") + "You won't recieve any updates without internet connection.")
+    print(prefix("WARN", "Updater") + "You won't receive any updates without internet connection.")
     update_available = False
 
 # Discord RPC initialisation
 try:
-    print(prefix("INFO", "RichPresence") + "Initializing discord rich presence... (RPC)")
-    rpc = Presence("1005822803997638696")
-    print(prefix("INFO", "RichPresence") + "Presence ID set to: '1005822803997638696'.")
+    presence_id = "1005822803997638696"
+    print(prefix("INFO", "RichPresence") + "Presence ID set to: \"" + presence_id + "\".")
+    print(prefix("INFO", "RichPresence") + "Initializing discord rich presence...")
+    rpc = Presence(presence_id)
     print(prefix("INFO", "RichPresence") + "Connecting to discord...")
     rpc.connect()
     print(prefix("INFO", "RichPresence") + "Discord is connected...")
