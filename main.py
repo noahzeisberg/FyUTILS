@@ -6,9 +6,11 @@ import platform
 import random
 import shutil
 import socket
+import subprocess
 import sys
 import time
 import traceback
+import uuid
 from pathlib import Path
 import paramiko
 import phonenumbers
@@ -191,11 +193,13 @@ try:
     print(prefix("INFO", "Init") + "Username: " + username)
     device = platform.node()
     print(prefix("INFO", "Init") + "Device: " + device)
+    hwid = str(subprocess.check_output("wmic csproduct get uuid",), "UTF-8").split("\n")[1].strip()
+    print(prefix("INFO", "Init") + "Hardware ID: " + hwid)
     start_time = time.time()
     print(prefix("INFO", "Init") + "Start time: " + str(start_time))
     current_dir = sys.path[0]
     print(prefix("INFO", "Init") + "Directory: " + current_dir)
-    version = "1.6.1"
+    version = "1.6.2"
     print(prefix("INFO", "Init") + "Version: " + version)
     threads = multiprocessing.cpu_count()
     print(prefix("INFO", "Init") + "ThreadWorkers: " + str(threads))
@@ -396,6 +400,7 @@ try:
                 if action == "ip":
                     data = json.loads(requests.get("http://ipwho.is/" + target).content.decode())
                     print(prefix("INFO") + "Resolved informations of \"" + data["ip"] + "\"")
+                    print(prefix("INFO") + "IP: " + data["ip"])
                     print(prefix("INFO") + "IP type: " + data["type"])
                     print(prefix("INFO") + "Continent: " + data["continent"])
                     print(prefix("INFO") + "Country: " + data["country"])
@@ -419,6 +424,24 @@ try:
                     print(prefix("INFO") + "Location: " + location)
                     print(prefix("INFO") + "Carrier: " + carrier)
                     print(prefix("INFO") + "Timezone: " + str(zone))
+                elif action == "domain":
+                    data = json.loads(requests.get("http://ipwho.is/" + socket.gethostbyname(target)).content.decode())
+                    print(prefix("INFO") + "Resolved informations of \"" + data["ip"] + "\"")
+                    print(prefix("INFO") + "IP: " + data["ip"])
+                    print(prefix("INFO") + "IP type: " + data["type"])
+                    print(prefix("INFO") + "Continent: " + data["continent"])
+                    print(prefix("INFO") + "Country: " + data["country"])
+                    print(prefix("INFO") + "Region: " + data["region"])
+                    print(prefix("INFO") + "City: " + data["city"])
+                    print(prefix("INFO") + "Latitude: " + str(data["latitude"]))
+                    print(prefix("INFO") + "Longitude: " + str(data["longitude"]))
+                    print(prefix("INFO") + "EU country: " + str(data["is_eu"]))
+                    print(prefix("INFO") + "Postal code: " + data["postal"])
+                    print(prefix("INFO") + "Organisation (ORG): " + data["connection"]["org"])
+                    print(prefix("INFO") + "Internet access provider (ISP): " + data["connection"]["isp"])
+                    print(prefix("INFO") + "Domain: " + data["connection"]["domain"])
+                    print(prefix("INFO") + "Timezone: " + data["timezone"]["id"])
+                    print(prefix("INFO") + "UTC: " + data["timezone"]["utc"])
                 else:
                     print(prefix("ERROR") + "Action is not supported!")
 
