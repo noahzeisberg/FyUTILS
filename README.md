@@ -178,14 +178,19 @@ portscan <target>
 Portscan scans for opened ports on the target.
 ### Resolve
 ```
-resolve <ip/phone> <target>
+resolve <ip/phone/domain> <target>
 ```
-Resolves information about the specified target.
+Resolves information about the specified target. If the target is a domain, the IPv4 address will be returned too.
 ### ARP
 ```
 arp
 ```
 ARP (Address resolution protocol) scans for devices in your current network and lists up its IP address and MAC address.
+### Vars
+```
+vars
+```
+Vars will list up all system variables set by FyUTILS.
 ### Checkport
 ```
 checkport <target> <port>
