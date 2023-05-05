@@ -3,8 +3,8 @@
 
 A simple python hacking and utility terminal application for windows with an integrated package manager, community driven libraries and plenty of other features.
 
-https://img.shields.io/badge/dynamic/json?color=blue&label=Language&query=language&url=https%3A%2F%2Fapi.github.com%2Frepos%2FNoahOnFyre%2FFyUTILS
-
+![Language](https://img.shields.io/badge/dynamic/json?color=blue&label=Language&query=language&url=https%3A%2F%2Fapi.github.com%2Frepos%2FNoahOnFyre%2FFyUTILS)
+![Latest version](https://img.shields.io/badge/dynamic/json?color=brightgreen&label=Latest%20release&query=0.name&url=https%3A%2F%2Fapi.github.com%2Frepos%2FNoahOnFyre%2FFyUTILS%2Ftags)
 
 ## Table of contents (TOC)
 * [FyUTILS](#fyutils)
