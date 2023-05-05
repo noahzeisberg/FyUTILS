@@ -385,6 +385,44 @@ try:
                     print(prefix("WARN") + "Cannot disconnect from target!")
                 print(prefix("INFO") + "Cleaning up...")
 
+            case "resolve":
+                if len(args) != 2:
+                    print(prefix("ERROR") + "Unexpected arguments for command \"" + cmd + "\"")
+                    continue
+                action = args[0]
+                target = args[1]
+                activity_start = time.time()
+                update_status("Resolving information about " + target)
+
+                if action == "ip":
+                    data = json.loads(requests.get("http://ipwho.is/" + target).content.decode())
+                    print(prefix("INFO") + "Resolved informations of \"" + data["ip"] + "\"")
+                    print(prefix("INFO") + "IP type: " + data["type"])
+                    print(prefix("INFO") + "Continent: " + data["continent"])
+                    print(prefix("INFO") + "Country: " + data["country"])
+                    print(prefix("INFO") + "Region: " + data["region"])
+                    print(prefix("INFO") + "City: " + data["city"])
+                    print(prefix("INFO") + "Latitude: " + str(data["latitude"]))
+                    print(prefix("INFO") + "Longitude: " + str(data["longitude"]))
+                    print(prefix("INFO") + "EU country: " + str(data["is_eu"]))
+                    print(prefix("INFO") + "Postal code: " + data["postal"])
+                    print(prefix("INFO") + "Organisation (ORG): " + data["connection"]["org"])
+                    print(prefix("INFO") + "Internet access provider (ISP): " + data["connection"]["isp"])
+                    print(prefix("INFO") + "Domain: " + data["connection"]["domain"])
+                    print(prefix("INFO") + "Timezone: " + data["timezone"]["id"])
+                    print(prefix("INFO") + "UTC: " + data["timezone"]["utc"])
+                elif action == "phone":
+                    parsed_number = phonenumbers.parse(target)
+                    location = geocoder.description_for_number(parsed_number, "de")
+                    carrier = carrier.name_for_number(parsed_number, "de")
+                    zone = timezone.time_zones_for_number(parsed_number)
+                    print(prefix("INFO") + "Phone number information of " + target + ":")
+                    print(prefix("INFO") + "Location: " + location)
+                    print(prefix("INFO") + "Carrier: " + carrier)
+                    print(prefix("INFO") + "Timezone: " + str(zone))
+                else:
+                    print(prefix("ERROR") + "Action is not supported!")
+
             case "arp":
                 activity_start = time.time()
                 update_status("ARP scanning in " + private_ip + "...")
