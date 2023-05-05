@@ -10,7 +10,6 @@ import subprocess
 import sys
 import time
 import traceback
-import uuid
 from pathlib import Path
 import paramiko
 import phonenumbers
@@ -234,7 +233,7 @@ try:
     print(prefix("INFO", "Init") + "Start time: " + str(start_time))
     current_dir = sys.path[0]
     print(prefix("INFO", "Init") + "Directory: " + current_dir)
-    version = "1.6.2"
+    version = "1.7.0"
     print(prefix("INFO", "Init") + "Version: " + version)
     threads = multiprocessing.cpu_count()
     print(prefix("INFO", "Init") + "ThreadWorkers: " + str(threads))
@@ -524,6 +523,30 @@ try:
                     print(prefix("ERROR") + "An error occurred while trying to execute this command correctly.")
                     print(prefix("ERROR") + str(e))
                     print(prefix("INFO") + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
+
+            case "vars":
+                print(prefix("INFO", "Init") + "Listing up system variables...")
+                time.sleep(0.25)
+                print(prefix("INFO", "Init") + "Username: " + username)
+                print(prefix("INFO", "Init") + "Device: " + device)
+                print(prefix("INFO", "Init") + "Hardware ID: " + hwid)
+                print(prefix("INFO", "Init") + "Start time: " + str(start_time))
+                print(prefix("INFO", "Init") + "Directory: " + current_dir)
+                print(prefix("INFO", "Init") + "Version: " + version)
+                print(prefix("INFO", "Init") + "ThreadWorkers: " + str(threads))
+                print(prefix("INFO", "Init") + "Private IP: " + private_ip)
+                print(prefix("INFO", "Init") + "Operating System: " + operating_system)
+                print(prefix("INFO", "Init") + "OS version: " + os_version)
+                print(prefix("INFO", "Init") + "Python version: " + python_version)
+                print(prefix("INFO", "Init") + "User specific directory: " + user_dir)
+                print(prefix("INFO", "Init") + "AppData directory: " + appdata_dir)
+                print(prefix("INFO", "Init") + "FyUTILS AppData directory: " + main_dir)
+                print(prefix("INFO", "Init") + "Temp files directory: " + tmp_dir)
+                print(prefix("INFO", "Init") + "Download Content Location: " + download_content_dir)
+                print(prefix("INFO", "Init") + "FUEL Content Location: " + fuel_content_dir)
+                print(prefix("INFO", "Init") + "Releases URL: " + releases)
+                print(prefix("INFO", "Init") + "CPU: " + cpu)
+                print(prefix("INFO", "Init") + "Memory amount: " + str(round(memory_amount/1024/1024)) + "MB")
 
             case "checkport":
                 if len(args) != 2:
