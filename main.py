@@ -218,7 +218,7 @@ try:
     print(prefix("INFO", "Init") + "Start time: " + str(start_time))
     current_dir = sys.path[0]
     print(prefix("INFO", "Init") + "Directory: " + current_dir)
-    version = "1.7.0"
+    version = "1.6.3"
     print(prefix("INFO", "Init") + "Version: " + version)
     threads = multiprocessing.cpu_count()
     print(prefix("INFO", "Init") + "ThreadWorkers: " + str(threads))
