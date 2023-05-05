@@ -138,6 +138,40 @@ def warn_color(): return src_warn_color
 def pause(level: str = "INFO", protocol: str = "FyUTILS"): input(prefix(level.upper(), protocol) + "Press enter to continue. ")
 
 
+def crash_log():
+    temp = open(main_dir + "crash.log", mode="wb+")
+    data = f"""FyUTILS Traceback Crash log @ {datetime.datetime.now().strftime("%H:%M:%S")}
+================================================================================
+
+Variable stacktrace:
+    - User specific:
+        └> Username: {username}
+        └> Device: {device}
+        └> HWID: {hwid}
+        └> Start time: {start_time}
+        └> Directory: {current_dir}
+        └> Version: {version}
+        └> Thread count: {threads}
+        └> Private IP: {private_ip}
+    
+    - Operating System specific:
+        └> Operating System: {operating_system}
+        └> Operating System version: {os_version}
+    
+    - Python specific:
+        └> Python version: {python_version}
+        
+================================================================================
+        
+Python traceback:
+{traceback.format_exc()}
+"""
+
+    temp.write(data.encode())
+    temp.close()
+    os.system("explorer.exe /select,\"" + main_dir + "crash.log" + "\"")
+
+
 def menu():
     os.system("cls")
     print(color() + "  __________               _____  __   ________   ________   ______       ________")
@@ -952,10 +986,7 @@ except Exception as e:
     os.system("title FyUTILS Crash Handler - Crash Log")
     print(prefix("ERROR", "Crash") + "FyUTILS CRASH LOG @ " + datetime.datetime.now().strftime("%H:%M:%S"))
     print(prefix("ERROR", "Crash") + "Error: " + str(e))
-    temp = open(main_dir + "crash.log", "w+")
-    temp.writelines("FyUTILS - Traceback crash log of  " + datetime.datetime.now().strftime("%H:%M:%S") + "\n" + "="*50 + "\n\n" + traceback.format_exc())
-    temp.close()
     print(prefix("ERROR", "Crash") + "The full crash log has been saved to: " + main_dir + "crash.log")
-    os.system("explorer.exe /select,\"" + main_dir + "crash.log" + "\"")
+    crash_log()
     pause("ERROR", "Crash")
     sys.exit(1024)
