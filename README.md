@@ -12,6 +12,7 @@ A simple python hacking and utility terminal application for windows with an int
 ![GitHub contributors](https://img.shields.io/github/contributors/NoahOnFyre/FyUTILS?style=for-the-badge)
 
 ## Table of contents (TOC)
+<!-- TOC -->
 * [FyUTILS](#fyutils)
   * [Table of contents (TOC)](#table-of-contents-toc)
   * [Authors and Contributors](#authors-and-contributors)
@@ -28,6 +29,7 @@ A simple python hacking and utility terminal application for windows with an int
     * [Portscan](#portscan)
     * [Resolve](#resolve)
     * [ARP](#arp)
+    * [Vars](#vars)
     * [Checkport](#checkport)
     * [SSH](#ssh)
     * [Fetch](#fetch)
@@ -54,6 +56,7 @@ A simple python hacking and utility terminal application for windows with an int
     * [Networking libraries](#networking-libraries)
     * [Utility libraries](#utility-libraries)
     * [Development tools](#development-tools)
+<!-- TOC -->
 
 ## Authors and Contributors
 
