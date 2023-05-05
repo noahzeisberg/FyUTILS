@@ -696,6 +696,7 @@ try:
                     local_fuel_file_json = json.load(local_fuel_file)
                     if local_fuel_file_json["properties"]["type"] == "DEFAULT":
                         fuels.update({local_fuel_file_json["properties"]["command_name"]: fuel_content_dir + filename})
+                    local_fuel_file.close()
                     print(prefix("INFO") + f"Done! Took{time.time() - activity_start: 0.2f}s to install package " + fuel_color() + fuel_location + text_color() + "!")
 
                 elif fuel_action == "add":
@@ -717,10 +718,11 @@ try:
                     local_fuel_file_json = json.load(local_fuel_file)
                     if local_fuel_file_json["properties"]["type"] == "DEFAULT":
                         fuels.update({local_fuel_file_json["properties"]["command_name"]: fuel_content_dir + filename})
+                    local_fuel_file.close()
                     print(prefix("INFO") + f"Done! Took{time.time() - activity_start: 0.2f}s to install package " + fuel_color() + filename + text_color() + "!")
 
                 elif fuel_action == "remove":
-                    filename = os.path.basename(fuel_location).split("/")[-1]
+                    filename = os.path.basename(fuel_location + ".json").split("/")[-1]
                     print(prefix("INFO") + "Unregistering " + fuel_content_dir + filename + "...")
                     if os.path.exists(fuel_content_dir + filename):
                         temp = open(fuel_content_dir + filename)
