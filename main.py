@@ -537,33 +537,6 @@ try:
                     print(prefix("INFO") + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
                     print("")
 
-            case "phone":
-                if len(args) != 1:
-                    print(prefix("ERROR") + "Unexpected arguments for command \"" + cmd + "\"")
-                    continue
-                number = args[0]
-                activity_start = time.time()
-                update_status("Retrieving information for " + number)
-
-                try:
-                    parsed_number = phonenumbers.parse(number)
-                    location = geocoder.description_for_number(parsed_number, "de")
-                    carrier = carrier.name_for_number(parsed_number, "de")
-                    zone = timezone.time_zones_for_number(parsed_number)
-                    print(prefix("INFO") + "Phone number information of " + number + ":")
-                    print(prefix("INFO") + "Location: " + location)
-                    print(prefix("INFO") + "Carrier: " + carrier)
-                    print(prefix("INFO") + "Timezone: " + str(zone))
-                except KeyboardInterrupt:
-                    print("")
-                    print("\n" + prefix("INFO") + "Canceling Action...")
-                    print(prefix("INFO") + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
-                except Exception as e:
-                    print("\n" + prefix("ERROR") + "An error occurred while trying to execute this command correctly.")
-                    print(prefix("ERROR") + str(e))
-                    print(prefix("INFO") + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
-                    print("")
-
             case "youtube":
                 if len(args) != 1:
                     print(prefix("ERROR") + "Unexpected arguments for command \"" + cmd + "\"")
@@ -699,6 +672,8 @@ try:
                         print(prefix("ERROR") + "Error: Local package not found.")
                         continue
                     print(prefix("INFO") + f"Done! Took{time.time() - activity_start: 0.2f}s to remove package " + fuel_color() + filename)
+                else:
+                    print(prefix("ERROR") + "Action is not supported!")
 
             case "update":
                 update_status("Updating FyUTILS...")
