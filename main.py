@@ -474,8 +474,8 @@ try:
                     print(prefix("INFO") + "UTC: " + data["timezone"]["utc"])
                 elif action == "phone":
                     parsed_number = phonenumbers.parse(target)
-                    location = geocoder.description_for_number(parsed_number, "de")
-                    carrier = carrier.name_for_number(parsed_number, "de")
+                    location = geocoder.description_for_number(parsed_number, "en")
+                    carrier = carrier.name_for_number(parsed_number, "en")
                     zone = timezone.time_zones_for_number(parsed_number)
                     print(prefix("INFO") + "Phone number information of " + target + ":")
                     print(prefix("INFO") + "Location: " + location)
