@@ -620,9 +620,10 @@ try:
                             update_ssh_status("Running: " + ssh_cmd)
                             print("")
                             for line in ssh_stdout.readlines():
-                                print(prefix("INFO") + line, end="\r")
+                                print(prefix("INFO", "Remote") + line, end="\r")
                             for line in ssh_stderr.readlines():
-                                print(prefix("ERROR") + line, end="\r")
+                                print(prefix("ERROR", "Remote") + line, end="\r")
+                            print("")
                         except KeyboardInterrupt:
                             print("\n" + prefix("INFO") + "Canceling Action...")
                             break
