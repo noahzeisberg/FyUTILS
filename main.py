@@ -23,6 +23,7 @@ from pypresence import Presence
 from pytube import YouTube
 
 init(convert=True)
+CURRENT_FYUTILS_VERSION = "1.7.1"
 
 
 def prefix(level: str, protocol: str = "FyUTILS"):
@@ -218,7 +219,7 @@ try:
     print(prefix("INFO", "Init") + "Start time: " + str(start_time))
     current_dir = sys.path[0]
     print(prefix("INFO", "Init") + "Directory: " + current_dir)
-    version = "1.7.0"
+    version = CURRENT_FYUTILS_VERSION
     print(prefix("INFO", "Init") + "Version: " + version)
     threads = multiprocessing.cpu_count()
     print(prefix("INFO", "Init") + "ThreadWorkers: " + str(threads))
