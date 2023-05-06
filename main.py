@@ -615,7 +615,7 @@ try:
                     while True:
                         try:
                             update_ssh_status("Idle")
-                            ssh_cmd = input(accent_color() + "╔═══[" + fuel_color() + user + accent_color() + "@" + fuel_color() + server + accent_color() + ":" + fuel_color() + str(port) + accent_color() + "]═══(" + color() + "FySSH " + text_color() + version + accent_color() + ")" + "\n" + "╚═══" + accent_color() + "> " + text_color())
+                            ssh_cmd = input(accent_color() + "╔═══[" + fuel_color() + user + accent_color() + "@" + fuel_color() + server + accent_color() + ":" + fuel_color() + str(port) + accent_color() + "]═══(" + color() + "FySSH" + accent_color() + "/" + text_color() + version + accent_color() + ")" + "\n" + "╚═══" + accent_color() + "> " + text_color())
                             ssh_stdin, ssh_stdout, ssh_stderr = ssh.exec_command(ssh_cmd)
                             update_ssh_status("Running: " + ssh_cmd)
                             print("")
