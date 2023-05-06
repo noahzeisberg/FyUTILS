@@ -5,11 +5,9 @@ A simple python hacking and utility terminal application for windows with an int
 
 ![Language](https://img.shields.io/badge/dynamic/json?color=blue&label=Language&query=language&url=https%3A%2F%2Fapi.github.com%2Frepos%2FNoahOnFyre%2FFyUTILS&style=for-the-badge)
 ![GitHub all releases](https://img.shields.io/github/downloads/NoahOnFyre/FyUTILS/total?style=for-the-badge)
-![GitHub commits difference between two branches/tags/commits](https://img.shields.io/github/commits-difference/NoahOnFyre/FyUTILS?base=2cae850&head=master&label=Total%20commits&style=for-the-badge)
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/NoahOnFyre/FyUTILS?style=for-the-badge)
 ![GitHub issues](https://img.shields.io/github/issues-raw/NoahOnFyre/FyUTILS?style=for-the-badge)
 ![GitHub last commit](https://img.shields.io/github/last-commit/NoahOnFyre/FyUTILS?style=for-the-badge)
-![GitHub contributors](https://img.shields.io/github/contributors/NoahOnFyre/FyUTILS?style=for-the-badge)
 
 ## Table of contents (TOC)
 <!-- TOC -->
