@@ -466,7 +466,7 @@ try:
 
                 if action == "ip":
                     data = json.loads(requests.get("http://ipwho.is/" + target).content.decode())
-                    print(prefix("INFO") + "Resolved informations of \"" + data["ip"] + "\"")
+                    print(prefix("INFO") + "Resolved information of \"" + data["ip"] + "\"")
                     print(prefix("INFO") + "IP: " + data["ip"])
                     print(prefix("INFO") + "IP type: " + data["type"])
                     print(prefix("INFO") + "Continent: " + data["continent"])
@@ -489,13 +489,13 @@ try:
                     location = geocoder.description_for_number(parsed_number, "en")
                     carrier = carrier.name_for_number(parsed_number, "en")
                     zone = timezone.time_zones_for_number(parsed_number)
-                    print(prefix("INFO") + "Phone number information of " + target + ":")
+                    print(prefix("INFO") + "Resolved information of \"" + target + "\"")
                     print(prefix("INFO") + "Location: " + location)
                     print(prefix("INFO") + "Carrier: " + carrier)
                     print(prefix("INFO") + "Timezone: " + str(zone))
                 elif action == "domain":
                     data = json.loads(requests.get("http://ipwho.is/" + socket.gethostbyname(target)).content.decode())
-                    print(prefix("INFO") + "Resolved informations of \"" + data["ip"] + "\"")
+                    print(prefix("INFO") + "Resolved information of \"" + data["ip"] + "\"")
                     print(prefix("INFO") + "IP: " + data["ip"])
                     print(prefix("INFO") + "IP type: " + data["type"])
                     print(prefix("INFO") + "Continent: " + data["continent"])
@@ -771,7 +771,7 @@ try:
                     local_fuel_file.write(fuel_file_content)
                     local_fuel_file.close()
                     local_fuel_file = open(fuel_content_dir + filename, mode="rt")
-                    print(prefix("INFO") + "FUEL " + fuel_color() + filename + text_color() + " successfuly installed to \"" + fuel_content_dir + "\".")
+                    print(prefix("INFO") + "FUEL " + fuel_color() + filename + text_color() + " successfully installed to \"" + fuel_content_dir + "\".")
                     print(prefix("INFO") + "Adding FUEL to FyUTILS...")
                     local_fuel_file_json = json.load(local_fuel_file)
                     if local_fuel_file_json["properties"]["type"] == "DEFAULT":
@@ -793,7 +793,7 @@ try:
                     print(prefix("INFO") + "Copying FUEL from " + fuel_location + "...")
                     shutil.copy(fuel_location, fuel_content_dir)
                     local_fuel_file = open(fuel_content_dir + filename)
-                    print(prefix("INFO") + "FUEL " + fuel_color() + filename + text_color() + " successfuly copied to \"" + fuel_content_dir + "\".")
+                    print(prefix("INFO") + "FUEL " + fuel_color() + filename + text_color() + " successfully copied to \"" + fuel_content_dir + "\".")
                     print(prefix("INFO") + "Adding FUEL to FyUTILS...")
                     local_fuel_file_json = json.load(local_fuel_file)
                     if local_fuel_file_json["properties"]["type"] == "DEFAULT":
@@ -854,11 +854,11 @@ try:
                     if confirmation.lower() == "n":
                         continue
                     file = open(filepath, "x+")
-                    print(prefix("INFO") + "File created successfuly.")
+                    print(prefix("INFO") + "File created successfully.")
                     print(prefix("INFO") + "End file editing by entering \"END\".")
                 else:
                     file = open(filepath, "w+")
-                    print(prefix("INFO") + "File opened successfuly.")
+                    print(prefix("INFO") + "File opened successfully.")
                     print(prefix("INFO") + "End file editing by entering \"END\".")
                 string = ""
                 for i in range(1, sys.maxsize):
