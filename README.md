@@ -318,7 +318,7 @@ All tools, languages and whatever I used for FyUTILS
 - PhoneNumbers (phonenumbers)
 - Colorama (colorama)
 - DateTime (datetime)
-- PowerShell Util (psutil)
+- Process and System Util (psutil)
 - Password Input (pwinput)
 
 ### Development tools
