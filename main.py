@@ -23,7 +23,7 @@ from pypresence import Presence
 from pytube import YouTube
 
 init(convert=True)
-CURRENT_FYUTILS_VERSION = "1.7.2"
+CURRENT_FYUTILS_VERSION = "1.7.3"
 
 
 def prefix(level: str, protocol: str = "FyUTILS"):
@@ -140,6 +140,7 @@ def pause(level: str = "INFO", protocol: str = "FyUTILS"): input(prefix(level.up
 
 def crash_log():
     temp = open(main_dir + "crash.log", mode="wb+")
+    commands = "\n".join(executed_commands)
     data = f"""FyUTILS Traceback Crash log @ {datetime.datetime.now().strftime("%H:%M:%S")}
 ================================================================================
 
@@ -161,6 +162,11 @@ Variable stacktrace:
     - Python specific:
         └> Python version: {python_version}
         
+================================================================================
+
+Command history:
+{commands}
+
 ================================================================================
         
 Python traceback:
@@ -204,6 +210,9 @@ src_text_color = Fore.WHITE
 src_true_color = Fore.GREEN
 src_false_color = Fore.RED
 src_warn_color = Fore.YELLOW
+
+# Various stuff initialisation
+executed_commands = []
 
 # Variable initialisation
 try:
@@ -357,12 +366,15 @@ try:
             elif os.getcwd() == appdata_dir:
                 cwd_abbreviation = "@"
             else:
-                cwd_abbreviation = os.getcwd().replace("C:\\", "/").replace("\\", "/").replace(":", "").lower()
-            request = input(accent_color() + "╔═══[" + color() + username + accent_color() + "@" + text_color() + device + accent_color() + "]══(" + color() + "FyUTILS" + accent_color() + "/" + text_color() + version + accent_color() + ")══[" + text_color() + cwd_abbreviation + accent_color() + "]\n" +
-                            accent_color() + "╚═══> " + text_color()).split(" ")
+                cwd_abbreviation = os.getcwd().replace("C:\\", "/").replace("\\", "/").lower()
+            request_raw = input(accent_color() + "╔═══[" + color() + username + accent_color() + "@" + text_color() + device + accent_color() + "]══(" + color() + "FyUTILS" + accent_color() + "/" + text_color() + version + accent_color() + ")══[" + text_color() + cwd_abbreviation + accent_color() + "]\n" +
+                            accent_color() + "╚═══> " + text_color())
+            request = request_raw.split(" ")
             cmd = request[0].lower()
             request.__delitem__(0)
             args = request
+
+            executed_commands.append(request_raw)
             print("")
         except KeyboardInterrupt:
             try:
@@ -1012,10 +1024,7 @@ try:
                     if json_fuel_file["body"]["enabled"]:
                         exec("\n".join(list(json_fuel_file["body"]["content"])))
                 else:
-                    arg_string = " "
-                    for entry in args:
-                        arg_string += entry + " "
-                    os.system(cmd + arg_string)
+                    os.system(request_raw)
 except Exception as e:
     os.system("title FyUTILS Crash Handler - Crash Log")
     print(prefix("ERROR", "Crash") + "FyUTILS CRASH LOG @ " + datetime.datetime.now().strftime("%H:%M:%S"))
