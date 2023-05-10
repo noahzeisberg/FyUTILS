@@ -23,7 +23,7 @@ from pypresence import Presence
 from pytube import YouTube
 
 init(convert=True)
-CURRENT_FYUTILS_VERSION = "1.7.3"
+CURRENT_FYUTILS_VERSION = "1.7.4"
 
 
 def prefix(level: str, protocol: str = "FyUTILS"):
