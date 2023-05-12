@@ -37,8 +37,8 @@ def prefix(level: str, protocol: str = "FyUTILS"):
         return false_color() + "PREFIX TYPE NOT SUPPORTED. SEE https://github.com/NoahOnFyre/FyUTILS#prefix"
 
 
-def version_is_newer(value):
-    split = str(version).split(".")
+def version_is_newer(current, value):
+    split = str(current).split(".")
     major = split[0]
     minor = split[1]
     patch = split[2]
@@ -306,7 +306,7 @@ try:
             release_download_url = ""
             continue
     newest_version = newest_release["tag_name"]
-    if version_is_newer(newest_version):
+    if version_is_newer(version, newest_version):
         print(prefix("INFO", "Updater") + "A new version of FyUTILS is available!")
         print(prefix("INFO", "Updater") + "Current version identifier: " + version)
         print(prefix("INFO", "Updater") + "Newest version identifier: " + newest_version)
@@ -635,7 +635,6 @@ try:
                                 print(prefix("INFO", "Remote") + line, end="\r")
                             for line in ssh_stderr.readlines():
                                 print(prefix("ERROR", "Remote") + line, end="\r")
-                            print("")
                         except KeyboardInterrupt:
                             print("\n" + prefix("INFO") + "Canceling Action...")
                             break
@@ -981,6 +980,11 @@ try:
                     print("\n" + prefix("ERROR") + "An error occurred while trying to execute this command correctly.")
                     print(prefix("ERROR") + str(e))
                     print("")
+
+            case "help":
+                update_status("Viewing help...")
+                os.system("start https://github.com/NoahOnFyre/FyUTILS#commands")
+                pause("INFO", "Help")
 
             case "raise":
                 update_status("Raising exception...")
