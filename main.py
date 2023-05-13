@@ -24,6 +24,7 @@ from pytube import YouTube
 
 init(convert=True)
 CURRENT_FYUTILS_VERSION = "1.7.5"
+SUPPORTED_FUEL_VERSION = 1
 
 
 def prefix(level: str, protocol: str = "FyUTILS"):
