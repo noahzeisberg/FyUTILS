@@ -253,7 +253,7 @@ try:
     print(prefix("INFO", "Init") + "AppData directory: " + appdata_dir)
     main_dir = appdata_dir + "\\Roaming\\FyUTILS\\"
     print(prefix("INFO", "Init") + "FyUTILS AppData directory: " + main_dir)
-    tmp_dir = user_dir + "\\AppData\\Roaming\\FyUTILS\\tmp\\"
+    tmp_dir = main_dir + "tmp\\"
     print(prefix("INFO", "Init") + "Temp files directory: " + tmp_dir)
     download_content_dir = main_dir + "content\\"
     print(prefix("INFO", "Init") + "Download Content Location: " + download_content_dir)
