@@ -92,6 +92,12 @@ def resolve_fuel_information(file):
     print(prefix("INFO", "FUEL") + "FUEL information of: " + file)
     print(prefix("INFO", "FUEL") + "FUEL name: " + fuel_json["name"])
     print(prefix("INFO", "FUEL") + "FUEL version: v" + fuel_json["version"])
+    if fuel_json["version"] != SUPPORTED_FUEL_VERSION:
+        print(prefix("ERROR", "FUEL") + "FUEL \"" + fuel_json["name"] + "\" is not supported by this version of FyUTILS.")
+        print(prefix("ERROR", "FUEL") + "The FUEL has to be deleted, because otherwise, it could cause problems.")
+        fuel.close()
+        os.remove(fuel_content_dir + file)
+        return
     print(prefix("INFO", "FUEL") + "FUEL author: " + fuel_json["author"])
     print(prefix("INFO", "FUEL") + "FUEL description: " + fuel_json["description"])
     print(prefix("INFO", "FUEL") + "FUEL format: " + str(fuel_json["format"]))
@@ -743,9 +749,11 @@ try:
                             print(prefix("ERROR") + "An error occurred while trying to execute this command correctly.")
                             print(prefix("ERROR") + str(e))
                             print(prefix("INFO") + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
+                            break
                     except KeyboardInterrupt:
                         print(prefix("INFO") + "Canceling Action...")
                         print(prefix("INFO") + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
+                        break
 
             case "fuels":
                 print(prefix("INFO") + "Active FUELS:")
