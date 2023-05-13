@@ -725,6 +725,27 @@ try:
             case "log":
                 os.system("explorer.exe /select,\"" + main_dir + "crash.log" + "\"")
 
+            case "streamhunter":
+                activity_start = time.time()
+                update_status("Searching for videos...")
+
+                print(prefix("INFO") + "Searching for videos...")
+                while True:
+                    try:
+                        identifier = "".join(random.choice(string.ascii_letters + string.digits) for _ in range(6)).lower()
+                        time.sleep(0.5)
+                        source = requests.get("https://streamable.com/" + identifier)
+                        try:
+                            if source.status_code != 404:
+                                print(prefix("INFO") + "Valid link found! | https://streamable.com/" + identifier)
+                        except Exception as e:
+                            print(prefix("ERROR") + "An error occurred while trying to execute this command correctly.")
+                            print(prefix("ERROR") + str(e))
+                            print(prefix("INFO") + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
+                    except KeyboardInterrupt:
+                        print(prefix("INFO") + "Canceling Action...")
+                        print(prefix("INFO") + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
+
             case "fuels":
                 print(prefix("INFO") + "Active FUELS:")
                 for path in fuels.values():

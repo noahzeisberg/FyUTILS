@@ -303,6 +303,9 @@ All tools, languages and whatever I used for FyUTILS
 | Batch    | System interactions |
 | Markdown | Documentation       |
 
+### Programs
+- [NoahOnFyre's fork](https://github.com/NoahOnFyre/StreamHunter) of [StreamHunter by Eltotiz](https://github.com/Eltotiz/StreamHunter) (Lite version)
+
 ### APIs
 - [IP WhoIs](http://ipwho.is/)
 - [Ipify](http://ipify.org/)
