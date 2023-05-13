@@ -35,6 +35,8 @@ def prefix(level: str, protocol: str = "FyUTILS"):
         return accent_color() + "[" + color() + datetime.datetime.now().strftime("%H:%M:%S") + accent_color() + "]" + " " + accent_color() + "[" + text_color() + protocol + accent_color() + "/" + warn_color() + level.upper() + accent_color() + "] " + text_color()
     elif level == "ERROR":
         return accent_color() + "[" + color() + datetime.datetime.now().strftime("%H:%M:%S") + accent_color() + "]" + " " + accent_color() + "[" + text_color() + protocol + accent_color() + "/" + false_color() + level.upper() + accent_color() + "] " + text_color()
+    elif level == "DEBUG":
+        return accent_color() + "[" + color() + datetime.datetime.now().strftime("%H:%M:%S") + accent_color() + "]" + " " + accent_color() + "[" + text_color() + protocol + accent_color() + "/" + debug_color() + level.upper() + accent_color() + "] " + text_color()
     else:
         return false_color() + "PREFIX TYPE NOT SUPPORTED. SEE https://github.com/NoahOnFyre/FyUTILS#prefix"
 
@@ -146,6 +148,9 @@ def false_color(): return src_false_color
 def warn_color(): return src_warn_color
 
 
+def debug_color(): return src_debug_color
+
+
 def pause(level: str = "INFO", protocol: str = "FyUTILS"): input(prefix(level.upper(), protocol) + "Press enter to continue. ")
 
 
@@ -221,6 +226,7 @@ src_text_color = Fore.WHITE
 src_true_color = Fore.GREEN
 src_false_color = Fore.RED
 src_warn_color = Fore.YELLOW
+src_debug_color = Fore.MAGENTA
 
 # Various stuff initialisation
 executed_commands = []
