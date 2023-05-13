@@ -219,6 +219,11 @@ This command will download the highest definition file of a YouTube video (most 
 log
 ```
 Opens the folder, your log files are in and automatically highlights the **crash.log**
+### StreamHunter
+```
+streamhunter
+```
+Runs a lite an optimised instance of my fork of StreamHunter by Eltotiz.
 ### FUELS
 ```
 fuels
