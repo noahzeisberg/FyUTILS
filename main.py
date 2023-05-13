@@ -92,9 +92,10 @@ def resolve_fuel_information(file):
     print(prefix("INFO", "FUEL") + "FUEL information of: " + file)
     print(prefix("INFO", "FUEL") + "FUEL name: " + fuel_json["name"])
     print(prefix("INFO", "FUEL") + "FUEL version: v" + fuel_json["version"])
-    if fuel_json["version"] != SUPPORTED_FUEL_VERSION:
+    if int(fuel_json["version"]) != SUPPORTED_FUEL_VERSION:
         print(prefix("ERROR", "FUEL") + "FUEL \"" + fuel_json["name"] + "\" is not supported by this version of FyUTILS.")
         print(prefix("ERROR", "FUEL") + "The FUEL has to be deleted, because otherwise, it could cause problems.")
+        time.sleep(1)
         fuel.close()
         os.remove(fuel_content_dir + file)
         return
