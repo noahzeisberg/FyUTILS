@@ -16,6 +16,7 @@ import phonenumbers
 import psutil
 import pwinput
 import requests
+import string
 import scapy.layers.l2 as scapy
 from colorama import Fore, Back, init
 from phonenumbers import geocoder, carrier, timezone
@@ -882,19 +883,19 @@ try:
                     file = open(filepath, "w+")
                     print(prefix("INFO") + "File opened successfully.")
                     print(prefix("INFO") + "End file editing by entering \"END\".")
-                string = ""
+                ln = ""
                 for i in range(1, sys.maxsize):
                     try:
                         line = input(str(i) + ": ")
                         if line == "END":
                             break
-                        string = string + line + "\n"
+                        ln = ln + line + "\n"
                     except KeyboardInterrupt:
                         print("END")
                         print("")
                         break
                 print(prefix("INFO") + "Writing cached content to " + filepath + "...")
-                file.writelines(string)
+                file.writelines(ln)
                 print(prefix("INFO") + "Saving file to " + filepath + "...")
                 print(prefix("INFO") + "Closing " + filepath + "...")
                 file.close()
