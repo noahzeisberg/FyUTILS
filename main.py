@@ -105,10 +105,12 @@ def resolve_fuel_information(file):
             fuels.update({fuel_json["properties"]["command_name"]: fuel_content_dir + file})
 
         case "MIXIN":
-            print(prefix("INFO", "FUEL") + "WARNING: If you are a FUEL developer, please use a")
-            print(prefix("INFO", "FUEL") + "default FUEL and use a command for your injection.")
-            print(prefix("INFO", "FUEL") + "Support for mixins injecting on initialisation will be added soon.")
-            time.sleep(2.5)
+            print(prefix("WARN", "FUEL") + "WARNING: If you are a FUEL developer, please use a")
+            print(prefix("WARN", "FUEL") + "default FUEL and use a command for your injection.")
+            print(prefix("WARN", "FUEL") + "Support for mixins injecting on initialisation will be added soon.")
+            print(prefix("WARN", "FUEL") + "If you aren't a developer, please remove the affected FUEL.")
+            print(prefix("WARN", "FUEL") + "You can use: \"fuel remove " + fuel.name + "\" to remove it.")
+            pause("INFO", "FUEL")
 
         case _:
             print(prefix("ERROR", "FUEL") + "FUEL type is not supported by this version.")
@@ -324,6 +326,7 @@ except Exception as e:
 
 # Discord RPC initialisation
 try:
+    print(prefix("INFO", "RichPresence") + "Setting presence ID...")
     presence_id = "1005822803997638696"
     print(prefix("INFO", "RichPresence") + "Presence ID set to: \"" + presence_id + "\".")
     print(prefix("INFO", "RichPresence") + "Initializing discord rich presence...")
@@ -340,8 +343,6 @@ except:
 
 print(prefix("INFO", "FUEL") + "Initialising FUELS...")
 fuels = {}
-if not os.path.exists(fuel_content_dir):
-    os.makedirs(fuel_content_dir)
 for file in os.listdir(fuel_content_dir):
     resolve_fuel_information(file)
 
