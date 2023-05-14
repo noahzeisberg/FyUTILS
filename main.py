@@ -12,6 +12,7 @@ import time
 import traceback
 import paramiko
 import phonenumbers
+import pkg_resources.extern
 import psutil
 import pwinput
 import requests
@@ -204,7 +205,7 @@ def menu():
     print(color() + "  /_/         _\\__, /      \\____/      /_/        /___/      /_____/      /____/  ")
     print(color() + "             ___/  /")
     print(color() + "            /_____/ " + " "*5 + accent_color() + "v" + text_color() + version.replace(".", accent_color() + "." + text_color()) + accent_color() + " | " + text_color() + "Made by NoahOnFyre")
-    print("")
+    print()
     print(accent_color() + "╔" + "═"*119)
     print(accent_color() + "║ " + accent_color() + "[" + color() + "VAR" + accent_color() + "] " + text_color() + "Username: " + username)
     print(accent_color() + "║ " + accent_color() + "[" + color() + "VAR" + accent_color() + "] " + text_color() + "Device: " + device)
@@ -371,7 +372,7 @@ update_status("Initialisation phase completed!")
 menu()
 try:
     while True:
-        print("")
+        print()
         update_status("Idle")
         try:
             if os.getcwd() == current_dir:
@@ -392,7 +393,7 @@ try:
             args = request
 
             executed_commands.append(request_raw)
-            print("")
+            print()
         except KeyboardInterrupt:
             try:
                 update_status("Shutting down...")
@@ -420,7 +421,7 @@ try:
                             sock.send(random.randbytes(10240))
                             print(prefix("INFO") + "Attacking target: " + color() + target + accent_color() + ":" + color() + str(port) + text_color() + "..." + accent_color() + " - " + text_color() + "Attack: " + color() + str(i + 1) + accent_color(), end='\r')
                         except socket.error:
-                            print("")
+                            print()
                             print(prefix("WARN") + "Request " + color() + str(i) + text_color() + " failed.", end='\r')
                     print("\n")
                 except KeyboardInterrupt:
@@ -557,7 +558,7 @@ try:
                 except KeyboardInterrupt:
                     print(prefix("INFO") + "Canceling Action...")
                     print(prefix("INFO") + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
-                    print("")
+                    print()
                 except Exception as e:
                     print(prefix("ERROR") + "An error occurred while trying to execute this command correctly.")
                     print(prefix("ERROR") + str(e))
@@ -607,7 +608,7 @@ try:
                 except KeyboardInterrupt:
                     print(prefix("INFO") + "Canceling Action...")
                     print(prefix("INFO") + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
-                    print("")
+                    print()
                 except Exception as e:
                     print(prefix("ERROR") + "An error occurred while trying to execute this command correctly.")
                     print(prefix("ERROR") + str(e))
@@ -638,7 +639,7 @@ try:
                 print(prefix("INFO") + "Requesting user's password...")
                 password = pwinput.pwinput(text_color() + "Enter password" + accent_color() + " > " + text_color(), "*")
                 print(prefix("INFO") + "Connecting...")
-                print("")
+                print()
                 try:
                     ssh.connect(server, port=port, username=user, password=password)
                     while True:
@@ -647,7 +648,7 @@ try:
                             ssh_cmd = input(accent_color() + "╔═══[" + fuel_color() + user + accent_color() + "@" + fuel_color() + server + accent_color() + ":" + fuel_color() + str(port) + accent_color() + "]═══(" + color() + "FySSH" + accent_color() + "/" + text_color() + version + accent_color() + ")" + "\n" + "╚═══" + accent_color() + "> " + text_color())
                             ssh_stdin, ssh_stdout, ssh_stderr = ssh.exec_command(ssh_cmd)
                             update_ssh_status("Running: " + ssh_cmd)
-                            print("")
+                            print()
                             for line in ssh_stdout.readlines():
                                 print(prefix("INFO", "Remote") + line, end="\r")
                             for line in ssh_stderr.readlines():
@@ -658,7 +659,7 @@ try:
                         except Exception as e:
                             print("\n" + prefix("ERROR") + "An error occurred while trying to execute this command correctly.")
                             print(prefix("ERROR") + str(e))
-                            print("")
+                            print()
                 except Exception as e:
                     print(prefix("ERROR") + "Can't connect to SSH host. Please make sure, that the requested port is open.")
                     print(prefix("ERROR") + "SSH error: " + str(e))
@@ -698,16 +699,16 @@ try:
                         print("\n" + prefix("ERROR") + "Could not save content to file.")
                         print(prefix("ERROR") + str(e))
                         print(prefix("INFO") + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
-                        print("")
+                        print()
                 except KeyboardInterrupt:
-                    print("")
+                    print()
                     print("\n" + prefix("INFO") + "Canceling Action...")
                     print(prefix("INFO") + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
                 except Exception as e:
                     print("\n" + prefix("ERROR") + "An error occurred while trying to execute this command correctly.")
                     print(prefix("ERROR") + str(e))
                     print(prefix("INFO") + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
-                    print("")
+                    print()
 
             case "youtube":
                 if len(args) != 1:
@@ -728,14 +729,14 @@ try:
                     print(prefix("INFO") + f"Download finished in {time.time() - activity_start: 0.2f} seconds!")
                     os.system("start explorer.exe " + download_content_dir)
                 except KeyboardInterrupt:
-                    print("")
+                    print()
                     print("\n" + prefix("INFO") + "Canceling Action...")
                     print(prefix("INFO") + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
                 except Exception as e:
                     print("\n" + prefix("ERROR") + "An error occurred while trying to execute this command correctly.")
                     print(prefix("ERROR") + str(e))
                     print(prefix("INFO") + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
-                    print("")
+                    print()
 
             case "log":
                 os.system("explorer.exe /select,\"" + main_dir + "crash.log" + "\"")
@@ -912,7 +913,7 @@ try:
                         ln = ln + line + "\n"
                     except KeyboardInterrupt:
                         print("END")
-                        print("")
+                        print()
                         break
                 print(prefix("INFO") + "Writing cached content to " + filepath + "...")
                 file.writelines(ln)
@@ -970,7 +971,12 @@ try:
                 except Exception as e:
                     print("\n" + prefix("ERROR") + "An error occurred while trying to execute this command correctly.")
                     print(prefix("ERROR") + str(e))
-                    print("")
+                    print()
+
+            case "shell":
+                update_status("Executing system command \"" + request_raw.removeprefix("shell ") + "\"")
+
+                os.system(request_raw.removeprefix("shell "))
 
             case "exit":
                 update_status("Shutting down...")
@@ -1023,7 +1029,7 @@ try:
                 except Exception as e:
                     print("\n" + prefix("ERROR") + "An error occurred while trying to execute this command correctly.")
                     print(prefix("ERROR") + str(e))
-                    print("")
+                    print()
 
             case "help":
                 update_status("Viewing help...")
@@ -1034,28 +1040,21 @@ try:
                 update_status("Raising exception...")
                 raise Exception("Executed by raise command.")
 
-            case "clear":
+            case "clear" | "rl" | "reload":
                 update_status("Reloading...")
                 os.system("cls")
                 menu()
 
-            case "rl":
-                update_status("Reloading...")
-                os.system("cls")
-                menu()
-
-            case "restart":
+            case "restart" | "rs":
                 print("logout")
                 os.system("start " + current_dir + "\\main.py")
                 print("login")
                 sys.exit(0)
 
-            case "rs":
-                print("logout")
-                os.system("start " + current_dir + "\\main.py")
-                print("login")
-                sys.exit(0)
-
+            case "":
+                update_status("Doing nothing.")
+                print()
+                
             case _:
                 if fuels.keys().__contains__(cmd.lower()):
                     fuel_file = open(fuels.get(cmd.lower()), mode="rt")
@@ -1072,7 +1071,7 @@ try:
                     if json_fuel_file["body"]["enabled"]:
                         exec("\n".join(list(json_fuel_file["body"]["content"])))
                 else:
-                    os.system(request_raw)
+                    print(prefix("ERROR") + "The command \"" + cmd + "\" isn't a FyUTILS specific command.")
 except Exception as e:
     os.system("title FyUTILS Crash Handler - Crash Log")
     print(prefix("ERROR", "Crash") + "FyUTILS CRASH LOG @ " + datetime.datetime.now().strftime("%H:%M:%S"))
