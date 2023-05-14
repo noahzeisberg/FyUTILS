@@ -12,7 +12,6 @@ import time
 import traceback
 import paramiko
 import phonenumbers
-import pkg_resources.extern
 import psutil
 import pwinput
 import requests
