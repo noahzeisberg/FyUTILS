@@ -10,13 +10,13 @@ import subprocess
 import sys
 import time
 import traceback
-from pathlib import Path
 import paramiko
 import phonenumbers
 import psutil
 import pwinput
 import requests
 import string
+from pathlib import Path
 import scapy.layers.l2 as scapy
 from colorama import Fore, Back, init
 from phonenumbers import geocoder, carrier, timezone
@@ -384,7 +384,7 @@ try:
             else:
                 cwd_abbreviation = os.getcwd().replace("C:\\", "/").replace("\\", "/").lower()
             request_raw = input(accent_color() + "╔═══[" + color() + username + accent_color() + "@" + text_color() + device + accent_color() + "]══(" + color() + "FyUTILS" + accent_color() + "/" + text_color() + version + accent_color() + ")══[" + text_color() + cwd_abbreviation + accent_color() + "]\n" +
-                            accent_color() + "╚═══> " + text_color())
+                                accent_color() + "╚═══> " + text_color())
             request = request_raw.split(" ")
             cmd = request[0].lower()
             request.__delitem__(0)
@@ -867,6 +867,7 @@ try:
                 if update_available:
                     print(prefix("INFO", "Updater") + "Update found!")
                     print(prefix("INFO", "Updater") + "Version Comparison: " + false_color() + version + accent_color() + " => " + true_color() + newest_version + text_color() + "...")
+                    shutil.copy(current_dir + "main.py", tmp_dir)
                     newest_file_content = requests.get(release_download_url).content
                     open(current_dir + "\\main.py", mode="wb").write(newest_file_content)
                     print(prefix("INFO", "Updater") + "Update successfully installed!")
