@@ -66,7 +66,7 @@ def update_status(status):
     try:
         rpc.update(
             state=status, details=username + "@" + device, small_image="python",
-            large_image="large",
+            large_image="fyutils",
             buttons=[{"label": "Get FyUTILS", "url": "https://github.com/NoahOnFyre/FyUTILS/releases/latest"}],
             small_text="Python", large_text="FyUTILS v" + version,
             start=int(start_time))
@@ -79,7 +79,7 @@ def update_ssh_status(status):
     try:
         rpc.update(
             state="[REMOTE] " + status, details=user + "@" + server, small_image="ssh",
-            large_image="large",
+            large_image="fyutils",
             buttons=[{"label": "Get FyUTILS", "url": "https://github.com/NoahOnFyre/FyUTILS/releases/latest"},
                      {"label": "View Project", "url": "https://github.com/NoahOnFyre/FyUTILS/"}],
             small_text="Python", large_text="FyUTILS v" + version,
