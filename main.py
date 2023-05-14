@@ -24,7 +24,7 @@ from pypresence import Presence
 from pytube import YouTube
 
 init(convert=True)
-CURRENT_FYUTILS_VERSION = "1.7.5"
+CURRENT_FYUTILS_VERSION = "1.7.3"
 SUPPORTED_FUEL_VERSION = 1
 
 
@@ -868,11 +868,13 @@ try:
                     print(prefix("INFO", "Updater") + "Update found!")
                     print(prefix("INFO", "Updater") + "Version Comparison: " + false_color() + version + accent_color() + " => " + true_color() + newest_version + text_color() + "...")
                     shutil.copy(current_dir + "main.py", tmp_dir)
+                    os.rename(current_dir + "\\main.py", current_dir + "\\BACKUP-" + version + ".py")
                     newest_file_content = requests.get(release_download_url).content
                     open(current_dir + "\\main.py", mode="wb").write(newest_file_content)
                     print(prefix("INFO", "Updater") + "Update successfully installed!")
-                    time.sleep(1)
+                    time.sleep(0.25)
                     print(prefix("INFO", "Updater") + "Restarting FyUTILS...")
+                    time.sleep(1)
                     os.system("start " + current_dir + "\\main.py")
                     sys.exit(512)
                 else:
