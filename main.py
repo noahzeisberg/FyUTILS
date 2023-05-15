@@ -24,7 +24,7 @@ from pypresence import Presence
 from pytube import YouTube
 
 init(convert=True)
-CURRENT_FYUTILS_VERSION = "1.7.6"
+CURRENT_FYUTILS_VERSION = "1.8.0"
 SUPPORTED_FUEL_VERSION = 1
 
 
@@ -41,8 +41,12 @@ def prefix(level: str, protocol: str = "FyUTILS"):
         return false_color() + "PREFIX TYPE NOT SUPPORTED. SEE https://github.com/NoahOnFyre/FyUTILS#prefix"
 
 
-def exec(command):
+def execute(command):
     subprocess.call(command, shell=True)
+
+
+def exec_code(command):
+    return subprocess.call(command, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
 
 
 def version_is_newer(current, value):
@@ -66,7 +70,7 @@ def version_is_newer(current, value):
 
 
 def update_status(status):
-    exec("title FyUTILS " + version + " - " + username + "@" + device + " - " + status)
+    execute("title FyUTILS " + version + " - " + username + "@" + device + " - " + status)
     try:
         rpc.update(
             state=status, details=username + "@" + device, small_image="python",
@@ -80,7 +84,7 @@ def update_status(status):
 
 
 def update_ssh_status(status):
-    exec("title FyUTILS " + version + " - " + user + "@" + server + " - " + status)
+    execute("title FyUTILS " + version + " - " + user + "@" + server + " - " + status)
     try:
         rpc.update(
             state="[REMOTE] " + status, details=user + "@" + server, small_image="ssh",
@@ -196,11 +200,11 @@ Python traceback:
 
     temp.write(data.encode())
     temp.close()
-    exec("explorer.exe /select,\"" + main_dir + "crash.log" + "\"")
+    execute("explorer.exe /select,\"" + main_dir + "crash.log" + "\"")
 
 
 def menu():
-    exec("cls")
+    execute("cls")
     print(color() + "  __________               _____  __   ________   ________   ______       ________")
     print(color() + "  ___  ____/  _____  __    __  / / /   ___  __/   ____  _/   ___  /       __  ___/")
     print(color() + "  __  /_      __  / / /    _  / / /    __  /       __  /     __  /        _____ \\ ")
@@ -221,7 +225,7 @@ def menu():
 
 
 # INIT PHASE
-exec("title FyUTILS")
+execute("title FyUTILS")
 
 # Color initialisation
 src_color = Fore.LIGHTBLUE_EX
@@ -387,7 +391,7 @@ try:
             elif os.getcwd() == appdata_dir:
                 cwd_abbreviation = "@"
             else:
-                cwd_abbreviation = os.getcwd().replace("C:\\", "/").replace("\\", "/").lower()
+                cwd_abbreviation = os.getcwd()
             request_raw = input(accent_color() + "╔═══[" + color() + username + accent_color() + "@" + text_color() + device + accent_color() + "]══(" + color() + "FyUTILS" + accent_color() + "/" + text_color() + version + accent_color() + ")══[" + text_color() + cwd_abbreviation + accent_color() + "]\n" +
                                 accent_color() + "╚═══> " + text_color())
             request = request_raw.split(" ")
@@ -697,7 +701,7 @@ try:
 
                     try:
                         open(download_content_dir + "\\" + filename, mode="xb").write(fetch_content)
-                        exec("start explorer.exe " + download_content_dir)
+                        execute("start explorer.exe " + download_content_dir)
                     except Exception as e:
                         print("\n" + prefix("ERROR") + "Could not save content to file.")
                         print(prefix("ERROR") + str(e))
@@ -730,7 +734,7 @@ try:
                     print(prefix("INFO") + "Download started!")
                     youtube.streams.filter(file_extension="mp4").order_by('resolution').desc().first().download(download_content_dir)
                     print(prefix("INFO") + f"Download finished in {time.time() - activity_start: 0.2f} seconds!")
-                    exec("start explorer.exe " + download_content_dir)
+                    execute("start explorer.exe " + download_content_dir)
                 except KeyboardInterrupt:
                     print()
                     print("\n" + prefix("INFO") + "Canceling Action...")
@@ -742,7 +746,7 @@ try:
                     print()
 
             case "log":
-                exec("explorer.exe /select,\"" + main_dir + "crash.log" + "\"")
+                execute("explorer.exe /select,\"" + main_dir + "crash.log" + "\"")
 
             case "streamhunter":
                 activity_start = time.time()
@@ -881,7 +885,7 @@ try:
                     print(prefix("INFO", "Updater") + "Restarting FyUTILS...")
                     temp.close()
                     time.sleep(1)
-                    exec("start " + current_dir + "\\main.py")
+                    execute("start " + current_dir + "\\main.py")
                     sys.exit(512)
                 else:
                     print(prefix("INFO", "Updater") + "You're running the latest version of FyUTILS!")
@@ -979,7 +983,7 @@ try:
             case "shell":
                 update_status("Executing system command \"" + request_raw.removeprefix("shell ") + "\"")
 
-                exec(request_raw.removeprefix("shell "))
+                execute(request_raw.removeprefix("shell "))
 
             case "exit":
                 update_status("Shutting down...")
@@ -1036,7 +1040,7 @@ try:
 
             case "help":
                 update_status("Viewing help...")
-                exec("start https://github.com/NoahOnFyre/FyUTILS#commands")
+                execute("start https://github.com/NoahOnFyre/FyUTILS#commands")
                 pause("INFO", "Help")
 
             case "raise":
@@ -1045,12 +1049,12 @@ try:
 
             case "clear" | "rl" | "reload":
                 update_status("Reloading...")
-                exec("cls")
+                execute("cls")
                 menu()
 
             case "restart" | "rs":
                 print("logout")
-                exec("start " + current_dir + "\\main.py")
+                execute("start " + current_dir + "\\main.py")
                 print("login")
                 sys.exit(0)
 
@@ -1072,11 +1076,14 @@ try:
                         update_status(json_fuel_file["head"]["status"])
 
                     if json_fuel_file["body"]["enabled"]:
-                        exec("\n".join(list(json_fuel_file["body"]["content"])))
+                        execute("\n".join(list(json_fuel_file["body"]["content"])))
                 else:
-                    print(prefix("ERROR") + "The command \"" + cmd + "\" isn't a FyUTILS specific command.")
+                    if exec_code(request_raw) == 1:
+                        print(prefix("ERROR") + "Invalid command: \"" + cmd + "\".")
+                    else:
+                        execute(request_raw)
 except Exception as e:
-    exec("title FyUTILS Crash Handler - Crash Log")
+    execute("title FyUTILS Crash Handler - Crash Log")
     print(prefix("ERROR", "Crash") + "FyUTILS CRASH LOG @ " + datetime.datetime.now().strftime("%H:%M:%S"))
     print(prefix("ERROR", "Crash") + "Error: " + str(e))
     print(prefix("ERROR", "Crash") + "The full crash log has been saved to: " + main_dir + "crash.log")
