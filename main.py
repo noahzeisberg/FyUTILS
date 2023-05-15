@@ -41,6 +41,10 @@ def prefix(level: str, protocol: str = "FyUTILS"):
         return false_color() + "PREFIX TYPE NOT SUPPORTED. SEE https://github.com/NoahOnFyre/FyUTILS#prefix"
 
 
+def exec(command):
+    subprocess.call(command, shell=True)
+
+
 def version_is_newer(current, value):
     split = str(current).split(".")
     major = split[0]
@@ -62,7 +66,7 @@ def version_is_newer(current, value):
 
 
 def update_status(status):
-    os.system("title FyUTILS " + version + " - " + username + "@" + device + " - " + status)
+    exec("title FyUTILS " + version + " - " + username + "@" + device + " - " + status)
     try:
         rpc.update(
             state=status, details=username + "@" + device, small_image="python",
@@ -76,7 +80,7 @@ def update_status(status):
 
 
 def update_ssh_status(status):
-    os.system("title FyUTILS " + version + " - " + user + "@" + server + " - " + status)
+    exec("title FyUTILS " + version + " - " + user + "@" + server + " - " + status)
     try:
         rpc.update(
             state="[REMOTE] " + status, details=user + "@" + server, small_image="ssh",
@@ -192,11 +196,11 @@ Python traceback:
 
     temp.write(data.encode())
     temp.close()
-    os.system("explorer.exe /select,\"" + main_dir + "crash.log" + "\"")
+    exec("explorer.exe /select,\"" + main_dir + "crash.log" + "\"")
 
 
 def menu():
-    os.system("cls")
+    exec("cls")
     print(color() + "  __________               _____  __   ________   ________   ______       ________")
     print(color() + "  ___  ____/  _____  __    __  / / /   ___  __/   ____  _/   ___  /       __  ___/")
     print(color() + "  __  /_      __  / / /    _  / / /    __  /       __  /     __  /        _____ \\ ")
@@ -217,7 +221,7 @@ def menu():
 
 
 # INIT PHASE
-os.system("title FyUTILS")
+exec("title FyUTILS")
 
 # Color initialisation
 src_color = Fore.LIGHTBLUE_EX
@@ -693,7 +697,7 @@ try:
 
                     try:
                         open(download_content_dir + "\\" + filename, mode="xb").write(fetch_content)
-                        os.system("start explorer.exe " + download_content_dir)
+                        exec("start explorer.exe " + download_content_dir)
                     except Exception as e:
                         print("\n" + prefix("ERROR") + "Could not save content to file.")
                         print(prefix("ERROR") + str(e))
@@ -726,7 +730,7 @@ try:
                     print(prefix("INFO") + "Download started!")
                     youtube.streams.filter(file_extension="mp4").order_by('resolution').desc().first().download(download_content_dir)
                     print(prefix("INFO") + f"Download finished in {time.time() - activity_start: 0.2f} seconds!")
-                    os.system("start explorer.exe " + download_content_dir)
+                    exec("start explorer.exe " + download_content_dir)
                 except KeyboardInterrupt:
                     print()
                     print("\n" + prefix("INFO") + "Canceling Action...")
@@ -738,7 +742,7 @@ try:
                     print()
 
             case "log":
-                os.system("explorer.exe /select,\"" + main_dir + "crash.log" + "\"")
+                exec("explorer.exe /select,\"" + main_dir + "crash.log" + "\"")
 
             case "streamhunter":
                 activity_start = time.time()
@@ -877,7 +881,7 @@ try:
                     print(prefix("INFO", "Updater") + "Restarting FyUTILS...")
                     temp.close()
                     time.sleep(1)
-                    os.system("start " + current_dir + "\\main.py")
+                    exec("start " + current_dir + "\\main.py")
                     sys.exit(512)
                 else:
                     print(prefix("INFO", "Updater") + "You're running the latest version of FyUTILS!")
@@ -975,7 +979,7 @@ try:
             case "shell":
                 update_status("Executing system command \"" + request_raw.removeprefix("shell ") + "\"")
 
-                os.system(request_raw.removeprefix("shell "))
+                exec(request_raw.removeprefix("shell "))
 
             case "exit":
                 update_status("Shutting down...")
@@ -1032,7 +1036,7 @@ try:
 
             case "help":
                 update_status("Viewing help...")
-                os.system("start https://github.com/NoahOnFyre/FyUTILS#commands")
+                exec("start https://github.com/NoahOnFyre/FyUTILS#commands")
                 pause("INFO", "Help")
 
             case "raise":
@@ -1041,12 +1045,12 @@ try:
 
             case "clear" | "rl" | "reload":
                 update_status("Reloading...")
-                os.system("cls")
+                exec("cls")
                 menu()
 
             case "restart" | "rs":
                 print("logout")
-                os.system("start " + current_dir + "\\main.py")
+                exec("start " + current_dir + "\\main.py")
                 print("login")
                 sys.exit(0)
 
@@ -1072,7 +1076,7 @@ try:
                 else:
                     print(prefix("ERROR") + "The command \"" + cmd + "\" isn't a FyUTILS specific command.")
 except Exception as e:
-    os.system("title FyUTILS Crash Handler - Crash Log")
+    exec("title FyUTILS Crash Handler - Crash Log")
     print(prefix("ERROR", "Crash") + "FyUTILS CRASH LOG @ " + datetime.datetime.now().strftime("%H:%M:%S"))
     print(prefix("ERROR", "Crash") + "Error: " + str(e))
     print(prefix("ERROR", "Crash") + "The full crash log has been saved to: " + main_dir + "crash.log")
