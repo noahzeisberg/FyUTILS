@@ -1074,7 +1074,7 @@ try:
                         update_status(json_fuel_file["head"]["status"])
 
                     if json_fuel_file["body"]["enabled"]:
-                        execute("\n".join(list(json_fuel_file["body"]["content"])))
+                        exec("\n".join(list(json_fuel_file["body"]["content"])))
                 else:
                     if exec_code(request_raw) == 1:
                         print(prefix("ERROR") + "Invalid command: \"" + cmd + "\".")
