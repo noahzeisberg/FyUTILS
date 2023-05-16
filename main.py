@@ -24,7 +24,7 @@ from pypresence import Presence
 from pytube import YouTube
 
 init(convert=True)
-CURRENT_FYUTILS_VERSION = "1.8.0"
+CURRENT_FYUTILS_VERSION = "1.8.1"
 SUPPORTED_FUEL_VERSION = 1
 
 
@@ -260,6 +260,8 @@ try:
     print(prefix("INFO", "Init") + "ThreadWorkers: " + str(threads))
     private_ip = socket.gethostbyname(socket.gethostname())
     print(prefix("INFO", "Init") + "Private IP: " + private_ip)
+    wire_started = False
+    print(prefix("INFO", "Init") + "WIRE started: " + str(wire_started))
 
     # OS specific stuff.
     operating_system = platform.system()
@@ -412,7 +414,7 @@ try:
 
         match cmd:
             case "flood":
-                if len(args) != 2:
+                if len(args) < 2:
                     print(prefix("ERROR") + "Unexpected arguments for command \"" + cmd + "\"")
                     continue
                 target = args[0]
@@ -445,7 +447,7 @@ try:
                 print(prefix("INFO") + "Cleaning up...")
 
             case "portscan":
-                if len(args) != 1:
+                if len(args) < 1:
                     print(prefix("ERROR") + "Unexpected arguments for command \"" + cmd + "\"")
                     continue
                 target = args[0]
@@ -481,7 +483,7 @@ try:
                 print(prefix("INFO") + "Cleaning up...")
 
             case "resolve":
-                if len(args) != 2:
+                if len(args) < 2:
                     print(prefix("ERROR") + "Unexpected arguments for command \"" + cmd + "\"")
                     continue
                 action = args[0]
@@ -596,7 +598,7 @@ try:
                 print(prefix("INFO", "Init") + "Memory amount: " + str(round(memory_amount/1024/1024)) + "MB")
 
             case "checkport":
-                if len(args) != 2:
+                if len(args) < 2:
                     print(prefix("ERROR") + "Unexpected arguments for command \"" + cmd + "\"")
                     continue
                 target = args[0]
@@ -627,7 +629,7 @@ try:
                 print(prefix("INFO") + "Cleaning up...")
 
             case "ssh":
-                if len(args) != 3:
+                if len(args) < 3:
                     print(prefix("ERROR") + "Unexpected arguments for command \"" + cmd + "\"")
                     continue
                 server = args[0]
@@ -683,7 +685,7 @@ try:
                 print(prefix("INFO") + "Cleaning up...")
 
             case "fetch":
-                if len(args) != 2:
+                if len(args) < 2:
                     print(prefix("ERROR") + "Unexpected arguments for command \"" + cmd + "\"")
                     continue
                 url = args[0]
@@ -718,7 +720,7 @@ try:
                     print()
 
             case "youtube":
-                if len(args) != 1:
+                if len(args) < 1:
                     print(prefix("ERROR") + "Unexpected arguments for command \"" + cmd + "\"")
                     continue
                 url = args[0]
@@ -777,7 +779,7 @@ try:
                     print(prefix("INFO") + os.path.basename(path).split("/")[-1])
 
             case "fuel":
-                if len(args) != 2:
+                if len(args) < 2:
                     print(prefix("ERROR") + "Unexpected arguments for command \"" + cmd + "\"")
                     continue
                 fuel_action = args[0]
@@ -892,7 +894,7 @@ try:
                     print(prefix("INFO", "Updater") + "Version comparison: " + true_color() + version + accent_color() + " == " + true_color() + newest_version + text_color() + "...")
 
             case "edit":
-                if len(args) != 1:
+                if len(args) < 1:
                     print(prefix("ERROR") + "Unexpected arguments for command \"" + cmd + "\"")
                     continue
                 filepath = args[0]
@@ -931,7 +933,7 @@ try:
                 print(prefix("INFO") + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
 
             case "calc":
-                if len(args) != 1:
+                if len(args) < 1:
                     print(prefix("ERROR") + "Unexpected arguments for command \"" + cmd + "\"")
                     continue
                 calculation = args[0]
@@ -997,7 +999,7 @@ try:
                 sys.exit(0)
 
             case "cd":
-                if len(args) != 1:
+                if len(args) < 1:
                     print(prefix("INFO") + os.getcwd())
                     continue
                 change_dir = args[0]
@@ -1057,10 +1059,6 @@ try:
                 execute("start " + current_dir + "\\main.py")
                 print("login")
                 sys.exit(0)
-
-            case "":
-                update_status("Doing nothing.")
-                print()
                 
             case _:
                 if fuels.keys().__contains__(cmd.lower()):
