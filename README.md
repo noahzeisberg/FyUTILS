@@ -263,6 +263,12 @@ You can read files with this command. It's very similar to the `edit` command.
 ls
 ```
 `ls` does the same thing, it does in a UNIX environment. It'll list all files in the directory you're currently in.
+### Shell
+
+```
+shell <args>
+```
+Will execute the given system default command with the given arguments.
 ### Exit
 ```
 exit
