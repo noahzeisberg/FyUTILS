@@ -179,6 +179,11 @@ Flood will launch a denial of service attack on target:port. It can be very powe
 portscan <target>
 ```
 Portscan scans for opened ports on the target.
+### WIRE
+```
+wire <action> [target/argument]
+```
+WIRE is a tool package including several wireless hacking tools for Wi-Fi and Bluetooth. The target or argument will depend on which action you want to execute.
 ### Resolve
 ```
 resolve <ip/phone/domain> <target>
