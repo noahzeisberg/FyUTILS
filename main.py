@@ -482,6 +482,34 @@ try:
                     print(prefix("WARN") + "Cannot disconnect from target!")
                 print(prefix("INFO") + "Cleaning up...")
 
+            case "wire":
+                if len(args) < 1:
+                    print(prefix("ERROR") + "Unexpected arguments for command \"" + cmd + "\"")
+                    continue
+                action = args[0]
+
+                activity_start = time.time()
+
+                if action == "start":
+                    print(prefix("INFO", "WIRE") + "Starting WIRE service...")
+                    if not wire_started:
+                        if exec_code("netsh wlan show drivers") == 1:
+                            wire_started = False
+                            print(prefix("ERROR", "WIRE") + "WIRE can't be executed on your device.")
+                        else:
+                            wire_started = True
+                            print(prefix("INFO", "WIRE") + "WIRE service started successfully!")
+                    else:
+                        wire_started = False
+                        print(prefix("ERROR", "WIRE") + "WIRE service is already running!")
+                        print(prefix("ERROR", "WIRE") + "You can restart it using \"wire restart\".")
+                elif action == "connect":
+                    if len(args) < 2:
+                        print(prefix("ERROR") + "Unexpected arguments for command \"" + cmd + "\"")
+                        continue
+                    target = args[1]
+                    execute("netsh wlan connect name=" + target)
+
             case "resolve":
                 if len(args) < 2:
                     print(prefix("ERROR") + "Unexpected arguments for command \"" + cmd + "\"")
