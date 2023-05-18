@@ -861,8 +861,6 @@ try:
                     filename = fuel_location + ".json"
                     print(prefix("INFO") + "Using \"" + filename + "\" as target package.")
                     print(prefix("INFO") + "Checking FUEL directory...")
-                    if not os.path.exists(fuel_content_dir):
-                        os.makedirs(fuel_content_dir)
                     if os.path.exists(fuel_content_dir + filename):
                         print(prefix("ERROR") + "Package \"" + filename + "\" installation failed!")
                         print(prefix("ERROR") + "Error: Package is already installed.")
@@ -900,8 +898,6 @@ try:
                     print(prefix("INFO") + "Installation process started!")
                     filename = os.path.basename(fuel_location).split("/")[-1]
                     print(prefix("INFO") + "Checking FUEL directory...")
-                    if not os.path.exists(fuel_content_dir):
-                        os.makedirs(fuel_content_dir)
                     if os.path.exists(fuel_content_dir + filename):
                         print(prefix("ERROR") + "Package \"" + fuel_location + "\" installation failed!")
                         print(prefix("ERROR") + "Error: Package is already installed.")
@@ -917,6 +913,52 @@ try:
                         fuels.update({local_fuel_file_json["properties"]["command_name"]: fuel_content_dir + filename})
                     local_fuel_file.close()
                     print(prefix("INFO") + f"Done! Took{time.time() - activity_start: 0.2f}s to install package " + fuel_color() + filename + text_color() + "!")
+
+                elif fuel_action == "run":
+                    print(prefix("INFO") + "Installation process started!")
+                    filename = fuel_location + ".json"
+                    print(prefix("INFO") + "Using \"" + filename + "\" as target package.")
+                    print(prefix("INFO") + "Installing to: " + tmp_dir + "...")
+                    print(prefix("INFO") + "Checking FUEL in NoahOnFyre/FUELS...")
+                    fuel_repo_contents = requests.get("https://api.github.com/repos/NoahOnFyre/FUELS/contents/").json()
+                    for i in range(len(fuel_repo_contents)):
+                        fuel_download_url = ""
+                        if fuel_repo_contents[i]["name"] == filename:
+                            fuel_download_url = fuel_repo_contents[i]["download_url"]
+                            break
+                        else:
+                            continue
+                    if fuel_download_url == "":
+                        print(prefix("ERROR") + "Package \"" + filename + "\" installation failed!")
+                        print(prefix("ERROR") + "Error: Package not found.")
+                        continue
+                    print(prefix("INFO") + "Fetching FUEL from NoahOnFyre/FUELS...")
+                    fuel_file_content = requests.get(fuel_download_url).content
+                    print(prefix("INFO") + "Writing content to file...")
+                    local_fuel_file = open(tmp_dir + filename, mode="xb")
+                    local_fuel_file.write(fuel_file_content)
+                    local_fuel_file.close()
+                    local_fuel_file = open(fuel_content_dir + filename, mode="rt")
+                    print(prefix("INFO") + "FUEL " + fuel_color() + filename + text_color() + " temporarily installed to \"" + fuel_content_dir + "\".")
+                    fuel_file = open(tmp_dir + filename, mode="rt")
+                    args = input(prefix("INFO") + "Enter arguments to run: ").split(" ")
+                    json_fuel_file = json.load(fuel_file)
+                    if json_fuel_file["head"]["enabled"]:
+                        if len(args) != json_fuel_file["head"]["argument_length"]:
+                            print(prefix("ERROR") + "Unexpected arguments for command \"" + cmd + "\"")
+                            continue
+                        for entry in range(len(json_fuel_file["head"]["arguments"])):
+                            exec(list(json_fuel_file["head"]["arguments"])[entry] + " = args[" + str(entry) + "]")
+                        update_status(json_fuel_file["head"]["status"])
+
+                    if json_fuel_file["body"]["enabled"]:
+                        exec("\n".join(list(json_fuel_file["body"]["content"])))
+                    print(prefix("INFO") + "Execution finished!")
+                    print(prefix("INFO") + "Closing temporary file...")
+                    fuel_file.close()
+                    print(prefix("INFO") + "Deleting temporary file...")
+                    os.remove(tmp_dir + filename)
+                    print(prefix("INFO") + f"Done! Took{time.time() - activity_start: 0.2f}s to run package " + fuel_color() + filename + text_color() + "!")
 
                 elif fuel_action == "remove":
                     filename = os.path.basename(fuel_location + ".json").split("/")[-1]
