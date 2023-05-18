@@ -492,7 +492,7 @@ try:
                 update_status("Resolving information about " + target)
 
                 if action == "ip":
-                    data = json.loads(requests.get("http://ipwho.is/" + target).content.decode())
+                    data = json.loads(requests.get("http://ipwho.is/" + socket.gethostbyname(target)).content.decode())
                     print(prefix("INFO") + "Resolved information of \"" + data["ip"] + "\"")
                     print(prefix("INFO") + "IP: " + data["ip"])
                     print(prefix("INFO") + "IP type: " + data["type"])
@@ -520,26 +520,6 @@ try:
                     print(prefix("INFO") + "Location: " + location)
                     print(prefix("INFO") + "Carrier: " + carrier)
                     print(prefix("INFO") + "Timezone: " + str(zone))
-                elif action == "domain":
-                    data = json.loads(requests.get("http://ipwho.is/" + socket.gethostbyname(target)).content.decode())
-                    print(prefix("INFO") + "Resolved information of \"" + data["ip"] + "\"")
-                    print(prefix("INFO") + "IP: " + data["ip"])
-                    print(prefix("INFO") + "IP type: " + data["type"])
-                    print(prefix("INFO") + "Continent: " + data["continent"])
-                    print(prefix("INFO") + "Country: " + data["country"])
-                    print(prefix("INFO") + "Region: " + data["region"])
-                    print(prefix("INFO") + "City: " + data["city"])
-                    print(prefix("INFO") + "Latitude: " + str(data["latitude"]))
-                    print(prefix("INFO") + "Longitude: " + str(data["longitude"]))
-                    print(prefix("INFO") + "Google Maps: " + f"https://www.google.com/maps/@{data['latitude']},{data['longitude']},8z")
-                    print(prefix("INFO") + "EU country: " + str(data["is_eu"]))
-                    print(prefix("INFO") + "Postal code: " + data["postal"])
-                    print(prefix("INFO") + "System number (ASN): " + str(data["connection"]["asn"]))
-                    print(prefix("INFO") + "Organisation (ORG): " + data["connection"]["org"])
-                    print(prefix("INFO") + "Internet access provider (ISP): " + data["connection"]["isp"])
-                    print(prefix("INFO") + "Domain: " + data["connection"]["domain"])
-                    print(prefix("INFO") + "Timezone: " + data["timezone"]["id"])
-                    print(prefix("INFO") + "UTC: " + data["timezone"]["utc"])
                 else:
                     print(prefix("ERROR") + "Action is not supported!")
 
@@ -729,12 +709,11 @@ try:
 
                 try:
                     youtube = YouTube(url)
-                    update_status("Downloading: " + youtube.title.title())
                     if not os.path.exists(download_content_dir):
                         os.makedirs(download_content_dir)
                         print(prefix("INFO") + "Media directory created!")
                     print(prefix("INFO") + "Download started!")
-                    youtube.streams.filter(file_extension="mp4").order_by('resolution').desc().first().download(download_content_dir)
+                    youtube.streams.get_highest_resolution().download(download_content_dir)
                     print(prefix("INFO") + f"Download finished in {time.time() - activity_start: 0.2f} seconds!")
                     execute("start explorer.exe " + download_content_dir)
                 except KeyboardInterrupt:
