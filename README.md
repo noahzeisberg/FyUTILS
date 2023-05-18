@@ -37,6 +37,7 @@ FyUTILS is a simple python hacking and utility terminal application for windows 
     * [Fetch](#fetch)
     * [YouTube](#youtube)
     * [Log](#log)
+    * [Config](#config)
     * [StreamHunter](#streamhunter)
     * [FUELS](#fuels-1)
     * [FUEL](#fuel)
