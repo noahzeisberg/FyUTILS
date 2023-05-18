@@ -240,6 +240,38 @@ src_debug_color = Fore.MAGENTA
 # Various stuff initialisation
 executed_commands = []
 
+# Config initialisation
+temp = str(Path.home()) + "\\AppData\\Roaming\\FyUTILS"
+if not os.path.exists(temp + "\\config.json"):
+    config = open(temp + "\\config.json", mode="x")
+    config_data = {
+        "color": Fore.LIGHTBLUE_EX,
+        "fuel_color": Fore.LIGHTMAGENTA_EX,
+        "accent_color": Fore.LIGHTBLACK_EX,
+        "text_color": Fore.WHITE,
+        "true_color": Fore.GREEN,
+        "false_color": Fore.RED,
+        "warn_color": Fore.YELLOW,
+        "debug_color": Fore.MAGENTA,
+        "enable_debug": False
+    }
+    json.dump(config_data, config, indent=4)
+    print(prefix("INFO") + "Config created!")
+    config.close()
+
+config = open(temp + "\\config.json", mode="rt+")
+
+configuration = json.load(config)
+src_color = configuration["color"]
+src_fuel_color = configuration["fuel_color"]
+src_accent_color = configuration["accent_color"]
+src_text_color = configuration["text_color"]
+src_true_color = configuration["true_color"]
+src_false_color = configuration["false_color"]
+src_warn_color = configuration["warn_color"]
+src_debug_color = configuration["debug_color"]
+debug_enabled = configuration["enable_debug"]
+
 # Variable initialisation
 try:
     # User specific stuff
@@ -755,7 +787,12 @@ try:
                     print()
 
             case "log":
+                update_status("Opening logs...")
                 execute("explorer.exe /select,\"" + main_dir + "crash.log" + "\"")
+
+            case "config" | "configuration" | "settings" | "preferences":
+                update_status("Editing preferences...")
+                execute("explorer.exe /select,\"" + main_dir + "config.json" + "\"")
 
             case "streamhunter":
                 activity_start = time.time()
@@ -1066,7 +1103,7 @@ try:
                 execute("start " + current_dir + "\\main.py")
                 print("login")
                 sys.exit(0)
-                
+
             case _:
                 if fuels.keys().__contains__(cmd.lower()):
                     fuel_file = open(fuels.get(cmd.lower()), mode="rt")
@@ -1092,6 +1129,7 @@ except Exception as e:
     print(prefix("ERROR", "Crash") + "FyUTILS CRASH LOG @ " + datetime.datetime.now().strftime("%H:%M:%S"))
     print(prefix("ERROR", "Crash") + "Error: " + str(e))
     print(prefix("ERROR", "Crash") + "The full crash log has been saved to: " + main_dir + "crash.log")
+    print(prefix("ERROR", "Crash") + "When you want to file an issue, please remember to also upload your crash.log file.")
     crash_log()
     pause("ERROR", "Crash")
     sys.exit(1024)
