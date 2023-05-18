@@ -854,9 +854,9 @@ try:
                 if len(args) == 2:
                     fuel_location = args[1]
                 activity_start = time.time()
-                update_status("Installing FUEL...")
 
                 if fuel_action == "install":
+                    update_status("Installing FUEL...")
                     print(prefix("INFO") + "Installation process started!")
                     filename = fuel_location + ".json"
                     print(prefix("INFO") + "Using \"" + filename + "\" as target package.")
@@ -895,6 +895,7 @@ try:
                     print(prefix("INFO") + f"Done! Took{time.time() - activity_start: 0.2f}s to install package " + fuel_color() + filename + text_color() + "!")
 
                 elif fuel_action == "add":
+                    update_status("Adding FUEL...")
                     print(prefix("INFO") + "Installation process started!")
                     filename = os.path.basename(fuel_location).split("/")[-1]
                     print(prefix("INFO") + "Checking FUEL directory...")
@@ -915,6 +916,7 @@ try:
                     print(prefix("INFO") + f"Done! Took{time.time() - activity_start: 0.2f}s to install package " + fuel_color() + filename + text_color() + "!")
 
                 elif fuel_action == "run":
+                    update_status("Running FUEL...")
                     print(prefix("INFO") + "Installation process started!")
                     filename = fuel_location + ".json"
                     print(prefix("INFO") + "Using \"" + filename + "\" as target package.")
@@ -961,6 +963,7 @@ try:
                     print(prefix("INFO") + f"Done! Took{time.time() - activity_start: 0.2f}s to run package " + fuel_color() + filename + text_color() + "!")
 
                 elif fuel_action == "remove":
+                    update_status("Removing FUEL...")
                     filename = os.path.basename(fuel_location + ".json").split("/")[-1]
                     print(prefix("INFO") + "Unregistering " + fuel_content_dir + filename + "...")
                     if os.path.exists(fuel_content_dir + filename):
