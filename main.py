@@ -540,6 +540,9 @@ try:
                     if len(args) < 2:
                         print(prefix("ERROR") + "Unexpected arguments for command \"" + cmd + "\"")
                         continue
+                    if not wire_started:
+                        print(prefix("ERROR", "WIRE") + "WIRE service isn't already running!")
+                        continue
                     target = args[1]
                     execute("netsh wlan connect name=" + target)
 
