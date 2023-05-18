@@ -4,7 +4,7 @@
 
 # FyUTILS
 
-FyUTILS is a simple python hacking and utility terminal application for windows including tools like a denial of service initiator, a port scanner and several more. FyUTILS comes with an integrated package manager, community driven librarys and plenty of other features.
+FyUTILS is a simple python hacking and utility terminal application for windows including tools like a denial of service initiator, a port scanner and several more. FyUTILS comes with an integrated package manager, community driven libraries and plenty of other features.
 
 ![Language](https://img.shields.io/badge/dynamic/json?color=blue&label=Language&query=language&url=https%3A%2F%2Fapi.github.com%2Frepos%2FNoahOnFyre%2FFyUTILS&style=for-the-badge)
 ![GitHub all releases](https://img.shields.io/github/downloads/NoahOnFyre/FyUTILS/total?style=for-the-badge)
@@ -125,7 +125,7 @@ After installing the dependencies for FyUTILS you can start it by either enterin
 ```
 python main.py
 ```
-or by just double-clicking on the **main.py**.
+Or by just double-clicking on the **main.py**.
 ## How to use
 FyUTILS has a very large amount of commands you can execute and try out. But some important information you need is the structure of commands.
 
