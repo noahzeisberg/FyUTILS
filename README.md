@@ -1,5 +1,9 @@
+<div align="center">
+  <img height="300" src="img\FyUTILS.png" width="300"/>
+</div>
 
 # FyUTILS
+
 A simple python hacking and utility terminal application for windows including tools like a denial of service initiator, a port scanner and several more. FyUTILS comes with an integrated package manager, community driven librarys and plenty of other features.
 
 ![Language](https://img.shields.io/badge/dynamic/json?color=blue&label=Language&query=language&url=https%3A%2F%2Fapi.github.com%2Frepos%2FNoahOnFyre%2FFyUTILS&style=for-the-badge)
