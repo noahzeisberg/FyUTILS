@@ -232,6 +232,11 @@ This command will download the highest definition file of a YouTube video (most 
 log
 ```
 Opens the folder, your log files are in and automatically highlights the **crash.log**
+### Config
+```
+config [action]
+```
+When you run it without arguments, the config file will be opened for writing. If you run it as `config reset`, the config will be reset to the defaults.
 ### StreamHunter
 ```
 streamhunter
