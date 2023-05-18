@@ -1028,7 +1028,7 @@ try:
                 update_status("Raising exception...")
                 raise Exception("Executed by raise command.")
 
-            case "clear" | "rl" | "reload":
+            case "clear" | "rl" | "reload" | "cls":
                 update_status("Reloading...")
                 execute("cls")
                 menu()
