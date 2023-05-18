@@ -1,5 +1,5 @@
 <div align="center">
-  <img height="300" src="img\FyUTILS.png" width="300"/>
+  <img height="200" src="img\FyUTILS.png" width="200"/>
 </div>
 
 # FyUTILS
