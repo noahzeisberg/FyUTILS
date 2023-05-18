@@ -491,7 +491,7 @@ try:
                     print(prefix("INFO") + "Preparing scan...")
                     for port in range(1, 65535):
                         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-                        socket.setdefaulttimeout(0.05)
+                        socket.setdefaulttimeout(1/100)
                         result = sock.connect_ex((target, port))
                         print(prefix("INFO") + "Scanning Port... " + color() + str(port), end="\r")
                         if result == 0:
@@ -637,7 +637,7 @@ try:
                 print(prefix("INFO", "Init") + "CPU: " + cpu)
                 print(prefix("INFO", "Init") + "Memory amount: " + str(round(memory_amount/1024/1024)) + "MB")
 
-            case "checkport":
+            case "checkport" | "portcheck":
                 if len(args) < 2:
                     print(prefix("ERROR") + "Unexpected arguments for command \"" + cmd + "\"")
                     continue
