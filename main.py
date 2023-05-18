@@ -24,7 +24,7 @@ from pypresence import Presence
 from pytube import YouTube
 
 init(convert=True)
-CURRENT_FYUTILS_VERSION = "1.8.1"
+CURRENT_FYUTILS_VERSION = "1.8.2"
 SUPPORTED_FUEL_VERSION = 1
 
 
@@ -241,6 +241,7 @@ src_debug_color = Fore.MAGENTA
 executed_commands = []
 
 # Config initialisation
+
 temp = str(Path.home()) + "\\AppData\\Roaming\\FyUTILS"
 if not os.path.exists(temp + "\\config.json"):
     config = open(temp + "\\config.json", mode="x")
@@ -791,8 +792,32 @@ try:
                 execute("explorer.exe /select,\"" + main_dir + "crash.log" + "\"")
 
             case "config" | "configuration" | "settings" | "preferences":
+                if len(args) < 1:
+                    update_status("Editing preferences...")
+                    execute("explorer.exe /select,\"" + main_dir + "config.json" + "\"")
+                    continue
+                action = args[0]
+                activity_start = time.time()
                 update_status("Editing preferences...")
-                execute("explorer.exe /select,\"" + main_dir + "config.json" + "\"")
+                if action == "reset":
+                    print(prefix("INFO") + "Resetting config...")
+                    config = open(main_dir + "config.json", mode="w+")
+                    config_data = {
+                        "color": Fore.LIGHTBLUE_EX,
+                        "fuel_color": Fore.LIGHTMAGENTA_EX,
+                        "accent_color": Fore.LIGHTBLACK_EX,
+                        "text_color": Fore.WHITE,
+                        "true_color": Fore.GREEN,
+                        "false_color": Fore.RED,
+                        "warn_color": Fore.YELLOW,
+                        "debug_color": Fore.MAGENTA,
+                        "enable_debug": False
+                    }
+                    json.dump(config_data, config, indent=4)
+                    print(prefix("INFO") + "Config reset!")
+                    config.close()
+                else:
+                    print(prefix("ERROR") + "Action is not supported!")
 
             case "streamhunter":
                 activity_start = time.time()
