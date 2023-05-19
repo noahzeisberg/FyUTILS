@@ -1190,8 +1190,10 @@ try:
                         exec("\n".join(list(json_fuel_file["body"]["content"])))
                 else:
                     if exec_code(request_raw) == 1:
+                        update_status("Executing " + cmd)
                         print(prefix("ERROR") + "Invalid command: \"" + cmd + "\".")
                     else:
+                        update_status("Executing " + cmd)
                         execute(request_raw)
 except Exception as e:
     execute("title FyUTILS Crash Handler - Crash Log")
