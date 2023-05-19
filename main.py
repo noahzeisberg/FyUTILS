@@ -841,6 +841,10 @@ try:
                         print(prefix("INFO") + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
                         break
 
+            case "getip":
+                update_status("Getting user's IP address...")
+                print(prefix("INFO") + requests.get("https://api.ipify.org/").content.decode())
+
             case "fuels":
                 print(prefix("INFO") + "Active FUELS:")
                 for path in fuels.values():
