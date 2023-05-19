@@ -243,6 +243,11 @@ When you run it without arguments, the config file will be opened for writing. I
 streamhunter
 ```
 Runs a lite an optimised instance of my fork of StreamHunter by Eltotiz.
+### GetIP
+```
+getip
+```
+Returns your current public IP address. Be careful using this in front of people.
 ### FUELS
 ```
 fuels
