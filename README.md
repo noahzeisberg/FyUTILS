@@ -24,7 +24,7 @@ FyUTILS is a simple python hacking and utility terminal application for windows 
   * [First Launch](#first-launch)
   * [How to use](#how-to-use)
   * [Prefix](#prefix)
-  * [FUELS](#fuels)
+  * [Libraries](#libraries)
   * [Commands](#commands)
     * [Flood](#flood)
     * [Portscan](#portscan)
@@ -40,7 +40,7 @@ FyUTILS is a simple python hacking and utility terminal application for windows 
     * [Config](#config)
     * [StreamHunter](#streamhunter)
     * [GetIP](#getip)
-    * [FUELS](#fuels-1)
+    * [FUELS](#fuels)
     * [FUEL](#fuel)
     * [Update](#update)
     * [Edit](#edit)
@@ -166,7 +166,7 @@ Here's an example:
 | INFO                          | Logging level (e.g. INFO, ERROR or WARN)                                                   |
 | Stuff after prefix like text. | Stuff after the prefix (I think this is obvious)                                           |
 
-## FUELS
+## Libraries
 FUELS (FyUTILS extending libraries) are simple lightweight scripts that can add a certain behaviour or action when you execute a command.
 At the moment you can contribute by [Forking](https://github.com/NoahOnFyre/FUELS/fork) the repository, add your FUEL and create a [Pull Request](https://github.com/NoahOnFyre/FUELS/pulls) by clicking on **Contribute** and then on **New pull request**.
 Then you have to wait for a FUEL or project maintainer to verify that your FUEL is safe and doesn't contain malware or other malicious stuff.
