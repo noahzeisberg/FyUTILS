@@ -218,7 +218,7 @@ def menu():
     print(color() + "  _  __/      _  /_/ /     / /_/ /     _  /       __/ /      _  /___      ____/ / ")
     print(color() + "  /_/         _\\__, /      \\____/      /_/        /___/      /_____/      /____/  ")
     print(color() + "             ___/  /")
-    print(color() + "            /_____/ " + " "*5 + accent_color() + "v" + text_color() + version.replace(".", accent_color() + "." + text_color()) + accent_color() + " | " + text_color() + "Made by NoahOnFyre" + accent_color() + " | " + text_color() + "https://github.com/NoahOnFyre")
+    print(color() + "            /_____/ " + " "*5 + accent_color() + "v" + text_color() + version.replace(".", accent_color() + "." + text_color()) + accent_color() + " | " + text_color() + "Made by NoahOnFyre")
     print()
     print(accent_color() + "╔" + "═"*119)
     print(accent_color() + "║ " + accent_color() + "[" + color() + "VAR" + accent_color() + "] " + text_color() + "Username: " + username)
