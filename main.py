@@ -17,14 +17,16 @@ import pwinput
 import requests
 import string
 from pathlib import Path
-import scapy.layers.l2 as scapy
+import scapy.packet
+from scapy.layers.l2 import ARP, Ether, srp
+from scapy.all import sniff
 from colorama import Fore, Back, init
 from phonenumbers import geocoder, carrier, timezone
 from pypresence import Presence
 from pytube import YouTube
 
 init(convert=True)
-CURRENT_FYUTILS_VERSION = "1.8.2"
+CURRENT_FYUTILS_VERSION = "1.9.0"
 SUPPORTED_FUEL_VERSION = 1
 
 
@@ -95,6 +97,11 @@ def update_ssh_status(status):
             start=int(start_time))
     except:
         None
+
+
+def print_packet(x: scapy.packet.Packet):
+    content = str(x)
+    print(prefix("INFO") + content)
 
 
 def resolve_fuel_information(file):
@@ -509,6 +516,16 @@ try:
                 except:
                     print(prefix("WARN") + "Cannot disconnect from target!")
 
+            case "sniff":
+                update_status("Sniffing network...")
+                activity_start = time.time()
+
+                print(prefix("INFO") + "Starting network sniffer...")
+                sniff(filter="ip", prn=print_packet)
+                print(prefix("INFO") + "Canceling Action...")
+                print(prefix("INFO") + "Stopping network sniffer...")
+                print(prefix("INFO") + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
+
             case "wire":
                 if len(args) < 1:
                     print(prefix("ERROR") + "Unexpected arguments for command \"" + cmd + "\"")
@@ -589,11 +606,11 @@ try:
                 try:
                     print(prefix("INFO") + "Make sure you have WinPcap or Npcap installed!")
                     print(prefix("INFO") + "Initialising ARP service...")
-                    arp = scapy.ARP(pdst=private_ip + "/24")
-                    ether = scapy.Ether(dst="ff:ff:ff:ff:ff:ff")
+                    arp = ARP(pdst=private_ip + "/24")
+                    ether = Ether(dst="ff:ff:ff:ff:ff:ff")
                     packet = ether/arp
                     print(prefix("INFO") + "Sending ARP packets...")
-                    content = scapy.srp(packet, timeout=2, verbose=0)[0]
+                    content = srp(packet, timeout=2, verbose=0)[0]
                     clients = []
                     print(prefix("INFO") + "Receiving data from " + private_ip + "...")
                     for sent, received in content:
