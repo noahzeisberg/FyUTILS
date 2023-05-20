@@ -815,7 +815,7 @@ try:
                     print(prefix("INFO") + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
                     print()
 
-            case "log":
+            case "log" | "crashes":
                 update_status("Opening logs...")
                 execute("explorer.exe /select,\"" + main_dir + "crash.log" + "\"")
 
@@ -1185,9 +1185,13 @@ try:
                     print()
 
             case "help":
-                update_status("Viewing help...")
-                execute("start https://github.com/NoahOnFyre/FyUTILS#commands")
-                pause("INFO", "Help")
+                if len(args) < 1:
+                    update_status("Viewing help...")
+                    execute("start https://github.com/NoahOnFyre/FyUTILS#commands")
+                    continue
+                command = args[0]
+                update_status("Viewing " + command + " in help...")
+                execute("start https://github.com/NoahOnFyre/FyUTILS#" + command)
 
             case "raise":
                 update_status("Raising exception...")
