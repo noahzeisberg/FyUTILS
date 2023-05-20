@@ -503,7 +503,7 @@ try:
                     print(prefix() + "Preparing scan...")
                     for port in range(1, 65535):
                         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-                        socket.setdefaulttimeout(1/100)
+                        socket.setdefaulttimeout(1/1000)
                         result = sock.connect_ex((target, port))
                         print(prefix() + "Scanning Port... " + color() + str(port), end="\r")
                         if result == 0:
