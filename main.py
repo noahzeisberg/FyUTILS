@@ -20,7 +20,7 @@ from pathlib import Path
 import scapy.packet
 from scapy.layers.l2 import ARP, Ether, srp
 from scapy.all import sniff
-from colorama import Fore, Back, init
+from colorama import Fore, init
 from phonenumbers import geocoder, carrier, timezone
 from pypresence import Presence
 from pytube import YouTube
@@ -212,6 +212,7 @@ Python traceback:
 
 def menu():
     execute("cls")
+    print()
     print(color() + "  __________               _____  __   ________   ________   ______       ________")
     print(color() + "  ___  ____/  _____  __    __  / / /   ___  __/   ____  _/   ___  /       __  ___/")
     print(color() + "  __  /_      __  / / /    _  / / /    __  /       __  /     __  /        _____ \\ ")
@@ -227,6 +228,10 @@ def menu():
     if update_available:
         print(accent_color() + "╠" + "═"*119)
         print(accent_color() + "║ " + accent_color() + "[" + color() + "UPDATE" + accent_color() + "] " + text_color() + "A new version of FyUTILS is available! Install it now using \"update\".")
+        for item in str(update_content).split("\r\n"):
+            if not item.startswith("**Full Changelog**:"):
+                if not item == "":
+                    print(accent_color() + "║ " + accent_color() + "[" + color() + "UPDATE" + accent_color() + "] " + text_color() + item)
         print(accent_color() + "║ " + accent_color() + "[" + color() + "UPDATE" + accent_color() + "] " + text_color() + false_color() + version + accent_color() + " => " + true_color() + newest_version + text_color())
     print(accent_color() + "╚" + "═"*119)
 
@@ -373,6 +378,7 @@ try:
         else:
             release_download_url = ""
             continue
+    update_content = newest_release["body"]
     newest_version = newest_release["tag_name"]
     if version_is_newer(version, newest_version):
         print(prefix("INFO", "Updater") + "A new version of FyUTILS is available!")
