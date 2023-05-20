@@ -306,9 +306,9 @@ cd [directory]
 DISCLAIMER: FyUTILS modifies the paths of directory and files to feel more like a UNIX environment.
 ### Help
 ```
-help
+help [command]
 ```
-The help command will bring up this page here, so you can look up the syntax of a command or if you just need help using commands.
+The help command will bring up this page here, so you can look up the syntax of a command or if you just need help using commands. You can also add a specific command name after `help`, to get information about the specific command.
 ### Raise
 ```
 raise
