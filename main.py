@@ -48,7 +48,7 @@ def execute(command):
 
 
 def exec_code(command):
-    return subprocess.call(command, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
+    return subprocess.call(command, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT, stdin=subprocess.DEVNULL)
 
 
 def version_is_newer(current, value):
