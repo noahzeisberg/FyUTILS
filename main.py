@@ -1204,6 +1204,7 @@ try:
                 menu()
 
             case "restart" | "rs":
+                update_status("Restarting...")
                 print("logout")
                 execute("start " + current_dir + "\\main.py")
                 print("login")
