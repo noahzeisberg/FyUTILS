@@ -26,7 +26,7 @@ from pypresence import Presence
 from pytube import YouTube
 
 init(convert=True)
-CURRENT_FYUTILS_VERSION = "1.9.0"
+CURRENT_FYUTILS_VERSION = "1.9.1"
 SUPPORTED_FUEL_VERSION = 1
 
 
@@ -256,6 +256,7 @@ executed_commands = []
 
 temp = str(Path.home()) + "\\AppData\\Roaming\\FyUTILS"
 if not os.path.exists(temp + "\\config.json"):
+    os.makedirs(temp)
     config = open(temp + "\\config.json", mode="x")
     config_data = {
         "color": Fore.LIGHTBLUE_EX,
