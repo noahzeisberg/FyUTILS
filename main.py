@@ -30,7 +30,7 @@ CURRENT_FYUTILS_VERSION = "1.9.0"
 SUPPORTED_FUEL_VERSION = 1
 
 
-def prefix(level: str, protocol: str = "FyUTILS"):
+def prefix(level: str = "INFO", protocol: str = "FyUTILS"):
     if level == "INFO":
         return accent_color() + "[" + color() + datetime.datetime.now().strftime("%H:%M:%S") + accent_color() + "]" + " " + accent_color() + "[" + text_color() + protocol + accent_color() + "/" + true_color() + level.upper() + accent_color() + "] " + text_color()
     elif level == "WARN":
@@ -101,7 +101,7 @@ def update_ssh_status(status):
 
 def print_packet(x: scapy.packet.Packet):
     content = str(x)
-    print(prefix("INFO") + content)
+    print(prefix() + content)
 
 
 def resolve_fuel_information(file):
@@ -269,7 +269,7 @@ if not os.path.exists(temp + "\\config.json"):
         "enable_debug": False
     }
     json.dump(config_data, config, indent=4)
-    print(prefix("INFO") + "Config created!")
+    print(prefix() + "Config created!")
     config.close()
 
 config = open(temp + "\\config.json", mode="rt+")
@@ -452,7 +452,7 @@ try:
         except KeyboardInterrupt:
             try:
                 update_status("Shutting down...")
-                print("\n" + prefix("INFO") + "Shutting down FyUTILS...")
+                print("\n" + prefix() + "Shutting down FyUTILS...")
                 time.sleep(1)
                 sys.exit(0)
             except KeyboardInterrupt:
@@ -474,18 +474,18 @@ try:
                     for i in range(sys.maxsize):
                         try:
                             sock.send(random.randbytes(10240))
-                            print(prefix("INFO") + "Attacking target: " + color() + target + accent_color() + ":" + color() + str(port) + text_color() + "..." + accent_color() + " - " + text_color() + "Attack: " + color() + str(i + 1) + accent_color(), end="\r")
+                            print(prefix() + "Attacking target: " + color() + target + accent_color() + ":" + color() + str(port) + text_color() + "..." + accent_color() + " - " + text_color() + "Attack: " + color() + str(i + 1) + accent_color(), end="\r")
                         except socket.error:
                             print()
                             print(prefix("WARN") + "Request " + color() + str(i) + text_color() + " failed.", end="\r")
                     print("\n")
                 except KeyboardInterrupt:
-                    print("\n" + prefix("INFO") + "Canceling Action...")
-                    print(prefix("INFO") + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
+                    print("\n" + prefix() + "Canceling Action...")
+                    print(prefix() + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
                 except Exception as e:
                     print("\n" + prefix("ERROR") + "An error occurred while trying to execute this command correctly.")
                     print(prefix("ERROR") + str(e))
-                    print(prefix("INFO") + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
+                    print(prefix() + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
                 try:
                     sock.close()
                 except:
@@ -500,23 +500,23 @@ try:
                 update_status("Scanning on " + target)
 
                 try:
-                    print(prefix("INFO") + "Preparing scan...")
+                    print(prefix() + "Preparing scan...")
                     for port in range(1, 65535):
                         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                         socket.setdefaulttimeout(1/100)
                         result = sock.connect_ex((target, port))
-                        print(prefix("INFO") + "Scanning Port... " + color() + str(port), end="\r")
+                        print(prefix() + "Scanning Port... " + color() + str(port), end="\r")
                         if result == 0:
-                            print(prefix("INFO") + "Port " + color() + str(port) + text_color() + " is open!" + " "*50)
+                            print(prefix() + "Port " + color() + str(port) + text_color() + " is open!" + " "*50)
                         sock.close()
                     print("\n")
                 except KeyboardInterrupt:
-                    print("\n" + prefix("INFO") + "Canceling Action...")
-                    print(prefix("INFO") + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
+                    print("\n" + prefix() + "Canceling Action...")
+                    print(prefix() + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
                 except Exception as e:
                     print("\n" + prefix("ERROR") + "An error occurred while trying to execute this command correctly.")
                     print(prefix("ERROR") + str(e))
-                    print(prefix("INFO") + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
+                    print(prefix() + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
                 try:
                     sock.close()
                 except:
@@ -526,11 +526,11 @@ try:
                 update_status("Sniffing network...")
                 activity_start = time.time()
 
-                print(prefix("INFO") + "Starting network sniffer...")
+                print(prefix() + "Starting network sniffer...")
                 sniff(filter="ip", prn=print_packet)
-                print(prefix("INFO") + "Canceling Action...")
-                print(prefix("INFO") + "Stopping network sniffer...")
-                print(prefix("INFO") + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
+                print(prefix() + "Canceling Action...")
+                print(prefix() + "Stopping network sniffer...")
+                print(prefix() + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
 
             case "wire":
                 if len(args) < 1:
@@ -582,33 +582,33 @@ try:
 
                 if action == "ip":
                     data = json.loads(requests.get("http://ipwho.is/" + socket.gethostbyname(target)).content.decode())
-                    print(prefix("INFO") + "Resolved information of \"" + data["ip"] + "\"")
-                    print(prefix("INFO") + "IP: " + data["ip"])
-                    print(prefix("INFO") + "IP type: " + data["type"])
-                    print(prefix("INFO") + "Continent: " + data["continent"])
-                    print(prefix("INFO") + "Country: " + data["country"])
-                    print(prefix("INFO") + "Region: " + data["region"])
-                    print(prefix("INFO") + "City: " + data["city"])
-                    print(prefix("INFO") + "Latitude: " + str(data["latitude"]))
-                    print(prefix("INFO") + "Longitude: " + str(data["longitude"]))
-                    print(prefix("INFO") + "Google Maps: " + f"https://www.google.com/maps/@{data['latitude']},{data['longitude']},10z")
-                    print(prefix("INFO") + "EU country: " + str(data["is_eu"]))
-                    print(prefix("INFO") + "Postal code: " + data["postal"])
-                    print(prefix("INFO") + "System number (ASN): " + str(data["connection"]["asn"]))
-                    print(prefix("INFO") + "Organisation (ORG): " + data["connection"]["org"])
-                    print(prefix("INFO") + "Internet access provider (ISP): " + data["connection"]["isp"])
-                    print(prefix("INFO") + "Domain: " + data["connection"]["domain"])
-                    print(prefix("INFO") + "Timezone: " + data["timezone"]["id"])
-                    print(prefix("INFO") + "UTC: " + data["timezone"]["utc"])
+                    print(prefix() + "Resolved information of \"" + data["ip"] + "\"")
+                    print(prefix() + "IP: " + data["ip"])
+                    print(prefix() + "IP type: " + data["type"])
+                    print(prefix() + "Continent: " + data["continent"])
+                    print(prefix() + "Country: " + data["country"])
+                    print(prefix() + "Region: " + data["region"])
+                    print(prefix() + "City: " + data["city"])
+                    print(prefix() + "Latitude: " + str(data["latitude"]))
+                    print(prefix() + "Longitude: " + str(data["longitude"]))
+                    print(prefix() + "Google Maps: " + f"https://www.google.com/maps/@{data['latitude']},{data['longitude']},10z")
+                    print(prefix() + "EU country: " + str(data["is_eu"]))
+                    print(prefix() + "Postal code: " + data["postal"])
+                    print(prefix() + "System number (ASN): " + str(data["connection"]["asn"]))
+                    print(prefix() + "Organisation (ORG): " + data["connection"]["org"])
+                    print(prefix() + "Internet access provider (ISP): " + data["connection"]["isp"])
+                    print(prefix() + "Domain: " + data["connection"]["domain"])
+                    print(prefix() + "Timezone: " + data["timezone"]["id"])
+                    print(prefix() + "UTC: " + data["timezone"]["utc"])
                 elif action == "phone":
                     parsed_number = phonenumbers.parse(target)
                     location = geocoder.description_for_number(parsed_number, "en")
                     carrier = carrier.name_for_number(parsed_number, "en")
                     zone = timezone.time_zones_for_number(parsed_number)
-                    print(prefix("INFO") + "Resolved information of \"" + target + "\"")
-                    print(prefix("INFO") + "Location: " + location)
-                    print(prefix("INFO") + "Carrier: " + carrier)
-                    print(prefix("INFO") + "Timezone: " + str(zone))
+                    print(prefix() + "Resolved information of \"" + target + "\"")
+                    print(prefix() + "Location: " + location)
+                    print(prefix() + "Carrier: " + carrier)
+                    print(prefix() + "Timezone: " + str(zone))
                 else:
                     print(prefix("ERROR") + "Action is not supported!")
 
@@ -617,30 +617,30 @@ try:
                 update_status("ARP scanning in " + private_ip + "...")
 
                 try:
-                    print(prefix("INFO") + "Make sure you have WinPcap or Npcap installed!")
-                    print(prefix("INFO") + "Initialising ARP service...")
+                    print(prefix() + "Make sure you have WinPcap or Npcap installed!")
+                    print(prefix() + "Initialising ARP service...")
                     arp = ARP(pdst=private_ip + "/24")
                     ether = Ether(dst="ff:ff:ff:ff:ff:ff")
                     packet = ether/arp
-                    print(prefix("INFO") + "Sending ARP packets...")
+                    print(prefix() + "Sending ARP packets...")
                     content = srp(packet, timeout=2, verbose=0)[0]
                     clients = []
-                    print(prefix("INFO") + "Receiving data from " + private_ip + "...")
+                    print(prefix() + "Receiving data from " + private_ip + "...")
                     for sent, received in content:
                         clients += [[received.psrc, received.hwsrc]]
-                    print(prefix("INFO") + "Processing received data...")
-                    print(prefix("INFO") + "Data received and processed.")
+                    print(prefix() + "Processing received data...")
+                    print(prefix() + "Data received and processed.")
                     client_count = len(clients)
                     for i in range(client_count):
-                        print(prefix("INFO") + accent_color() + "[" + color() + str(i) + accent_color() + "] " + text_color() + "IP: " + clients[i][0] + " MAC: " + clients[i][1])
+                        print(prefix() + accent_color() + "[" + color() + str(i) + accent_color() + "] " + text_color() + "IP: " + clients[i][0] + " MAC: " + clients[i][1])
                 except KeyboardInterrupt:
-                    print(prefix("INFO") + "Canceling Action...")
-                    print(prefix("INFO") + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
+                    print(prefix() + "Canceling Action...")
+                    print(prefix() + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
                     print()
                 except Exception as e:
                     print(prefix("ERROR") + "An error occurred while trying to execute this command correctly.")
                     print(prefix("ERROR") + str(e))
-                    print(prefix("INFO") + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
+                    print(prefix() + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
 
             case "vars":
                 print(prefix("INFO", "Init") + "Listing up system variables...")
@@ -679,23 +679,23 @@ try:
                     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                     result = sock.connect_ex((target, port))
                     if result == 0:
-                        print(prefix("INFO") + "Port " + color() + str(port) + text_color() + " is open!")
+                        print(prefix() + "Port " + color() + str(port) + text_color() + " is open!")
                     else:
                         print(prefix("WARN") + "Port " + color() + str(port) + text_color() + " is not open!")
                     sock.close()
                 except KeyboardInterrupt:
-                    print(prefix("INFO") + "Canceling Action...")
-                    print(prefix("INFO") + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
+                    print(prefix() + "Canceling Action...")
+                    print(prefix() + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
                     print()
                 except Exception as e:
                     print(prefix("ERROR") + "An error occurred while trying to execute this command correctly.")
                     print(prefix("ERROR") + str(e))
-                    print(prefix("INFO") + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
+                    print(prefix() + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
                 try:
                     sock.close()
                 except:
                     print(prefix("WARN") + "Cannot disconnect from target!")
-                print(prefix("INFO") + "Cleaning up...")
+                print(prefix() + "Cleaning up...")
 
             case "ssh":
                 if len(args) < 3:
@@ -707,16 +707,16 @@ try:
                 activity_start = time.time()
                 update_status("Starting FySSH service...")
 
-                print(prefix("INFO") + "Connecting to " + server + ":" + str(port) + " as " + user)
-                print(prefix("INFO") + "Initialising SSH client...")
+                print(prefix() + "Connecting to " + server + ":" + str(port) + " as " + user)
+                print(prefix() + "Initialising SSH client...")
                 ssh = paramiko.SSHClient()
-                print(prefix("INFO") + "Loading host keys...")
+                print(prefix() + "Loading host keys...")
                 ssh.load_system_host_keys()
-                print(prefix("INFO") + "Adding policy...")
+                print(prefix() + "Adding policy...")
                 ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-                print(prefix("INFO") + "Requesting user's password...")
+                print(prefix() + "Requesting user's password...")
                 password = pwinput.pwinput(text_color() + "Enter password" + accent_color() + " > " + text_color(), "*")
-                print(prefix("INFO") + "Connecting...")
+                print(prefix() + "Connecting...")
                 print()
                 try:
                     ssh.connect(server, port=port, username=user, password=password)
@@ -732,7 +732,7 @@ try:
                             for line in ssh_stderr.readlines():
                                 print(prefix("ERROR", "Remote") + line, end="\r")
                         except KeyboardInterrupt:
-                            print("\n" + prefix("INFO") + "Canceling Action...")
+                            print("\n" + prefix() + "Canceling Action...")
                             break
                         except Exception as e:
                             print("\n" + prefix("ERROR") + "An error occurred while trying to execute this command correctly.")
@@ -741,17 +741,17 @@ try:
                 except Exception as e:
                     print(prefix("ERROR") + "Can't connect to SSH host. Please make sure, that the requested port is open.")
                     print(prefix("ERROR") + "SSH error: " + str(e))
-                    print(prefix("INFO") + f"Time elapsed: {time.time() - activity_start : 0.2f}s")
-                    print(prefix("INFO") + "Cleaning up...")
+                    print(prefix() + f"Time elapsed: {time.time() - activity_start : 0.2f}s")
+                    print(prefix() + "Cleaning up...")
                     continue
 
-                print(prefix("INFO") + f"Time elapsed: {time.time() - activity_start : 0.2f}s")
-                print(prefix("INFO") + "Disconnecting from " + color() + server + accent_color() + ":" + color() + str(port) + text_color() + "...")
+                print(prefix() + f"Time elapsed: {time.time() - activity_start : 0.2f}s")
+                print(prefix() + "Disconnecting from " + color() + server + accent_color() + ":" + color() + str(port) + text_color() + "...")
                 try:
                     ssh.close()
                 except:
                     print(prefix("WARN") + "Cannot disconnect from target!")
-                print(prefix("INFO") + "Cleaning up...")
+                print(prefix() + "Cleaning up...")
 
             case "fetch":
                 if len(args) < 2:
@@ -763,12 +763,12 @@ try:
                 update_status("Fetching: " + url)
 
                 try:
-                    print(prefix("INFO") + "Fetching " + url + "...")
+                    print(prefix() + "Fetching " + url + "...")
                     fetch_content = requests.get(url).content
-                    print(prefix("INFO") + "Content of " + url + " cached!")
+                    print(prefix() + "Content of " + url + " cached!")
                     if not os.path.exists(download_content_dir):
                         os.makedirs(download_content_dir)
-                    print(prefix("INFO") + "Writing content of " + url + " from cache to local storage!")
+                    print(prefix() + "Writing content of " + url + " from cache to local storage!")
 
                     try:
                         open(download_content_dir + "\\" + filename, mode="xb").write(fetch_content)
@@ -776,16 +776,16 @@ try:
                     except Exception as e:
                         print("\n" + prefix("ERROR") + "Could not save content to file.")
                         print(prefix("ERROR") + str(e))
-                        print(prefix("INFO") + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
+                        print(prefix() + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
                         print()
                 except KeyboardInterrupt:
                     print()
-                    print("\n" + prefix("INFO") + "Canceling Action...")
-                    print(prefix("INFO") + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
+                    print("\n" + prefix() + "Canceling Action...")
+                    print(prefix() + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
                 except Exception as e:
                     print("\n" + prefix("ERROR") + "An error occurred while trying to execute this command correctly.")
                     print(prefix("ERROR") + str(e))
-                    print(prefix("INFO") + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
+                    print(prefix() + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
                     print()
 
             case "youtube":
@@ -800,19 +800,19 @@ try:
                     youtube = YouTube(url)
                     if not os.path.exists(download_content_dir):
                         os.makedirs(download_content_dir)
-                        print(prefix("INFO") + "Media directory created!")
-                    print(prefix("INFO") + "Download started!")
+                        print(prefix() + "Media directory created!")
+                    print(prefix() + "Download started!")
                     youtube.streams.get_highest_resolution().download(download_content_dir)
-                    print(prefix("INFO") + f"Download finished in {time.time() - activity_start: 0.2f} seconds!")
+                    print(prefix() + f"Download finished in {time.time() - activity_start: 0.2f} seconds!")
                     execute("start explorer.exe " + download_content_dir)
                 except KeyboardInterrupt:
                     print()
-                    print("\n" + prefix("INFO") + "Canceling Action...")
-                    print(prefix("INFO") + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
+                    print("\n" + prefix() + "Canceling Action...")
+                    print(prefix() + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
                 except Exception as e:
                     print("\n" + prefix("ERROR") + "An error occurred while trying to execute this command correctly.")
                     print(prefix("ERROR") + str(e))
-                    print(prefix("INFO") + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
+                    print(prefix() + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
                     print()
 
             case "log" | "crashes":
@@ -828,7 +828,7 @@ try:
                 activity_start = time.time()
                 update_status("Editing preferences...")
                 if action == "reset":
-                    print(prefix("INFO") + "Resetting config...")
+                    print(prefix() + "Resetting config...")
                     config = open(main_dir + "config.json", mode="w+")
                     config_data = {
                         "color": Fore.LIGHTBLUE_EX,
@@ -842,7 +842,7 @@ try:
                         "enable_debug": False
                     }
                     json.dump(config_data, config, indent=4)
-                    print(prefix("INFO") + "Config reset!")
+                    print(prefix() + "Config reset!")
                     config.close()
                 else:
                     print(prefix("ERROR") + "Action is not supported!")
@@ -851,7 +851,7 @@ try:
                 activity_start = time.time()
                 update_status("Searching for videos...")
 
-                print(prefix("INFO") + "Searching for videos...")
+                print(prefix() + "Searching for videos...")
                 while True:
                     try:
                         identifier = "".join(random.choice(string.ascii_letters + string.digits) for _ in range(6)).lower()
@@ -859,25 +859,25 @@ try:
                         source = requests.get("https://streamable.com/" + identifier)
                         try:
                             if source.status_code != 404:
-                                print(prefix("INFO") + "Valid link found! | https://streamable.com/" + identifier)
+                                print(prefix() + "Valid link found! | https://streamable.com/" + identifier)
                         except Exception as e:
                             print(prefix("ERROR") + "An error occurred while trying to execute this command correctly.")
                             print(prefix("ERROR") + str(e))
-                            print(prefix("INFO") + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
+                            print(prefix() + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
                             break
                     except KeyboardInterrupt:
-                        print(prefix("INFO") + "Canceling Action...")
-                        print(prefix("INFO") + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
+                        print(prefix() + "Canceling Action...")
+                        print(prefix() + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
                         break
 
             case "getip":
                 update_status("Getting user's IP address...")
-                print(prefix("INFO") + requests.get("https://api.ipify.org/").content.decode())
+                print(prefix() + requests.get("https://api.ipify.org/").content.decode())
 
             case "fuels":
-                print(prefix("INFO") + "Active FUELS:")
+                print(prefix() + "Active FUELS:")
                 for path in fuels.values():
-                    print(prefix("INFO") + os.path.basename(path).split("/")[-1])
+                    print(prefix() + os.path.basename(path).split("/")[-1])
 
             case "fuel":
                 if len(args) < 2:
@@ -890,16 +890,16 @@ try:
 
                 if fuel_action == "install":
                     update_status("Installing FUEL...")
-                    print(prefix("INFO") + "Installation process started!")
+                    print(prefix() + "Installation process started!")
                     filename = fuel_location + ".json"
-                    print(prefix("INFO") + "Using \"" + filename + "\" as target package.")
-                    print(prefix("INFO") + "Checking FUEL directory...")
+                    print(prefix() + "Using \"" + filename + "\" as target package.")
+                    print(prefix() + "Checking FUEL directory...")
                     if os.path.exists(fuel_content_dir + filename):
                         print(prefix("ERROR") + "Package \"" + filename + "\" installation failed!")
                         print(prefix("ERROR") + "Error: Package is already installed.")
                         continue
-                    print(prefix("INFO") + "Installing to: " + fuel_content_dir + "...")
-                    print(prefix("INFO") + "Checking FUEL in NoahOnFyre/FUELS...")
+                    print(prefix() + "Installing to: " + fuel_content_dir + "...")
+                    print(prefix() + "Checking FUEL in NoahOnFyre/FUELS...")
                     fuel_repo_contents = requests.get("https://api.github.com/repos/NoahOnFyre/FUELS/contents/").json()
                     for i in range(len(fuel_repo_contents)):
                         fuel_download_url = ""
@@ -912,49 +912,49 @@ try:
                         print(prefix("ERROR") + "Package \"" + filename + "\" installation failed!")
                         print(prefix("ERROR") + "Error: Package not found.")
                         continue
-                    print(prefix("INFO") + "Fetching FUEL from NoahOnFyre/FUELS...")
+                    print(prefix() + "Fetching FUEL from NoahOnFyre/FUELS...")
                     fuel_file_content = requests.get(fuel_download_url).content
-                    print(prefix("INFO") + "Writing content to file...")
+                    print(prefix() + "Writing content to file...")
                     local_fuel_file = open(fuel_content_dir + filename, mode="xb")
                     local_fuel_file.write(fuel_file_content)
                     local_fuel_file.close()
                     local_fuel_file = open(fuel_content_dir + filename, mode="rt")
-                    print(prefix("INFO") + "FUEL " + fuel_color() + filename + text_color() + " successfully installed to \"" + fuel_content_dir + "\".")
-                    print(prefix("INFO") + "Adding FUEL to FyUTILS...")
+                    print(prefix() + "FUEL " + fuel_color() + filename + text_color() + " successfully installed to \"" + fuel_content_dir + "\".")
+                    print(prefix() + "Adding FUEL to FyUTILS...")
                     local_fuel_file_json = json.load(local_fuel_file)
                     if local_fuel_file_json["properties"]["type"] == "DEFAULT":
                         fuels.update({local_fuel_file_json["properties"]["command_name"]: fuel_content_dir + filename})
                     local_fuel_file.close()
-                    print(prefix("INFO") + f"Done! Took{time.time() - activity_start: 0.2f}s to install package " + fuel_color() + filename + text_color() + "!")
+                    print(prefix() + f"Done! Took{time.time() - activity_start: 0.2f}s to install package " + fuel_color() + filename + text_color() + "!")
 
                 elif fuel_action == "add":
                     update_status("Adding FUEL...")
-                    print(prefix("INFO") + "Installation process started!")
+                    print(prefix() + "Installation process started!")
                     filename = os.path.basename(fuel_location).split("/")[-1]
-                    print(prefix("INFO") + "Checking FUEL directory...")
+                    print(prefix() + "Checking FUEL directory...")
                     if os.path.exists(fuel_content_dir + filename):
                         print(prefix("ERROR") + "Package \"" + fuel_location + "\" installation failed!")
                         print(prefix("ERROR") + "Error: Package is already installed.")
                         continue
-                    print(prefix("INFO") + "Installing to: " + fuel_content_dir + "...")
-                    print(prefix("INFO") + "Copying FUEL from " + fuel_location + "...")
+                    print(prefix() + "Installing to: " + fuel_content_dir + "...")
+                    print(prefix() + "Copying FUEL from " + fuel_location + "...")
                     shutil.copy(fuel_location, fuel_content_dir)
                     local_fuel_file = open(fuel_content_dir + filename)
-                    print(prefix("INFO") + "FUEL " + fuel_color() + filename + text_color() + " successfully copied to \"" + fuel_content_dir + "\".")
-                    print(prefix("INFO") + "Adding FUEL to FyUTILS...")
+                    print(prefix() + "FUEL " + fuel_color() + filename + text_color() + " successfully copied to \"" + fuel_content_dir + "\".")
+                    print(prefix() + "Adding FUEL to FyUTILS...")
                     local_fuel_file_json = json.load(local_fuel_file)
                     if local_fuel_file_json["properties"]["type"] == "DEFAULT":
                         fuels.update({local_fuel_file_json["properties"]["command_name"]: fuel_content_dir + filename})
                     local_fuel_file.close()
-                    print(prefix("INFO") + f"Done! Took{time.time() - activity_start: 0.2f}s to install package " + fuel_color() + filename + text_color() + "!")
+                    print(prefix() + f"Done! Took{time.time() - activity_start: 0.2f}s to install package " + fuel_color() + filename + text_color() + "!")
 
                 elif fuel_action == "run":
                     update_status("Running FUEL...")
-                    print(prefix("INFO") + "Installation process started!")
+                    print(prefix() + "Installation process started!")
                     filename = fuel_location + ".json"
-                    print(prefix("INFO") + "Using \"" + filename + "\" as target package.")
-                    print(prefix("INFO") + "Installing to: " + tmp_dir + "...")
-                    print(prefix("INFO") + "Checking FUEL in NoahOnFyre/FUELS...")
+                    print(prefix() + "Using \"" + filename + "\" as target package.")
+                    print(prefix() + "Installing to: " + tmp_dir + "...")
+                    print(prefix() + "Checking FUEL in NoahOnFyre/FUELS...")
                     fuel_repo_contents = requests.get("https://api.github.com/repos/NoahOnFyre/FUELS/contents/").json()
                     for i in range(len(fuel_repo_contents)):
                         fuel_download_url = ""
@@ -967,16 +967,16 @@ try:
                         print(prefix("ERROR") + "Package \"" + filename + "\" installation failed!")
                         print(prefix("ERROR") + "Error: Package not found.")
                         continue
-                    print(prefix("INFO") + "Fetching FUEL from NoahOnFyre/FUELS...")
+                    print(prefix() + "Fetching FUEL from NoahOnFyre/FUELS...")
                     fuel_file_content = requests.get(fuel_download_url).content
-                    print(prefix("INFO") + "Writing content to file...")
+                    print(prefix() + "Writing content to file...")
                     local_fuel_file = open(tmp_dir + filename, mode="xb")
                     local_fuel_file.write(fuel_file_content)
                     local_fuel_file.close()
                     local_fuel_file = open(fuel_content_dir + filename, mode="rt")
-                    print(prefix("INFO") + "FUEL " + fuel_color() + filename + text_color() + " temporarily installed to \"" + fuel_content_dir + "\".")
+                    print(prefix() + "FUEL " + fuel_color() + filename + text_color() + " temporarily installed to \"" + fuel_content_dir + "\".")
                     fuel_file = open(tmp_dir + filename, mode="rt")
-                    args = input(prefix("INFO") + "Enter arguments to run: ").split(" ")
+                    args = input(prefix() + "Enter arguments to run: ").split(" ")
                     json_fuel_file = json.load(fuel_file)
                     if json_fuel_file["head"]["enabled"]:
                         if len(args) != json_fuel_file["head"]["argument_length"]:
@@ -988,17 +988,17 @@ try:
 
                     if json_fuel_file["body"]["enabled"]:
                         exec("\n".join(list(json_fuel_file["body"]["content"])))
-                    print(prefix("INFO") + "Execution finished!")
-                    print(prefix("INFO") + "Closing temporary file...")
+                    print(prefix() + "Execution finished!")
+                    print(prefix() + "Closing temporary file...")
                     fuel_file.close()
-                    print(prefix("INFO") + "Deleting temporary file...")
+                    print(prefix() + "Deleting temporary file...")
                     os.remove(tmp_dir + filename)
-                    print(prefix("INFO") + f"Done! Took{time.time() - activity_start: 0.2f}s to run package " + fuel_color() + filename + text_color() + "!")
+                    print(prefix() + f"Done! Took{time.time() - activity_start: 0.2f}s to run package " + fuel_color() + filename + text_color() + "!")
 
                 elif fuel_action == "remove":
                     update_status("Removing FUEL...")
                     filename = os.path.basename(fuel_location + ".json").split("/")[-1]
-                    print(prefix("INFO") + "Unregistering " + fuel_content_dir + filename + "...")
+                    print(prefix() + "Unregistering " + fuel_content_dir + filename + "...")
                     if os.path.exists(fuel_content_dir + filename):
                         temp = open(fuel_content_dir + filename)
                         fuels.pop(json.load(temp)["properties"]["command_name"])
@@ -1007,14 +1007,14 @@ try:
                         print(prefix("ERROR") + "Package \"" + filename + "\" remove failed!")
                         print(prefix("ERROR") + "Error: Local package not found.")
                         continue
-                    print(prefix("INFO") + "Deleting " + filename + "...")
+                    print(prefix() + "Deleting " + filename + "...")
                     if os.path.exists(fuel_content_dir + filename):
                         os.remove(fuel_content_dir + filename)
                     else:
                         print(prefix("ERROR") + "Package \"" + filename + "\" remove failed!")
                         print(prefix("ERROR") + "Error: Local package not found.")
                         continue
-                    print(prefix("INFO") + f"Done! Took{time.time() - activity_start: 0.2f}s to remove package " + fuel_color() + filename)
+                    print(prefix() + f"Done! Took{time.time() - activity_start: 0.2f}s to remove package " + fuel_color() + filename)
                 else:
                     print(prefix("ERROR") + "Action is not supported!")
 
@@ -1047,16 +1047,16 @@ try:
 
                 if not os.path.exists(filepath):
                     print(prefix("WARN") + "File not found!")
-                    confirmation = input(prefix("INFO") + "Do you want to let FyUTILS create a new file? (y/n): ")
+                    confirmation = input(prefix() + "Do you want to let FyUTILS create a new file? (y/n): ")
                     if confirmation.lower() == "n":
                         continue
                     file = open(filepath, "x+")
-                    print(prefix("INFO") + "File created successfully.")
-                    print(prefix("INFO") + "End file editing by entering \"END\".")
+                    print(prefix() + "File created successfully.")
+                    print(prefix() + "End file editing by entering \"END\".")
                 else:
                     file = open(filepath, "w+")
-                    print(prefix("INFO") + "File opened successfully.")
-                    print(prefix("INFO") + "End file editing by entering \"END\".")
+                    print(prefix() + "File opened successfully.")
+                    print(prefix() + "End file editing by entering \"END\".")
                 ln = ""
                 for i in range(1, sys.maxsize):
                     try:
@@ -1068,13 +1068,13 @@ try:
                         print("END")
                         print()
                         break
-                print(prefix("INFO") + "Writing cached content to " + filepath + "...")
+                print(prefix() + "Writing cached content to " + filepath + "...")
                 file.writelines(ln)
-                print(prefix("INFO") + "Saving file to " + filepath + "...")
-                print(prefix("INFO") + "Closing " + filepath + "...")
+                print(prefix() + "Saving file to " + filepath + "...")
+                print(prefix() + "Closing " + filepath + "...")
                 file.close()
-                print(prefix("INFO") + "File is saved and closed!")
-                print(prefix("INFO") + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
+                print(prefix() + "File is saved and closed!")
+                print(prefix() + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
 
             case "calc":
                 if len(args) < 1:
@@ -1084,7 +1084,7 @@ try:
                 activity_start = time.time()
                 update_status("Calculating " + calculation)
 
-                print(prefix("INFO") + calculation + " is " + str(eval(calculation)))
+                print(prefix() + calculation + " is " + str(eval(calculation)))
 
             case "read":
                 if len(args) != 1:
@@ -1099,28 +1099,28 @@ try:
                     continue
                 else:
                     file = open(filepath, "rt")
-                    print(prefix("INFO") + "File opened successfully.")
+                    print(prefix() + "File opened successfully.")
                 i = 1
                 for line in file.readlines():
                     print(str(i) + ": " + line, end="\r")
                     i += 1
-                print(prefix("INFO") + "Closing " + filepath + "...")
+                print(prefix() + "Closing " + filepath + "...")
                 file.close()
-                print(prefix("INFO") + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
+                print(prefix() + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
 
             case "ls":
                 try:
-                    print(prefix("INFO") + "Content of " + os.getcwd())
+                    print(prefix() + "Content of " + os.getcwd())
                     for file in os.listdir(os.getcwd()):
                         if file.startswith("."):
                             if os.path.isfile(file):
-                                print(prefix("INFO") + accent_color() + file)
+                                print(prefix() + accent_color() + file)
                             elif os.path.isdir(file):
-                                print(prefix("INFO") + accent_color() + "/" + file)
+                                print(prefix() + accent_color() + "/" + file)
                         elif os.path.isfile(file):
-                            print(prefix("INFO") + file)
+                            print(prefix() + file)
                         elif os.path.isdir(file):
-                            print(prefix("INFO") + true_color() + "/" + file)
+                            print(prefix() + true_color() + "/" + file)
                 except Exception as e:
                     print("\n" + prefix("ERROR") + "An error occurred while trying to execute this command correctly.")
                     print(prefix("ERROR") + str(e))
@@ -1133,18 +1133,18 @@ try:
 
             case "exit":
                 update_status("Shutting down...")
-                print(prefix("INFO") + "Shutting down FyUTILS...")
+                print(prefix() + "Shutting down FyUTILS...")
                 try:
                     time.sleep(1)
                 except KeyboardInterrupt:
-                    print(prefix("INFO") + "Canceling action")
+                    print(prefix() + "Canceling action")
                     continue
                 print("logout")
                 sys.exit(0)
 
             case "cd":
                 if len(args) < 1:
-                    print(prefix("INFO") + os.getcwd())
+                    print(prefix() + os.getcwd())
                     continue
                 change_dir = args[0]
                 activity_start = time.time()
@@ -1178,7 +1178,7 @@ try:
                         cwd_abbreviation = "@"
                     else:
                         cwd_abbreviation = os.getcwd()
-                    print(prefix("INFO") + cwd_abbreviation)
+                    print(prefix() + cwd_abbreviation)
                 except Exception as e:
                     print("\n" + prefix("ERROR") + "An error occurred while trying to execute this command correctly.")
                     print(prefix("ERROR") + str(e))
