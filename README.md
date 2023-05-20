@@ -194,7 +194,7 @@ wire <action> [target/argument]
 WIRE is a tool package including several wireless hacking tools for Wi-Fi and Bluetooth. The target or argument will depend on which action you want to execute.
 ### Resolve
 ```
-resolve <ip/phone/domain> <target>
+resolve <ip/phone/socials> <target>
 ```
 Resolves information about the specified target. If the target is a domain, the IPv4 address will be returned too.
 ### ARP
