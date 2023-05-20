@@ -161,7 +161,8 @@ def run_fuel(command_name: str):
     return fuel_file
 
 
-def pause(level: str = "INFO", protocol: str = "FyUTILS"): input(prefix(level.upper(), protocol) + "Press enter to continue. ")
+def pause(level: str = "INFO", protocol: str = "FyUTILS"):
+    input(prefix(level.upper(), protocol) + "Press enter to continue. ")
 
 
 def crash_log():
