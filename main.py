@@ -516,7 +516,7 @@ try:
                 except:
                     print(prefix("WARN") + "Cannot disconnect from target!")
 
-            case "sniff":
+            case "sniff" | "traffic":
                 update_status("Sniffing network...")
                 activity_start = time.time()
 
@@ -553,10 +553,17 @@ try:
                         print(prefix("ERROR") + "Unexpected arguments for command \"" + cmd + "\"")
                         continue
                     if not wire_started:
-                        print(prefix("ERROR", "WIRE") + "WIRE service isn't already running!")
+                        print(prefix("ERROR", "WIRE") + "WIRE service isn't running!")
                         continue
                     target = args[1]
                     execute("netsh wlan connect name=" + target)
+                elif action == "stop":
+                    if not wire_started:
+                        wire_started = True
+                        print(prefix("ERROR", "WIRE") + "WIRE service isn't running!")
+                    else:
+                        wire_started = False
+                        print(prefix("INFO", "WIRE") + "WIRE service stopped successfully!")
 
             case "resolve":
                 if len(args) < 2:
