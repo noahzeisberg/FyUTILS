@@ -1023,10 +1023,8 @@ try:
                     temp = open(current_dir + "\\main.py", mode="wb")
                     temp.write(newest_file_content)
                     print(prefix("INFO", "Updater") + "Update successfully installed!")
-                    time.sleep(0.25)
                     print(prefix("INFO", "Updater") + "Restarting FyUTILS...")
                     temp.close()
-                    time.sleep(1)
                     execute("start " + current_dir + "\\main.py")
                     sys.exit(512)
                 else:
