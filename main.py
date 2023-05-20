@@ -32,26 +32,26 @@ SUPPORTED_FUEL_VERSION = 1
 
 def prefix(level: str = "INFO", protocol: str = "FyUTILS"):
     if level == "INFO":
-        return accent_color() + "[" + color() + datetime.datetime.now().strftime("%H:%M:%S") + accent_color() + "]" + " " + accent_color() + "[" + text_color() + protocol + accent_color() + "/" + true_color() + level.upper() + accent_color() + "] " + text_color()
+        return accent_color + "[" + color + datetime.datetime.now().strftime("%H:%M:%S") + accent_color + "]" + " " + accent_color + "[" + text_color + protocol + accent_color + "/" + true_color + level.upper() + accent_color + "] " + text_color
     elif level == "WARN":
-        return accent_color() + "[" + color() + datetime.datetime.now().strftime("%H:%M:%S") + accent_color() + "]" + " " + accent_color() + "[" + text_color() + protocol + accent_color() + "/" + warn_color() + level.upper() + accent_color() + "] " + text_color()
+        return accent_color + "[" + color + datetime.datetime.now().strftime("%H:%M:%S") + accent_color + "]" + " " + accent_color + "[" + text_color + protocol + accent_color + "/" + warn_color + level.upper() + accent_color + "] " + text_color
     elif level == "ERROR":
-        return accent_color() + "[" + color() + datetime.datetime.now().strftime("%H:%M:%S") + accent_color() + "]" + " " + accent_color() + "[" + text_color() + protocol + accent_color() + "/" + false_color() + level.upper() + accent_color() + "] " + text_color()
+        return accent_color + "[" + color + datetime.datetime.now().strftime("%H:%M:%S") + accent_color + "]" + " " + accent_color + "[" + text_color + protocol + accent_color + "/" + false_color + level.upper() + accent_color + "] " + text_color
     elif level == "DEBUG":
-        return accent_color() + "[" + color() + datetime.datetime.now().strftime("%H:%M:%S") + accent_color() + "]" + " " + accent_color() + "[" + text_color() + protocol + accent_color() + "/" + debug_color() + level.upper() + accent_color() + "] " + text_color()
+        return accent_color + "[" + color + datetime.datetime.now().strftime("%H:%M:%S") + accent_color + "]" + " " + accent_color + "[" + text_color + protocol + accent_color + "/" + debug_color + level.upper() + accent_color + "] " + text_color
     else:
-        return false_color() + "PREFIX TYPE NOT SUPPORTED. SEE https://github.com/NoahOnFyre/FyUTILS#prefix"
+        return false_color + "PREFIX TYPE NOT SUPPORTED. SEE https://github.com/NoahOnFyre/FyUTILS#prefix"
 
 
-def execute(command):
+def execute(command: str):
     subprocess.call(command, shell=True)
 
 
-def exec_code(command):
+def exec_code(command: str):
     return subprocess.call(command, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT, stdin=subprocess.DEVNULL)
 
 
-def version_is_newer(current, value):
+def version_is_newer(current: str, value: str):
     split = str(current).split(".")
     major = split[0]
     minor = split[1]
@@ -71,7 +71,7 @@ def version_is_newer(current, value):
                 return True
 
 
-def update_status(status):
+def update_status(status: str):
     execute("title FyUTILS " + version + " - " + username + "@" + device + " - " + status)
     try:
         rpc.update(
@@ -85,7 +85,7 @@ def update_status(status):
         None
 
 
-def update_ssh_status(status):
+def update_ssh_status(status: str):
     execute("title FyUTILS " + version + " - " + user + "@" + server + " - " + status)
     try:
         rpc.update(
@@ -104,7 +104,7 @@ def print_packet(x: scapy.packet.Packet):
     print(prefix() + content)
 
 
-def resolve_fuel_information(file):
+def resolve_fuel_information(file: str):
     fuel = open(fuel_content_dir + file, mode="rt")
     fuel_json = json.load(fuel)
     print(prefix("INFO", "FUEL") + "FUEL information of: " + file)
@@ -143,28 +143,22 @@ def resolve_fuel_information(file):
     fuel.close()
 
 
-def color(): return src_color
+def run_fuel(command_name: str):
+    fuel_file = open(fuels.get(command_name.lower()), mode="rt")
+    json_fuel_file = json.load(fuel_file)
+    if json_fuel_file["head"]["enabled"]:
+        if len(args) != json_fuel_file["head"]["argument_length"]:
+            print(prefix("ERROR") + "Unexpected arguments for command \"" + command_name + "\"")
+            return
+        for entry in range(len(json_fuel_file["head"]["arguments"])):
+            exec(list(json_fuel_file["head"]["arguments"])[entry] + " = args[" + str(entry) + "]")
+        activity_start = time.time()
+        update_status(json_fuel_file["head"]["status"])
 
-
-def fuel_color(): return src_fuel_color
-
-
-def accent_color(): return src_accent_color
-
-
-def text_color(): return src_text_color
-
-
-def true_color(): return src_true_color
-
-
-def false_color(): return src_false_color
-
-
-def warn_color(): return src_warn_color
-
-
-def debug_color(): return src_debug_color
+    if json_fuel_file["body"]["enabled"]:
+        exec("\n".join(list(json_fuel_file["body"]["content"])))
+        print(prefix() + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
+    return fuel_file
 
 
 def pause(level: str = "INFO", protocol: str = "FyUTILS"): input(prefix(level.upper(), protocol) + "Press enter to continue. ")
@@ -213,41 +207,41 @@ Python traceback:
 def menu():
     execute("cls")
     print()
-    print(color() + "  __________               _____  __   ________   ________   ______       ________")
-    print(color() + "  ___  ____/  _____  __    __  / / /   ___  __/   ____  _/   ___  /       __  ___/")
-    print(color() + "  __  /_      __  / / /    _  / / /    __  /       __  /     __  /        _____ \\ ")
-    print(color() + "  _  __/      _  /_/ /     / /_/ /     _  /       __/ /      _  /___      ____/ / ")
-    print(color() + "  /_/         _\\__, /      \\____/      /_/        /___/      /_____/      /____/  ")
-    print(color() + "             ___/  /")
-    print(color() + "            /_____/ " + " "*5 + accent_color() + "v" + text_color() + version.replace(".", accent_color() + "." + text_color()) + accent_color() + " | " + text_color() + "Made by NoahOnFyre")
+    print(color + "  __________               _____  __   ________   ________   ______       ________")
+    print(color + "  ___  ____/  _____  __    __  / / /   ___  __/   ____  _/   ___  /       __  ___/")
+    print(color + "  __  /_      __  / / /    _  / / /    __  /       __  /     __  /        _____ \\ ")
+    print(color + "  _  __/      _  /_/ /     / /_/ /     _  /       __/ /      _  /___      ____/ / ")
+    print(color + "  /_/         _\\__, /      \\____/      /_/        /___/      /_____/      /____/  ")
+    print(color + "             ___/  /")
+    print(color + "            /_____/ " + " "*5 + accent_color + "v" + text_color + version.replace(".", accent_color + "." + text_color) + accent_color + " | " + text_color + "Made by NoahOnFyre")
     print()
-    print(accent_color() + "╔" + "═"*119)
-    print(accent_color() + "║ " + accent_color() + "[" + color() + "VAR" + accent_color() + "] " + text_color() + "Username: " + username)
-    print(accent_color() + "║ " + accent_color() + "[" + color() + "VAR" + accent_color() + "] " + text_color() + "Device: " + device)
-    print(accent_color() + "║ " + accent_color() + "[" + color() + "VAR" + accent_color() + "] " + text_color() + "Version: " + version)
+    print(accent_color + "╔" + "═"*119)
+    print(accent_color + "║ " + accent_color + "[" + color + "VAR" + accent_color + "] " + text_color + "Username: " + username)
+    print(accent_color + "║ " + accent_color + "[" + color + "VAR" + accent_color + "] " + text_color + "Device: " + device)
+    print(accent_color + "║ " + accent_color + "[" + color + "VAR" + accent_color + "] " + text_color + "Version: " + version)
     if update_available:
-        print(accent_color() + "╠" + "═"*119)
-        print(accent_color() + "║ " + accent_color() + "[" + color() + "UPDATE" + accent_color() + "] " + text_color() + "A new version of FyUTILS is available! Install it now using \"update\".")
+        print(accent_color + "╠" + "═"*119)
+        print(accent_color + "║ " + accent_color + "[" + color + "UPDATE" + accent_color + "] " + text_color + "A new version of FyUTILS is available! Install it now using \"update\".")
         for item in str(update_content).split("\r\n"):
             if not item.startswith("**Full Changelog**:"):
                 if not item == "":
-                    print(accent_color() + "║ " + accent_color() + "[" + color() + "UPDATE" + accent_color() + "] " + text_color() + item)
-        print(accent_color() + "║ " + accent_color() + "[" + color() + "UPDATE" + accent_color() + "] " + text_color() + false_color() + version + accent_color() + " => " + true_color() + newest_version + text_color())
-    print(accent_color() + "╚" + "═"*119)
+                    print(accent_color + "║ " + accent_color + "[" + color + "UPDATE" + accent_color + "] " + text_color + item)
+        print(accent_color + "║ " + accent_color + "[" + color + "UPDATE" + accent_color + "] " + text_color + false_color + version + accent_color + " => " + true_color + newest_version + text_color)
+    print(accent_color + "╚" + "═"*119)
 
 
 # INIT PHASE
 execute("title FyUTILS")
 
 # Color initialisation
-src_color = Fore.LIGHTBLUE_EX
-src_fuel_color = Fore.LIGHTMAGENTA_EX
-src_accent_color = Fore.LIGHTBLACK_EX
-src_text_color = Fore.WHITE
-src_true_color = Fore.GREEN
-src_false_color = Fore.RED
-src_warn_color = Fore.YELLOW
-src_debug_color = Fore.MAGENTA
+color = Fore.LIGHTBLUE_EX
+fuel_color = Fore.LIGHTMAGENTA_EX
+accent_color = Fore.LIGHTBLACK_EX
+text_color = Fore.WHITE
+true_color = Fore.GREEN
+false_color = Fore.RED
+warn_color = Fore.YELLOW
+debug_color = Fore.MAGENTA
 
 # Various stuff initialisation
 executed_commands = []
@@ -259,14 +253,14 @@ if not os.path.exists(temp + "\\config.json"):
     os.makedirs(temp)
     config = open(temp + "\\config.json", mode="x")
     config_data = {
-        "color": Fore.LIGHTBLUE_EX,
-        "fuel_color": Fore.LIGHTMAGENTA_EX,
-        "accent_color": Fore.LIGHTBLACK_EX,
-        "text_color": Fore.WHITE,
-        "true_color": Fore.GREEN,
-        "false_color": Fore.RED,
-        "warn_color": Fore.YELLOW,
-        "debug_color": Fore.MAGENTA,
+        "color": color,
+        "fuel_color": fuel_color,
+        "accent_color": accent_color,
+        "text_color": text_color,
+        "true_color": true_color,
+        "false_color": false_color,
+        "warn_color": warn_color,
+        "debug_color": debug_color,
         "enable_debug": False
     }
     json.dump(config_data, config, indent=4)
@@ -276,14 +270,14 @@ if not os.path.exists(temp + "\\config.json"):
 config = open(temp + "\\config.json", mode="rt+")
 
 configuration = json.load(config)
-src_color = configuration["color"]
-src_fuel_color = configuration["fuel_color"]
-src_accent_color = configuration["accent_color"]
-src_text_color = configuration["text_color"]
-src_true_color = configuration["true_color"]
-src_false_color = configuration["false_color"]
-src_warn_color = configuration["warn_color"]
-src_debug_color = configuration["debug_color"]
+color = configuration["color"]
+fuel_color = configuration["fuel_color"]
+accent_color = configuration["accent_color"]
+text_color = configuration["text_color"]
+true_color = configuration["true_color"]
+false_color = configuration["false_color"]
+warn_color = configuration["warn_color"]
+debug_color = configuration["debug_color"]
 debug_enabled = configuration["enable_debug"]
 
 # Variable initialisation
@@ -373,6 +367,7 @@ try:
     releases_json = requests.get(releases).json()
     newest_release = releases_json[0]
     for r in range(len(newest_release["assets"])):
+        release_download_url = ""
         if newest_release["assets"][r]["name"] == "main.py":
             release_download_url = newest_release["assets"][r]["browser_download_url"]
             break
@@ -441,8 +436,8 @@ try:
                 cwd_abbreviation = "@"
             else:
                 cwd_abbreviation = os.getcwd()
-            request_raw = input(accent_color() + "╔═══[" + color() + username + accent_color() + "@" + text_color() + device + accent_color() + "]══(" + color() + "FyUTILS" + accent_color() + "/" + text_color() + version + accent_color() + ")══[" + text_color() + cwd_abbreviation + accent_color() + "]\n" +
-                                accent_color() + "╚═══> " + text_color())
+            request_raw = input(accent_color + "╔═══[" + color + username + accent_color + "@" + text_color + device + accent_color + "]══(" + color + "FyUTILS" + accent_color + "/" + text_color + version + accent_color + ")══[" + text_color + cwd_abbreviation + accent_color + "]\n" +
+                                accent_color + "╚═══> " + text_color)
             request = request_raw.split(" ")
             cmd = request[0].lower()
             request.__delitem__(0)
@@ -475,10 +470,10 @@ try:
                     for i in range(sys.maxsize):
                         try:
                             sock.send(random.randbytes(10240))
-                            print(prefix() + "Attacking target: " + color() + target + accent_color() + ":" + color() + str(port) + text_color() + "..." + accent_color() + " - " + text_color() + "Attack: " + color() + str(i + 1) + accent_color(), end="\r")
+                            print(prefix() + "Attacking target: " + color + target + accent_color + ":" + color + str(port) + text_color + "..." + accent_color + " - " + text_color + "Attack: " + color + str(i + 1) + accent_color, end="\r")
                         except socket.error:
                             print()
-                            print(prefix("WARN") + "Request " + color() + str(i) + text_color() + " failed.", end="\r")
+                            print(prefix("WARN") + "Request " + color + str(i) + text_color + " failed.", end="\r")
                     print("\n")
                 except KeyboardInterrupt:
                     print("\n" + prefix() + "Canceling Action...")
@@ -506,9 +501,9 @@ try:
                         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                         socket.setdefaulttimeout(1/1000)
                         result = sock.connect_ex((target, port))
-                        print(prefix() + "Scanning Port... " + color() + str(port), end="\r")
+                        print(prefix() + "Scanning Port... " + color + str(port), end="\r")
                         if result == 0:
-                            print(prefix() + "Port " + color() + str(port) + text_color() + " is open!" + " "*50)
+                            print(prefix() + "Port " + color + str(port) + text_color + " is open!" + " "*50)
                         sock.close()
                     print("\n")
                 except KeyboardInterrupt:
@@ -633,7 +628,7 @@ try:
                     print(prefix() + "Data received and processed.")
                     client_count = len(clients)
                     for i in range(client_count):
-                        print(prefix() + accent_color() + "[" + color() + str(i) + accent_color() + "] " + text_color() + "IP: " + clients[i][0] + " MAC: " + clients[i][1])
+                        print(prefix() + accent_color + "[" + color + str(i) + accent_color + "] " + text_color + "IP: " + clients[i][0] + " MAC: " + clients[i][1])
                 except KeyboardInterrupt:
                     print(prefix() + "Canceling Action...")
                     print(prefix() + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
@@ -680,9 +675,9 @@ try:
                     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                     result = sock.connect_ex((target, port))
                     if result == 0:
-                        print(prefix() + "Port " + color() + str(port) + text_color() + " is open!")
+                        print(prefix() + "Port " + color + str(port) + text_color + " is open!")
                     else:
-                        print(prefix("WARN") + "Port " + color() + str(port) + text_color() + " is not open!")
+                        print(prefix("WARN") + "Port " + color + str(port) + text_color + " is not open!")
                     sock.close()
                 except KeyboardInterrupt:
                     print(prefix() + "Canceling Action...")
@@ -716,7 +711,7 @@ try:
                 print(prefix() + "Adding policy...")
                 ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
                 print(prefix() + "Requesting user's password...")
-                password = pwinput.pwinput(text_color() + "Enter password" + accent_color() + " > " + text_color(), "*")
+                password = pwinput.pwinput(text_color + "Enter password" + accent_color + " > " + text_color, "*")
                 print(prefix() + "Connecting...")
                 print()
                 try:
@@ -724,7 +719,7 @@ try:
                     while True:
                         try:
                             update_ssh_status("Idle")
-                            ssh_cmd = input(accent_color() + "╔═══[" + fuel_color() + user + accent_color() + "@" + fuel_color() + server + accent_color() + ":" + fuel_color() + str(port) + accent_color() + "]═══(" + color() + "FySSH" + accent_color() + "/" + text_color() + version + accent_color() + ")" + "\n" + "╚═══" + accent_color() + "> " + text_color())
+                            ssh_cmd = input(accent_color + "╔═══[" + fuel_color + user + accent_color + "@" + fuel_color + server + accent_color + ":" + fuel_color + str(port) + accent_color + "]═══(" + color + "FySSH" + accent_color + "/" + text_color + version + accent_color + ")" + "\n" + "╚═══" + accent_color + "> " + text_color)
                             ssh_stdin, ssh_stdout, ssh_stderr = ssh.exec_command(ssh_cmd)
                             update_ssh_status("Running: " + ssh_cmd)
                             print()
@@ -747,7 +742,7 @@ try:
                     continue
 
                 print(prefix() + f"Time elapsed: {time.time() - activity_start : 0.2f}s")
-                print(prefix() + "Disconnecting from " + color() + server + accent_color() + ":" + color() + str(port) + text_color() + "...")
+                print(prefix() + "Disconnecting from " + color + server + accent_color + ":" + color + str(port) + text_color + "...")
                 try:
                     ssh.close()
                 except:
@@ -920,13 +915,13 @@ try:
                     local_fuel_file.write(fuel_file_content)
                     local_fuel_file.close()
                     local_fuel_file = open(fuel_content_dir + filename, mode="rt")
-                    print(prefix() + "FUEL " + fuel_color() + filename + text_color() + " successfully installed to \"" + fuel_content_dir + "\".")
+                    print(prefix() + "FUEL " + fuel_color + filename + text_color + " successfully installed to \"" + fuel_content_dir + "\".")
                     print(prefix() + "Adding FUEL to FyUTILS...")
                     local_fuel_file_json = json.load(local_fuel_file)
                     if local_fuel_file_json["properties"]["type"] == "DEFAULT":
                         fuels.update({local_fuel_file_json["properties"]["command_name"]: fuel_content_dir + filename})
                     local_fuel_file.close()
-                    print(prefix() + f"Done! Took{time.time() - activity_start: 0.2f}s to install package " + fuel_color() + filename + text_color() + "!")
+                    print(prefix() + f"Done! Took{time.time() - activity_start: 0.2f}s to install package " + fuel_color + filename + text_color + "!")
 
                 elif fuel_action == "add":
                     update_status("Adding FUEL...")
@@ -941,13 +936,13 @@ try:
                     print(prefix() + "Copying FUEL from " + fuel_location + "...")
                     shutil.copy(fuel_location, fuel_content_dir)
                     local_fuel_file = open(fuel_content_dir + filename)
-                    print(prefix() + "FUEL " + fuel_color() + filename + text_color() + " successfully copied to \"" + fuel_content_dir + "\".")
+                    print(prefix() + "FUEL " + fuel_color + filename + text_color + " successfully copied to \"" + fuel_content_dir + "\".")
                     print(prefix() + "Adding FUEL to FyUTILS...")
                     local_fuel_file_json = json.load(local_fuel_file)
                     if local_fuel_file_json["properties"]["type"] == "DEFAULT":
                         fuels.update({local_fuel_file_json["properties"]["command_name"]: fuel_content_dir + filename})
                     local_fuel_file.close()
-                    print(prefix() + f"Done! Took{time.time() - activity_start: 0.2f}s to install package " + fuel_color() + filename + text_color() + "!")
+                    print(prefix() + f"Done! Took{time.time() - activity_start: 0.2f}s to install package " + fuel_color + filename + text_color + "!")
 
                 elif fuel_action == "run":
                     update_status("Running FUEL...")
@@ -975,26 +970,14 @@ try:
                     local_fuel_file.write(fuel_file_content)
                     local_fuel_file.close()
                     local_fuel_file = open(fuel_content_dir + filename, mode="rt")
-                    print(prefix() + "FUEL " + fuel_color() + filename + text_color() + " temporarily installed to \"" + fuel_content_dir + "\".")
-                    fuel_file = open(tmp_dir + filename, mode="rt")
+                    print(prefix() + "FUEL " + fuel_color + filename + text_color + " temporarily installed to \"" + fuel_content_dir + "\".")
                     args = input(prefix() + "Enter arguments to run: ").split(" ")
-                    json_fuel_file = json.load(fuel_file)
-                    if json_fuel_file["head"]["enabled"]:
-                        if len(args) != json_fuel_file["head"]["argument_length"]:
-                            print(prefix("ERROR") + "Unexpected arguments for command \"" + cmd + "\"")
-                            continue
-                        for entry in range(len(json_fuel_file["head"]["arguments"])):
-                            exec(list(json_fuel_file["head"]["arguments"])[entry] + " = args[" + str(entry) + "]")
-                        update_status(json_fuel_file["head"]["status"])
-
-                    if json_fuel_file["body"]["enabled"]:
-                        exec("\n".join(list(json_fuel_file["body"]["content"])))
-                    print(prefix() + "Execution finished!")
+                    print(prefix() + "Running package " + fuel_color + filename + text_color + "...")
+                    run_fuel(cmd).close()
                     print(prefix() + "Closing temporary file...")
-                    fuel_file.close()
                     print(prefix() + "Deleting temporary file...")
                     os.remove(tmp_dir + filename)
-                    print(prefix() + f"Done! Took{time.time() - activity_start: 0.2f}s to run package " + fuel_color() + filename + text_color() + "!")
+                    print(prefix() + f"Done! Took{time.time() - activity_start: 0.2f}s to run package " + fuel_color + filename + text_color + "!")
 
                 elif fuel_action == "remove":
                     update_status("Removing FUEL...")
@@ -1015,7 +998,7 @@ try:
                         print(prefix("ERROR") + "Package \"" + filename + "\" remove failed!")
                         print(prefix("ERROR") + "Error: Local package not found.")
                         continue
-                    print(prefix() + f"Done! Took{time.time() - activity_start: 0.2f}s to remove package " + fuel_color() + filename)
+                    print(prefix() + f"Done! Took{time.time() - activity_start: 0.2f}s to remove package " + fuel_color + filename)
                 else:
                     print(prefix("ERROR") + "Action is not supported!")
 
@@ -1024,7 +1007,7 @@ try:
 
                 if update_available:
                     print(prefix("INFO", "Updater") + "Update found!")
-                    print(prefix("INFO", "Updater") + "Version Comparison: " + false_color() + version + accent_color() + " => " + true_color() + newest_version + text_color() + "...")
+                    print(prefix("INFO", "Updater") + "Version Comparison: " + false_color + version + accent_color + " => " + true_color + newest_version + text_color + "...")
                     shutil.copy(current_dir + "\\main.py", tmp_dir + "\\BACKUP-" + version + ".py")
                     newest_file_content = requests.get(release_download_url).content
                     temp = open(current_dir + "\\main.py", mode="wb")
@@ -1036,7 +1019,7 @@ try:
                     sys.exit(512)
                 else:
                     print(prefix("INFO", "Updater") + "You're running the latest version of FyUTILS!")
-                    print(prefix("INFO", "Updater") + "Version comparison: " + true_color() + version + accent_color() + " == " + true_color() + newest_version + text_color() + "...")
+                    print(prefix("INFO", "Updater") + "Version comparison: " + true_color + version + accent_color + " == " + true_color + newest_version + text_color + "...")
 
             case "edit":
                 if len(args) < 1:
@@ -1115,13 +1098,13 @@ try:
                     for file in os.listdir(os.getcwd()):
                         if file.startswith("."):
                             if os.path.isfile(file):
-                                print(prefix() + accent_color() + file)
+                                print(prefix() + accent_color + file)
                             elif os.path.isdir(file):
-                                print(prefix() + accent_color() + "/" + file)
+                                print(prefix() + accent_color + "/" + file)
                         elif os.path.isfile(file):
                             print(prefix() + file)
                         elif os.path.isdir(file):
-                            print(prefix() + true_color() + "/" + file)
+                            print(prefix() + true_color + "/" + file)
                 except Exception as e:
                     print("\n" + prefix("ERROR") + "An error occurred while trying to execute this command correctly.")
                     print(prefix("ERROR") + str(e))
@@ -1212,19 +1195,7 @@ try:
 
             case _:
                 if fuels.keys().__contains__(cmd.lower()):
-                    fuel_file = open(fuels.get(cmd.lower()), mode="rt")
-                    json_fuel_file = json.load(fuel_file)
-                    if json_fuel_file["head"]["enabled"]:
-                        if len(args) != json_fuel_file["head"]["argument_length"]:
-                            print(prefix("ERROR") + "Unexpected arguments for command \"" + cmd + "\"")
-                            continue
-                        for entry in range(len(json_fuel_file["head"]["arguments"])):
-                            exec(list(json_fuel_file["head"]["arguments"])[entry] + " = args[" + str(entry) + "]")
-                        activity_start = time.time()
-                        update_status(json_fuel_file["head"]["status"])
-
-                    if json_fuel_file["body"]["enabled"]:
-                        exec("\n".join(list(json_fuel_file["body"]["content"])))
+                    run_fuel(cmd)
                 else:
                     if exec_code(request_raw) == 1:
                         update_status("Executing " + cmd)
