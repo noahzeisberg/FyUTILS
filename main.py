@@ -81,8 +81,8 @@ def update_status(status: str):
                      {"label": "View Project", "url": "https://github.com/NoahOnFyre/FyUTILS/"}],
             small_text="Python", large_text="FyUTILS v" + version,
             start=int(start_time))
-    except:
-        None
+    except ExceptionGroup:
+        print(prefix("ERROR") + "Cannot update RPC!")
 
 
 def update_ssh_status(status: str):
@@ -95,8 +95,8 @@ def update_ssh_status(status: str):
                      {"label": "View Project", "url": "https://github.com/NoahOnFyre/FyUTILS/"}],
             small_text="Python", large_text="FyUTILS v" + version,
             start=int(start_time))
-    except:
-        None
+    except ExceptionGroup:
+        print(prefix("ERROR") + "Cannot update RPC!")
 
 
 def print_packet(x: scapy.packet.Packet):
@@ -207,7 +207,6 @@ Python traceback:
 
 def menu():
     execute("cls")
-    print()
     print(color + "  __________               _____  __   ________   ________   ______       ________")
     print(color + "  ___  ____/  _____  __    __  / / /   ___  __/   ____  _/   ___  /       __  ___/")
     print(color + "  __  /_      __  / / /    _  / / /    __  /       __  /     __  /        _____ \\ ")
@@ -403,7 +402,7 @@ try:
     rpc.connect()
     print(prefix("INFO", "RichPresence") + "Discord is connected...")
     update_status("Starting up...")
-except:
+except ExceptionGroup:
     print(prefix("WARN", "RichPresence") + "Can't connect with the discord RPC.")
     time.sleep(0.25)
 
@@ -485,7 +484,7 @@ try:
                     print(prefix() + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
                 try:
                     sock.close()
-                except:
+                except ExceptionGroup:
                     print(prefix("WARN") + "Cannot disconnect from target!")
 
             case "portscan":
@@ -516,7 +515,7 @@ try:
                     print(prefix() + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
                 try:
                     sock.close()
-                except:
+                except ExceptionGroup:
                     print(prefix("WARN") + "Cannot disconnect from target!")
 
             case "sniff" | "traffic":
@@ -718,7 +717,7 @@ try:
                     print(prefix() + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
                 try:
                     sock.close()
-                except:
+                except ExceptionGroup:
                     print(prefix("WARN") + "Cannot disconnect from target!")
                 print(prefix() + "Cleaning up...")
 
@@ -774,7 +773,7 @@ try:
                 print(prefix() + "Disconnecting from " + color + server + accent_color + ":" + color + str(port) + text_color + "...")
                 try:
                     ssh.close()
-                except:
+                except ExceptionGroup:
                     print(prefix("WARN") + "Cannot disconnect from target!")
                 print(prefix() + "Cleaning up...")
 
