@@ -79,7 +79,7 @@ This Documentation will guide you through the installation, the first launch and
 ## Prerequisites
 
 **NOTE:** This tool is made for Windows. Many features **won't** work on **Linux** or **macOS**. The documentation will only guide you through the installation steps on Windows 11 (on Windows 10 and earlier it's literally the same process).
-If you don't already have **Python 3.10 or higher** with **PIP** installed, you can download it [here](https://www.python.org/downloads/)
+If you don't already have **Python 3.11.3 or higher** with **PIP** installed, you can download it [here](https://www.python.org/downloads/)
 
 If you want to install the developer version, make sure you have [Git](https://git-scm.com) installed on your PC.
 
