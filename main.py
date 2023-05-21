@@ -26,7 +26,7 @@ from pypresence import Presence
 from pytube import YouTube
 
 init(convert=True)
-CURRENT_FYUTILS_VERSION = "1.9.2"
+CURRENT_FYUTILS_VERSION = "1.9.3"
 SUPPORTED_FUEL_VERSION = 1
 
 
