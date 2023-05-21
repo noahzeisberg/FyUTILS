@@ -258,7 +258,7 @@ FUELS lists all the installed and registered FUELs associated with FyUTILS.
 ```
 fuel <install/remove> <package_name>
 ```
-The FUEL command has multiple different actions. One of them is `fuel install`. It will install a verified FUEL, found in [NoahOnFyre/FUELS](https://github.com/NoahOnFyre/FUELS) and register it. `fuel remove` will unregister and delete the FUEL.
+The FUEL command has multiple different actions. One of them is `fuel install`. It will install a verified FUEL, found in [NoahOnFyre/FUELS](https://github.com/NoahOnFyre/FUELS). `fuel remove` will delete the FUEL.
 ### Update
 ```
 update
