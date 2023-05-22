@@ -1073,8 +1073,8 @@ try:
                 sys.exit(0)
 
             case _:
-                if get_fuels().__contains__(cmd.lower() + ".fuel"):
-                    run_fuel(cmd.lower())
+                if get_fuels().__contains__(cmd + ".fuel"):
+                    run_fuel(cmd)
                 else:
                     if exec_code(request_raw) == 1:
                         update_status("Executing " + cmd)
