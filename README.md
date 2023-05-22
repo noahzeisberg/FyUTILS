@@ -335,7 +335,7 @@ All tools, languages and whatever I used for FyUTILS
 | Language | Used for            |
 |----------|---------------------|
 | Python   | Client Application  |
-| JSON     | Libraries (FUELS)   |
+| FUEL     | Libraries (FUELS)   |
 | Batch    | System interactions |
 | Markdown | Documentation       |
 
