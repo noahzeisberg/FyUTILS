@@ -327,7 +327,7 @@ Restarts FyUTILS
 
 # License
 
-[FyUTILS Exclusive Publishing License (FUEPL)](https://github.com/NoahOnFyre/FyUTILS/blob/master/LICENSE)
+[OnFyre Network Exclusive Publishing License (OFNEPL)](https://github.com/NoahOnFyre/FyUTILS/blob/master/LICENSE)
 
 # Things used in FyUTILS
 All tools, languages and whatever I used for FyUTILS
