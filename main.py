@@ -114,7 +114,6 @@ def pause(level: str = "INFO", protocol: str = "FyUTILS"):
 
 def crash_log():
     temp = open(main_dir + "crash.log", mode="wb+")
-    commands = "\n".join(executed_commands)
     data = f"""FyUTILS Traceback Crash log @ {datetime.datetime.now().strftime("%H:%M:%S")}
 
 ================================================================================
@@ -188,11 +187,7 @@ false_color = Fore.RED
 warn_color = Fore.YELLOW
 debug_color = Fore.MAGENTA
 
-# Various stuff initialisation
-executed_commands = []
-
 # Config initialisation
-
 temp = str(Path.home()) + "\\AppData\\Roaming\\FyUTILS"
 if not os.path.exists(temp + "\\config.json"):
     os.makedirs(temp)
@@ -380,8 +375,6 @@ try:
             cmd = request[0].lower()
             request.__delitem__(0)
             args = request
-
-            executed_commands.append(request_raw)
             print()
         except KeyboardInterrupt:
             try:
