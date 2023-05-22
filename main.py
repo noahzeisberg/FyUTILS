@@ -276,19 +276,19 @@ try:
     if not os.path.exists(main_dir):
         os.makedirs(main_dir)
         print(prefix("WARN", "FirstStart") + "Main directory didn't existed and has been created.")
-        time.sleep(0.5)
+        time.sleep(2)
     if not os.path.exists(tmp_dir):
         os.makedirs(tmp_dir)
         print(prefix("WARN", "FirstStart") + "Temporary storage directory didn't existed and has been created.")
-        time.sleep(0.5)
+        time.sleep(2)
     if not os.path.exists(download_content_dir):
         os.makedirs(download_content_dir)
         print(prefix("WARN", "FirstStart") + "Download content directory didn't existed and has been created.")
-        time.sleep(0.5)
+        time.sleep(2)
     if not os.path.exists(fuel_content_dir):
         os.makedirs(fuel_content_dir)
         print(prefix("WARN", "FirstStart") + "FUEL content directory didn't existed and has been created.")
-        time.sleep(0.5)
+        time.sleep(2)
 
     # URL specific stuff
     releases = "https://api.github.com/repos/NoahOnFyre/FyUTILS/releases"
