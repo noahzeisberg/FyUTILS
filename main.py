@@ -91,6 +91,10 @@ def print_packet(x: scapy.packet.Packet):
     print(prefix() + content)
 
 
+def highlight_file(path: str):
+    execute("explorer.exe /select,\"" + path + "\"")
+
+
 def get_fuels():
     fuel_list = os.listdir(fuel_content_dir)
     for fuel in fuel_list:
@@ -144,7 +148,7 @@ Python traceback:
 
     temp.write(data.encode())
     temp.close()
-    execute("explorer.exe /select,\"" + main_dir + "crash.log" + "\"")
+    highlight_file(main_dir + "crash.log")
 
 
 def menu():
@@ -775,12 +779,12 @@ try:
 
             case "log" | "crashes":
                 update_status("Opening logs...")
-                execute("explorer.exe /select,\"" + main_dir + "crash.log" + "\"")
+                highlight_file(main_dir + "crash.log")
 
             case "config" | "configuration" | "settings" | "preferences":
                 if len(args) < 1:
                     update_status("Editing preferences...")
-                    execute("explorer.exe /select,\"" + main_dir + "config.json" + "\"")
+                    highlight_file(main_dir + "config.json")
                     continue
                 action = args[0]
                 activity_start = time.time()
