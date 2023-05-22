@@ -657,7 +657,6 @@ try:
                     sock.close()
                 except Exception:
                     print(prefix("WARN") + "Cannot disconnect from target!")
-                print(prefix() + "Cleaning up...")
 
             case "ssh":
                 if len(args) < 3:
@@ -686,6 +685,10 @@ try:
                         try:
                             update_ssh_status("Idle")
                             ssh_cmd = input(accent_color + "╔═══[" + fuel_color + user + accent_color + "@" + fuel_color + server + accent_color + ":" + fuel_color + str(port) + accent_color + "]═══(" + color + "FySSH" + accent_color + "/" + text_color + version + accent_color + ")" + "\n" + "╚═══" + accent_color + "> " + text_color)
+                            if ssh_cmd == "exit":
+                                print("\n" + prefix() + "Canceling Action...")
+                                print(prefix() + f"Time elapsed: {time.time() - activity_start : 0.2f}s")
+                                break
                             ssh_stdin, ssh_stdout, ssh_stderr = ssh.exec_command(ssh_cmd)
                             update_ssh_status("Running: " + ssh_cmd)
                             print()
@@ -695,6 +698,7 @@ try:
                                 print(prefix("ERROR", "Remote") + line, end="\r")
                         except KeyboardInterrupt:
                             print("\n" + prefix() + "Canceling Action...")
+                            print(prefix() + f"Time elapsed: {time.time() - activity_start : 0.2f}s")
                             break
                         except Exception as e:
                             print("\n" + prefix("ERROR") + "An error occurred while trying to execute this command correctly.")
@@ -704,7 +708,6 @@ try:
                     print(prefix("ERROR") + "Can't connect to SSH host. Please make sure, that the requested port is open.")
                     print(prefix("ERROR") + "SSH error: " + str(e))
                     print(prefix() + f"Time elapsed: {time.time() - activity_start : 0.2f}s")
-                    print(prefix() + "Cleaning up...")
                     continue
 
                 print(prefix() + f"Time elapsed: {time.time() - activity_start : 0.2f}s")
@@ -713,7 +716,6 @@ try:
                     ssh.close()
                 except Exception:
                     print(prefix("WARN") + "Cannot disconnect from target!")
-                print(prefix() + "Cleaning up...")
 
             case "fetch":
                 if len(args) < 2:
