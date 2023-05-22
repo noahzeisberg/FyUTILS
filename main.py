@@ -556,6 +556,7 @@ try:
                         {"url": "https://www.twitch.tv/{}", "name": "Twitch"},
                         {"url": "https://www.telegram.me/{}", "name": "Telegram"}
                     ]
+                    print(prefix("WARN") + "Please consider, that this might output false information, if you're not logged in.")
                     for site in social_account_sites:
                         url = site["url"].format(target)
                         response = requests.get(url)
