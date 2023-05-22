@@ -849,7 +849,7 @@ try:
                 package = args[1]
                 activity_start = time.time()
 
-                if action == "install":
+                if action == "install" or action == "update":
                     print(prefix("INFO", "FUEL") + "Installing package " + fuel_color + package + text_color + "...")
                     package_name = package + ".fuel"
                     print(prefix("INFO", "FUEL") + "Checking repository...")
