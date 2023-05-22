@@ -537,11 +537,11 @@ try:
                 elif action == "phone":
                     parsed_number = phonenumbers.parse(target)
                     location = geocoder.description_for_number(parsed_number, "en")
-                    carrier = carrier.name_for_number(parsed_number, "en")
+                    phone_carrier = carrier.name_for_number(parsed_number, "en")
                     zone = timezone.time_zones_for_number(parsed_number)
                     print(prefix() + "Resolved information of \"" + target + "\"")
                     print(prefix() + "Location: " + location)
-                    print(prefix() + "Carrier: " + carrier)
+                    print(prefix() + "Carrier: " + phone_carrier)
                     print(prefix() + "Timezone: " + str(zone))
                 elif action == "socials":
                     found_accounts = []
