@@ -27,7 +27,7 @@ from pypresence import Presence
 from pytube import YouTube
 
 init(convert=True)
-CURRENT_FYUTILS_VERSION = "1.10.1"
+CURRENT_FYUTILS_VERSION = "1.10.2"
 SUPPORTED_FUEL_VERSION = 1
 
 
@@ -780,6 +780,13 @@ try:
             case "log" | "crashes":
                 update_status("Opening logs...")
                 highlight_file(main_dir + "crash.log")
+
+            case "dir":
+                if len(args) < 1:
+                    execute("explorer.exe " + os.getcwd())
+                    continue
+                path = args[0]
+                execute("explorer.exe " + path)
 
             case "config" | "configuration" | "settings" | "preferences":
                 if len(args) < 1:
