@@ -18,6 +18,7 @@ import requests
 import string
 from pathlib import Path
 import scapy.packet
+from packaging import version as version_parser
 from scapy.layers.l2 import ARP, Ether, srp
 from scapy.all import sniff
 from colorama import Fore, init
@@ -26,7 +27,7 @@ from pypresence import Presence
 from pytube import YouTube
 
 init(convert=True)
-CURRENT_FYUTILS_VERSION = "1.9.3"
+CURRENT_FYUTILS_VERSION = "1.10.0"
 SUPPORTED_FUEL_VERSION = 1
 
 
@@ -51,24 +52,10 @@ def exec_code(command: str):
     return subprocess.call(command, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT, stdin=subprocess.DEVNULL)
 
 
-def version_is_newer(current: str, value: str):
-    split = str(current).split(".")
-    major = split[0]
-    minor = split[1]
-    patch = split[2]
-
-    second_split = str(value).split(".")
-    second_major = second_split[0]
-    second_minor = second_split[1]
-    second_patch = second_split[2]
-
-    if version == value:
-        return False
-
-    if major <= second_major:
-        if minor <= second_minor:
-            if patch <= second_patch:
-                return True
+def version_is_newer(current: str, target: str):
+    current_version = version_parser.parse(current)
+    target_version = version_parser.parse(target)
+    return current_version < target_version
 
 
 def update_status(status: str):
@@ -81,7 +68,7 @@ def update_status(status: str):
                      {"label": "View Project", "url": "https://github.com/NoahOnFyre/FyUTILS/"}],
             small_text="Python", large_text="FyUTILS v" + version,
             start=int(start_time))
-    except ExceptionGroup:
+    except Exception:
         print(prefix("ERROR") + "Cannot update RPC!")
 
 
@@ -95,7 +82,7 @@ def update_ssh_status(status: str):
                      {"label": "View Project", "url": "https://github.com/NoahOnFyre/FyUTILS/"}],
             small_text="Python", large_text="FyUTILS v" + version,
             start=int(start_time))
-    except ExceptionGroup:
+    except Exception:
         print(prefix("ERROR") + "Cannot update RPC!")
 
 
@@ -104,61 +91,21 @@ def print_packet(x: scapy.packet.Packet):
     print(prefix() + content)
 
 
-def resolve_fuel_information(file: str):
-    fuel = open(fuel_content_dir + file, mode="rt")
-    fuel_json = json.load(fuel)
-    print(prefix("INFO", "FUEL") + "FUEL information of: " + file)
-    print(prefix("INFO", "FUEL") + "FUEL name: " + fuel_json["name"])
-    print(prefix("INFO", "FUEL") + "FUEL version: v" + fuel_json["version"])
-    print(prefix("INFO", "FUEL") + "FUEL author: " + fuel_json["author"])
-    print(prefix("INFO", "FUEL") + "FUEL description: " + fuel_json["description"])
-    print(prefix("INFO", "FUEL") + "FUEL format: " + str(fuel_json["format"]))
-    if fuel_json["format"] != SUPPORTED_FUEL_VERSION:
-        print(prefix("ERROR", "FUEL") + "FUEL \"" + fuel_json["name"] + "\" isn't supported by this version of FyUTILS.")
-        print(prefix("ERROR", "FUEL") + "The FUEL has to be deleted, because otherwise, it could cause problems.")
-        time.sleep(1)
-        fuel.close()
-        os.remove(fuel_content_dir + file)
-        return
-    print(prefix("INFO", "FUEL") + "FUEL type: " + fuel_json["properties"]["type"])
-    match fuel_json["properties"]["type"]:
-        case "DEFAULT":
-            print(prefix("INFO", "FUEL") + "FUEL command name: " + fuel_json["properties"]["command_name"])
-            print(prefix("INFO", "FUEL") + "Head enabled: " + str(fuel_json["head"]["enabled"]))
-            print(prefix("INFO", "FUEL") + "Body enabled: " + str(fuel_json["body"]["enabled"]))
-            print(prefix("INFO", "FUEL") + "Argument length: " + str(fuel_json["head"]["argument_length"]))
-            print(prefix("INFO", "FUEL") + "Command status: " + fuel_json["head"]["status"])
-            fuels.update({fuel_json["properties"]["command_name"]: fuel_content_dir + file})
-
-        case "MIXIN":
-            print(prefix("WARN", "FUEL") + "WARNING: If you are a FUEL developer, please use a")
-            print(prefix("WARN", "FUEL") + "default FUEL and use a command for your injection.")
-            print(prefix("WARN", "FUEL") + "Support for mixins injecting on initialisation will be added soon.")
-            print(prefix("WARN", "FUEL") + "If you aren't a developer, please remove the affected FUEL.")
-            print(prefix("WARN", "FUEL") + "You can use: \"fuel remove " + fuel.name + "\" to remove it.")
-            pause("INFO", "FUEL")
-
-        case _:
-            print(prefix("ERROR", "FUEL") + "FUEL type is not supported by this version.")
-    fuel.close()
+def get_fuels():
+    fuel_list = os.listdir(fuel_content_dir)
+    for fuel in fuel_list:
+        fuel.replace(fuel_content_dir, "")
+    return fuel_list
 
 
 def run_fuel(command_name: str):
-    fuel_file = open(fuels.get(command_name.lower()), mode="rt")
-    json_fuel_file = json.load(fuel_file)
-    if json_fuel_file["head"]["enabled"]:
-        if len(args) != json_fuel_file["head"]["argument_length"]:
-            print(prefix("ERROR") + "Unexpected arguments for command \"" + command_name + "\"")
-            return
-        for entry in range(len(json_fuel_file["head"]["arguments"])):
-            exec(list(json_fuel_file["head"]["arguments"])[entry] + " = args[" + str(entry) + "]")
-        activity_start = time.time()
-        update_status(json_fuel_file["head"]["status"])
-
-    if json_fuel_file["body"]["enabled"]:
-        exec("\n".join(list(json_fuel_file["body"]["content"])))
-        print(prefix() + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
-    return fuel_file
+    activity_start = time.time()
+    update_status("Running FUEL \"" + command_name + "\"")
+    fuel = open(fuel_content_dir + command_name + ".fuel", "r")
+    exec(fuel.read())
+    print(prefix() + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
+    fuel.close()
+    return fuel_content_dir + command_name + ".fuel"
 
 
 def pause(level: str = "INFO", protocol: str = "FyUTILS"):
@@ -169,13 +116,14 @@ def crash_log():
     temp = open(main_dir + "crash.log", mode="wb+")
     commands = "\n".join(executed_commands)
     data = f"""FyUTILS Traceback Crash log @ {datetime.datetime.now().strftime("%H:%M:%S")}
+
 ================================================================================
 
 Variable stacktrace:
     - User specific:
         └> Username: {username}
         └> Device: {device}
-        └> HWID: {hwid}
+        └> Hardware-ID: {hwid}
         └> Start time: {start_time}
         └> Directory: {current_dir}
         └> Version: {version}
@@ -189,11 +137,6 @@ Variable stacktrace:
     - Python specific:
         └> Python version: {python_version}
         
-================================================================================
-
-Command history:
-{commands}
-
 ================================================================================
         
 Python traceback:
@@ -222,10 +165,12 @@ def menu():
     if update_available:
         print(accent_color + "╠" + "═"*119)
         print(accent_color + "║ " + accent_color + "[" + color + "UPDATE" + accent_color + "] " + text_color + "A new version of FyUTILS is available! Install it now using \"update\".")
+        print(accent_color + "║ " + accent_color + "[" + color + "UPDATE" + accent_color + "] ")
         for item in str(update_content).split("\r\n"):
             if not item.startswith("**Full Changelog**:"):
                 if not item == "":
                     print(accent_color + "║ " + accent_color + "[" + color + "UPDATE" + accent_color + "] " + text_color + item)
+        print()
         print(accent_color + "║ " + accent_color + "[" + color + "UPDATE" + accent_color + "] " + text_color + false_color + version + accent_color + " => " + true_color + newest_version + text_color)
     print(accent_color + "╚" + "═"*119)
 
@@ -348,6 +293,8 @@ try:
     # URL specific stuff
     releases = "https://api.github.com/repos/NoahOnFyre/FyUTILS/releases"
     print(prefix("INFO", "Init") + "Releases URL: " + releases)
+    fuel_repository = "https://api.github.com/repos/NoahOnFyre/FUELS/contents/"
+    print(prefix("INFO", "Init") + "FUEL repository content URL: " + fuel_repository)
 
     # System components specific stuff
     cpu = platform.processor()
@@ -402,18 +349,9 @@ try:
     rpc.connect()
     print(prefix("INFO", "RichPresence") + "Discord is connected...")
     update_status("Starting up...")
-except ExceptionGroup:
+except Exception:
     print(prefix("WARN", "RichPresence") + "Can't connect with the discord RPC.")
     time.sleep(0.25)
-
-# FUEL initialisation
-
-print(prefix("INFO", "FUEL") + "Initialising FUELS...")
-fuels = {}
-for file in os.listdir(fuel_content_dir):
-    resolve_fuel_information(file)
-
-print(prefix("INFO", "FUEL") + "FUELS initialized")
 
 print(prefix("INFO", "Init") + "Initialisation phase completed!")
 update_status("Initialisation phase completed!")
@@ -484,7 +422,7 @@ try:
                     print(prefix() + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
                 try:
                     sock.close()
-                except ExceptionGroup:
+                except Exception:
                     print(prefix("WARN") + "Cannot disconnect from target!")
 
             case "portscan":
@@ -515,7 +453,7 @@ try:
                     print(prefix() + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
                 try:
                     sock.close()
-                except ExceptionGroup:
+                except Exception:
                     print(prefix("WARN") + "Cannot disconnect from target!")
 
             case "sniff" | "traffic":
@@ -717,7 +655,7 @@ try:
                     print(prefix() + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
                 try:
                     sock.close()
-                except ExceptionGroup:
+                except Exception:
                     print(prefix("WARN") + "Cannot disconnect from target!")
                 print(prefix() + "Cleaning up...")
 
@@ -773,7 +711,7 @@ try:
                 print(prefix() + "Disconnecting from " + color + server + accent_color + ":" + color + str(port) + text_color + "...")
                 try:
                     ssh.close()
-                except ExceptionGroup:
+                except Exception:
                     print(prefix("WARN") + "Cannot disconnect from target!")
                 print(prefix() + "Cleaning up...")
 
@@ -900,135 +838,53 @@ try:
 
             case "fuels":
                 print(prefix() + "Active FUELS:")
-                for path in fuels.values():
-                    print(prefix() + os.path.basename(path).split("/")[-1])
+                for fuel in get_fuels():
+                    print(prefix() + fuel)
 
             case "fuel":
                 if len(args) < 2:
                     print(prefix("ERROR") + "Unexpected arguments for command \"" + cmd + "\"")
                     continue
-                fuel_action = args[0]
-                if len(args) == 2:
-                    fuel_location = args[1]
+                action = args[0]
+                package = args[1]
                 activity_start = time.time()
 
-                if fuel_action == "install":
-                    update_status("Installing FUEL...")
-                    print(prefix() + "Installation process started!")
-                    filename = fuel_location + ".json"
-                    print(prefix() + "Using \"" + filename + "\" as target package.")
-                    print(prefix() + "Checking FUEL directory...")
-                    if os.path.exists(fuel_content_dir + filename):
-                        print(prefix("ERROR") + "Package \"" + filename + "\" installation failed!")
-                        print(prefix("ERROR") + "Error: Package is already installed.")
+                if action == "install":
+                    print(prefix("INFO", "FUEL") + "Installing package " + fuel_color + package + text_color + "...")
+                    package_name = package + ".fuel"
+                    print(prefix("INFO", "FUEL") + "Checking repository...")
+                    try:
+                        repo_content = requests.get(fuel_repository).json()
+                    except Exception:
+                        print(prefix("ERROR") + "Package " + package + text_color + " installation failed!")
+                        print(prefix("ERROR") + "Error: Repository not reachable.")
                         continue
-                    print(prefix() + "Installing to: " + fuel_content_dir + "...")
-                    print(prefix() + "Checking FUEL in NoahOnFyre/FUELS...")
-                    fuel_repo_contents = requests.get("https://api.github.com/repos/NoahOnFyre/FUELS/contents/").json()
-                    for i in range(len(fuel_repo_contents)):
-                        fuel_download_url = ""
-                        if fuel_repo_contents[i]["name"] == filename:
-                            fuel_download_url = fuel_repo_contents[i]["download_url"]
-                            break
-                        else:
-                            continue
-                    if fuel_download_url == "":
-                        print(prefix("ERROR") + "Package \"" + filename + "\" installation failed!")
+                    print(prefix("INFO", "FUEL") + "Checking package...")
+                    url = ""
+                    for i in range(len(repo_content)):
+                        if repo_content[i]["name"] == package_name:
+                            url = repo_content[i]["download_url"]
+                    if url == "":
+                        print(prefix("ERROR") + "Package " + package + text_color + " installation failed!")
                         print(prefix("ERROR") + "Error: Package not found.")
                         continue
-                    print(prefix() + "Fetching FUEL from NoahOnFyre/FUELS...")
-                    fuel_file_content = requests.get(fuel_download_url).content
-                    print(prefix() + "Writing content to file...")
-                    local_fuel_file = open(fuel_content_dir + filename, mode="xb")
-                    local_fuel_file.write(fuel_file_content)
-                    local_fuel_file.close()
-                    local_fuel_file = open(fuel_content_dir + filename, mode="rt")
-                    print(prefix() + "FUEL " + fuel_color + filename + text_color + " successfully installed to \"" + fuel_content_dir + "\".")
-                    print(prefix() + "Adding FUEL to FyUTILS...")
-                    local_fuel_file_json = json.load(local_fuel_file)
-                    if local_fuel_file_json["properties"]["type"] == "DEFAULT":
-                        fuels.update({local_fuel_file_json["properties"]["command_name"]: fuel_content_dir + filename})
-                    local_fuel_file.close()
-                    print(prefix() + f"Done! Took{time.time() - activity_start: 0.2f}s to install package " + fuel_color + filename + text_color + "!")
+                    print(prefix("INFO", "FUEL") + "Found " + fuel_color + package + text_color + " in NoahOnFyre/FUELS!")
+                    print(prefix("INFO", "FUEL") + "Fetching " + fuel_color + package + text_color + "...")
+                    content = requests.get(url).content
+                    print(prefix("INFO", "FUEL") + "Preparing local file...")
+                    fuel = open(fuel_content_dir + package_name, "wb")
+                    print(prefix("INFO", "FUEL") + "Writing content to file...")
+                    fuel.write(content)
+                    print(prefix("INFO", "FUEL") + "Closing IO for file...")
+                    fuel.close()
+                    print(prefix("INFO", "FUEL") + "Done! Package installation of " + fuel_color + package + text_color + f" took {time.time() - activity_start:0.2f} seconds.")
+                elif action == "remove":
+                    print(prefix("INFO", "FUEL") + "Checking package...")
+                    if get_fuels().__contains__(package + ".fuel"):
+                        print(prefix("INFO", "FUEL") + "Removing package...")
+                        os.remove(fuel_content_dir + package + ".fuel")
+                    print(prefix("INFO", "FUEL") + "Done! Package deletion of " + fuel_color + package + text_color + f" took {time.time() - activity_start:0.2f} seconds.")
 
-                elif fuel_action == "add":
-                    update_status("Adding FUEL...")
-                    print(prefix() + "Installation process started!")
-                    filename = os.path.basename(fuel_location).split("/")[-1]
-                    print(prefix() + "Checking FUEL directory...")
-                    if os.path.exists(fuel_content_dir + filename):
-                        print(prefix("ERROR") + "Package \"" + fuel_location + "\" installation failed!")
-                        print(prefix("ERROR") + "Error: Package is already installed.")
-                        continue
-                    print(prefix() + "Installing to: " + fuel_content_dir + "...")
-                    print(prefix() + "Copying FUEL from " + fuel_location + "...")
-                    shutil.copy(fuel_location, fuel_content_dir)
-                    local_fuel_file = open(fuel_content_dir + filename)
-                    print(prefix() + "FUEL " + fuel_color + filename + text_color + " successfully copied to \"" + fuel_content_dir + "\".")
-                    print(prefix() + "Adding FUEL to FyUTILS...")
-                    local_fuel_file_json = json.load(local_fuel_file)
-                    if local_fuel_file_json["properties"]["type"] == "DEFAULT":
-                        fuels.update({local_fuel_file_json["properties"]["command_name"]: fuel_content_dir + filename})
-                    local_fuel_file.close()
-                    print(prefix() + f"Done! Took{time.time() - activity_start: 0.2f}s to install package " + fuel_color + filename + text_color + "!")
-
-                elif fuel_action == "run":
-                    update_status("Running FUEL...")
-                    print(prefix() + "Installation process started!")
-                    filename = fuel_location + ".json"
-                    print(prefix() + "Using \"" + filename + "\" as target package.")
-                    print(prefix() + "Installing to: " + tmp_dir + "...")
-                    print(prefix() + "Checking FUEL in NoahOnFyre/FUELS...")
-                    fuel_repo_contents = requests.get("https://api.github.com/repos/NoahOnFyre/FUELS/contents/").json()
-                    for i in range(len(fuel_repo_contents)):
-                        fuel_download_url = ""
-                        if fuel_repo_contents[i]["name"] == filename:
-                            fuel_download_url = fuel_repo_contents[i]["download_url"]
-                            break
-                        else:
-                            continue
-                    if fuel_download_url == "":
-                        print(prefix("ERROR") + "Package \"" + filename + "\" installation failed!")
-                        print(prefix("ERROR") + "Error: Package not found.")
-                        continue
-                    print(prefix() + "Fetching FUEL from NoahOnFyre/FUELS...")
-                    fuel_file_content = requests.get(fuel_download_url).content
-                    print(prefix() + "Writing content to file...")
-                    local_fuel_file = open(tmp_dir + filename, mode="xb")
-                    local_fuel_file.write(fuel_file_content)
-                    local_fuel_file.close()
-                    local_fuel_file = open(fuel_content_dir + filename, mode="rt")
-                    print(prefix() + "FUEL " + fuel_color + filename + text_color + " temporarily installed to \"" + fuel_content_dir + "\".")
-                    args = input(prefix() + "Enter arguments to run: ").split(" ")
-                    print(prefix() + "Running package " + fuel_color + filename + text_color + "...")
-                    run_fuel(cmd).close()
-                    print(prefix() + "Closing temporary file...")
-                    print(prefix() + "Deleting temporary file...")
-                    os.remove(tmp_dir + filename)
-                    print(prefix() + f"Done! Took{time.time() - activity_start: 0.2f}s to run package " + fuel_color + filename + text_color + "!")
-
-                elif fuel_action == "remove":
-                    update_status("Removing FUEL...")
-                    filename = os.path.basename(fuel_location + ".json").split("/")[-1]
-                    print(prefix() + "Unregistering " + fuel_content_dir + filename + "...")
-                    if os.path.exists(fuel_content_dir + filename):
-                        temp = open(fuel_content_dir + filename)
-                        fuels.pop(json.load(temp)["properties"]["command_name"])
-                        temp.close()
-                    else:
-                        print(prefix("ERROR") + "Package \"" + filename + "\" remove failed!")
-                        print(prefix("ERROR") + "Error: Local package not found.")
-                        continue
-                    print(prefix() + "Deleting " + filename + "...")
-                    if os.path.exists(fuel_content_dir + filename):
-                        os.remove(fuel_content_dir + filename)
-                    else:
-                        print(prefix("ERROR") + "Package \"" + filename + "\" remove failed!")
-                        print(prefix("ERROR") + "Error: Local package not found.")
-                        continue
-                    print(prefix() + f"Done! Took{time.time() - activity_start: 0.2f}s to remove package " + fuel_color + filename)
-                else:
-                    print(prefix("ERROR") + "Action is not supported!")
 
             case "update":
                 update_status("Updating FyUTILS...")
@@ -1222,8 +1078,8 @@ try:
                 sys.exit(0)
 
             case _:
-                if fuels.keys().__contains__(cmd.lower()):
-                    run_fuel(cmd)
+                if get_fuels().__contains__(cmd.lower() + ".fuel"):
+                    run_fuel(cmd.lower())
                 else:
                     if exec_code(request_raw) == 1:
                         update_status("Executing " + cmd)
