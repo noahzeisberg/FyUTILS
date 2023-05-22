@@ -256,9 +256,9 @@ try:
     # Directory specific stuff
     user_dir = str(Path.home())
     print(prefix("INFO", "Init") + "User specific directory: " + user_dir)
-    appdata_dir = user_dir + "\\AppData"
+    appdata_dir = user_dir + "\\AppData\\"
     print(prefix("INFO", "Init") + "AppData directory: " + appdata_dir)
-    main_dir = appdata_dir + "\\Roaming\\FyUTILS\\"
+    main_dir = appdata_dir + "Roaming\\FyUTILS\\"
     print(prefix("INFO", "Init") + "FyUTILS AppData directory: " + main_dir)
     tmp_dir = main_dir + "tmp\\"
     print(prefix("INFO", "Init") + "Temp files directory: " + tmp_dir)
