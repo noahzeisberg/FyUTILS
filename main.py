@@ -27,7 +27,7 @@ from pypresence import Presence
 from pytube import YouTube
 
 init(convert=True)
-CURRENT_FYUTILS_VERSION = "1.10.2"
+CURRENT_FYUTILS_VERSION = "1.10.3"
 SUPPORTED_FUEL_VERSION = 1
 
 
@@ -786,6 +786,22 @@ try:
                     execute("explorer.exe " + os.getcwd())
                     continue
                 path = args[0]
+
+                match path:
+                    case "~":
+                        path = user_dir
+
+                    case "#":
+                        path = current_dir
+
+                    case "@":
+                        path = appdata_dir
+
+                    case "/":
+                        path = "C:\\"
+
+                    case _:
+                        path = path
                 execute("explorer.exe " + path)
 
             case "config" | "configuration" | "settings" | "preferences":
@@ -891,7 +907,6 @@ try:
                         print(prefix("INFO", "FUEL") + "Removing package...")
                         os.remove(fuel_content_dir + package + ".fuel")
                     print(prefix("INFO", "FUEL") + "Done! Package deletion of " + fuel_color + package + text_color + f" took {time.time() - activity_start:0.2f} seconds.")
-
 
             case "update":
                 update_status("Updating FyUTILS...")
