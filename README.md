@@ -25,6 +25,7 @@ FyUTILS is a simple python hacking and utility terminal application for windows 
   * [How to use](#how-to-use)
   * [Prefix](#prefix)
   * [Libraries](#libraries)
+    * [Create your own FUEL](#create-your-own-fuel)
   * [Commands](#commands)
     * [Flood](#flood)
     * [Portscan](#portscan)
@@ -37,6 +38,7 @@ FyUTILS is a simple python hacking and utility terminal application for windows 
     * [Fetch](#fetch)
     * [YouTube](#youtube)
     * [Log](#log)
+    * [Dir](#dir)
     * [Config](#config)
     * [StreamHunter](#streamhunter)
     * [GetIP](#getip)
@@ -174,6 +176,22 @@ When you want to update your FUEL, make sure that your fork is up-to-date with *
 
 Information about contributing to FUELS in the official repository may be outdated.
 
+### Create your own FUEL
+If you want to create an own FUEL, using a python file that you already have to convert to a FUEL, this might help you.
+First, make sure the path where your python file is located doesn't contain any spaces. Then, install the `fuelcreator` FUEL.
+```
+fuel install fuelcreator
+```
+After the installation succeed, run the `fuelcreator` command with the name that will be assigned to your FUEL and the path of your current python file to start the creation process.
+```
+fuelcreator <name> <path>
+```
+After this, a directory will open automatically with your `<name>.fuel` file. If the directory doesn't open, you can open it manually using:
+```
+fuelcreator out
+```
+Now you can publish the FUEL, or just use it for yourself.
+
 ## Commands
 The commands in FyUTILS are very simple. Below, there's a list of all commands and the arguments they take.
 
@@ -234,6 +252,11 @@ This command will download the highest definition file of a YouTube video (most 
 log
 ```
 Opens the folder, your log files are in and automatically highlights the **crash.log**
+### Dir
+```
+dir [directory]
+```
+Opens a folder in the explorer. The current working directory will be opened, if no argument is given.
 ### Config
 ```
 config [action]
