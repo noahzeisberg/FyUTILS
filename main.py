@@ -69,7 +69,7 @@ def update_status(status: str):
             small_text="Python", large_text="FyUTILS v" + version,
             start=int(start_time))
     except Exception:
-        print(prefix("ERROR") + "Cannot update RPC!")
+        None
 
 
 def update_ssh_status(status: str):
@@ -83,7 +83,7 @@ def update_ssh_status(status: str):
             small_text="Python", large_text="FyUTILS v" + version,
             start=int(start_time))
     except Exception:
-        print(prefix("ERROR") + "Cannot update RPC!")
+        None
 
 
 def print_packet(x: scapy.packet.Packet):
@@ -102,7 +102,7 @@ def get_fuels():
     return fuel_list
 
 
-def run_fuel(command_name: str):
+def run_fuel(command_name: str, args: list[str]):
     activity_start = time.time()
     update_status("Running FUEL \"" + command_name + "\"")
     fuel = open(fuel_content_dir + command_name + ".fuel", "r")
@@ -110,6 +110,15 @@ def run_fuel(command_name: str):
     print(prefix() + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
     fuel.close()
     return fuel_content_dir + command_name + ".fuel"
+
+
+def format_boolean(boolean: bool):
+    if boolean:
+        return true_color + "Yes"
+    elif not boolean:
+        return false_color + "No"
+    else:
+        return false_color + "Not available"
 
 
 def pause(level: str = "INFO", protocol: str = "FyUTILS"):
@@ -781,7 +790,7 @@ try:
                 update_status("Opening logs...")
                 highlight_file(main_dir + "crash.log")
 
-            case "dir":
+            case "dir" | "open":
                 if len(args) < 1:
                     execute("explorer.exe " + os.getcwd())
                     continue
@@ -1101,7 +1110,7 @@ try:
 
             case _:
                 if get_fuels().__contains__(cmd + ".fuel"):
-                    run_fuel(cmd)
+                    run_fuel(cmd, request)
                 else:
                     if exec_code(request_raw) == 1:
                         update_status("Executing " + cmd)
