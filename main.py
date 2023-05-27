@@ -27,8 +27,7 @@ from pypresence import Presence
 from pytube import YouTube
 
 init(convert=True)
-CURRENT_FYUTILS_VERSION = "1.10.3"
-SUPPORTED_FUEL_VERSION = 1
+CURRENT_FYUTILS_VERSION = "1.11.0"
 
 
 def prefix(level: str = "INFO", protocol: str = "FyUTILS"):
@@ -87,8 +86,9 @@ def update_ssh_status(status: str):
 
 
 def print_packet(x: scapy.packet.Packet):
-    content = str(x)
-    print(prefix() + content)
+    route = x.route()[1] + color + " -> " + text_color + x.route()[2]
+    protocol = ""
+    print(prefix() + protocol + route)
 
 
 def highlight_file(path: str):
