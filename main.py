@@ -254,7 +254,7 @@ try:
     private_ip = socket.gethostbyname(socket.gethostname())
     print(prefix("INFO", "Init") + "Private IP: " + private_ip)
     wire_started = False
-    print(prefix("INFO", "Init") + "WIRE started: " + str(wire_started))
+    print(prefix("INFO", "Init") + "WIRE started: " + format_boolean(wire_started))
 
     # OS specific stuff.
     operating_system = platform.system()
@@ -532,7 +532,7 @@ try:
                     print(prefix() + "Latitude: " + str(data["latitude"]))
                     print(prefix() + "Longitude: " + str(data["longitude"]))
                     print(prefix() + "Google Maps: " + f"https://www.google.com/maps/@{data['latitude']},{data['longitude']},10z")
-                    print(prefix() + "EU country: " + str(data["is_eu"]))
+                    print(prefix() + "EU country: " + format_boolean(data["is_eu"]))
                     print(prefix() + "Postal code: " + data["postal"])
                     print(prefix() + "System number (ASN): " + str(data["connection"]["asn"]))
                     print(prefix() + "Organisation (ORG): " + data["connection"]["org"])
