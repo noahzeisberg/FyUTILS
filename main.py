@@ -17,7 +17,9 @@ import pwinput
 import requests
 import string
 from pathlib import Path
-import scapy.packet
+from scapy.layers.inet import IP, TCP, UDP
+from scapy.layers.inet6 import IPv6
+from scapy.packet import Packet
 from packaging import version as version_parser
 from scapy.layers.l2 import ARP, Ether, srp
 from scapy.all import sniff
@@ -27,7 +29,7 @@ from pypresence import Presence
 from pytube import YouTube
 
 init(convert=True)
-CURRENT_FYUTILS_VERSION = "1.11.0"
+CURRENT_FYUTILS_VERSION = "1.10.4"
 
 
 def prefix(level: str = "INFO", protocol: str = "FyUTILS"):
@@ -85,10 +87,27 @@ def update_ssh_status(status: str):
         None
 
 
-def print_packet(x: scapy.packet.Packet):
-    route = x.route()[1] + color + " -> " + text_color + x.route()[2]
+def print_packet(packet: Packet):
+    packet_src = ""
+    packet_dst = ""
     protocol = ""
-    print(prefix() + protocol + route)
+    if packet.haslayer(IP):
+        packet_src = str(packet[IP].src)
+        packet_dst = str(packet[IP].dst)
+        protocol = "IP"
+    if packet.haslayer(IPv6):
+        packet_src = str(packet[IPv6].src)
+        packet_dst = str(packet[IPv6].dst)
+        protocol = "IPv6"
+    if packet.haslayer(TCP):
+        protocol = "TCP"
+    elif packet.haslayer(UDP):
+        protocol = "UDP"
+    else:
+        print(prefix("WARN") + "Can't read package.")
+        return
+    packet_prefix = accent_color + "[" + color + protocol + accent_color + "] " + text_color
+    print(prefix() + packet_prefix + packet_src + " -> " + packet_dst)
 
 
 def highlight_file(path: str):
@@ -189,6 +208,10 @@ def menu():
 
 # INIT PHASE
 execute("title FyUTILS")
+
+# Scapy stuff
+packet_src = ""
+packet_dst = ""
 
 # Color initialisation
 color = Fore.LIGHTBLUE_EX
@@ -467,7 +490,7 @@ try:
                 activity_start = time.time()
 
                 print(prefix() + "Starting network sniffer...")
-                sniff(filter="ip", prn=print_packet)
+                sniff(prn=print_packet)
                 print(prefix() + "Canceling Action...")
                 print(prefix() + "Stopping network sniffer...")
                 print(prefix() + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
