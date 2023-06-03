@@ -1,10 +1,23 @@
----
-name: Enhancement
-about: Suggest a new feature.
-title: "[ENHANCEMENT] "
+name: Crash Report
+description: Report a bug, that generated a crash.log file, which you can upload.
+title: "[FEATURE] <issue name>"
 labels: enhancement
-assignees: ''
+body:
+- type: markdown
+  attributes:
+  value: "## Before you continue, please search our open issues to see if a similar issue has been addressed."
 
----
+- type: checkboxes
+  attributes:
+  label: I have searched through the issues and didn't find one, that had the same feature requested.
+  options:
+    - label: Confirm
+      required: true
 
-
+- type: textarea
+  id: description
+  attributes:
+  label: Feature description
+  description: A description, that should explain the feature as good as possible. You can append some code too.
+  validations:
+  required: true
