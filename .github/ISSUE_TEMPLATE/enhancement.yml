@@ -1,5 +1,5 @@
-name: Crash Report
-description: Report a bug, that generated a crash.log file, which you can upload.
+name: Feature request
+description: Suggest a new feature, that should be added to the product.
 title: "[FEATURE] <issue name>"
 labels: [enhancement]
 body:
