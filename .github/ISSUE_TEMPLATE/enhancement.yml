@@ -1,7 +1,7 @@
 name: Crash Report
 description: Report a bug, that generated a crash.log file, which you can upload.
 title: "[FEATURE] <issue name>"
-labels: enhancement
+labels: [enhancement]
 body:
 - type: markdown
   attributes:

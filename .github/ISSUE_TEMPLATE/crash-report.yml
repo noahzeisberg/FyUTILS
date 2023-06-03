@@ -22,13 +22,13 @@ body:
   validations:
     required: true
 
-- type: file
+- type: textarea
   id: crashfileupload
   attributes:
-  label: Upload your crash.log file
-  description: The file is located at %AppData%\FyUTILS\crash.log
+    label: Drag n drop your crash.log file here.
+    description: The file is located at %AppData%\FyUTILS\crash.log
   validations:
-  required: true
+    required: true
 
 - type: textarea
   id: extrainformation
