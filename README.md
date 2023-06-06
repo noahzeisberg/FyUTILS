@@ -23,7 +23,6 @@ FyUTILS is a simple python hacking and utility terminal application for windows 
   * [Developer installation](#developer-installation)
   * [First Launch](#first-launch)
   * [How to use](#how-to-use)
-  * [Prefix](#prefix)
   * [Libraries](#libraries)
     * [Create your own FUEL](#create-your-own-fuel)
   * [Commands](#commands)
@@ -150,23 +149,6 @@ When an argument is required it will be bordered by < and >.
 When it isn't required it will be bordered by [ and ]
 
 Every command is structured like this, but all of them have a different amount of arguments. Some commands can also have no arguments like `ls`.
-
-## Prefix
-
-Here you can find everything you need to understand the **prefix** in FyUTILS.
-
-Here's an example:
-
-```
-[16:32:00] [FyUTILS/INFO] Stuff after prefix like text.
-```
-
-| Used in example               | Description                                                                                |
-|-------------------------------|--------------------------------------------------------------------------------------------|
-| 16:32:00                      | Current time based on your timezone etc.                                                   |
-| FyUTILS/                      | Protocol layer (Some short, additional information about what FyUTILS is doing right now.) |
-| INFO                          | Logging level (e.g. INFO, ERROR or WARN)                                                   |
-| Stuff after prefix like text. | Stuff after the prefix (I think this is obvious)                                           |
 
 ## Libraries
 FUELS (FyUTILS extending libraries) are simple lightweight scripts that can add a certain behaviour or action when you execute a command.
