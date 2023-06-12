@@ -29,7 +29,7 @@ from pypresence import Presence
 from pytube import YouTube
 
 init(convert=True)
-CURRENT_FYUTILS_VERSION = "1.11.0"
+CURRENT_FYUTILS_VERSION = "1.11.1"
 
 
 def prefix(level: str = "INFO"):
@@ -38,7 +38,7 @@ def prefix(level: str = "INFO"):
     elif level == "WARN":
         return background_colors["YELLOW"] + " " + colors["BLACK"] + level + colors["RESET"] + " " + background_colors["RESET"] + " " + colors["WHITE"]
     elif level == "ERROR":
-        return background_colors["RED"] + " " + colors["BLACK"] + level + colors["RESET"] + " " + background_colors["RESET"] + " " + colors["WHITE"]
+        return background_colors["RED"] + " " + colors["BLACK"] + level + colors["RESET"] + " " + background_colors["RESET"] + " " + colors["RED"]
     elif level == "DEBUG":
         return background_colors["MAGENTA"] + " " + colors["BLACK"] + level + colors["RESET"] + " " + background_colors["RESET"] + " " + colors["WHITE"]
     else:
@@ -94,10 +94,11 @@ def print_packet(packet: Packet):
         packet_src = str(packet[IP].src)
         packet_dst = str(packet[IP].dst)
         protocol = "IP"
-    if packet.haslayer(IPv6):
+    elif packet.haslayer(IPv6):
         packet_src = str(packet[IPv6].src)
         packet_dst = str(packet[IPv6].dst)
         protocol = "IPv6"
+
     if packet.haslayer(TCP):
         protocol = "TCP"
     elif packet.haslayer(UDP):
@@ -105,12 +106,12 @@ def print_packet(packet: Packet):
     else:
         print(prefix("WARN") + "Can't read package.")
         return
-    packet_prefix = background_colors["BLUE"] + " " + colors["BLACK"] + protocol + " " + background_colors["RESET"] + colors["WHITE"] + " "
+    packet_prefix = colors["GRAY"] + "[" + colors["BLUE"] + protocol + colors["GRAY"] + "]" + colors["WHITE"] + " "
     print(prefix() + packet_prefix + packet_src + " -> " + packet_dst)
 
 
-def highlight_file(path: str):
-    execute("explorer.exe /select,\"" + path + "\"")
+def open_file(path: str):
+    execute("start " + path)
 
 
 def get_fuels():
@@ -178,7 +179,7 @@ Python traceback:
 
     temp.write(data.encode())
     temp.close()
-    highlight_file(main_dir + "crash.log")
+    open_file(main_dir + "crash.log")
 
 
 def menu():
@@ -192,27 +193,16 @@ def menu():
     print(colors["BLUE"] + "            /_____/ " + " "*5 + colors["GRAY"] + "v" + colors["WHITE"] + version.replace(".", colors["GRAY"] + "." + colors["WHITE"]) + colors["GRAY"] + " | " + colors["WHITE"] + "Made by NoahOnFyre")
     print()
     print(colors["GRAY"] + "╔" + "═"*119)
-    print(colors["GRAY"] + "║ " + colors["WHITE"] + "Username" + colors["GRAY"] + ": " + colors["BLUE"] + username)
-    print(colors["GRAY"] + "║ " + colors["WHITE"] + "Device" + colors["GRAY"] + ":   " + colors["BLUE"] + device.replace("-", colors["GRAY"] + "-" + colors["BLUE"]))
-    print(colors["GRAY"] + "║ " + colors["WHITE"] + "Version" + colors["GRAY"] + ":  " + colors["BLUE"] + version.replace(".", colors["GRAY"] + "." + colors["BLUE"]))
+    print(colors["GRAY"] + "║ " + colors["WHITE"] + "Documentation" + colors["GRAY"] + ": " + colors["BLUE"] + "https://noahonfyre.github.io/FyUTILS/")
     if update_available:
         print(colors["GRAY"] + "╠" + "═"*119)
         print(colors["GRAY"] + "║ " + colors["WHITE"] + "A new version of FyUTILS is available!")
-        for item in str(update_content).split("\r\n"):
-            if not item.startswith("**Full Changelog**:"):
-                if not item == "":
-                    print(colors["GRAY"] + "║ " + colors["WHITE"] + item)
-        print(colors["GRAY"] + "║ " + colors["WHITE"])
         print(colors["GRAY"] + "║ " + colors["WHITE"] + colors["RED"] + version + colors["GRAY"] + " => " + colors["GREEN"] + newest_version + colors["GRAY"] + " | " + colors["WHITE"] + "Run \"update\" to update your instance.")
     print(colors["GRAY"] + "╚" + "═"*119)
 
 
 # INIT PHASE
 execute("title FyUTILS - Initialization phase")
-
-# Scapy stuff
-packet_src = ""
-packet_dst = ""
 
 # Color initialisation
 colors = {
@@ -343,7 +333,7 @@ try:
         else:
             release_download_url = ""
             continue
-    update_content = newest_release["body"]
+    newest_version_note = newest_release["body"]
     newest_version = newest_release["tag_name"]
     if version_is_newer(version, newest_version):
         print(prefix("INFO") + "A new version of FyUTILS is available!")
@@ -387,12 +377,12 @@ try:
         update_status("Idle")
         try:
             if os.getcwd() == current_dir:
-                cwd_abbreviation = "#"
+                cwd_abbreviation = "."
             elif os.getcwd() == "C:\\":
                 cwd_abbreviation = "/"
             elif os.getcwd() == user_dir:
                 cwd_abbreviation = "~"
-            elif os.getcwd() == appdata_dir:
+            elif os.getcwd() == main_dir:
                 cwd_abbreviation = "@"
             else:
                 cwd_abbreviation = os.getcwd()
@@ -404,13 +394,15 @@ try:
             args = request
             print()
         except KeyboardInterrupt:
+            update_status("Shutting down...")
+            print("\n")
+            print(prefix() + "Shutting down FyUTILS...")
             try:
-                update_status("Shutting down...")
-                print("\n" + prefix() + "Shutting down FyUTILS...")
                 time.sleep(1)
-                sys.exit(0)
             except KeyboardInterrupt:
+                print(prefix() + "Canceling action")
                 continue
+            sys.exit(0)
 
         match cmd:
             case "flood":
@@ -802,7 +794,7 @@ try:
 
             case "log" | "crashes":
                 update_status("Opening logs...")
-                highlight_file(main_dir + "crash.log")
+                open_file(main_dir + "crash.log")
 
             case "dir" | "open":
                 if len(args) < 1:
@@ -814,11 +806,11 @@ try:
                     case "~":
                         path = user_dir
 
-                    case "#":
+                    case ".":
                         path = current_dir
 
                     case "@":
-                        path = appdata_dir
+                        path = main_dir
 
                     case "/":
                         path = "C:\\"
@@ -1048,11 +1040,11 @@ try:
                     case "~":
                         change_dir = user_dir
 
-                    case "#":
+                    case ".":
                         change_dir = current_dir
 
                     case "@":
-                        change_dir = appdata_dir
+                        change_dir = main_dir
 
                     case "/":
                         change_dir = "C:\\"
@@ -1063,12 +1055,12 @@ try:
                 try:
                     os.chdir(change_dir)
                     if os.getcwd() == current_dir:
-                        cwd_abbreviation = "#"
+                        cwd_abbreviation = "."
                     elif os.getcwd() == "C:\\":
                         cwd_abbreviation = "/"
                     elif os.getcwd() == user_dir:
                         cwd_abbreviation = "~"
-                    elif os.getcwd() == appdata_dir:
+                    elif os.getcwd() == main_dir:
                         cwd_abbreviation = "@"
                     else:
                         cwd_abbreviation = os.getcwd()
@@ -1081,11 +1073,11 @@ try:
             case "help":
                 if len(args) < 1:
                     update_status("Viewing help...")
-                    execute("start https://github.com/NoahOnFyre/FyUTILS#commands")
+                    execute("start https://noahonfyre.github.io/FyUTILS#commands")
                     continue
-                command = args[0]
-                update_status("Viewing " + command + " in help...")
-                execute("start https://github.com/NoahOnFyre/FyUTILS#" + command)
+                section = args[0]
+                update_status("Viewing " + section + " in help...")
+                execute("start https://noahonfyre.github.io/FyUTILS#" + section)
 
             case "raise":
                 update_status("Raising exception...")
@@ -1107,18 +1099,16 @@ try:
                 if get_fuels().__contains__(cmd + ".fuel"):
                     run_fuel(cmd, request)
                 else:
+                    update_status("Executing " + cmd)
                     if exec_code(request_raw) == 1:
-                        update_status("Executing " + cmd)
                         print(prefix("ERROR") + "Invalid command: \"" + cmd + "\".")
                     else:
-                        update_status("Executing " + cmd)
                         execute(request_raw)
 except Exception as e:
     execute("title FyUTILS Crash Handler - Crash Log")
     print(prefix("ERROR") + "FyUTILS CRASH LOG @ " + datetime.datetime.now().strftime("%H:%M:%S"))
     print(prefix("ERROR") + "Error: " + str(e))
-    print(prefix("ERROR") + "The full crash log has been saved to: " + main_dir + "crash.log")
-    print(prefix("ERROR") + "When you want to file an issue, please remember to also upload your crash.log file.")
+    print(prefix("ERROR") + "Learn how to file an issue: https://github.com/NoahOnFyre/FyUTILS/issues/40")
     crash_log()
     pause("ERROR")
     sys.exit(1024)
