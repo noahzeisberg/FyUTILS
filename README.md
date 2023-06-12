@@ -1,7 +1,3 @@
-<div align="center">
-  <img height="200" src="img\FyUTILS.png" width="200"/>
-</div>
-
 # FyUTILS
 
 FyUTILS is a simple python hacking and utility terminal application for windows including tools like a denial of service initiator, a port scanner and several more. FyUTILS comes with an integrated package manager, community driven libraries and plenty of other features.
@@ -16,15 +12,14 @@ FyUTILS is a simple python hacking and utility terminal application for windows 
 <!-- TOC -->
 * [FyUTILS](#fyutils)
   * [Table of contents (TOC)](#table-of-contents-toc)
-  * [Authors and Contributors](#authors-and-contributors)
+* [Quickstarter Guide](#quickstarter-guide)
 * [Documentation](#documentation)
   * [Prerequisites](#prerequisites)
   * [Stable installation (Recommended)](#stable-installation-recommended)
+    * [Installing as Windows Terminal profile (Additional)](#installing-as-windows-terminal-profile-additional)
   * [Developer installation](#developer-installation)
   * [First Launch](#first-launch)
-  * [How to use](#how-to-use)
   * [Libraries](#libraries)
-    * [Create your own FUEL](#create-your-own-fuel)
   * [Commands](#commands)
     * [Flood](#flood)
     * [Portscan](#portscan)
@@ -57,22 +52,18 @@ FyUTILS is a simple python hacking and utility terminal application for windows 
     * [Restart & rs](#restart--rs)
 * [License](#license)
 * [Things used in FyUTILS](#things-used-in-fyutils)
-    * [Languages](#languages)
-    * [Programs](#programs)
-    * [APIs](#apis)
-    * [Updating System](#updating-system)
-    * [Rich Presence libraries](#rich-presence-libraries)
-    * [Networking libraries](#networking-libraries)
-    * [Utility libraries](#utility-libraries)
-    * [Development tools](#development-tools)
+  * [Languages](#languages)
+  * [Programs](#programs)
+  * [APIs](#apis)
+  * [Updating System](#updating-system)
+  * [Rich Presence libraries](#rich-presence-libraries)
+  * [Networking libraries](#networking-libraries)
+  * [Utility libraries](#utility-libraries)
+  * [Development tools](#development-tools)
 <!-- TOC -->
 
-## Authors and Contributors
-
-- Project owner: [@NoahOnFyre](https://www.github.com/NoahOnFyre)
-- Issues: [@NoahOnFyre](https://www.github.com/NoahOnFyre)
-- Maintainer: [@NoahOnFyre](https://www.github.com/NoahOnFyre)
-- Documentation writing: [@NoahOnFyre](https://www.github.com/NoahOnFyre)
+# Quickstarter Guide
+Get the `main.py` and the `requirements.txt` from [here](https://github.com/releases/latest). Open up a command prompt in this window and run `pip install -r requirements.txt`. Then you can start FyUTILS by either double-clicking on the main.py or running `python main.py`.
 
 # Documentation
 This Documentation will guide you through the installation, the first launch and configuration and the daily use of FyUTILS.
@@ -80,7 +71,7 @@ This Documentation will guide you through the installation, the first launch and
 ## Prerequisites
 
 **NOTE:** This tool is made for Windows. Many features **won't** work on **Linux** or **macOS**. The documentation will only guide you through the installation steps on Windows 11 (on Windows 10 and earlier it's literally the same process).
-If you don't already have **Python 3.11.3 or higher** with **PIP** installed, you can download it [here](https://www.python.org/downloads/)
+If you don't already have **Python 3.10 or higher** with **PIP** installed, you can download it [here](https://www.python.org/downloads/)
 
 If you want to install the developer version, make sure you have [Git](https://git-scm.com) installed on your PC.
 
@@ -94,29 +85,33 @@ Put your downloaded files into a directory of your choice, open up PowerShell or
 pip install -r requirements.txt
 ```
 
+### Installing as Windows Terminal profile (Additional)
+You need to have a basic knowledge of JSON to take use of this!
+
+To start FyUTILS via the default Windows Terminal, open up Terminal. Then go to settings and open the .JSON file.
+Locate `list` located in `profiles` and paste in the code provided below into the array. Remember to add it at the end of the array and to set the comma right.
+
+```json
+{
+  "commandline": "python P:\\Coding\\Python\\FyUTILS\\main.py", 
+  "guid": "{7b999084-6e77-5a59-9351-3b43f40b7824}",
+  "hidden": false,
+  "name": "FyUTILS"
+}
+```
+The GUID is basically optional and will be generated automatically, if not present.
+
 ## Developer installation
 Using the newest version that may be in development will give you the newest features, but may contain bugs or vulnerabilities.
 
 Open up PowerShell or Command Prompt and clone the GitHub repository by running:
 ```
-git clone https://github.com/NoahOnFyre/FyUTILS %userprofile%\Desktop\FyUTILS
+git clone https://github.com/NoahOnFyre/FyUTILS %userprofile%\FyUTILS
 ```
-If the command causes errors, check if your desktop is locally stored on your machine or on OneDrive. If so, just use:
-
-```
-git clone https://github.com/NoahOnFyre/FyUTILS %userprofile%\OneDrive\Desktop\FyUTILS
-```
-
 Go into your directory using:
 ```
-cd %userprofile%\Desktop\FyUTILS
+cd %userprofile%\FyUTILS
 ```
-or
-
-```
-cd %userprofile%\OneDrive\Desktop\FyUTILS
-```
-
 Now run the following command to install the dependencies from the requirement.txt file.
 ```
 pip install -r requirements.txt
@@ -128,27 +123,6 @@ After installing the dependencies for FyUTILS you can start it by either enterin
 python main.py
 ```
 Or by just double-clicking on the **main.py**.
-## How to use
-FyUTILS has a very large amount of commands you can execute and try out. But some important information you need is the structure of commands.
-
-Every command you'll execute in FyUTILS is structured in different units. We take for example the `flood` command. Here you can see a basic operation with the command:
-
-```
-flood 82.169.42.61 80
-```
-
-What this command does will be explained later, but you can see we have several spaces which **structure** the request. So let's put them in a table and go through them.
-
-| Used in example | Abbreviation | Required | Description                                 |
-|-----------------|--------------|----------|---------------------------------------------|
-| flood           | command      | true     | The command you want to run.                |
-| 82.169.42.61    | target       | true     | The IP address or the domain of the target. |
-| 80              | port         | true     | The port of the target you want to attack.  |
-
-When an argument is required it will be bordered by < and >.
-When it isn't required it will be bordered by [ and ]
-
-Every command is structured like this, but all of them have a different amount of arguments. Some commands can also have no arguments like `ls`.
 
 ## Libraries
 FUELS (FyUTILS extending libraries) are simple lightweight scripts that can add a certain behaviour or action when you execute a command.
@@ -157,22 +131,6 @@ Then you have to wait for a FUEL or project maintainer to verify that your FUEL 
 When you want to update your FUEL, make sure that your fork is up-to-date with **master** on NoahOnFyre/FUELS. You can ensure this by clicking on **Sync fork** and then on **Update branch**.
 
 Information about contributing to FUELS in the official repository may be outdated.
-
-### Create your own FUEL
-If you want to create an own FUEL, using a python file that you already have to convert to a FUEL, this might help you.
-First, make sure the path where your python file is located doesn't contain any spaces. Then, install the `fuelcreator` FUEL.
-```
-fuel install fuelcreator
-```
-After the installation succeed, run the `fuelcreator` command with the name that will be assigned to your FUEL and the path of your current python file to start the creation process.
-```
-fuelcreator <name> <path>
-```
-After this, a directory will open automatically with your `<name>.fuel` file. If the directory doesn't open, you can open it manually using:
-```
-fuelcreator out
-```
-Now you can publish the FUEL, or just use it for yourself.
 
 ## Commands
 The commands in FyUTILS are very simple. Below, there's a list of all commands and the arguments they take.
@@ -336,7 +294,7 @@ Restarts FyUTILS
 
 # Things used in FyUTILS
 All tools, languages and whatever I used for FyUTILS
-### Languages
+## Languages
 | Language | Used for            |
 |----------|---------------------|
 | Python   | Client Application  |
@@ -344,33 +302,33 @@ All tools, languages and whatever I used for FyUTILS
 | Batch    | System interactions |
 | Markdown | Documentation       |
 
-### Programs
+## Programs
 - [NoahOnFyre's fork](https://github.com/NoahOnFyre/StreamHunter) of [StreamHunter by Eltotiz](https://github.com/Eltotiz/StreamHunter) (Lite version)
 
-### APIs
+## APIs
 - [IP WhoIs](http://ipwho.is/)
 - [Ipify](http://ipify.org/)
 
-### Updating System
+## Updating System
 - [GitHub API](https://api.github.com)
 
-### Rich Presence libraries
+## Rich Presence libraries
 - DiscordRPC (pypresence)
 
-### Networking libraries
+## Networking libraries
 - Requests (requests)
 - Scapy (scapy)
 - SSH (paramiko)
 - PyTube (pytube)
 
-### Utility libraries
+## Utility libraries
 - PhoneNumbers (phonenumbers)
 - Colorama (colorama)
 - DateTime (datetime)
 - Process and System Util (psutil)
 - Password Input (pwinput)
 
-### Development tools
+## Development tools
 
 | Used for                                  | Tool                                                                                         |
 |-------------------------------------------|----------------------------------------------------------------------------------------------|
