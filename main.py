@@ -617,7 +617,7 @@ try:
                     print(prefix("ERROR") + str(e))
                     print(prefix() + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
 
-            case "vars":
+            case "vars" | "variables" | "var":
                 print(prefix("INFO") + "Listing up system variables...")
                 time.sleep(0.5)
                 print(prefix("INFO") + "Username: " + username)
@@ -628,6 +628,7 @@ try:
                 print(prefix("INFO") + "Version: " + version)
                 print(prefix("INFO") + "ThreadWorkers: " + str(threads))
                 print(prefix("INFO") + "Private IP: " + private_ip)
+                print(prefix("INFO") + "WIRE started: " + format_boolean(wire_started))
                 print(prefix("INFO") + "Operating System: " + operating_system)
                 print(prefix("INFO") + "OS version: " + os_version)
                 print(prefix("INFO") + "Python version: " + python_version)
@@ -637,9 +638,7 @@ try:
                 print(prefix("INFO") + "Temp files directory: " + tmp_dir)
                 print(prefix("INFO") + "Download Content Location: " + download_content_dir)
                 print(prefix("INFO") + "FUEL Content Location: " + fuel_content_dir)
-                print(prefix("INFO") + "Releases URL: " + releases)
-                print(prefix("INFO") + "CPU: " + cpu)
-                print(prefix("INFO") + "Memory amount: " + str(round(memory_amount / 1024 / 1024)) + "MB")
+                print(prefix("INFO") + "Proxy configurations: " + proxy_config_dir)
 
             case "checkport" | "portcheck":
                 if len(args) < 2:
