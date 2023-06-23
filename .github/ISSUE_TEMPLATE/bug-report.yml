@@ -1,7 +1,7 @@
 name: Bug Report
 description: Report a bug, that you either don't have a cue how it's happening or a bug whose solution you already know.
 title: "[BUG] <issue name>"
-labels: [bug]
+labels: ["type: bug"]
 body:
 - type: markdown
   attributes:
