@@ -93,7 +93,7 @@ Locate `list` located in `profiles` and paste in the code provided below into th
 
 ```json
 {
-  "commandline": "python P:\\Coding\\Python\\FyUTILS\\main.py", 
+  "commandline": "python %userprofile%\\FyUTILS\\main.py", 
   "guid": "{7b999084-6e77-5a59-9351-3b43f40b7824}",
   "hidden": false,
   "name": "FyUTILS"
