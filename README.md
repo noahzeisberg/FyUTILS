@@ -334,7 +334,7 @@ All tools, languages and whatever I used for FyUTILS
 |-------------------------------------------|----------------------------------------------------------------------------------------------|
 | Code writing & Debugging                  | [PyCharm](https://jetbrains.com/pycharm/download)                                            |
 | Documentation                             | [PyCharm](https://jetbrains.com/pycharm/download) & [Visual Studio Code](https://vscode.dev) |
-| FUEL Development                          | [Visual Studio Code](https://vscode.dev)                                                     |
+| FUEL Development (legacy)                 | [Visual Studio Code](https://vscode.dev)                                                     |
 | Version control, Publishing, Distribution | [GitHub](https://github.com)                                                                 |
 
 
