@@ -344,7 +344,7 @@ except Exception as e:
     print(prefix("ERROR") + "Failed to get system variables!")
     crash_log()
 print(prefix() + f"Variable initialization took{time.time() - activity_start: 0.2f}s")
-    
+
 # Authentication initialization
 activity_start = time.time()
 print(prefix() + "Checking for authentication file...")
