@@ -126,8 +126,10 @@ Or by just double-clicking on the **main.py**.
 
 ## Libraries
 FUELS (FyUTILS extending libraries) are simple python scripts that can run any action when you execute a command.
-You can contribute by just creating a repository, adding a main.py file and, if needed, a requirements.txt file.
+You can contribute by just creating a repository, adding your `core.fuel` file and, if needed, a requirements.txt file.
 If you call your repository e.g. octocat/Spoon-Knife, it can be installed using `fuel install octocat/Spoon-Knife`
+
+NOTE: If you have an existing python project, just rename your `main.py` to `core.fuel`. The syntax of python and FUEL is the same.
 
 ## Commands
 The commands in FyUTILS are very simple. Below, there's a list of all commands and the arguments they take.
