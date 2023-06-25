@@ -29,24 +29,28 @@ from pypresence import Presence
 from pytube import YouTube
 
 init(convert=True)
-CURRENT_FYUTILS_VERSION = "1.11.1"
+CURRENT_FYUTILS_VERSION = "1.12.0"
 
 
 def prefix(level: str = "INFO"):
     if level == "INFO":
-        return background_colors["BLUE"] + " " + colors["BLACK"] + level + colors["RESET"] + " " + background_colors["RESET"] + " " + colors["WHITE"]
+        return BG_BLUE + " " + BLACK + level + RESET + " " + BG_RESET + " " + RESET
     elif level == "WARN":
-        return background_colors["YELLOW"] + " " + colors["BLACK"] + level + colors["RESET"] + " " + background_colors["RESET"] + " " + colors["WHITE"]
+        return BG_YELLOW + " " + BLACK + level + RESET + " " + BG_RESET + " " + RESET
     elif level == "ERROR":
-        return background_colors["RED"] + " " + colors["BLACK"] + level + colors["RESET"] + " " + background_colors["RESET"] + " " + colors["RED"]
+        return BG_RED + " " + BLACK + level + RESET + " " + BG_RESET + " " + RED
     elif level == "DEBUG":
-        return background_colors["MAGENTA"] + " " + colors["BLACK"] + level + colors["RESET"] + " " + background_colors["RESET"] + " " + colors["WHITE"]
+        return BG_MAGENTA + " " + BLACK + level + RESET + " " + BG_RESET + " " + RESET
     else:
-        return background_colors["BLUE"] + " " + colors["BLACK"] + level + colors["RESET"] + " " + background_colors["RESET"] + " " + colors["WHITE"]
+        return BG_BLUE + " " + BLACK + level + RESET + " " + BG_RESET + " " + RESET
 
 
 def execute(command: str):
     subprocess.call(command, shell=True)
+
+
+def exec_silent(command: str):
+    subprocess.call(command, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, stdin=subprocess.DEVNULL)
 
 
 def exec_code(command: str):
@@ -87,6 +91,10 @@ def update_ssh_status(status: str):
         None
 
 
+def api_request(path: str):
+    return requests.get("https://api.github.com" + path, auth=(auth_name, auth_token))
+
+
 def print_packet(packet: Packet):
     packet_src = ""
     packet_dst = ""
@@ -106,7 +114,7 @@ def print_packet(packet: Packet):
     else:
         print(prefix("WARN") + "Can't read package.")
         return
-    packet_prefix = colors["GRAY"] + "[" + colors["BLUE"] + protocol + colors["GRAY"] + "]" + colors["WHITE"] + " "
+    packet_prefix = GRAY + "[" + BLUE + protocol + GRAY + "]" + RESET + " "
     print(prefix() + packet_prefix + packet_src + " -> " + packet_dst)
 
 
@@ -117,34 +125,49 @@ def open_file(path: str):
 def get_fuels():
     fuel_list = os.listdir(fuel_content_dir)
     for fuel in fuel_list:
-        if os.path.isdir(fuel):
-            fuel_list.remove(fuel)
-            continue
         fuel.replace(fuel_content_dir, "")
     return fuel_list
 
 
 def run_fuel(command_name: str, args: list[str]):
     activity_start = time.time()
+    args = args
     update_status("Running FUEL \"" + command_name + "\"")
-    fuel = open(fuel_content_dir + command_name + ".fuel", "r")
-    exec(fuel.read())
-    print(prefix() + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
-    fuel.close()
-    return fuel_content_dir + command_name + ".fuel"
+    for fuel in get_fuels():
+        name = fuel.split("+")[1]
+        if name.lower() == command_name:
+            print(prefix() + "Starting " + fuel + "...")
+            if os.listdir(fuel_content_dir + fuel).__contains__("main.py"):
+                execute("python " + fuel_content_dir + fuel + "\\main.py")
+            else:
+                print(prefix("ERROR") + "No main class found in FUEL!")
 
 
 def format_boolean(boolean: bool):
     if boolean:
-        return colors["GREEN"] + "Yes"
+        return GREEN + "Yes"
     elif not boolean:
-        return colors["RED"] + "No"
+        return RED + "No"
     else:
-        return colors["RED"] + "Not available"
+        return RED + "Not available"
 
 
 def pause(level: str = "INFO"):
     input(prefix(level.upper()) + "Press enter to continue. ")
+
+
+def download_repo_files(repo_data: list):
+    for entry in range(len(repo_data)):
+        filename = repo_data[entry]["name"]
+        file_type = repo_data[entry]["type"]
+        file_size = str(repo_data[entry]["size"]) + " Bytes"
+        file_download_url = repo_data[entry]["download_url"]
+        if file_type == "dir":
+            continue
+        print(prefix() + "Fetching " + BLUE + filename + GRAY + " (" + RESET + file_size + GRAY + ")" + RESET + "...")
+        file_content = requests.get(file_download_url).content
+        with open(directory + filename, "wb") as tmp:
+            tmp.write(file_content)
 
 
 def crash_log():
@@ -184,101 +207,101 @@ Python traceback:
 
 def menu():
     execute("cls")
-    print(colors["BLUE"] + "  __________               _____  __   ________   ________   ______       ________")
-    print(colors["BLUE"] + "  ___  ____/  _____  __    __  / / /   ___  __/   ____  _/   ___  /       __  ___/")
-    print(colors["BLUE"] + "  __  /_      __  / / /    _  / / /    __  /       __  /     __  /        _____ \\ ")
-    print(colors["BLUE"] + "  _  __/      _  /_/ /     / /_/ /     _  /       __/ /      _  /___      ____/ / ")
-    print(colors["BLUE"] + "  /_/         _\\__, /      \\____/      /_/        /___/      /_____/      /____/  ")
-    print(colors["BLUE"] + "             ___/  /")
-    print(colors["BLUE"] + "            /_____/ " + " "*5 + colors["GRAY"] + "v" + colors["WHITE"] + version.replace(".", colors["GRAY"] + "." + colors["WHITE"]) + colors["GRAY"] + " | " + colors["WHITE"] + "Made by NoahOnFyre")
+    print(BLUE + "  __________               _____  __   ________   ________   ______       ________")
+    print(BLUE + "  ___  ____/  _____  __    __  / / /   ___  __/   ____  _/   ___  /       __  ___/")
+    print(BLUE + "  __  /_      __  / / /    _  / / /    __  /       __  /     __  /        _____ \\ ")
+    print(BLUE + "  _  __/      _  /_/ /     / /_/ /     _  /       __/ /      _  /___      ____/ / ")
+    print(BLUE + "  /_/         _\\__, /      \\____/      /_/        /___/      /_____/      /____/  ")
+    print(BLUE + "             ___/  /")
+    print(BLUE + "            /_____/ " + " "*5 + GRAY + "v" + RESET + version.replace(".", GRAY + "." + RESET) + GRAY + " | " + RESET + "Made by NoahOnFyre")
     print()
-    print(colors["GRAY"] + "╔" + "═"*119)
-    print(colors["GRAY"] + "║ " + colors["WHITE"] + "Documentation" + colors["GRAY"] + ": " + colors["BLUE"] + "https://noahonfyre.github.io/FyUTILS/")
+    print(GRAY + "╔" + "═"*119)
+    print(GRAY + "║ " + RESET + "Documentation" + GRAY + ": " + BLUE + "https://noahonfyre.github.io/FyUTILS/")
+    if authenticated:
+        print(GRAY + "║ " + RESET + "GitHub account" + GRAY + ": " + BLUE + gh_user["name"])
+    print(GRAY + "║ " + RESET + "API rate limit" + GRAY + ": " + BLUE + str(gh_rate_limit["rate"]["remaining"]) + GRAY + "/" + BLUE + str(gh_rate_limit["rate"]["limit"]))
     if update_available:
-        print(colors["GRAY"] + "╠" + "═"*119)
-        print(colors["GRAY"] + "║ " + colors["WHITE"] + "A new version of FyUTILS is available!")
-        print(colors["GRAY"] + "║ " + colors["WHITE"] + colors["RED"] + version + colors["GRAY"] + " => " + colors["GREEN"] + newest_version + colors["GRAY"] + " | " + colors["WHITE"] + "Run \"update\" to update your instance.")
-    print(colors["GRAY"] + "╚" + "═"*119)
+        print(GRAY + "╠" + "═"*119)
+        print(GRAY + "║ " + RESET + "A new version of FyUTILS is available!")
+        print(GRAY + "║ " + RESET + RED + version + GRAY + " => " + GREEN + newest_version + GRAY + " | " + RESET + "Run \"update\" to update your instance.")
+    print(GRAY + "╚" + "═"*119)
 
 
 # INIT PHASE
 execute("title FyUTILS - Initialization phase")
 
 # Color initialisation
-colors = {
-    "RED": Fore.RED,
-    "BLUE": Fore.BLUE,
-    "GREEN": Fore.GREEN,
-    "YELLOW": Fore.YELLOW,
-    "MAGENTA": Fore.MAGENTA,
-    "CYAN": Fore.CYAN,
-    "BLACK": Fore.BLACK,
-    "WHITE": Fore.WHITE,
-    "GRAY": Fore.LIGHTBLACK_EX,
-    "RESET": Fore.RESET
-}
+RED = Fore.RED
+BLUE = Fore.BLUE
+GREEN = Fore.GREEN
+YELLOW = Fore.YELLOW
+MAGENTA = Fore.MAGENTA
+CYAN = Fore.CYAN
+BLACK = Fore.BLACK
+WHITE = Fore.WHITE
+GRAY = Fore.LIGHTBLACK_EX
+RESET = Fore.RESET
 
-background_colors = {
-    "RED": Back.RED,
-    "BLUE": Back.BLUE,
-    "GREEN": Back.GREEN,
-    "YELLOW": Back.YELLOW,
-    "MAGENTA": Back.MAGENTA,
-    "CYAN": Back.CYAN,
-    "BLACK": Back.BLACK,
-    "WHITE": Back.WHITE,
-    "GRAY": Back.LIGHTBLACK_EX,
-    "RESET": Back.RESET
-}
+
+BG_RED = Back.RED
+BG_BLUE = Back.BLUE
+BG_GREEN = Back.GREEN
+BG_YELLOW = Back.YELLOW
+BG_MAGENTA = Back.MAGENTA
+BG_CYAN = Back.CYAN
+BG_BLACK = Back.BLACK
+BG_WHITE = Back.WHITE
+BG_GRAY = Back.LIGHTBLACK_EX
+BG_RESET = Back.RESET
 
 # Variable initialisation
 try:
     # User specific stuff
-    print(prefix("INFO") + "Initializing system variables...")
+    print(prefix() + "Initializing system variables...")
     username = os.getlogin()
-    print(prefix("INFO") + "Username: " + username)
+    print(prefix() + "Username: " + username)
     device = platform.node()
-    print(prefix("INFO") + "Device: " + device)
+    print(prefix() + "Device: " + device)
     hwid = str(subprocess.check_output("wmic csproduct get uuid",), "UTF-8").split("\n")[1].strip()
-    print(prefix("INFO") + "Hardware ID: " + hwid)
+    print(prefix() + "Hardware ID: " + hwid)
     start_time = time.time()
-    print(prefix("INFO") + "Start time: " + str(start_time))
+    print(prefix() + "Start time: " + str(start_time))
     current_dir = sys.path[0]
-    print(prefix("INFO") + "Directory: " + current_dir)
+    print(prefix() + "Directory: " + current_dir)
     version = CURRENT_FYUTILS_VERSION
-    print(prefix("INFO") + "Version: " + version)
+    print(prefix() + "Version: " + version)
     threads = multiprocessing.cpu_count()
-    print(prefix("INFO") + "ThreadWorkers: " + str(threads))
+    print(prefix() + "ThreadWorkers: " + str(threads))
     private_ip = socket.gethostbyname(socket.gethostname())
-    print(prefix("INFO") + "Private IP: " + private_ip)
+    print(prefix() + "Private IP: " + private_ip)
     wire_started = False
-    print(prefix("INFO") + "WIRE started: " + format_boolean(wire_started))
+    print(prefix() + "WIRE started: " + format_boolean(wire_started))
 
     # OS specific stuff.
     operating_system = platform.system()
-    print(prefix("INFO") + "Operating System: " + operating_system)
+    print(prefix() + "Operating System: " + operating_system)
     os_version = platform.version()
-    print(prefix("INFO") + "OS version: " + os_version)
+    print(prefix() + "OS version: " + os_version)
 
     # Python specific stuff
     python_version = platform.python_version()
-    print(prefix("INFO") + "Python version: " + python_version)
+    print(prefix() + "Python version: " + python_version)
 
     # Directory specific stuff
     user_dir = str(Path.home())
-    print(prefix("INFO") + "User specific directory: " + user_dir)
+    print(prefix() + "User specific directory: " + user_dir)
     appdata_dir = user_dir + "\\AppData\\"
-    print(prefix("INFO") + "AppData directory: " + appdata_dir)
+    print(prefix() + "AppData directory: " + appdata_dir)
     main_dir = appdata_dir + "Roaming\\FyUTILS\\"
-    print(prefix("INFO") + "FyUTILS AppData directory: " + main_dir)
+    print(prefix() + "FyUTILS AppData directory: " + main_dir)
     tmp_dir = main_dir + "tmp\\"
-    print(prefix("INFO") + "Temp files directory: " + tmp_dir)
+    print(prefix() + "Temp files directory: " + tmp_dir)
     download_content_dir = main_dir + "content\\"
-    print(prefix("INFO") + "Download Content Location: " + download_content_dir)
+    print(prefix() + "Download Content Location: " + download_content_dir)
     fuel_content_dir = main_dir + "fuels\\"
-    print(prefix("INFO") + "FUEL Content Location: " + fuel_content_dir)
+    print(prefix() + "FUEL Content Location: " + fuel_content_dir)
     proxy_config_dir = main_dir + "proxies\\"
-    print(prefix("INFO") + "Proxy configurations: " + proxy_config_dir)
+    print(prefix() + "Proxy configurations: " + proxy_config_dir)
 
     # Create directories if they not exist.
     if not os.path.exists(main_dir):
@@ -304,26 +327,42 @@ try:
 
     # URL specific stuff
     releases = "https://api.github.com/repos/NoahOnFyre/FyUTILS/releases"
-    print(prefix("INFO") + "Releases URL: " + releases)
+    print(prefix() + "Releases URL: " + releases)
     fuel_repository = "https://api.github.com/repos/NoahOnFyre/FUELS/contents/"
-    print(prefix("INFO") + "FUEL repository content URL: " + fuel_repository)
+    print(prefix() + "FUEL repository content URL: " + fuel_repository)
 
     # System components specific stuff
     cpu = platform.processor()
-    print(prefix("INFO") + "CPU: " + cpu)
+    print(prefix() + "CPU: " + cpu)
     memory_amount = psutil.virtual_memory().total
-    print(prefix("INFO") + "Memory amount: " + str(round(memory_amount / 1024 / 1024)) + "MB")
+    print(prefix() + "Memory amount: " + str(round(memory_amount / 1024 / 1024)) + "MB")
 except Exception as e:
     print(prefix("ERROR") + "Failed to get system variables!")
     print(traceback.format_exc())
     print(prefix("ERROR") + "Shutting down...")
     pause("ERROR")
     sys.exit(2048)
+    
+# Authentication initialization
+print(prefix() + "Checking for authentication file...")
+if os.path.exists(main_dir + "\\" + "auth.json"):
+    with open(main_dir + "\\" + "auth.json", "r") as tmp:
+        data = json.load(tmp)
+        auth_name = data["name"]
+        auth_token = data["token"]
+        authenticated = True
+else:
+    auth_name = None
+    auth_token = None
+    authenticated = False
+
+gh_rate_limit = api_request("/rate_limit").json()
+gh_user = api_request("/user").json()
 
 # Update checker
-print(prefix("INFO") + "Checking for updates...")
+print(prefix() + "Checking for updates...")
 try:
-    releases_json = requests.get(releases).json()
+    releases_json = requests.get(releases, auth=(auth_name, auth_token)).json()
     newest_release = releases_json[0]
     for r in range(len(newest_release["assets"])):
         release_download_url = ""
@@ -336,14 +375,14 @@ try:
     newest_version_note = newest_release["body"]
     newest_version = newest_release["tag_name"]
     if version_is_newer(version, newest_version):
-        print(prefix("INFO") + "A new version of FyUTILS is available!")
-        print(prefix("INFO") + "Current version identifier: " + version)
-        print(prefix("INFO") + "Newest version identifier: " + newest_version)
+        print(prefix() + "A new version of FyUTILS is available!")
+        print(prefix() + "Current version identifier: " + version)
+        print(prefix() + "Newest version identifier: " + newest_version)
         update_available = True
     else:
-        print(prefix("INFO") + "No update found!")
-        print(prefix("INFO") + "Current version identifier: " + version)
-        print(prefix("INFO") + "Newest version identifier: " + newest_version)
+        print(prefix() + "No update found!")
+        print(prefix() + "Current version identifier: " + version)
+        print(prefix() + "Newest version identifier: " + newest_version)
         update_available = False
 except Exception as e:
     print(prefix("WARN") + "Checking for updates failed. Please check your internet connection.")
@@ -352,20 +391,20 @@ except Exception as e:
 
 # Discord RPC initialisation
 try:
-    print(prefix("INFO") + "Setting presence ID...")
+    print(prefix() + "Setting presence ID...")
     presence_id = "1005822803997638696"
-    print(prefix("INFO") + "Presence ID set to: \"" + presence_id + "\".")
-    print(prefix("INFO") + "Initializing discord rich presence...")
+    print(prefix() + "Presence ID set to: \"" + presence_id + "\".")
+    print(prefix() + "Initializing discord rich presence...")
     rpc = Presence(presence_id)
-    print(prefix("INFO") + "Connecting to discord...")
+    print(prefix() + "Connecting to discord...")
     rpc.connect()
-    print(prefix("INFO") + "Discord is connected...")
+    print(prefix() + "Discord is connected...")
     update_status("Starting up...")
 except Exception:
     print(prefix("WARN") + "Can't connect with the discord RPC.")
     time.sleep(0.25)
 
-print(prefix("INFO") + "Initialisation phase completed!")
+print(prefix() + "Initialisation phase completed!")
 update_status("Initialisation phase completed!")
 
 # INIT PHASE END
@@ -382,12 +421,12 @@ try:
                 cwd_abbreviation = "/"
             elif os.getcwd() == user_dir:
                 cwd_abbreviation = "~"
-            elif os.getcwd() == main_dir:
+            elif os.getcwd() == main_dir.removesuffix("\\"):
                 cwd_abbreviation = "@"
             else:
                 cwd_abbreviation = os.getcwd()
-            request_raw = input(colors["GRAY"] + "╔═══[" + colors["BLUE"] + username + colors["GRAY"] + "@" + colors["WHITE"] + device + colors["GRAY"] + "]══(" + colors["BLUE"] + "FyUTILS" + colors["GRAY"] + "/" + colors["WHITE"] + version + colors["GRAY"] + ")══[" + colors["WHITE"] + cwd_abbreviation + colors["GRAY"] + "]\n" +
-                                colors["GRAY"] + "╚═══> " + colors["WHITE"])
+            request_raw = input(GRAY + "╔═══[" + BLUE + username + GRAY + "@" + RESET + device + GRAY + "]══(" + BLUE + "FyUTILS" + GRAY + "/" + RESET + version + GRAY + ")══[" + RESET + cwd_abbreviation + GRAY + "]\n" +
+                                GRAY + "╚═══> " + RESET)
             request = request_raw.split(" ")
             cmd = request[0].lower()
             request.__delitem__(0)
@@ -420,10 +459,10 @@ try:
                     for i in range(sys.maxsize):
                         try:
                             sock.send(random.randbytes(10240))
-                            print(prefix() + "Attacking target: " + colors["BLUE"] + target + colors["GRAY"] + ":" + colors["BLUE"] + str(port) + colors["WHITE"] + "..." + colors["GRAY"] + " - " + colors["WHITE"] + "Attack: " + colors["BLUE"] + str(i + 1) + colors["GRAY"], end="\r")
+                            print(prefix() + "Attacking target: " + BLUE + target + GRAY + ":" + BLUE + str(port) + RESET + "..." + GRAY + " - " + RESET + "Attack: " + BLUE + str(i + 1) + GRAY, end="\r")
                         except socket.error:
                             print()
-                            print(prefix("WARN") + "Request " + colors["BLUE"] + str(i) + colors["WHITE"] + " failed.", end="\r")
+                            print(prefix("WARN") + "Request " + BLUE + str(i) + RESET + " failed.", end="\r")
                     print("\n")
                 except KeyboardInterrupt:
                     print("\n" + prefix() + "Canceling Action...")
@@ -451,9 +490,9 @@ try:
                         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                         socket.setdefaulttimeout(1/1000)
                         result = sock.connect_ex((target, port))
-                        print(prefix() + "Scanning Port... " + colors["BLUE"] + str(port), end="\r")
+                        print(prefix() + "Scanning Port... " + BLUE + str(port), end="\r")
                         if result == 0:
-                            print(prefix() + "Port " + colors["BLUE"] + str(port) + colors["WHITE"] + " is open!" + " "*50)
+                            print(prefix() + "Port " + BLUE + str(port) + RESET + " is open!" + " "*50)
                         sock.close()
                     print("\n")
                 except KeyboardInterrupt:
@@ -488,14 +527,14 @@ try:
                 activity_start = time.time()
 
                 if action == "start":
-                    print(prefix("INFO") + "Starting WIRE service...")
+                    print(prefix() + "Starting WIRE service...")
                     if not wire_started:
                         if exec_code("netsh wlan show drivers") == 1:
                             wire_started = False
                             print(prefix("ERROR") + "WIRE can't be executed on your device.")
                         else:
                             wire_started = True
-                            print(prefix("INFO") + "WIRE service started successfully!")
+                            print(prefix() + "WIRE service started successfully!")
                     else:
                         wire_started = False
                         print(prefix("ERROR") + "WIRE service is already running!")
@@ -515,7 +554,7 @@ try:
                         print(prefix("ERROR") + "WIRE service isn't running!")
                     else:
                         wire_started = False
-                        print(prefix("INFO") + "WIRE service stopped successfully!")
+                        print(prefix() + "WIRE service stopped successfully!")
 
             case "resolve":
                 if len(args) < 2:
@@ -607,7 +646,7 @@ try:
                     print(prefix() + "Data received and processed.")
                     client_count = len(clients)
                     for i in range(client_count):
-                        print(prefix() + colors["GRAY"] + "[" + colors["BLUE"] + str(i) + colors["GRAY"] + "] " + colors["WHITE"] + "IP: " + clients[i][0] + " MAC: " + clients[i][1])
+                        print(prefix() + GRAY + "[" + BLUE + str(i) + GRAY + "] " + RESET + "IP: " + clients[i][0] + " MAC: " + clients[i][1])
                 except KeyboardInterrupt:
                     print(prefix() + "Canceling Action...")
                     print(prefix() + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
@@ -618,27 +657,27 @@ try:
                     print(prefix() + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
 
             case "vars" | "variables" | "var":
-                print(prefix("INFO") + "Listing up system variables...")
+                print(prefix() + "Listing up system variables...")
                 time.sleep(0.5)
-                print(prefix("INFO") + "Username: " + username)
-                print(prefix("INFO") + "Device: " + device)
-                print(prefix("INFO") + "Hardware ID: " + hwid)
-                print(prefix("INFO") + "Start time: " + str(start_time))
-                print(prefix("INFO") + "Directory: " + current_dir)
-                print(prefix("INFO") + "Version: " + version)
-                print(prefix("INFO") + "ThreadWorkers: " + str(threads))
-                print(prefix("INFO") + "Private IP: " + private_ip)
-                print(prefix("INFO") + "WIRE started: " + format_boolean(wire_started))
-                print(prefix("INFO") + "Operating System: " + operating_system)
-                print(prefix("INFO") + "OS version: " + os_version)
-                print(prefix("INFO") + "Python version: " + python_version)
-                print(prefix("INFO") + "User specific directory: " + user_dir)
-                print(prefix("INFO") + "AppData directory: " + appdata_dir)
-                print(prefix("INFO") + "FyUTILS AppData directory: " + main_dir)
-                print(prefix("INFO") + "Temp files directory: " + tmp_dir)
-                print(prefix("INFO") + "Download Content Location: " + download_content_dir)
-                print(prefix("INFO") + "FUEL Content Location: " + fuel_content_dir)
-                print(prefix("INFO") + "Proxy configurations: " + proxy_config_dir)
+                print(prefix() + "Username: " + username)
+                print(prefix() + "Device: " + device)
+                print(prefix() + "Hardware ID: " + hwid)
+                print(prefix() + "Start time: " + str(start_time))
+                print(prefix() + "Directory: " + current_dir)
+                print(prefix() + "Version: " + version)
+                print(prefix() + "ThreadWorkers: " + str(threads))
+                print(prefix() + "Private IP: " + private_ip)
+                print(prefix() + "WIRE started: " + format_boolean(wire_started))
+                print(prefix() + "Operating System: " + operating_system)
+                print(prefix() + "OS version: " + os_version)
+                print(prefix() + "Python version: " + python_version)
+                print(prefix() + "User specific directory: " + user_dir)
+                print(prefix() + "AppData directory: " + appdata_dir)
+                print(prefix() + "FyUTILS AppData directory: " + main_dir)
+                print(prefix() + "Temp files directory: " + tmp_dir)
+                print(prefix() + "Download Content Location: " + download_content_dir)
+                print(prefix() + "FUEL Content Location: " + fuel_content_dir)
+                print(prefix() + "Proxy configurations: " + proxy_config_dir)
 
             case "checkport" | "portcheck":
                 if len(args) < 2:
@@ -653,9 +692,9 @@ try:
                     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                     result = sock.connect_ex((target, port))
                     if result == 0:
-                        print(prefix() + "Port " + colors["BLUE"] + str(port) + colors["WHITE"] + " is open!")
+                        print(prefix() + "Port " + BLUE + str(port) + RESET + " is open!")
                     else:
-                        print(prefix("WARN") + "Port " + colors["BLUE"] + str(port) + colors["WHITE"] + " is not open!")
+                        print(prefix("WARN") + "Port " + BLUE + str(port) + RESET + " is not open!")
                     sock.close()
                 except KeyboardInterrupt:
                     print(prefix() + "Canceling Action...")
@@ -688,7 +727,7 @@ try:
                 print(prefix() + "Adding policy...")
                 ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
                 print(prefix() + "Requesting user's password...")
-                password = pwinput.pwinput(colors["WHITE"] + "Enter password" + colors["GRAY"] + " > " + colors["WHITE"], "*")
+                password = pwinput.pwinput(RESET + "Enter password" + GRAY + " > " + RESET, "*")
                 print(prefix() + "Connecting...")
                 print()
                 try:
@@ -696,7 +735,7 @@ try:
                     while True:
                         try:
                             update_ssh_status("Idle")
-                            ssh_cmd = input(colors["GRAY"] + "╔═══[" + colors["MAGENTA"] + user + colors["GRAY"] + "@" + colors["MAGENTA"] + server + colors["GRAY"] + ":" + colors["MAGENTA"] + str(port) + colors["GRAY"] + "]═══(" + colors["BLUE"] + "FySSH" + colors["GRAY"] + "/" + colors["WHITE"] + version + colors["GRAY"] + ")" + "\n" + "╚═══" + colors["GRAY"] + "> " + colors["WHITE"])
+                            ssh_cmd = input(GRAY + "╔═══[" + MAGENTA + user + GRAY + "@" + MAGENTA + server + GRAY + ":" + MAGENTA + str(port) + GRAY + "]═══(" + BLUE + "FySSH" + GRAY + "/" + RESET + version + GRAY + ")" + "\n" + "╚═══" + GRAY + "> " + RESET)
                             if ssh_cmd == "exit":
                                 print("\n" + prefix() + "Canceling Action...")
                                 print(prefix() + f"Time elapsed: {time.time() - activity_start : 0.2f}s")
@@ -705,7 +744,7 @@ try:
                             update_ssh_status("Running: " + ssh_cmd)
                             print()
                             for line in ssh_stdout.readlines():
-                                print(prefix("INFO") + line, end="\r")
+                                print(prefix() + line, end="\r")
                             for line in ssh_stderr.readlines():
                                 print(prefix("ERROR") + line, end="\r")
                         except KeyboardInterrupt:
@@ -723,7 +762,7 @@ try:
                     continue
 
                 print(prefix() + f"Time elapsed: {time.time() - activity_start : 0.2f}s")
-                print(prefix() + "Disconnecting from " + colors["BLUE"] + server + colors["GRAY"] + ":" + colors["BLUE"] + str(port) + colors["WHITE"] + "...")
+                print(prefix() + "Disconnecting from " + BLUE + server + GRAY + ":" + BLUE + str(port) + RESET + "...")
                 try:
                     ssh.close()
                 except Exception:
@@ -774,9 +813,6 @@ try:
 
                 try:
                     youtube = YouTube(url)
-                    if not os.path.exists(download_content_dir):
-                        os.makedirs(download_content_dir)
-                        print(prefix() + "Media directory created!")
                     print(prefix() + "Download started!")
                     youtube.streams.get_highest_resolution().download(download_content_dir)
                     print(prefix() + f"Download finished in {time.time() - activity_start: 0.2f} seconds!")
@@ -857,7 +893,7 @@ try:
             case "fuels":
                 print(prefix() + "Active FUELS:")
                 for fuel in get_fuels():
-                    print(prefix() + fuel)
+                    print(prefix() + fuel.replace("+", "/"))
 
             case "fuel":
                 if len(args) < 2:
@@ -867,60 +903,47 @@ try:
                 package = args[1]
                 activity_start = time.time()
 
-                if action == "install" or action == "update":
-                    print(prefix("INFO") + "Installing package " + colors["MAGENTA"] + package + colors["WHITE"] + "...")
-                    package_name = package + ".fuel"
-                    print(prefix("INFO") + "Checking repository...")
-                    try:
-                        repo_content = requests.get(fuel_repository).json()
-                    except Exception:
-                        print(prefix("ERROR") + "Package " + package + colors["WHITE"] + " installation failed!")
-                        print(prefix("ERROR") + "Error: Repository not reachable.")
-                        continue
-                    print(prefix("INFO") + "Checking package...")
-                    url = ""
-                    for i in range(len(repo_content)):
-                        if repo_content[i]["name"] == package_name:
-                            url = repo_content[i]["download_url"]
-                    if url == "":
-                        print(prefix("ERROR") + "Package " + package + colors["WHITE"] + " installation failed!")
-                        print(prefix("ERROR") + "Error: Package not found.")
-                        continue
-                    print(prefix("INFO") + "Found " + colors["MAGENTA"] + package + colors["WHITE"] + " in NoahOnFyre/FUELS!")
-                    print(prefix("INFO") + "Fetching " + colors["MAGENTA"] + package + colors["WHITE"] + "...")
-                    content = requests.get(url).content
-                    print(prefix("INFO") + "Preparing local file...")
-                    fuel = open(fuel_content_dir + package_name, "wb")
-                    print(prefix("INFO") + "Writing content to file...")
-                    fuel.write(content)
-                    print(prefix("INFO") + "Closing IO for file...")
-                    fuel.close()
-                    print(prefix("INFO") + "Done! Package installation of " + colors["MAGENTA"] + package + colors["WHITE"] + f" took {time.time() - activity_start:0.2f} seconds.")
-                elif action == "remove":
-                    print(prefix("INFO") + "Checking package...")
-                    if get_fuels().__contains__(package + ".fuel"):
-                        print(prefix("INFO") + "Removing package...")
-                        os.remove(fuel_content_dir + package + ".fuel")
-                    print(prefix("INFO") + "Done! Package deletion of " + colors["MAGENTA"] + package + colors["WHITE"] + f" took {time.time() - activity_start:0.2f} seconds.")
+                match action:
+                    case "install":
+                        print(prefix() + "Checking connection...")
+                        print(prefix() + "Decrypting package information...")
+                        package_information = package.split("/")
+                        repo_author = package_information[0]
+                        repo_name = package_information[1]
+                        print(prefix() + "Resolving GIT repository...")
+                        repo_content_url = "https://api.github.com/repos/" + repo_author + "/" + repo_name + "/contents"
+                        repo_data = requests.get(repo_content_url).json()
+                        print(prefix() + "Initializing local environment...")
+                        directory = fuel_content_dir + repo_author + "+" + repo_name + "\\"
+                        print(prefix() + "Creating folder...")
+                        os.mkdir(directory)
+                        print(prefix() + "Fetching from " + BLUE + repo_author + GRAY + "/" + RESET + repo_name + " ...")
+                        download_repo_files(repo_data)
+                        for file in os.listdir(directory):
+                            if file.removeprefix(directory) == "requirements.txt":
+                                print(prefix() + "Installing python dependencies...")
+                                print(prefix() + "This may take a while.")
+                                exec_silent("pip install -r " + directory + "requirements.txt")
+                                print(prefix() + "Requirements successfully installed!")
 
             case "update":
                 update_status("Updating FyUTILS...")
 
                 if update_available:
-                    print(prefix("INFO") + "Update found!")
-                    print(prefix("INFO") + "Version Comparison: " + colors["RED"] + version + colors["GRAY"] + " => " + colors["GREEN"] + newest_version + colors["WHITE"] + "...")
+                    print(prefix() + "Update found!")
+                    print(prefix() + "Version Comparison: " + RED + version + GRAY + " => " + GREEN + newest_version + RESET + "...")
                     shutil.copy(current_dir + "\\main.py", tmp_dir + "\\BACKUP-" + version + ".py")
                     newest_file_content = requests.get(release_download_url).content
                     temp = open(current_dir + "\\main.py", mode="wb")
                     temp.write(newest_file_content)
-                    print(prefix("INFO") + "Update successfully installed!")
-                    print(prefix("INFO") + "Restarting FyUTILS...")
+                    print(prefix() + "Update successfully installed!")
+                    print(prefix() + "Restarting FyUTILS...")
                     temp.close()
                     execute("start " + current_dir + "\\main.py")
                     sys.exit(512)
                 else:
-                    print(prefix("INFO") + "You're running the latest version of FyUTILS!")
-                    print(prefix("INFO") + "Version comparison: " + colors["GREEN"] + version + colors["GRAY"] + " == " + colors["GREEN"] + newest_version + colors["WHITE"] + "...")
+                    print(prefix() + "You're running the latest version of FyUTILS!")
+                    print(prefix() + "Version comparison: " + GREEN + version + GRAY + " == " + GREEN + newest_version + RESET + "...")
 
             case "edit":
                 if len(args) < 1:
@@ -999,13 +1022,13 @@ try:
                     for file in os.listdir(os.getcwd()):
                         if file.startswith("."):
                             if os.path.isfile(file):
-                                print(prefix() + colors["GRAY"] + file)
+                                print(prefix() + GRAY + file)
                             elif os.path.isdir(file):
-                                print(prefix() + colors["GRAY"] + "/" + file)
+                                print(prefix() + GRAY + "/" + file)
                         elif os.path.isfile(file):
                             print(prefix() + file)
                         elif os.path.isdir(file):
-                            print(prefix() + colors["GREEN"] + "/" + file)
+                            print(prefix() + GREEN + "/" + file)
                 except Exception as e:
                     print("\n" + prefix("ERROR") + "An error occurred while trying to execute this command correctly.")
                     print(prefix("ERROR") + str(e))
@@ -1014,7 +1037,7 @@ try:
             case "shell":
                 update_status("Executing system command \"" + request_raw.removeprefix("shell ") + "\"")
 
-                execute(request_raw.removeprefix("shell "))
+                execute(request_raw.removeprefix("shell"))
 
             case "exit":
                 update_status("Shutting down...")
@@ -1095,14 +1118,14 @@ try:
                 sys.exit(0)
 
             case _:
-                if get_fuels().__contains__(cmd + ".fuel"):
-                    run_fuel(cmd, request)
+                for fuel in get_fuels():
+                    if fuel.split("+")[1].lower() == cmd.lower():
+                        run_fuel(cmd, args)
+                        break
                 else:
                     update_status("Executing " + cmd)
-                    if exec_code(request_raw) == 1:
-                        print(prefix("ERROR") + "Invalid command: \"" + cmd + "\".")
-                    else:
-                        execute(request_raw)
+                    execute(request_raw)
+
 except Exception as e:
     execute("title FyUTILS Crash Handler - Crash Log")
     print(prefix("ERROR") + "FyUTILS CRASH LOG @ " + datetime.datetime.now().strftime("%H:%M:%S"))
