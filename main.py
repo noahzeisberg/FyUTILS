@@ -19,6 +19,8 @@ import string
 from pathlib import Path
 from scapy.layers.inet import IP, TCP, UDP
 from scapy.layers.inet6 import IPv6
+from scapy.layers.inet6 import TCP as TCPv6
+from scapy.layers.inet6 import UDP as UDPv6
 from scapy.packet import Packet
 from packaging import version as version_parser
 from scapy.layers.l2 import ARP, Ether, srp
@@ -29,7 +31,7 @@ from pypresence import Presence
 from pytube import YouTube
 
 init(convert=True)
-CURRENT_FYUTILS_VERSION = "1.12.0"
+CURRENT_FYUTILS_VERSION = "1.12.1"
 
 
 def prefix(level: str = "INFO"):
@@ -96,26 +98,34 @@ def api_request(path: str):
 
 
 def print_packet(packet: Packet):
-    packet_src = ""
-    packet_dst = ""
     if packet.haslayer(IP):
         packet_src = str(packet[IP].src)
         packet_dst = str(packet[IP].dst)
         protocol = "IP"
+        address_type = "v4"
+        if packet.haslayer(TCP):
+            protocol = "TCP"
+        elif packet.haslayer(UDP):
+            protocol = "UDP"
+        packet_prefix = GRAY + "[" + BLUE + protocol + GRAY + "/" + RESET + address_type + GRAY + "]" + RESET + " "
+        print(prefix() + packet_prefix + packet_src + GRAY + " -> " + BLUE + packet_dst)
+
     elif packet.haslayer(IPv6):
         packet_src = str(packet[IPv6].src)
         packet_dst = str(packet[IPv6].dst)
         protocol = "IPv6"
+        address_type = "v6"
+        if packet.haslayer(TCPv6):
+            protocol = "TCP"
+        elif packet.haslayer(UDPv6):
+            protocol = "UDP"
+        packet_prefix = GRAY + "[" + BLUE + protocol + GRAY + "/" + RESET + address_type + GRAY + "]" + RESET + " "
+        print(prefix() + packet_prefix + packet_src + GRAY + " -> " + BLUE + packet_dst)
 
-    if packet.haslayer(TCP):
-        protocol = "TCP"
-    elif packet.haslayer(UDP):
-        protocol = "UDP"
     else:
-        print(prefix("WARN") + "Can't read package.")
-        return
-    packet_prefix = GRAY + "[" + BLUE + protocol + GRAY + "]" + RESET + " "
-    print(prefix() + packet_prefix + packet_src + " -> " + packet_dst)
+        packet_src = str(packet.src)
+        packet_dst = str(packet.dst)
+        print(prefix() + packet_src + GRAY + " -> " + BLUE + packet_dst)
 
 
 def open_file(path: str):
@@ -137,10 +147,16 @@ def run_fuel(command_name: str, args: list[str]):
         name = fuel.split("+")[1]
         if name.lower() == command_name:
             print(prefix() + "Starting " + fuel + "...")
-            if os.listdir(fuel_content_dir + fuel).__contains__("main.py"):
+            if os.listdir(fuel_content_dir + fuel).__contains__("core.fuel"):
+                execute("python " + fuel_content_dir + fuel + "\\core.fuel")
+            elif os.listdir(fuel_content_dir + fuel).__contains__("main.py"):
+                print(prefix("WARN") + "No FUEL main class found!")
+                confirmation = input(prefix("WARN") + "Fallback to deprecated main.py? (y/n): ")
+                if confirmation.lower() == "n":
+                    return
                 execute("python " + fuel_content_dir + fuel + "\\main.py")
             else:
-                print(prefix("ERROR") + "No main class found in FUEL!")
+                print(prefix("ERROR") + "No FUEL main class found!")
 
 
 def format_boolean(boolean: bool):
@@ -150,6 +166,11 @@ def format_boolean(boolean: bool):
         return RED + "No"
     else:
         return RED + "Not available"
+
+
+def format_float(float: float | str):
+    f = str(float).split(".")
+    return BLUE + f[0] + GRAY + "." + BLUE + f[1] + RESET
 
 
 def pause(level: str = "INFO"):
@@ -171,6 +192,10 @@ def download_repo_files(repo_data: list):
 
 
 def crash_log():
+    execute("title FyUTILS Crash Handler - Crash Log")
+    print(prefix("ERROR") + "FyUTILS CRASH LOG @ " + datetime.datetime.now().strftime("%H:%M:%S"))
+    print(prefix("ERROR") + "Error: " + str(e))
+    print(prefix("ERROR") + "Learn how to file an issue: https://github.com/NoahOnFyre/FyUTILS/issues/40")
     temp = open(main_dir + "crash.log", mode="wb+")
     data = f"""FyUTILS Traceback Crash log @ {datetime.datetime.now().strftime("%H:%M:%S")}
 
@@ -203,6 +228,8 @@ Python traceback:
     temp.write(data.encode())
     temp.close()
     open_file(main_dir + "crash.log")
+    pause("ERROR")
+    sys.exit(1024)
 
 
 def menu():
@@ -216,10 +243,9 @@ def menu():
     print(BLUE + "            /_____/ " + " "*5 + GRAY + "v" + RESET + version.replace(".", GRAY + "." + RESET) + GRAY + " | " + RESET + "Made by NoahOnFyre")
     print()
     print(GRAY + "╔" + "═"*119)
-    print(GRAY + "║ " + RESET + "Documentation" + GRAY + ": " + BLUE + "https://noahonfyre.github.io/FyUTILS/")
-    if authenticated:
-        print(GRAY + "║ " + RESET + "GitHub account" + GRAY + ": " + BLUE + gh_user["name"])
-    print(GRAY + "║ " + RESET + "API rate limit" + GRAY + ": " + BLUE + str(gh_rate_limit["rate"]["remaining"]) + GRAY + "/" + BLUE + str(gh_rate_limit["rate"]["limit"]))
+    print(GRAY + "║ " + RESET + "Version       " + GRAY + ": " + BLUE + version.replace(".", GRAY + "." + BLUE))
+    print(GRAY + "║ " + RESET + "Authenticated " + GRAY + ": " + BLUE + format_boolean(authenticated))
+    print(GRAY + "║ " + RESET + "Startup time  " + GRAY + ": " + BLUE + format_float(startup_time) + BLUE + "s")
     if update_available:
         print(GRAY + "╠" + "═"*119)
         print(GRAY + "║ " + RESET + "A new version of FyUTILS is available!")
@@ -255,53 +281,35 @@ BG_GRAY = Back.LIGHTBLACK_EX
 BG_RESET = Back.RESET
 
 # Variable initialisation
+activity_start = time.time()
 try:
     # User specific stuff
     print(prefix() + "Initializing system variables...")
     username = os.getlogin()
-    print(prefix() + "Username: " + username)
     device = platform.node()
-    print(prefix() + "Device: " + device)
     hwid = str(subprocess.check_output("wmic csproduct get uuid",), "UTF-8").split("\n")[1].strip()
-    print(prefix() + "Hardware ID: " + hwid)
     start_time = time.time()
-    print(prefix() + "Start time: " + str(start_time))
     current_dir = sys.path[0]
-    print(prefix() + "Directory: " + current_dir)
     version = CURRENT_FYUTILS_VERSION
-    print(prefix() + "Version: " + version)
     threads = multiprocessing.cpu_count()
-    print(prefix() + "ThreadWorkers: " + str(threads))
     private_ip = socket.gethostbyname(socket.gethostname())
-    print(prefix() + "Private IP: " + private_ip)
     wire_started = False
-    print(prefix() + "WIRE started: " + format_boolean(wire_started))
 
     # OS specific stuff.
     operating_system = platform.system()
-    print(prefix() + "Operating System: " + operating_system)
     os_version = platform.version()
-    print(prefix() + "OS version: " + os_version)
 
     # Python specific stuff
     python_version = platform.python_version()
-    print(prefix() + "Python version: " + python_version)
 
     # Directory specific stuff
     user_dir = str(Path.home())
-    print(prefix() + "User specific directory: " + user_dir)
     appdata_dir = user_dir + "\\AppData\\"
-    print(prefix() + "AppData directory: " + appdata_dir)
     main_dir = appdata_dir + "Roaming\\FyUTILS\\"
-    print(prefix() + "FyUTILS AppData directory: " + main_dir)
     tmp_dir = main_dir + "tmp\\"
-    print(prefix() + "Temp files directory: " + tmp_dir)
     download_content_dir = main_dir + "content\\"
-    print(prefix() + "Download Content Location: " + download_content_dir)
     fuel_content_dir = main_dir + "fuels\\"
-    print(prefix() + "FUEL Content Location: " + fuel_content_dir)
     proxy_config_dir = main_dir + "proxies\\"
-    print(prefix() + "Proxy configurations: " + proxy_config_dir)
 
     # Create directories if they not exist.
     if not os.path.exists(main_dir):
@@ -327,27 +335,22 @@ try:
 
     # URL specific stuff
     releases = "https://api.github.com/repos/NoahOnFyre/FyUTILS/releases"
-    print(prefix() + "Releases URL: " + releases)
     fuel_repository = "https://api.github.com/repos/NoahOnFyre/FUELS/contents/"
-    print(prefix() + "FUEL repository content URL: " + fuel_repository)
 
     # System components specific stuff
     cpu = platform.processor()
-    print(prefix() + "CPU: " + cpu)
     memory_amount = psutil.virtual_memory().total
-    print(prefix() + "Memory amount: " + str(round(memory_amount / 1024 / 1024)) + "MB")
 except Exception as e:
     print(prefix("ERROR") + "Failed to get system variables!")
-    print(traceback.format_exc())
-    print(prefix("ERROR") + "Shutting down...")
-    pause("ERROR")
-    sys.exit(2048)
+    crash_log()
+print(prefix() + f"Variable initialization took{time.time() - activity_start: 0.2f}s")
     
 # Authentication initialization
+activity_start = time.time()
 print(prefix() + "Checking for authentication file...")
 if os.path.exists(main_dir + "\\" + "auth.json"):
-    with open(main_dir + "\\" + "auth.json", "r") as tmp:
-        data = json.load(tmp)
+    with open(main_dir + "\\" + "auth.json", "r") as file:
+        data = json.load(file)
         auth_name = data["name"]
         auth_token = data["token"]
         authenticated = True
@@ -355,11 +358,10 @@ else:
     auth_name = None
     auth_token = None
     authenticated = False
-
-gh_rate_limit = api_request("/rate_limit").json()
-gh_user = api_request("/user").json()
+print(prefix() + f"Authentication initialization took{time.time() - activity_start: 0.2f}s")
 
 # Update checker
+activity_start = time.time()
 print(prefix() + "Checking for updates...")
 try:
     releases_json = requests.get(releases, auth=(auth_name, auth_token)).json()
@@ -375,41 +377,34 @@ try:
     newest_version_note = newest_release["body"]
     newest_version = newest_release["tag_name"]
     if version_is_newer(version, newest_version):
-        print(prefix() + "A new version of FyUTILS is available!")
-        print(prefix() + "Current version identifier: " + version)
-        print(prefix() + "Newest version identifier: " + newest_version)
         update_available = True
     else:
-        print(prefix() + "No update found!")
-        print(prefix() + "Current version identifier: " + version)
-        print(prefix() + "Newest version identifier: " + newest_version)
         update_available = False
 except Exception as e:
     print(prefix("WARN") + "Checking for updates failed. Please check your internet connection.")
-    print(prefix("WARN") + "You won't receive any updates without internet connection.")
     update_available = False
-
-# Discord RPC initialisation
-try:
-    print(prefix() + "Setting presence ID...")
-    presence_id = "1005822803997638696"
-    print(prefix() + "Presence ID set to: \"" + presence_id + "\".")
-    print(prefix() + "Initializing discord rich presence...")
-    rpc = Presence(presence_id)
-    print(prefix() + "Connecting to discord...")
-    rpc.connect()
-    print(prefix() + "Discord is connected...")
-    update_status("Starting up...")
-except Exception:
-    print(prefix("WARN") + "Can't connect with the discord RPC.")
-    time.sleep(0.25)
+print(prefix() + f"Update checker took{time.time() - activity_start: 0.2f}s")
 
 print(prefix() + "Initialisation phase completed!")
 update_status("Initialisation phase completed!")
+startup_time = float(f"{time.time() - activity_start: 0.2f}")
+print(prefix() + "Initialization took " + format_float(startup_time) + "seconds")
 
 # INIT PHASE END
 
 menu()
+
+# Discord RPC initialization
+try:
+    presence_id = "1005822803997638696"
+    rpc = Presence(presence_id)
+    rpc.connect()
+    update_status("Starting up...")
+except Exception:
+    print()
+    print(prefix("WARN") + "Can't connect with the discord RPC.")
+    time.sleep(0.25)
+
 try:
     while True:
         print()
@@ -1058,22 +1053,6 @@ try:
                 activity_start = time.time()
                 update_status("Switching to " + change_dir + "...")
 
-                match change_dir:
-                    case "~":
-                        change_dir = user_dir
-
-                    case ".":
-                        change_dir = current_dir
-
-                    case "@":
-                        change_dir = main_dir
-
-                    case "/":
-                        change_dir = "C:\\"
-
-                    case _:
-                        change_dir = change_dir
-
                 try:
                     os.chdir(change_dir)
                     if os.getcwd() == current_dir:
@@ -1127,10 +1106,4 @@ try:
                     execute(request_raw)
 
 except Exception as e:
-    execute("title FyUTILS Crash Handler - Crash Log")
-    print(prefix("ERROR") + "FyUTILS CRASH LOG @ " + datetime.datetime.now().strftime("%H:%M:%S"))
-    print(prefix("ERROR") + "Error: " + str(e))
-    print(prefix("ERROR") + "Learn how to file an issue: https://github.com/NoahOnFyre/FyUTILS/issues/40")
     crash_log()
-    pause("ERROR")
-    sys.exit(1024)
