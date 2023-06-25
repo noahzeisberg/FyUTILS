@@ -148,13 +148,15 @@ def run_fuel(command_name: str, args: list[str]):
         if name.lower() == command_name:
             print(prefix() + "Starting " + fuel + "...")
             if os.listdir(fuel_content_dir + fuel).__contains__("core.fuel"):
-                execute("python " + fuel_content_dir + fuel + "\\core.fuel")
+                with open(fuel_content_dir + fuel + "\\core.fuel", mode="rb") as file:
+                    exec(file.read())
             elif os.listdir(fuel_content_dir + fuel).__contains__("main.py"):
                 print(prefix("WARN") + "No FUEL main class found!")
                 confirmation = input(prefix("WARN") + "Fallback to deprecated main.py? (y/n): ")
                 if confirmation.lower() == "n":
                     return
-                execute("python " + fuel_content_dir + fuel + "\\main.py")
+                with open(fuel_content_dir + fuel + "\\main.py", mode="rb") as file:
+                    exec(file.read())
             else:
                 print(prefix("ERROR") + "No FUEL main class found!")
 
