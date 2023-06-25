@@ -63,7 +63,7 @@ FyUTILS is a simple python hacking and utility terminal application for windows 
 <!-- TOC -->
 
 # Quickstarter Guide
-Get the `main.py` and the `requirements.txt` from [here](https://github.com/releases/latest). Open up a command prompt in this window and run `pip install -r requirements.txt`. Then you can start FyUTILS by either double-clicking on the main.py or running `python main.py`.
+Get python from [here](https://python.org/downloads) and the `main.py` and the `requirements.txt` from [here](https://github.com/NoahOnFyre/FyUTILS/releases/latest). Open up a command prompt in this directory  and run `pip install -r requirements.txt`. Then you can start FyUTILS by either double-clicking on the main.py or running `python main.py`.
 
 # Documentation
 This Documentation will guide you through the installation, the first launch and configuration and the daily use of FyUTILS.
@@ -125,12 +125,9 @@ python main.py
 Or by just double-clicking on the **main.py**.
 
 ## Libraries
-FUELS (FyUTILS extending libraries) are simple lightweight scripts that can add a certain behaviour or action when you execute a command.
-At the moment you can contribute by [Forking](https://github.com/NoahOnFyre/FUELS/fork) the repository, add your FUEL and create a [Pull Request](https://github.com/NoahOnFyre/FUELS/pulls) by clicking on **Contribute** and then on **New pull request**.
-Then you have to wait for a FUEL or project maintainer to verify that your FUEL is safe and doesn't contain malware or other malicious stuff.
-When you want to update your FUEL, make sure that your fork is up-to-date with **master** on NoahOnFyre/FUELS. You can ensure this by clicking on **Sync fork** and then on **Update branch**.
-
-Information about contributing to FUELS in the official repository may be outdated.
+FUELS (FyUTILS extending libraries) are simple python scripts that can run any action when you execute a command.
+You can contribute by just creating a repository, adding a main.py file and, if needed, a requirements.txt file.
+If you call your repository e.g. octocat/Spoon-Knife, it can be installed using `fuel install octocat/Spoon-Knife`
 
 ## Commands
 The commands in FyUTILS are very simple. Below, there's a list of all commands and the arguments they take.
@@ -221,7 +218,7 @@ FUELS lists all the installed and registered FUELs associated with FyUTILS.
 ```
 fuel <install/remove> <package_name>
 ```
-The FUEL command has multiple different actions. One of them is `fuel install`. It will install a verified FUEL, found in [NoahOnFyre/FUELS](https://github.com/NoahOnFyre/FUELS). `fuel remove` will delete the FUEL.
+The FUEL command has multiple different actions. One of them is `fuel install`. It will collect all the files in the GitHub repository, downloads them and will install the requirements of the project. `fuel remove` will delete the FUEL.
 ### Update
 ```
 update
