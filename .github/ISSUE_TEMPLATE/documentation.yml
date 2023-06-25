@@ -1,0 +1,23 @@
+name: Documentation change/correction
+description: Suggest changes or corrections for the documentation
+title: "[DOCS] <issue name>"
+labels: ["type: documentation"]
+body:
+- type: markdown
+  attributes:
+    value: "## Before you continue, please search our open issues to see if a similar issue has been addressed."
+
+- type: checkboxes
+  attributes:
+    label: I have searched through the issues and didn't find one, that had the same feature requested.
+    options:
+      - label: Confirm
+        required: true
+
+- type: textarea
+  id: description
+  attributes:
+    label: Change/correction description
+    description: A description, that should explain the change/correction as good as possible. You can append some code too.
+  validations:
+    required: true
