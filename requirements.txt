@@ -9,3 +9,4 @@ colorama~=0.4.6
 pypresence~=4.2.1
 pytube~=15.0.0
 packaging~=23.1
+grequests~=0.7.0
