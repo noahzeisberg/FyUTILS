@@ -11,11 +11,11 @@ FyUTILS is a simple python hacking and utility terminal application for windows 
 # Quickstarter Guide
 Get python from [here](https://python.org/downloads) and the `main.py` and the `requirements.txt` from [here](https://github.com/NoahOnFyre/FyUTILS/releases/latest). Open up a command prompt in this directory  and run `pip install -r requirements.txt`. Then you can start FyUTILS by either double-clicking on the main.py or running `python main.py`.
 
-## Table of contents (TOC)
+# Table of contents (TOC)
 <!-- TOC -->
 * [FyUTILS](#fyutils)
 * [Quickstarter Guide](#quickstarter-guide)
-  * [Table of contents (TOC)](#table-of-contents-toc)
+* [Table of contents (TOC)](#table-of-contents-toc)
 * [Documentation](#documentation)
   * [Prerequisites](#prerequisites)
   * [Stable installation (Recommended)](#stable-installation-recommended)
