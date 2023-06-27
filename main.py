@@ -18,9 +18,6 @@ import requests
 import string
 from pathlib import Path
 from scapy.layers.inet import IP, TCP, UDP
-from scapy.layers.inet6 import IPv6
-from scapy.layers.inet6 import TCP as TCPv6
-from scapy.layers.inet6 import UDP as UDPv6
 from scapy.packet import Packet
 from packaging import version as version_parser
 from scapy.layers.l2 import ARP, Ether, srp
@@ -31,7 +28,7 @@ from pypresence import Presence
 from pytube import YouTube
 
 init(convert=True)
-CURRENT_FYUTILS_VERSION = "1.12.1"
+CURRENT_FYUTILS_VERSION = "1.12.2"
 
 
 def prefix(level: str = "INFO"):
@@ -76,7 +73,7 @@ def update_status(status: str):
             small_text="Python", large_text="FyUTILS v" + version,
             start=int(start_time))
     except:
-        None
+        pass
 
 
 def update_ssh_status(status: str):
@@ -90,7 +87,7 @@ def update_ssh_status(status: str):
             small_text="Python", large_text="FyUTILS v" + version,
             start=int(start_time))
     except:
-        None
+        pass
 
 
 def api_request(path: str):
@@ -101,31 +98,20 @@ def print_packet(packet: Packet):
     if packet.haslayer(IP):
         packet_src = str(packet[IP].src)
         packet_dst = str(packet[IP].dst)
-        protocol = "IP"
         address_type = "v4"
         if packet.haslayer(TCP):
             protocol = "TCP"
         elif packet.haslayer(UDP):
             protocol = "UDP"
+        else:
+            protocol = "RAW"
         packet_prefix = GRAY + "[" + BLUE + protocol + GRAY + "/" + RESET + address_type + GRAY + "]" + RESET + " "
         print(prefix() + packet_prefix + packet_src + GRAY + " -> " + BLUE + packet_dst)
-
-    elif packet.haslayer(IPv6):
-        packet_src = str(packet[IPv6].src)
-        packet_dst = str(packet[IPv6].dst)
-        protocol = "IPv6"
-        address_type = "v6"
-        if packet.haslayer(TCPv6):
-            protocol = "TCP"
-        elif packet.haslayer(UDPv6):
-            protocol = "UDP"
-        packet_prefix = GRAY + "[" + BLUE + protocol + GRAY + "/" + RESET + address_type + GRAY + "]" + RESET + " "
-        print(prefix() + packet_prefix + packet_src + GRAY + " -> " + BLUE + packet_dst)
-
     else:
         packet_src = str(packet.src)
         packet_dst = str(packet.dst)
-        print(prefix() + packet_src + GRAY + " -> " + BLUE + packet_dst)
+        packet_prefix = GRAY + "[" + BLUE + "RAW" + GRAY + "/" + RESET + "v6" + GRAY + "]" + RESET + " "
+        print(prefix() + packet_prefix + packet_src + GRAY + " -> " + BLUE + packet_dst)
 
 
 def open_file(path: str):
@@ -134,17 +120,25 @@ def open_file(path: str):
 
 def get_fuels():
     fuel_list = os.listdir(fuel_content_dir)
+    map = {}
     for fuel in fuel_list:
-        fuel.replace(fuel_content_dir, "")
-    return fuel_list
+        with open(fuel_content_dir + fuel + "\\cmd.props") as file:
+            name = json.load(file)["name"]
+        map.update({name: fuel})
+    return map
 
 
-def run_fuel(command_name: str, args: list[str]):
+def run_fuel(command_name: str, directory: str, args: list[str]):
     activity_start = time.time()
     args = args
     update_status("Running FUEL \"" + command_name + "\"")
-    for fuel in get_fuels():
-        name = fuel.split("+")[1]
+    for fuel in get_fuels().values():
+        if not os.listdir(fuel_content_dir + fuel).__contains__("cmd.props"):
+            print(prefix("ERROR") + "Package \"" + fuel.replace("+", "/") + "\" is invalid.")
+            return
+        with open(fuel_content_dir + fuel + "\\cmd.props") as file:
+            data = json.load(file)
+            name = data["name"]
         if name.lower() == command_name:
             print(prefix() + "Starting " + fuel + "...")
             if os.listdir(fuel_content_dir + fuel).__contains__("core.fuel"):
@@ -159,6 +153,7 @@ def run_fuel(command_name: str, args: list[str]):
                     exec(file.read())
             else:
                 print(prefix("ERROR") + "No FUEL main class found!")
+    print(prefix() + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
 
 
 def format_boolean(boolean: bool):
@@ -198,7 +193,7 @@ def crash_log():
     print(prefix("ERROR") + "FyUTILS CRASH LOG @ " + datetime.datetime.now().strftime("%H:%M:%S"))
     print(prefix("ERROR") + "Error: " + str(e))
     print(prefix("ERROR") + "Learn how to file an issue: https://github.com/NoahOnFyre/FyUTILS/issues/40")
-    temp = open(main_dir + "crash.log", mode="wb+")
+    temp = open(main_dir + "crash.log", mode="wb")
     data = f"""FyUTILS Traceback Crash log @ {datetime.datetime.now().strftime("%H:%M:%S")}
 
 ================================================================================
@@ -270,7 +265,6 @@ WHITE = Fore.WHITE
 GRAY = Fore.LIGHTBLACK_EX
 RESET = Fore.RESET
 
-
 BG_RED = Back.RED
 BG_BLUE = Back.BLUE
 BG_GREEN = Back.GREEN
@@ -284,67 +278,61 @@ BG_RESET = Back.RESET
 
 # Variable initialisation
 activity_start = time.time()
+
+# Generic stuff
+print(prefix() + "Initializing system variables...")
+username = os.getlogin()
+device = platform.node()
 try:
-    # User specific stuff
-    print(prefix() + "Initializing system variables...")
-    username = os.getlogin()
-    device = platform.node()
     hwid = str(subprocess.check_output("wmic csproduct get uuid",), "UTF-8").split("\n")[1].strip()
-    start_time = time.time()
-    current_dir = sys.path[0]
-    version = CURRENT_FYUTILS_VERSION
-    threads = multiprocessing.cpu_count()
-    private_ip = socket.gethostbyname(socket.gethostname())
-    wire_started = False
+except:
+    print(prefix("ERROR") + "Failed to get HWID.")
+start_time = time.time()
+current_dir = sys.path[0]
+version = CURRENT_FYUTILS_VERSION
+threads = multiprocessing.cpu_count()
+private_ip = socket.gethostbyname(socket.gethostname())
+wire_started = False
 
-    # OS specific stuff.
-    operating_system = platform.system()
-    os_version = platform.version()
+# OS specific stuff.
+operating_system = platform.system()
+os_version = platform.version()
 
-    # Python specific stuff
-    python_version = platform.python_version()
+# Python specific stuff
+python_version = platform.python_version()
 
-    # Directory specific stuff
-    user_dir = str(Path.home())
-    appdata_dir = user_dir + "\\AppData\\"
-    main_dir = appdata_dir + "Roaming\\FyUTILS\\"
-    tmp_dir = main_dir + "tmp\\"
-    download_content_dir = main_dir + "content\\"
-    fuel_content_dir = main_dir + "fuels\\"
-    proxy_config_dir = main_dir + "proxies\\"
+# Directory specific stuff
+user_dir = str(Path.home())
+appdata_dir = user_dir + "\\AppData\\"
+main_dir = appdata_dir + "Roaming\\FyUTILS\\"
+tmp_dir = main_dir + "tmp\\"
+download_content_dir = main_dir + "content\\"
+fuel_content_dir = main_dir + "fuels\\"
 
-    # Create directories if they not exist.
-    if not os.path.exists(main_dir):
-        os.makedirs(main_dir)
-        print(prefix("WARN") + "Main directory didn't existed and has been created.")
-        time.sleep(1)
-    if not os.path.exists(tmp_dir):
-        os.makedirs(tmp_dir)
-        print(prefix("WARN") + "Temporary storage directory didn't existed and has been created.")
-        time.sleep(1)
-    if not os.path.exists(download_content_dir):
-        os.makedirs(download_content_dir)
-        print(prefix("WARN") + "Download content directory didn't existed and has been created.")
-        time.sleep(1)
-    if not os.path.exists(fuel_content_dir):
-        os.makedirs(fuel_content_dir)
-        print(prefix("WARN") + "FUEL content directory didn't existed and has been created.")
-        time.sleep(1)
-    if not os.path.exists(proxy_config_dir):
-        os.makedirs(proxy_config_dir)
-        print(prefix("WARN") + "Proxy config directory didn't existed and has been created.")
-        time.sleep(1)
+# Create directories if they not exist.
+if not os.path.exists(main_dir):
+    os.makedirs(main_dir)
+    print(prefix("WARN") + "Main directory didn't existed and has been created.")
+    time.sleep(1)
+if not os.path.exists(tmp_dir):
+    os.makedirs(tmp_dir)
+    print(prefix("WARN") + "Temporary storage directory didn't existed and has been created.")
+    time.sleep(1)
+if not os.path.exists(download_content_dir):
+    os.makedirs(download_content_dir)
+    print(prefix("WARN") + "Download content directory didn't existed and has been created.")
+    time.sleep(1)
+if not os.path.exists(fuel_content_dir):
+    os.makedirs(fuel_content_dir)
+    print(prefix("WARN") + "FUEL content directory didn't existed and has been created.")
+    time.sleep(1)
 
-    # URL specific stuff
-    releases = "https://api.github.com/repos/NoahOnFyre/FyUTILS/releases"
-    fuel_repository = "https://api.github.com/repos/NoahOnFyre/FUELS/contents/"
+# URL specific stuff
+releases = "https://api.github.com/repos/NoahOnFyre/FyUTILS/releases"
 
-    # System components specific stuff
-    cpu = platform.processor()
-    memory_amount = psutil.virtual_memory().total
-except Exception as e:
-    print(prefix("ERROR") + "Failed to get system variables!")
-    crash_log()
+# System components specific stuff
+cpu = platform.processor()
+memory_amount = psutil.virtual_memory().total
 print(prefix() + f"Variable initialization took{time.time() - activity_start: 0.2f}s")
 
 # Authentication initialization
@@ -571,8 +559,8 @@ try:
                     print(prefix() + "Country: " + data["country"])
                     print(prefix() + "Region: " + data["region"])
                     print(prefix() + "City: " + data["city"])
-                    print(prefix() + "Latitude: " + str(data["latitude"]))
-                    print(prefix() + "Longitude: " + str(data["longitude"]))
+                    print(prefix() + "Latitude: " + format_float(data["latitude"]))
+                    print(prefix() + "Longitude: " + format_float(data["longitude"]))
                     print(prefix() + "Google Maps: " + f"https://www.google.com/maps/@{data['latitude']},{data['longitude']},10z")
                     print(prefix() + "EU country: " + format_boolean(data["is_eu"]))
                     print(prefix() + "Postal code: " + data["postal"])
@@ -674,7 +662,6 @@ try:
                 print(prefix() + "Temp files directory: " + tmp_dir)
                 print(prefix() + "Download Content Location: " + download_content_dir)
                 print(prefix() + "FUEL Content Location: " + fuel_content_dir)
-                print(prefix() + "Proxy configurations: " + proxy_config_dir)
 
             case "checkport" | "portcheck":
                 if len(args) < 2:
@@ -889,8 +876,8 @@ try:
 
             case "fuels":
                 print(prefix() + "Active FUELS:")
-                for fuel in get_fuels():
-                    print(prefix() + fuel.replace("+", "/"))
+                for key in get_fuels():
+                    print(prefix() + BLUE + get_fuels()[key].split("+")[0] + GRAY + "/" + RESET + get_fuels()[key].split("+")[1] + " " + GRAY + "(" + RESET + key + GRAY + ")")
 
             case "fuel":
                 if len(args) < 2:
@@ -922,6 +909,18 @@ try:
                                 print(prefix() + "This may take a while.")
                                 exec_silent("pip install -r " + directory + "requirements.txt")
                                 print(prefix() + "Requirements successfully installed!")
+                        print(prefix() + "Package successfully installed!")
+
+                    case "remove":
+                        package_information = package.split("/")
+                        repo_author = package_information[0]
+                        repo_name = package_information[1]
+                        directory = fuel_content_dir + repo_author + "+" + repo_name + "\\"
+                        if os.path.exists(directory):
+                            shutil.rmtree(directory)
+                            print(prefix() + "Package successfully removed!")
+                        else:
+                            print(prefix("ERROR") + "The package \"" + package + "\" isn't installed!")
 
             case "update":
                 update_status("Updating FyUTILS...")
@@ -1055,19 +1054,25 @@ try:
                 activity_start = time.time()
                 update_status("Switching to " + change_dir + "...")
 
+                match change_dir:
+                    case "~":
+                        change_dir = user_dir
+
+                    case ".":
+                        change_dir = current_dir
+
+                    case "@":
+                        change_dir = main_dir
+
+                    case "/":
+                        change_dir = "C:\\"
+
+                    case _:
+                        change_dir = change_dir
+
                 try:
                     os.chdir(change_dir)
-                    if os.getcwd() == current_dir:
-                        cwd_abbreviation = "."
-                    elif os.getcwd() == "C:\\":
-                        cwd_abbreviation = "/"
-                    elif os.getcwd() == user_dir:
-                        cwd_abbreviation = "~"
-                    elif os.getcwd() == main_dir:
-                        cwd_abbreviation = "@"
-                    else:
-                        cwd_abbreviation = os.getcwd()
-                    print(prefix() + cwd_abbreviation)
+                    print(prefix() + change_dir)
                 except Exception as e:
                     print("\n" + prefix("ERROR") + "An error occurred while trying to execute this command correctly.")
                     print(prefix("ERROR") + str(e))
@@ -1099,9 +1104,9 @@ try:
                 sys.exit(0)
 
             case _:
-                for fuel in get_fuels():
-                    if fuel.split("+")[1].lower() == cmd.lower():
-                        run_fuel(cmd, args)
+                for fuel in get_fuels().keys():
+                    if fuel.lower() == cmd.lower():
+                        run_fuel(cmd, get_fuels()[fuel], args)
                         break
                 else:
                     update_status("Executing " + cmd)
