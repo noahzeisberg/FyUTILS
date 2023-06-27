@@ -26,6 +26,7 @@ from colorama import Fore, Back, init
 from phonenumbers import geocoder, carrier, timezone
 from pypresence import Presence
 from pytube import YouTube
+import asyncio
 
 init(convert=True)
 CURRENT_FYUTILS_VERSION = "1.12.2"
