@@ -8,11 +8,14 @@ FyUTILS is a simple python hacking and utility terminal application for windows 
 ![GitHub issues](https://img.shields.io/github/issues-raw/NoahOnFyre/FyUTILS?style=for-the-badge)
 ![GitHub last commit](https://img.shields.io/github/last-commit/NoahOnFyre/FyUTILS?style=for-the-badge)
 
+# Quickstarter Guide
+Get python from [here](https://python.org/downloads) and the `main.py` and the `requirements.txt` from [here](https://github.com/NoahOnFyre/FyUTILS/releases/latest). Open up a command prompt in this directory  and run `pip install -r requirements.txt`. Then you can start FyUTILS by either double-clicking on the main.py or running `python main.py`.
+
 ## Table of contents (TOC)
 <!-- TOC -->
 * [FyUTILS](#fyutils)
-  * [Table of contents (TOC)](#table-of-contents-toc)
 * [Quickstarter Guide](#quickstarter-guide)
+  * [Table of contents (TOC)](#table-of-contents-toc)
 * [Documentation](#documentation)
   * [Prerequisites](#prerequisites)
   * [Stable installation (Recommended)](#stable-installation-recommended)
@@ -61,9 +64,6 @@ FyUTILS is a simple python hacking and utility terminal application for windows 
   * [Utility libraries](#utility-libraries)
   * [Development tools](#development-tools)
 <!-- TOC -->
-
-# Quickstarter Guide
-Get python from [here](https://python.org/downloads) and the `main.py` and the `requirements.txt` from [here](https://github.com/NoahOnFyre/FyUTILS/releases/latest). Open up a command prompt in this directory  and run `pip install -r requirements.txt`. Then you can start FyUTILS by either double-clicking on the main.py or running `python main.py`.
 
 # Documentation
 This Documentation will guide you through the installation, the first launch and configuration and the daily use of FyUTILS.
