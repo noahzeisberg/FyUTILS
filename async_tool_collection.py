@@ -4,5 +4,5 @@
 import asyncio
 
 
-def get_threaded_function(func, /):
+def get_threaded_function(func):
     return asyncio.to_thread(func)
