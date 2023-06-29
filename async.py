@@ -28,6 +28,7 @@ def run_async():
         print(newest_version)
         print("done!")
         time.sleep(3)
+        # I guess you what this should do in the future :)
 
 
 async def main():
@@ -35,6 +36,7 @@ async def main():
 
 
 def run():
+    # Setting up a loop that will output the time.
     t = datetime.datetime.now().strftime("%H:%M:%S")
 
     while True:
@@ -43,4 +45,5 @@ def run():
             print(t)
 
 
+# Running the main
 asyncio.run(main())
