@@ -1,7 +1,8 @@
+# This is just like a little playground for testing async stuff.
+
 import asyncio
 import datetime
 
-from pypresence import Presence
 from requests_futures.sessions import FuturesSession
 
 
