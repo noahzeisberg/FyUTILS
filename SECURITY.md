@@ -5,7 +5,7 @@
 Here you can see which versions of FyUTILS are supported for security updates.
 
 | Version | Supported          |
-| ------- | ------------------ |
+|---------|--------------------|
 | 1.12.x  | :white_check_mark: |
 | > 1.0.0 | :x:                |
 
