@@ -5,7 +5,6 @@ import datetime
 import time
 
 from requests_futures.sessions import FuturesSession
-import requests_futures
 
 
 def run_async():
