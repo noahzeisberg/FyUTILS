@@ -16,11 +16,19 @@ FyUTILS may be used for network analytics and ethical hacking.
 # Quickstarter Guide
 Get python from [here](https://python.org/downloads) and the `main.py` and the `requirements.txt` from [here](https://github.com/NoahOnFyre/FyUTILS/releases/latest). Open up a command prompt in this directory and run `pip install -r requirements.txt`. Then you can start FyUTILS by either double-clicking on the main.py or running `python main.py`.
 
+## Get via Nitro
+You can get FyUTILS using [Nitro](https://github.com/NoahOnFyre/Nitro) just by running the following command:
+```
+nitro get fyutils
+```
+Then run FyUTILS by using `nitro run fyutils`.
+
 # Table of contents (TOC)
 <!-- TOC -->
 * [FyUTILS](#fyutils)
 * [Disclaimer](#disclaimer)
 * [Quickstarter Guide](#quickstarter-guide)
+  * [Get via Nitro](#get-via-nitro)
 * [Table of contents (TOC)](#table-of-contents-toc)
 * [Documentation](#documentation)
   * [Prerequisites](#prerequisites)
