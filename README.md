@@ -8,12 +8,18 @@ FyUTILS is a simple python hacking and utility terminal application for windows 
 ![GitHub issues](https://img.shields.io/github/issues-raw/NoahOnFyre/FyUTILS?style=for-the-badge)
 ![GitHub last commit](https://img.shields.io/github/last-commit/NoahOnFyre/FyUTILS?style=for-the-badge)
 
+# Disclaimer
+Hacking is illegal.
+You are responsible for everything you do with this tool.
+FyUTILS may be used for network analytics and ethical hacking.
+
 # Quickstarter Guide
-Get python from [here](https://python.org/downloads) and the `main.py` and the `requirements.txt` from [here](https://github.com/NoahOnFyre/FyUTILS/releases/latest). Open up a command prompt in this directory  and run `pip install -r requirements.txt`. Then you can start FyUTILS by either double-clicking on the main.py or running `python main.py`.
+Get python from [here](https://python.org/downloads) and the `main.py` and the `requirements.txt` from [here](https://github.com/NoahOnFyre/FyUTILS/releases/latest). Open up a command prompt in this directory and run `pip install -r requirements.txt`. Then you can start FyUTILS by either double-clicking on the main.py or running `python main.py`.
 
 # Table of contents (TOC)
 <!-- TOC -->
 * [FyUTILS](#fyutils)
+* [Disclaimer](#disclaimer)
 * [Quickstarter Guide](#quickstarter-guide)
 * [Table of contents (TOC)](#table-of-contents-toc)
 * [Documentation](#documentation)
@@ -63,6 +69,7 @@ Get python from [here](https://python.org/downloads) and the `main.py` and the `
   * [Networking libraries](#networking-libraries)
   * [Utility libraries](#utility-libraries)
   * [Development tools](#development-tools)
+* [Additional information](#additional-information)
 <!-- TOC -->
 
 # Documentation
@@ -336,5 +343,22 @@ All tools, languages and whatever I used for FyUTILS
 | FUEL Development (legacy)                 | [Visual Studio Code](https://vscode.dev)                                                     |
 | Version control, Publishing, Distribution | [GitHub](https://github.com)                                                                 |
 
-
 Thanks to the creators of these tools and libraries and to everyone supporting me during development through issues and other contributions. ❤️
+
+# Additional information
+Hey, I'd like to talk a little bit about me and this project because it's by far my most popular project,
+and I spend most of my time working on this project.
+This project also has a very long story that started in early 2020 during the pandemic.
+
+I started learning programming in 2020, because I was bored and always fascinated on developing games and software.
+My first language was Windows Batch, a language to create little scripts that can run on every Windows PC.
+I developed a software called Fyred, that could send ping requests to a server, and do some other stuff.
+Because creating boring terminal applications,
+that can just display some text wasn't what I wanted to do, I started learning Java
+(which was a pretty stupid idea btw because I was ten).
+I started with plugins for minecraft and later also developed mods.
+Then, in 2021 I discovered Python through TikTok.
+A language that can bring Fyred to the next level.
+I rewrote the entire script (which was only like 50 lines of code)
+in python and replaced functions like the pinging thing I mentioned before with the DoS attack that you know of FyUTILS.
+Therefore, I had to rename my application and FyUTILS (the short form of OnFyre Utilities) was born.
