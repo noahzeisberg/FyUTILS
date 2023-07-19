@@ -1,0 +1,5 @@
+{
+    "package": "NoahOnFyre/FyUTILS",
+    "manifest_version": 1,
+    "main": "main.py"
+}
