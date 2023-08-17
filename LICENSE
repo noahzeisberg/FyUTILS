@@ -1,20 +1,15 @@
-OnFyre Network Exclusive Publishing License (OFNEPL)
+Nyronium General Publishing License (NGPL)
 
 Copyright (c) 2020-2023 NoahOnFyre
 
-This license is exclusively for software created by the OnFyre Network and/or it's members.
+This license is exclusively for software created by the Nyronium Network and it's members.
 
 You're allowed to:
  - Download and use the software.
- - Share the software with friends (*)
  - Edit the code without publishing it, so only for your own purposes.
- - Use parts of the API for your own projects, ONLY when your application is open source. (**)
+ - Use parts of the software for your own projects, ONLY when your application is open source.
 
 You're NOT allowed to:
  - Use the software for illegal purposes
  - Republish the pure source code or the edited source code
  - Pretend you're the owner of this project.
-
-*: When you want to give the software to somebody, please just send a link to this repo or the release section, so they can download it out of official sources.
-
-**: Please consider, that the API of the software isn't the whole software, and you need to give an attribution inside your application.
