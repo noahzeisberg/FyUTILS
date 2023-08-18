@@ -2,6 +2,7 @@
 FyUTILS is a hacking, networking and utility CLI tool for all platforms.
 
 ![nitro](/badges/nitro.svg)
+![devportal](/badges/devportal.svg)
 ![golang](/badges/golang.svg)
 ![github](https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/available/github_vector.svg)
 
