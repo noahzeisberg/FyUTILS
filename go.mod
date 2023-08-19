@@ -11,5 +11,6 @@ require (
 	github.com/mnogu/go-calculator v0.0.1
 	golang.org/x/exp v0.0.0-20230811145659-89c5cff77bcb
 	golang.org/x/mod v0.12.0
+	golang.org/x/sync v0.3.0
 	gopkg.in/natefinch/npipe.v2 v2.0.0-20160621034901-c1b8fa8bdcce // indirect
 )

@@ -11,21 +11,29 @@ import (
 	"time"
 )
 
-func ScanPort(addr string, port int, timeout time.Duration) bool {
+func ScanPort(addr string, port int, timeout time.Duration) {
 	conn, err := net.DialTimeout("tcp", net.JoinHostPort(addr, strconv.Itoa(port)), timeout)
 
 	if err != nil {
-		if strings.Contains(err.Error(), "too many open files") {
-			Print(Prefix(1) + "Timeout exceed")
+		if strings.Contains(err.Error(), "timeout") {
+			Print(Prefix(1) + "Timeout exceed.")
 			time.Sleep(timeout)
-			return ScanPort(addr, port, timeout)
+			ScanPort(addr, port, timeout)
+		} else if strings.Contains(err.Error(), "connectex") {
+			time.Sleep(timeout)
+			ScanPort(addr, port, timeout)
+		} else if strings.Contains(err.Error(), "bind") {
+			Print(Prefix(1) + "Socket buffer exceed.")
+			time.Sleep(timeout)
+			ScanPort(addr, port, timeout)
 		} else {
-			return false
+			Print(err)
 		}
+		return
 	}
 
 	conn.Close()
-	return true
+	Print(Prefix(0) + "Port " + Blue + strconv.Itoa(port) + Reset + " is open!")
 }
 
 func DownloadNewestVersion() {
@@ -59,6 +67,7 @@ func DownloadNewestVersion() {
 			}
 
 			os.WriteFile(current_dir+"\\FyUTILS.exe", content, os.ModePerm)
+			break
 		}
 	}
 	if !asset_found {

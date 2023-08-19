@@ -8,7 +8,6 @@ import (
 	"os"
 	"strconv"
 	"strings"
-	"sync"
 	"time"
 
 	"github.com/google/go-github/github"
@@ -41,12 +40,10 @@ func main() {
 	SetState("Initializing...")
 	Print(Prefix(0) + "Initializing...")
 
-	wg := sync.WaitGroup{}
-	wg.Add(1)
-
 	/////////////////////////
 	// Path initialization //
 	/////////////////////////
+
 	SetState("Checking paths...")
 	Print(Prefix(0) + "Checking paths...")
 
@@ -77,7 +74,6 @@ func main() {
 			update_available = true
 			newest_version = latest_release.GetTagName()
 		}
-		wg.Done()
 	}()
 
 	////////////////////
@@ -155,8 +151,6 @@ func main() {
 
 	SetState("Waiting for goroutines to finish...")
 	Print(Prefix(0) + "Waiting for goroutines to finish...")
-
-	wg.Wait()
 
 	MainMenu()
 

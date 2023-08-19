@@ -12,7 +12,6 @@ import (
 	"time"
 
 	"github.com/mnogu/go-calculator"
-	"golang.org/x/exp/slices"
 )
 
 type Command struct {
@@ -70,29 +69,18 @@ func FloodCommand(args []string) {
 func PortscanCommand(args []string) {
 	addr := args[0]
 	ports := 65536
-	open_ports := []int{}
 
 	wg := sync.WaitGroup{}
-	wg.Add(ports - 1)
 
 	Print(Prefix(0) + "Scanning ports... This may take a while.")
-	Print()
 	for port := 1; port < ports; port++ {
+		wg.Add(1)
 		go func(port int) {
-			if ScanPort(addr, port, 5*time.Second) {
-				open_ports = append(open_ports, port)
-			}
+			ScanPort(addr, port, 5*time.Second)
 			wg.Done()
 		}(port)
 	}
-
 	wg.Wait()
-
-	slices.Sort(open_ports)
-
-	for _, port := range open_ports {
-		Print(Prefix(0) + "Port " + Blue + strconv.Itoa(port) + Reset + " is open!")
-	}
 }
 
 func GatherCommand(args []string) {
@@ -165,9 +153,9 @@ func CalculatorCommand(args []string) {
 
 func TestCommand(args []string) {
 	Print(Prefix(0) + "Test output.")
-	time.Sleep(250 * time.Millisecond)
+	time.Sleep(500 * time.Millisecond)
 	Print(Prefix(1) + "Test warning.")
-	time.Sleep(250 * time.Millisecond)
+	time.Sleep(500 * time.Millisecond)
 	Print(Prefix(2) + "Test error.")
 }
 

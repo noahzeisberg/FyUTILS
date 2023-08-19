@@ -7,7 +7,6 @@ type Config struct {
 	AuthToken        string `json:"gh_api_token"`
 	AuthName         string `json:"gh_api_username"`
 	UploadLogs       bool   `json:"upload_logs"`
-	UpdatingBranch   string `json:"branch"`
 }
 
 func GetDefaultConfig() Config {
@@ -18,6 +17,5 @@ func GetDefaultConfig() Config {
 		AuthToken:        "",
 		AuthName:         "",
 		UploadLogs:       true,
-		UpdatingBranch:   "master",
 	}
 }
