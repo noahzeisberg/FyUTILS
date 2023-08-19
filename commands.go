@@ -174,6 +174,9 @@ func TestCommand(args []string) {
 func UpdateCommand(args []string) {
 	Print(Prefix(0) + "Updating instance...")
 	DownloadNewestVersion()
+	Print(Prefix(0) + "Please restart the program to apply the update.")
+	StopRPC()
+	os.Exit(0)
 }
 
 func ExitCommand(args []string) {

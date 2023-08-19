@@ -35,9 +35,11 @@ func DownloadNewestVersion() {
 	}
 
 	assets := latest_release.Assets
+	asset_found := false
 
 	for _, asset := range assets {
 		if asset.GetName() == "FyUTILS.exe" {
+			asset_found = true
 			Print(Prefix(0) + "Found file \"" + asset.GetName() + "\" in NoahOnFyre/FyUTILS")
 			Print(Prefix(0) + "Size: " + strconv.Itoa(asset.GetSize()))
 			Print(Prefix(0) + "Downloads: " + strconv.Itoa(asset.GetDownloadCount()))
@@ -58,5 +60,8 @@ func DownloadNewestVersion() {
 
 			os.WriteFile(current_dir+"\\FyUTILS.exe", content, os.ModePerm)
 		}
+	}
+	if !asset_found {
+		Print(Prefix(2) + "No matching asset found!")
 	}
 }
