@@ -171,6 +171,11 @@ func TestCommand(args []string) {
 	Print(Prefix(2) + "Test error.")
 }
 
+func UpdateCommand(args []string) {
+	Print(Prefix(0) + "Updating instance...")
+	DownloadNewestVersion()
+}
+
 func ExitCommand(args []string) {
 	Print(Prefix(0) + "Exiting program...")
 	StopRPC()

@@ -9,6 +9,13 @@ func MainMenu() {
 	Print(Blue + "/_/    \\__, /\\____/ /_/ /___/_____/____/   " + MainMenuEntry("Device", device))
 	Print(Blue + "       __/ /                               ")
 	Print(Blue + "     /____/                                ")
+	if update_available {
+		Print()
+		Print(Gray + "┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────")
+		Print(Gray + "│ " + Reset + "A new update is available!" + Gray + " - " + Red + version + Gray + " -> " + Green + newest_version)
+		Print(Gray + "│ " + Reset + "Install now using: " + Blue + "update")
+		Print(Gray + "└───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────")
+	}
 }
 
 func MainMenuEntry(title string, description string) string {
