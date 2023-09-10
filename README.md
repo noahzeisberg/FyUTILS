@@ -1,4 +1,4 @@
-# FyUTILS 2.X.X (FyUTILS Go)
+# FyUTILS
 FyUTILS is a hacking, networking and utility CLI tool for all platforms. [What is 2.0.0](https://github.com/NoahOnFyre/FyUTILS/discussions/53)?
 
 [![nitro](/badges/nitro.svg)](#nitro-installation)
