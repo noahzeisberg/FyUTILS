@@ -1,7 +1,5 @@
 package main
 
-type Arguments []string
-
 func CommandRegistration() {
 	RegisterCommand("flood", "Run a denial of service attack on the target.", Arguments{"addr", "port"}, FloodCommand)
 	RegisterCommand("portscan", "Scan for open ports on the target.", Arguments{"addr"}, PortscanCommand)

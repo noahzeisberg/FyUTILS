@@ -14,18 +14,6 @@ import (
 	"github.com/mnogu/go-calculator"
 )
 
-type Command struct {
-	Name        string
-	Description string
-	Args        Args
-	Run         func([]string)
-}
-
-type Args struct {
-	Count int
-	Get   []string
-}
-
 func RegisterCommand(name string, description string, args []string, runnable func([]string)) {
 	arguments := Args{
 		Count: len(args),
