@@ -11,7 +11,7 @@ import (
 
 func ValueOf(thing string, err error) string {
 	if err != nil {
-		Print(Prefix(0) + "An error occoured: " + err.Error())
+		Print(Prefix(0) + "An error occurred: " + err.Error())
 	}
 	return thing
 }
