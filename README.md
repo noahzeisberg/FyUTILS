@@ -12,7 +12,7 @@ Hacking is illegal. This tool is only made for ethical purposes like analysing y
 # Nitro installation
 You can install FyUTILS by running the following command in the [Nitro CLI](https://github.com/NoahOnFyre/Nitro) (Requires Nitro 1.1.0):
 ```
-install fyutils
+get fyutils
 ```
 
 # Default installation
