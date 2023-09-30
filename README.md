@@ -10,7 +10,7 @@ FyUTILS is a hacking, networking and utility CLI tool for all platforms. [What i
 Hacking is illegal. This tool is only made for ethical purposes like analysing your own infrastructure. You'll be responsible for everything you do with this tool.
 
 # Nitro installation
-You can install FyUTILS by running the following command in the [Nitro CLI](https://github.com/NoahOnFyre/Nitro) (Requires Nitro 1.1.0):
+You can install FyUTILS by running the following command in the [Nitro CLI](https://github.com/NoahOnFyre/Nitro) (Requires Nitro 1.1.1 or higher):
 ```
 get fyutils
 ```
