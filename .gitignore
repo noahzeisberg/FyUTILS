@@ -1,0 +1,3 @@
+# Ignore built application and development testing scripts.
+build.exe
+test.bat
