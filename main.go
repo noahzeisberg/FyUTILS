@@ -96,13 +96,13 @@ func RunCommand(command string, args []string) {
 		_, err := exec.LookPath(command)
 		if err != nil {
 			logging.Error("Command not found! - Run \"help\" to see all commands.")
-		} else {
-			var cmdArgs []string
-			cmdArgs = append(cmdArgs, "/c")
-			cmdArgs = append(cmdArgs, command)
-			cmdArgs = append(cmdArgs, args...)
-			output, _ := exec.Command("cmd.exe", cmdArgs...).Output()
-			logging.Print(string(output))
+			return
 		}
+		var cmdArgs []string
+		cmdArgs = append(cmdArgs, "/c")
+		cmdArgs = append(cmdArgs, command)
+		cmdArgs = append(cmdArgs, args...)
+		output, _ := exec.Command("cmd.exe", cmdArgs...).Output()
+		logging.Print(string(output))
 	}
 }
