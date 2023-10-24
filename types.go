@@ -12,8 +12,6 @@ type Args struct {
 	Get   []string
 }
 
-type Arguments []string
-
 type AddressInformation struct {
 	IP            string                       `json:"ip"`
 	Type          string                       `json:"type"`
