@@ -10,6 +10,7 @@ import (
 	"net/http"
 	"os"
 	"strconv"
+	"strings"
 	"sync"
 )
 
@@ -106,6 +107,16 @@ func GatherCommand(args []string) {
 	logging.Log("Timezone" + color.Gray + ": " + color.Blue + data.Timezone.ID)
 	logging.Log("Timezone Abbreviation" + color.Gray + ": " + color.Blue + data.Timezone.Abbreviation)
 	logging.Log("UTC" + color.Gray + ": " + color.Blue + data.Timezone.UTC)
+}
+
+func HelpCommand(args []string) {
+	for _, command := range commands {
+		s := ""
+		for _, argument := range command.Args.Get {
+			s += "<" + argument + "> "
+		}
+		logging.Log(color.Blue + strings.ToUpper(command.Name) + color.Gray + ": " + color.Reset + command.Description + color.Gray + " - " + color.Blue + s)
+	}
 }
 
 func ClearCommand(args []string) {
