@@ -1,5 +1,11 @@
 # FyUTILS
+
+![Downloads](https://img.shields.io/github/downloads/NoahOnFyre/FyUTILS/total?style=for-the-badge&logo=github&color=%234f46e5&link=https%3A%2F%2Fgithub.com%2FNoahOnFyre%2FFyUTILS%2Freleases%2Flatest)
+
 FyUTILS is a hacking and utility tool with features such as DoS attacks and a port-scanner.
+
+[![AppDirectory](badges/appdirectory_vector.svg)](https://nyronium.com/products/fyutils)
+[![Scorpion](badges/scorpion_vector.svg)](scorpion://get/noahonfyre/fyutils)
 
 # Disclaimer
 Hacking is illegal.
