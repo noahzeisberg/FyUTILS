@@ -16,3 +16,4 @@ This new version should also be a lot more lightweight.
 For the moment,
 I won't release a version 2.0.0
 because there are way too few features than I wanted for the biggest update since the release of FUELs. 
+Maybe I'll release 2.0.0 after I finished developing the ARP scanner, but I'm currently not sure.
