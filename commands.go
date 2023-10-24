@@ -41,7 +41,7 @@ func FloodCommand(args []string) {
 			logging.Error("Failed to send data to connection.")
 			break
 		}
-		logging.Log("Bytes successfully sent to " + conn.RemoteAddr().String() + color.Gray + " (" + strconv.Itoa(i) + ")" + "\r")
+		logging.Log("Bytes successfully sent to", conn.RemoteAddr().String()+color.Gray, "("+strconv.Itoa(i)+")")
 	}
 }
 
