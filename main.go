@@ -37,9 +37,8 @@ func Menu() {
 }
 
 func main() {
-	logging.SetMainColor(color.BlueBg)
-	logging.Log("Initializing...")
 	SetState("Initializing...")
+	logging.SetMainColor(color.BlueBg)
 
 	logging.Log("Checking paths...")
 	SetState("Checking paths...")
