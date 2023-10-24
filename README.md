@@ -1,5 +1,5 @@
 # FyUTILS
-FyUTILS is a hacking and utility tool with features such as DoS attacks and a port-scanner. [What is 2.0.0](https://github.com/NoahOnFyre/FyUTILS/discussions/53)?
+FyUTILS is a hacking and utility tool with features such as DoS attacks and a port-scanner.
 
 # Disclaimer
 Hacking is illegal. This tool is only made for ethical purposes like analyzing your own infrastructure. You'll be responsible for everything you do with this tool.
