@@ -47,12 +47,17 @@ func FloodCommand(args []string) {
 
 func PortscanCommand(args []string) {
 	addr := args[0]
+	maxPort, err := strconv.Atoi(args[1])
+	if err != nil {
+		logging.Error("Failed to parse maxPort parameter!")
+		return
+	}
 	var wg sync.WaitGroup
 
 	logging.Log("Scanning ports...")
 	logging.Warn("This can take a few minutes and can push your CPU utilization up to 100% for a few minutes.")
 
-	for port := 1; port <= 65535; port++ {
+	for port := 1; port <= maxPort; port++ {
 		wg.Add(1)
 		go ScanPort(addr, port, &wg)
 	}

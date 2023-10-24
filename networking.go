@@ -5,13 +5,12 @@ import (
 	"github.com/NoahOnFyre/gengine/logging"
 	"net"
 	"sync"
-	"time"
 )
 
 func ScanPort(target string, port int, wg *sync.WaitGroup) {
 	defer wg.Done()
 	address := net.JoinHostPort(target, convert.FormatInt(port))
-	conn, err := net.DialTimeout("tcp", address, time.Second*10)
+	conn, err := net.Dial("tcp", address)
 	if err != nil {
 		return
 	}
