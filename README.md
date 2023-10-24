@@ -7,7 +7,7 @@ This tool is only made for ethical purposes like analyzing your own infrastructu
 You'll be responsible for everything you do with this tool.
 
 # Current information
-As you know, I completely rewrote FyUTILS in another programming language called Golang,
+As you might know, I completely rewrote FyUTILS in another programming language called Golang,
 because it has better performance, better concurrency and some more features that are just superior to python.
 However, the rewrite was messy and badly organized, so I've decided to rewrite it again.
 This time, I can skip a lot of unnecessary stuff because I have a framework for all my applications called "gengine"
