@@ -85,7 +85,11 @@ func GatherCommand(args []string) {
 		logging.Error("Reading response body failed!")
 	}
 
-	json.Unmarshal(body, &data)
+	err = json.Unmarshal(body, &data)
+	if err != nil {
+		logging.Error("Failed to parse data.")
+		return
+	}
 
 	logging.Log("Gathering report for " + color.Blue + data.IP)
 	logging.Log("Address type" + color.Gray + ": " + color.Blue + data.Type)
