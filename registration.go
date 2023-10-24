@@ -6,13 +6,13 @@ import (
 )
 
 func CommandRegistration() {
-	RegisterCommand("flood", "Run a denial of service attack on the target.", Arguments{"addr", "port"}, FloodCommand)
-	RegisterCommand("portscan", "Scan for open ports on the target.", Arguments{"addr"}, PortscanCommand)
-	RegisterCommand("gather", "Gather information about the target.", Arguments{"addr"}, GatherCommand)
-	// RegisterCommand("update", "Update your FyUTILS instance.", Arguments{}, UpdateCommand)
-	RegisterCommand("help", "Show some help about the commands.", Arguments{}, HelpCommand)
-	RegisterCommand("clear", "Clear the console window.", Arguments{}, ClearCommand)
-	RegisterCommand("exit", "Exit the application.", Arguments{}, ExitCommand)
+	RegisterCommand("flood", "Run a denial of service attack on the target.", []string{"addr", "port"}, FloodCommand)
+	RegisterCommand("portscan", "Scan for open ports on the target.", []string{"addr"}, PortscanCommand)
+	RegisterCommand("gather", "Gather information about the target.", []string{"addr"}, GatherCommand)
+	// RegisterCommand("update", "Update your FyUTILS instance.", []string{}, UpdateCommand)
+	RegisterCommand("help", "Show some help about the commands.", []string{}, HelpCommand)
+	RegisterCommand("clear", "Clear the console window.", []string{}, ClearCommand)
+	RegisterCommand("exit", "Exit the application.", []string{}, ExitCommand)
 }
 
 func RegisterCommand(name string, description string, args []string, runnable func([]string)) {
