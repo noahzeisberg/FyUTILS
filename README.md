@@ -14,6 +14,7 @@ This time, I can skip a lot of unnecessary stuff because I have a framework for 
 which includes a lot of features, FyUTILS needs.
 This new version should also be a lot more lightweight.
 For the moment,
-I won't release a version 2.0.0
+I won't release the new version v2.0.0
 because there are way too few features than I wanted for the biggest update since the release of FUELs. 
-Maybe I'll release 2.0.0 after I finished developing the ARP scanner, but I'm currently not sure.
+Maybe I'll release the v2.0.0 version
+after I finished developing the ARP scanner and the updating system to always provide you with the newest version.
