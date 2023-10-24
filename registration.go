@@ -10,7 +10,7 @@ func CommandRegistration() {
 	RegisterCommand("portscan", "Scan for open ports on the target.", Arguments{"addr"}, PortscanCommand)
 	RegisterCommand("gather", "Gather information about the target.", Arguments{"addr"}, GatherCommand)
 	// RegisterCommand("update", "Update your FyUTILS instance.", Arguments{}, UpdateCommand)
-	// RegisterCommand("help", "Show some help about the commands.", Arguments{}, HelpCommand)
+	RegisterCommand("help", "Show some help about the commands.", Arguments{}, HelpCommand)
 	RegisterCommand("clear", "Clear the console window.", Arguments{}, ClearCommand)
 	RegisterCommand("exit", "Exit the application.", Arguments{}, ExitCommand)
 }
