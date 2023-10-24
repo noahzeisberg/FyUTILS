@@ -6,6 +6,7 @@ FyUTILS is a hacking and utility tool with features such as DoS attacks and a po
 
 [![AppDirectory](badges/appdirectory_vector.svg)](https://nyronium.com/products/fyutils)
 [![Scorpion](badges/scorpion_vector.svg)](scorpion://get/noahonfyre/fyutils)
+[![Nitro](badges/nitro_vector.svg)](https://github.com/NoahOnFyre/nitro)
 
 # Disclaimer
 Hacking is illegal.
