@@ -88,7 +88,7 @@ func GatherCommand(args []string) {
 	json.Unmarshal(body, &data)
 
 	logging.Log("Gathering report for " + color.Blue + data.IP)
-	logging.Log("Addess type" + color.Gray + ": " + color.Blue + data.Type)
+	logging.Log("Address type" + color.Gray + ": " + color.Blue + data.Type)
 	logging.Log("Continent" + color.Gray + ": " + color.Blue + data.Continent + color.Gray + " (" + data.ContinentCode + ")")
 	logging.Log("Country" + color.Gray + ": " + color.Blue + data.Country + color.Gray + " (" + data.CountryCode + ")")
 	logging.Log("Region" + color.Gray + ": " + color.Blue + data.Region + color.Gray + " (" + data.RegionCode + ")")
