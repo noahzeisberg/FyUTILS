@@ -22,6 +22,7 @@ func FloodCommand(args []string) {
 
 	if err != nil {
 		logging.Error("Failed to connect to target: " + err.Error())
+		return
 	}
 
 	i := 0
@@ -32,11 +33,13 @@ func FloodCommand(args []string) {
 
 		if err != nil {
 			logging.Error("Cannot generate random bytes.")
+			break
 		}
 
 		_, err = conn.Write(bytes)
 		if err != nil {
 			logging.Error("Failed to send data to connection.")
+			break
 		}
 		logging.Log("Bytes successfully sent to " + conn.RemoteAddr().String() + color.Gray + " (" + strconv.Itoa(i) + ")" + "\r")
 	}
