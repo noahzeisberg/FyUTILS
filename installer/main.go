@@ -1,4 +1,4 @@
-package installer
+package main
 
 import (
 	"context"
@@ -7,8 +7,9 @@ import (
 	"github.com/NoahOnFyre/gengine/networking/requests"
 	"github.com/google/go-github/github"
 	"golang.org/x/sys/windows/registry"
-	"log"
 	"os"
+	"os/exec"
+	"strings"
 )
 
 var githubClient = github.NewClient(nil)
@@ -18,9 +19,9 @@ func main() {
 	logging.Warn("If this program doesn't have elevated privileges, it'll crash.")
 	logging.Warn("Please exit now, if the installer doesn't has elevated privileges.")
 
-	logging.Print()
+	logging.Print(color.Reset)
 	logging.Input("Press enter to continue.")
-	logging.Print()
+	logging.Print(color.Reset)
 
 	logging.Log("Starting FyUTILS installer...")
 	logging.Log("Fetching newest release...")
@@ -28,8 +29,11 @@ func main() {
 	if err != nil {
 		return
 	}
-	logging.Log("Target version: " + color.Blue + release.GetTagName() + color.Gray + " (" + release.GetNodeID() + ")")
-	logging.Log("URL: " + release.GetHTMLURL())
+	logging.Print()
+	logging.Log("Target Version: " + color.Blue + release.GetTagName() + color.Gray + " (" + release.GetNodeID() + ")")
+	logging.Log("Description: " + color.Gray + strings.Split(release.GetBody(), "\n")[0])
+	logging.Log("Uploaded:"+color.Blue, release.GetPublishedAt().Month(), release.GetPublishedAt().Day(), release.GetPublishedAt().Year(), color.Gray+" - by @noahonfyre")
+	logging.Print()
 	for {
 		confirmation := logging.Input(logging.Prefix(0) + " " + "Do you want to download this version? " + color.Gray + "(yes/no): " + color.Reset)
 		if confirmation == "yes" {
@@ -60,28 +64,43 @@ func main() {
 			break
 		}
 	}
+	logging.Print()
 	logging.Log("Download complete!")
 	logging.Log("File saved in \"" + color.Blue + coreDir + "\\fy.exe" + color.Reset + "\"!")
-	logging.Print()
 	logging.Log("Backing up your PATH variable...")
 	pathBackup := GetEnvironment("PATH")
-	os.WriteFile("C:\\PATHBACKUP.TXT", []byte(pathBackup), os.ModePerm)
+	err = os.WriteFile("C:\\PATHBACKUP.TXT", []byte(pathBackup), os.ModePerm)
+	if err != nil {
+		logging.Error("Failed to backup PATH!")
+		return
+	}
 	logging.Log("PATH backup file saved in \"" + color.Blue + "C:\\PATHBACKUP.TXT" + color.Reset + "\"")
-	logging.Log("")
+	logging.Log("Adding FyUTILS to path...")
+	SetEnvironment("PATH", pathBackup+";"+coreDir)
+	logging.Log("Success!")
 	logging.Print()
+	logging.Warn("If you enjoy FyUTILS, please consider to star my repository on GitHub.")
+	logging.Warn("This would support me a lot and is completely free for you. :D")
+	logging.Warn("⭐ https://github.com/NoahOnFyre/FyUTILS ⭐")
+	logging.Print()
+	logging.Log("Please restart your PC now to apply changes.")
+	logging.Input("Press enter to restart your PC.")
+	exec.Command("shutdown", "-r").Run()
 	os.Exit(0)
 }
 
 func SetEnvironment(key string, value string) {
 	k, err := registry.OpenKey(registry.LOCAL_MACHINE, `SYSTEM\ControlSet001\Control\Session Manager\Environment`, registry.ALL_ACCESS)
 	if err != nil {
-		log.Fatal(err)
+		logging.Error("Failed to open registry entry:", err)
+		return
 	}
 	defer k.Close()
 
 	err = k.SetStringValue(key, value)
 	if err != nil {
-		log.Fatal(err)
+		logging.Error("Failed to write registry entry:", err)
+		return
 	}
 }
 
@@ -89,12 +108,14 @@ func GetEnvironment(key string) string {
 	k, err := registry.OpenKey(registry.LOCAL_MACHINE, `SYSTEM\ControlSet001\Control\Session Manager\Environment`, registry.ALL_ACCESS)
 	if err != nil {
 		logging.Error("Failed to open registry entry:", err)
+		os.Exit(1)
 	}
 	defer k.Close()
 
 	value, _, err := k.GetStringValue(key)
 	if err != nil {
 		logging.Error("Failed to read registry entry:", err)
+		os.Exit(1)
 	}
 	return value
 }
