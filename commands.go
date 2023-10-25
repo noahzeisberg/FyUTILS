@@ -135,7 +135,7 @@ func UpdateCommand(args []string) {
 			break
 		}
 	}
-	logging.Log("Exiting FyUTILS...")
+	logging.Log("Update complete! Please restart FyUTILS to apply changes.")
 	os.Exit(0)
 }
 
