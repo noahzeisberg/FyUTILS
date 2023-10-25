@@ -1,3 +1,6 @@
 # Ignore built application and development testing scripts.
 fy.exe
 test.bat
+
+# Ignore the installer built application
+/installer/installer.exe
