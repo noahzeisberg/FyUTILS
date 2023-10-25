@@ -1,10 +1,5 @@
 package main
 
-import (
-	"github.com/NoahOnFyre/gengine/logging"
-	"strconv"
-)
-
 func CommandRegistration() {
 	RegisterCommand("flood", "Run a denial of service attack on the target.", []string{"addr", "port"}, FloodCommand)
 	RegisterCommand("portscan", "Scan for open ports on the target.", []string{"addr", "max-port"}, PortscanCommand)
@@ -26,6 +21,4 @@ func RegisterCommand(name string, description string, args []string, runnable fu
 		Args:        arguments,
 		Run:         runnable,
 	})
-
-	logging.Log("Successfully registered command \"" + name + "\" with " + strconv.Itoa(len(args)) + " arguments.")
 }

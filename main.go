@@ -23,8 +23,6 @@ var (
 )
 
 func Menu() {
-	logging.Clear()
-
 	logging.Print()
 	logging.Print(color.Blue + "    ______      __  ______________   _____")
 	logging.Print(color.Blue + "   / ____/_  __/ / / /_  __/  _/ /  / ___/")
@@ -36,20 +34,14 @@ func Menu() {
 }
 
 func main() {
-	SetState("Initializing...")
 	logging.SetMainColor(color.BlueBg)
 
-	logging.Log("Checking paths...")
-	SetState("Checking paths...")
 	CheckPaths([]string{
 		homeDir,
 		mainDir,
 	})
 
-	logging.Log("Registering commands...")
-	SetState("Registering commands...")
 	CommandRegistration()
-
 	Menu()
 
 	for {

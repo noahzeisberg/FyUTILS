@@ -150,6 +150,7 @@ func HelpCommand(args []string) {
 }
 
 func ClearCommand(args []string) {
+	logging.Clear()
 	Menu()
 }
 
