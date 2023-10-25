@@ -17,8 +17,7 @@ var (
 	homeDir, _    = os.UserHomeDir()
 	currentDir, _ = os.Getwd()
 	mainDir       = homeDir + "\\.fy\\"
-	coreDir       = mainDir + "core\\"
-	configPath    = coreDir + "config.json"
+	configPath    = mainDir + "config.json"
 
 	commands []Command
 )
@@ -45,7 +44,6 @@ func main() {
 	CheckPaths([]string{
 		homeDir,
 		mainDir,
-		coreDir,
 	})
 
 	logging.Log("Registering commands...")
