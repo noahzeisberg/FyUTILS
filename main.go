@@ -99,7 +99,7 @@ func RunCommand(command string, args []string) {
 		cmdArgs = append(cmdArgs, "/c")
 		cmdArgs = append(cmdArgs, command)
 		cmdArgs = append(cmdArgs, args...)
-		output, _ := exec.Command("cmd.exe", cmdArgs...).Output()
+		output, _ := exec.Command("cmd.exe", cmdArgs...).CombinedOutput()
 		logging.Print(string(output))
 	}
 }
