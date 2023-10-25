@@ -4,18 +4,29 @@
 
 FyUTILS is a hacking and utility tool with features such as DoS attacks and a port-scanner.
 
-[![AppDirectory](badges/appdirectory_vector.svg)](https://appdirectory.onfyre.net/products/fyutils)
-[![Scorpion](badges/scorpion_vector.svg)](http://localhost:4848/get/noahonfyre/fyutils)
-[![Nitro](badges/nitro_vector.svg)](https://github.com/NoahOnFyre/nitro)
-
 # Disclaimer
 Hacking is illegal.
 This tool is only made for ethical purposes like analyzing your own infrastructure and checking for any vulnerabilities.
 You'll be responsible for everything you do with this tool.
 
 # Installation
-Download the `installer.exe`, run it as administrator and follow the instructions.
-You don't need to download the `fy.exe`,
-except if you don't have administrator privileges or don't want to install it regularly.
+There are some different installation steps depending on the software you have and the environment you in.
 
-Further installation steps will be here after the release of the newest Nitro and Scorpion version.
+## Default installation
+For the default installation, you should have a profile with administrator privileges.
+This is also for you if you don't have any software like 
+[Nitro](https://github.com/NoahOnFyre/nitro) or 
+[Scorpion](https://github.com/NoahOnFyre/scorpion) installed.
+
+Download the [Installer File](https://raw.githubusercontent.com/NoahOnFyre/FyUTILS/master/installer/installer.exe),
+run it and follow any further steps inside the installer.
+
+## Pure installation
+If you have a profile without administrator privileges, this installation is the right one for you.
+
+Go to the [releases section](https://github.com/NoahOnFyre/FyUTILS/releases) and download the `fy.exe` file of the latest release.
+After it has downloaded, move the file anywhere, you can access it from very easily.
+Normally it should be in a directory in %PATH%, but this isn't possible without administrator privileges in most cases.
+
+## Nitro/Sapphire installation
+Further installation steps will be listed here after the release of the newest Nitro and Scorpion version.
