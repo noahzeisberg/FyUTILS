@@ -1,17 +1,22 @@
 package main
 
 import (
+	"context"
 	"encoding/json"
 	"github.com/NoahOnFyre/gengine/color"
 	"github.com/NoahOnFyre/gengine/convert"
 	"github.com/NoahOnFyre/gengine/logging"
-	"io"
+	"github.com/NoahOnFyre/gengine/networking/requests"
+	"github.com/google/go-github/github"
 	"net"
-	"net/http"
 	"os"
 	"strconv"
 	"strings"
 	"sync"
+)
+
+var (
+	githubClient = github.NewClient(nil)
 )
 
 func FloodCommand(args []string) {
@@ -67,20 +72,9 @@ func GatherCommand(args []string) {
 
 	data := AddressInformation{}
 
-	res, err := http.Get("https://ipwho.is/" + addr)
+	body := requests.Get("https://ipwho.is/" + addr)
 
-	if err != nil {
-		logging.Error("API requests failed!")
-	}
-
-	defer res.Body.Close()
-	body, err := io.ReadAll(res.Body)
-
-	if err != nil {
-		logging.Error("Reading response body failed!")
-	}
-
-	err = json.Unmarshal(body, &data)
+	err := json.Unmarshal(body, &data)
 	if err != nil {
 		logging.Error("Failed to parse data.")
 		return
@@ -108,6 +102,41 @@ func GatherCommand(args []string) {
 	logging.Log("Timezone" + color.Gray + ": " + color.Blue + data.Timezone.ID)
 	logging.Log("Timezone Abbreviation" + color.Gray + ": " + color.Blue + data.Timezone.Abbreviation)
 	logging.Log("UTC" + color.Gray + ": " + color.Blue + data.Timezone.UTC)
+}
+
+func UpdateCommand(args []string) {
+	release, _, err := githubClient.Repositories.GetLatestRelease(context.Background(), "NoahOnFyre", "FyUTILS")
+	if err != nil {
+		logging.Error("Failed to fetch version information from GitHub.")
+		return
+	}
+
+	logging.Log("Version Diff: " + color.Red + version + color.Gray + " -> " + color.Green + release.GetTagName())
+	logging.Print()
+	logging.Log("Target Version: " + color.Blue + release.GetTagName() + color.Gray + " (" + release.GetNodeID() + ")")
+	logging.Log("Description: " + color.Gray + strings.Split(release.GetBody(), "\n")[0])
+	logging.Log("Uploaded:"+color.Blue, release.GetPublishedAt().Month(), release.GetPublishedAt().Day(), release.GetPublishedAt().Year(), color.Gray+" - by @noahonfyre")
+	logging.Print()
+	for {
+		confirmation := logging.Input(logging.Prefix(0) + " " + "Do you want to update to this version? " + color.Gray + "(yes/no): " + color.Reset)
+		if confirmation == "yes" {
+			break
+		} else if confirmation == "no" {
+			return
+		} else {
+			continue
+		}
+	}
+	logging.Log("Downloading...")
+	for _, asset := range release.Assets {
+		if asset.GetName() == "fy.exe" {
+			content := requests.Get(asset.GetBrowserDownloadURL())
+			os.WriteFile(homeDir+"\\fy.exe", content, os.ModePerm)
+			break
+		}
+	}
+	logging.Log("Exiting FyUTILS...")
+	os.Exit(0)
 }
 
 func HelpCommand(args []string) {
