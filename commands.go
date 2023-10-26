@@ -131,12 +131,12 @@ func UpdateCommand(args []string) {
 		if asset.GetName() == "fy.exe" {
 			content := requests.Get(asset.GetBrowserDownloadURL())
 			logging.Log("Downloading... " + color.Gray + "(" + convert.FormatInt(asset.GetSize()) + "B" + ")")
-			err = os.Remove(homeDir + "\\fy.exe")
+			err = os.Remove(mainDir + "\\fy.exe")
 			if err != nil {
 				logging.Error("Failed to delete file:", err)
 				return
 			}
-			os.WriteFile(homeDir+"\\fy.exe", content, os.ModePerm)
+			os.WriteFile(mainDir+"\\fy.exe", content, os.ModePerm)
 			break
 		}
 	}
