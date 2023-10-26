@@ -18,17 +18,33 @@ var githubClient = github.NewClient(nil)
 func main() {
 	logging.SetMainColor(color.BlueBg)
 
-	logging.Warn("PLEASE BE SURE TO RUN THIS AS ADMINISTRATOR.")
-	logging.Warn("If this program doesn't has elevated privileges, it'll crash.")
-	logging.Warn("Please exit now, if the installer doesn't has elevated privileges.")
+	var isInstall bool
 
-	logging.Print(color.Reset)
-	logging.Input("Press enter to continue.")
-	logging.Print(color.Reset)
+	homeDir, _ := os.UserHomeDir()
+	mainDir := homeDir + "\\.fy"
+
+	if filesystem.Exists(mainDir + "\\fy.exe") {
+		isInstall = false
+	} else {
+		isInstall = true
+	}
+
+	if isInstall {
+		logging.Warn("PLEASE BE SURE TO RUN THIS AS ADMINISTRATOR.")
+		logging.Warn("If this program doesn't has elevated privileges, it'll crash.")
+		logging.Warn("Please exit now, if the installer doesn't has elevated privileges.")
+
+		logging.Print(color.Reset)
+		logging.Input("Press enter to continue.")
+		logging.Print(color.Reset)
+	}
 
 	logging.Clear()
 
 	logging.Log("Starting FyUTILS installer...")
+
+	os.MkdirAll(mainDir, os.ModePerm)
+
 	logging.Log("Fetching newest release...")
 	release, _, err := githubClient.Repositories.GetLatestRelease(context.Background(), "NoahOnFyre", "FyUTILS")
 	if err != nil {
@@ -53,10 +69,6 @@ func main() {
 		}
 	}
 
-	homeDir, _ := os.UserHomeDir()
-	mainDir := homeDir + "\\.fy"
-	os.MkdirAll(mainDir, os.ModePerm)
-
 	for _, asset := range release.Assets {
 		if asset.GetName() == "fy.exe" {
 			content := requests.Get(asset.GetBrowserDownloadURL())
@@ -68,14 +80,6 @@ func main() {
 			}
 			break
 		}
-	}
-
-	var isInstall bool
-
-	if filesystem.Exists(mainDir + "\\fy.exe") {
-		isInstall = false
-	} else {
-		isInstall = true
 	}
 
 	if isInstall {
@@ -114,6 +118,7 @@ func main() {
 		exec.Command("shutdown", "-r").Run()
 	} else {
 		logging.Input("Press enter to exit updater.")
+		exec.Command("cmd.exe", "/c", "start", "fy").Run()
 	}
 	os.Exit(0)
 }
