@@ -15,13 +15,17 @@ import (
 var githubClient = github.NewClient(nil)
 
 func main() {
+	logging.SetMainColor(color.BlueBg)
+
 	logging.Warn("PLEASE BE SURE TO RUN THIS AS ADMINISTRATOR.")
-	logging.Warn("If this program doesn't have elevated privileges, it'll crash.")
+	logging.Warn("If this program doesn't has elevated privileges, it'll crash.")
 	logging.Warn("Please exit now, if the installer doesn't has elevated privileges.")
 
 	logging.Print(color.Reset)
 	logging.Input("Press enter to continue.")
 	logging.Print(color.Reset)
+
+	logging.Clear()
 
 	logging.Log("Starting FyUTILS installer...")
 	logging.Log("Fetching newest release...")
