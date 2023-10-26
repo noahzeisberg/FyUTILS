@@ -1,6 +1,10 @@
 # FyUTILS
 
-![Downloads](https://img.shields.io/github/downloads/NoahOnFyre/FyUTILS/total?style=for-the-badge&logo=github&color=%234f46e5&link=https%3A%2F%2Fgithub.com%2FNoahOnFyre%2FFyUTILS%2Freleases%2Flatest)
+![Language](https://img.shields.io/badge/dynamic/json?color=blue&label=Language&query=language&url=https%3A%2F%2Fapi.github.com%2Frepos%2FNoahOnFyre%2FFyUTILS&style=for-the-badge&logo=github&color=%234f46e5)
+![GitHub all releases](https://img.shields.io/github/downloads/NoahOnFyre/FyUTILS/total?style=for-the-badge&logo=github&color=%234f46e5&link=https%3A%2F%2Fgithub.com%2FNoahOnFyre%2FFyUTILS%2Freleases%2Flatest)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/NoahOnFyre/FyUTILS?style=for-the-badge&logo=github&color=%234f46e5&link=https%3A%2F%2Fgithub.com%2FNoahOnFyre%2FFyUTILS%2Freleases%2Flatest)
+![GitHub issues](https://img.shields.io/github/issues-raw/NoahOnFyre/FyUTILS?style=for-the-badge&logo=github&color=%234f46e5&link=https%3A%2F%2Fgithub.com%2FNoahOnFyre%2FFyUTILS%2Fissues)
+![GitHub last commit](https://img.shields.io/github/last-commit/NoahOnFyre/FyUTILS?style=for-the-badge&logo=github&color=%234f46e5&link=https%3A%2F%2Fgithub.com%2FNoahOnFyre%2FFyUTILS%2Fcommits)
 
 FyUTILS is a hacking and utility tool with features such as DoS attacks and a port-scanner.
 
