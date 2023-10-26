@@ -53,13 +53,13 @@ func main() {
 	}
 
 	homeDir, _ := os.UserHomeDir()
-	coreDir := homeDir + "\\.fy\\core"
-	os.MkdirAll(coreDir, os.ModePerm)
+	mainDir := homeDir + "\\.fy"
+	os.MkdirAll(mainDir, os.ModePerm)
 
 	for _, asset := range release.Assets {
 		if asset.GetName() == "fy.exe" {
 			content := requests.Get(asset.GetBrowserDownloadURL())
-			err := os.WriteFile(coreDir+"\\fy.exe", content, os.ModePerm)
+			err := os.WriteFile(mainDir+"\\fy.exe", content, os.ModePerm)
 			if err != nil {
 				logging.Error("Failed to write content to file!")
 				logging.Error("Please try to run the installer as administrator/sudo again.")
@@ -70,7 +70,7 @@ func main() {
 	}
 	logging.Print()
 	logging.Log("Download complete!")
-	logging.Log("File saved in \"" + color.Blue + coreDir + "\\fy.exe" + color.Reset + "\"!")
+	logging.Log("File saved in \"" + color.Blue + mainDir + "\\fy.exe" + color.Reset + "\"!")
 	logging.Log("Backing up your PATH variable...")
 	pathBackup := GetEnvironment("PATH")
 	err = os.WriteFile("C:\\PATHBACKUP.TXT", []byte(pathBackup), os.ModePerm)
@@ -80,7 +80,7 @@ func main() {
 	}
 	logging.Log("PATH backup file saved in \"" + color.Blue + "C:\\PATHBACKUP.TXT" + color.Reset + "\"")
 	logging.Log("Adding FyUTILS to path...")
-	SetEnvironment("PATH", pathBackup+";"+coreDir)
+	SetEnvironment("PATH", pathBackup+";"+mainDir)
 	logging.Log("Success!")
 	logging.Print()
 	logging.Warn("If you enjoy FyUTILS, please consider to star my repository on GitHub.")
