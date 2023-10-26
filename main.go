@@ -1,10 +1,13 @@
 package main
 
 import (
+	"context"
 	"github.com/NoahOnFyre/gengine/color"
 	"github.com/NoahOnFyre/gengine/convert"
 	"github.com/NoahOnFyre/gengine/logging"
 	"github.com/NoahOnFyre/gengine/utils"
+	"github.com/google/go-github/github"
+	"golang.org/x/mod/semver"
 	"os"
 	"os/exec"
 	"strings"
@@ -13,7 +16,7 @@ import (
 var (
 	username, _   = strings.CutPrefix(convert.ValueOf(utils.Catch(os.UserHomeDir())), "C:\\Users\\")
 	device, _     = os.Hostname()
-	version       = "v1.13.2"
+	version       = "v1.13.1"
 	homeDir, _    = os.UserHomeDir()
 	currentDir, _ = os.Getwd()
 	mainDir       = homeDir + "\\.fy\\"
@@ -36,6 +39,19 @@ func Menu() {
 func main() {
 	logging.SetMainColor(color.BlueBg)
 
+	var newestRelease *github.RepositoryRelease
+
+	go func() {
+		release, _, err := githubClient.Repositories.GetLatestRelease(context.Background(), "NoahOnFyre", "FyUTILS")
+		if err != nil {
+			return
+		}
+
+		if semver.Compare(release.GetTagName(), version) == 1 {
+			newestRelease = release
+		}
+	}()
+
 	CheckPaths([]string{
 		homeDir,
 		mainDir,
@@ -54,6 +70,13 @@ func main() {
 		logging.Print()
 		command, args := ParseCommand(input)
 		RunCommand(command, args)
+		if newestRelease != nil {
+			logging.Print()
+			logging.Print(color.Gray + "┌" + MultiString("─", 119))
+			logging.Print(color.Gray + "│ " + color.Reset + "A new version of FyUTILS is available!")
+			logging.Print(color.Gray + "│ " + color.Reset + "Version Diff: " + color.Red + version + color.Gray + " -> " + color.Green + newestRelease.GetTagName())
+			logging.Print(color.Gray + "└" + MultiString("─", 119))
+		}
 	}
 }
 
