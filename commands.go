@@ -10,6 +10,7 @@ import (
 	"github.com/google/go-github/github"
 	"net"
 	"os"
+	"os/exec"
 	"strconv"
 	"strings"
 	"sync"
@@ -127,20 +128,8 @@ func UpdateCommand(args []string) {
 			continue
 		}
 	}
-	for _, asset := range release.Assets {
-		if asset.GetName() == "fy.exe" {
-			content := requests.Get(asset.GetBrowserDownloadURL())
-			logging.Log("Downloading... " + color.Gray + "(" + convert.FormatInt(asset.GetSize()) + "B" + ")")
-			err = os.Remove(mainDir + "\\fy.exe")
-			if err != nil {
-				logging.Error("Failed to delete file:", err)
-				return
-			}
-			os.WriteFile(mainDir+"\\fy.exe", content, os.ModePerm)
-			break
-		}
-	}
-	logging.Log("Update complete! Please restart FyUTILS to apply changes.")
+	logging.Log("Starting updater...")
+	exec.Command("cmd.exe", "/c", "start", "updater.exe")
 	os.Exit(0)
 }
 
