@@ -32,5 +32,5 @@ Go to the [Releases Section](https://github.com/NoahOnFyre/FyUTILS/releases) and
 After it has downloaded, move the file anywhere, you can access it from very easily.
 Normally it should be in a directory in %PATH%, but this isn't possible without administrator privileges in most cases.
 
-## Nitro/Sapphire installation
+## Nitro/Scorpion installation
 Further installation steps will be listed here after the release of the newest Nitro and Scorpion version.
