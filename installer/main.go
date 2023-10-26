@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"github.com/NoahOnFyre/gengine/color"
+	"github.com/NoahOnFyre/gengine/filesystem"
 	"github.com/NoahOnFyre/gengine/logging"
 	"github.com/NoahOnFyre/gengine/networking/requests"
 	"github.com/google/go-github/github"
@@ -68,28 +69,52 @@ func main() {
 			break
 		}
 	}
+
+	var isInstall bool
+
+	if filesystem.Exists(mainDir + "\\fy.exe") {
+		isInstall = false
+	} else {
+		isInstall = true
+	}
+
+	if isInstall {
+		content := requests.Get("https://raw.githubusercontent.com/NoahOnFyre/FyUTILS/master/installer/installer.exe")
+		err = os.WriteFile(mainDir+"\\updater.exe", content, os.ModePerm)
+		if err != nil {
+			logging.Error("Failed to write content to file!")
+			logging.Error("Please try to run the installer as administrator/sudo again.")
+			return
+		}
+	}
+
 	logging.Print()
 	logging.Log("Download complete!")
-	logging.Log("File saved in \"" + color.Blue + mainDir + "\\fy.exe" + color.Reset + "\"!")
-	logging.Log("Backing up your PATH variable...")
-	pathBackup := GetEnvironment("PATH")
-	err = os.WriteFile("C:\\PATHBACKUP.TXT", []byte(pathBackup), os.ModePerm)
-	if err != nil {
-		logging.Error("Failed to backup PATH!")
-		return
+	if isInstall {
+		logging.Log("Backing up your PATH variable...")
+		pathBackup := GetEnvironment("PATH")
+		err = os.WriteFile("C:\\PATHBACKUP.TXT", []byte(pathBackup), os.ModePerm)
+		if err != nil {
+			logging.Error("Failed to backup PATH!")
+			return
+		}
+		logging.Log("PATH backup file saved in \"" + color.Blue + "C:\\PATHBACKUP.TXT" + color.Reset + "\"")
+		logging.Log("Adding FyUTILS to path...")
+		SetEnvironment("PATH", pathBackup+";"+mainDir)
 	}
-	logging.Log("PATH backup file saved in \"" + color.Blue + "C:\\PATHBACKUP.TXT" + color.Reset + "\"")
-	logging.Log("Adding FyUTILS to path...")
-	SetEnvironment("PATH", pathBackup+";"+mainDir)
 	logging.Log("Success!")
 	logging.Print()
 	logging.Warn("If you enjoy FyUTILS, please consider to star my repository on GitHub.")
 	logging.Warn("This would support me a lot and is completely free for you. :D")
 	logging.Warn("⭐ https://github.com/NoahOnFyre/FyUTILS ⭐")
 	logging.Print()
-	logging.Log("Please restart your PC now to apply changes.")
-	logging.Input("Press enter to restart your PC.")
-	exec.Command("shutdown", "-r").Run()
+	if isInstall {
+		logging.Log("Please restart your PC now to apply changes.")
+		logging.Input("Press enter to restart your PC.")
+		exec.Command("shutdown", "-r").Run()
+	} else {
+		logging.Input("Press enter to exit updater.")
+	}
 	os.Exit(0)
 }
 
