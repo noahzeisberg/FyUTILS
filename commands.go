@@ -129,7 +129,7 @@ func UpdateCommand(args []string) {
 		}
 	}
 	logging.Log("Starting updater...")
-	exec.Command("cmd.exe", "/c", "start", "updater.exe")
+	exec.Command("cmd.exe", "/c", "start", "updater.exe").Run()
 	os.Exit(0)
 }
 
