@@ -51,7 +51,7 @@ func FloodCommand(args []string) {
 }
 
 // PortscanCommand Needs a better solution for not crashing, when too many ports are scanned at once.
-// This is currently fixed by using a user-defined limit of ports to scan.
+// This is currently fixed by using a limit of 1024 ports to scan.
 func PortscanCommand(args []string) {
 	addr := args[0]
 	var wg sync.WaitGroup
