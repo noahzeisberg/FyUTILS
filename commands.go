@@ -127,10 +127,10 @@ func UpdateCommand(args []string) {
 			continue
 		}
 	}
-	logging.Log("Downloading...")
 	for _, asset := range release.Assets {
 		if asset.GetName() == "fy.exe" {
 			content := requests.Get(asset.GetBrowserDownloadURL())
+			logging.Log("Downloading... " + color.Gray + "(" + convert.FormatInt(asset.GetSize()) + "B" + ")")
 			os.WriteFile(homeDir+"\\fy.exe", content, os.ModePerm)
 			break
 		}
