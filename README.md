@@ -28,7 +28,7 @@ run it and follow any further steps inside the installer.
 ## Pure installation
 If you have a profile without administrator privileges, this installation is the right one for you.
 
-Go to the [releases section](https://github.com/NoahOnFyre/FyUTILS/releases) and download the `fy.exe` file of the latest release.
+Go to the [Releases Section](https://github.com/NoahOnFyre/FyUTILS/releases) and download the `fy.exe` file of the latest release.
 After it has downloaded, move the file anywhere, you can access it from very easily.
 Normally it should be in a directory in %PATH%, but this isn't possible without administrator privileges in most cases.
 
