@@ -14,13 +14,12 @@ import (
 )
 
 var (
-	username, _   = strings.CutPrefix(convert.ValueOf(utils.Catch(os.UserHomeDir())), "C:\\Users\\")
-	device, _     = os.Hostname()
-	version       = "v1.13.4"
-	homeDir, _    = os.UserHomeDir()
-	currentDir, _ = os.Getwd()
-	mainDir       = homeDir + "\\.fy\\"
-	configPath    = mainDir + "config.json"
+	username, _ = strings.CutPrefix(convert.ValueOf(utils.Catch(os.UserHomeDir())), "C:\\Users\\")
+	device, _   = os.Hostname()
+	version     = "v1.14.0"
+	homeDir, _  = os.UserHomeDir()
+	mainDir     = homeDir + "\\.fy\\"
+	configPath  = mainDir + "config.json"
 
 	commands []Command
 )
@@ -63,6 +62,7 @@ func main() {
 	for {
 		SetState("Idle")
 		logging.Print()
+		currentDir, _ := os.Getwd()
 		input := logging.Input(color.Gray + "┌───[" + color.Blue + username + color.Gray + "@" + color.Reset + device + color.Gray + "]───(" + color.Reset + currentDir + color.Gray + ")\n" + color.Gray + "└─> " + color.Reset)
 		if input == "" {
 			continue
