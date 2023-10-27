@@ -56,20 +56,22 @@ func main() {
 		logging.Log("Description: " + color.Gray + strings.Split(release.GetBody(), "\n")[0])
 		logging.Log("Uploaded:"+color.Blue, release.GetPublishedAt().Month(), release.GetPublishedAt().Day(), release.GetPublishedAt().Year(), color.Gray+" - by @noahonfyre")
 		logging.Print()
-	}
-	for {
-		confirmation := logging.Input(logging.Prefix(0) + " " + "Do you want to download this version? " + color.Gray + "(yes/no): " + color.Reset)
-		if confirmation == "yes" {
-			logging.Log("Starting installation...")
-			break
-		} else if confirmation == "no" {
-			logging.Log("Exiting...")
-			return
-		} else {
-			logging.Error("Invalid argument!")
-			continue
+		for {
+			confirmation := logging.Input(logging.Prefix(0) + " " + "Do you want to download this version? " + color.Gray + "(yes/no): " + color.Reset)
+			if confirmation == "yes" {
+				logging.Log("Starting installation...")
+				break
+			} else if confirmation == "no" {
+				logging.Log("Exiting...")
+				return
+			} else {
+				logging.Error("Invalid argument!")
+				continue
+			}
 		}
 	}
+
+	logging.Log("Downloading files...")
 
 	for _, asset := range release.Assets {
 		if asset.GetName() == "fy.exe" {
