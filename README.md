@@ -13,24 +13,44 @@ Hacking is illegal.
 This tool is only made for ethical purposes like analyzing your own infrastructure and checking for any vulnerabilities.
 You'll be responsible for everything you do with this tool.
 
+<!-- TOC -->
+* [FyUTILS](#fyutils)
+* [Disclaimer](#disclaimer)
+* [Installation](#installation)
+  * [Stable installation](#stable-installation)
+  * [Pure installation](#pure-installation)
+  * [Compile yourself](#compile-yourself)
+  * [Nitro/Scorpion installation](#nitroscorpion-installation)
+* [First launch](#first-launch)
+<!-- TOC -->
+
 # Installation
 There are some different installation steps depending on the software you have and the environment you in.
 
-## Default installation
+## Stable installation
 For the default installation, you should have a profile with administrator privileges.
-This is also for you if you don't have any software like 
-[Nitro](https://github.com/NoahOnFyre/nitro) or 
-[Scorpion](https://github.com/NoahOnFyre/scorpion) installed.
 
 Download the [Installer File](https://raw.githubusercontent.com/NoahOnFyre/FyUTILS/master/installer/installer.exe),
 run it and follow any further steps inside the installer.
 
 ## Pure installation
-If you have a profile without administrator privileges, this installation is the right one for you.
+If you don't have administrator privileges, you should use this installation.
 
 Go to the [Releases Section](https://github.com/NoahOnFyre/FyUTILS/releases) and download the `fy.exe` file of the latest release.
 After it has downloaded, move the file anywhere, you can access it from very easily.
 Normally it should be in a directory in %PATH%, but this isn't possible without administrator privileges in most cases.
 
+## Compile yourself
+You can also compile everything yourself by installing [Golang](https://go.dev/dl),
+cloning the repository using `git clone NoahOnFyre/FyUTILS` and build using `go build -o fy.exe`.
+
+Copy the `fy.exe` file to the location `%userprofile%\.fy\` and add the location to your PATH environment variable.
+
 ## Nitro/Scorpion installation
-Further installation steps will be listed here after the release of the newest Nitro and Scorpion version.
+Further installation steps will be listed here after the release of a Nitro and Scorpion version.
+
+Check [here](https://)
+
+# First launch
+After you installed FyUTILS, open up your command prompt and run the `fy` command to launch FyUTILS.
+FyUTILS may take some more time to start on its first launch because it has to configure some stuff.
