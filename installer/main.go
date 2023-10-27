@@ -50,11 +50,13 @@ func main() {
 	if err != nil {
 		return
 	}
-	logging.Print()
-	logging.Log("Target Version: " + color.Blue + release.GetTagName() + color.Gray + " (" + release.GetNodeID() + ")")
-	logging.Log("Description: " + color.Gray + strings.Split(release.GetBody(), "\n")[0])
-	logging.Log("Uploaded:"+color.Blue, release.GetPublishedAt().Month(), release.GetPublishedAt().Day(), release.GetPublishedAt().Year(), color.Gray+" - by @noahonfyre")
-	logging.Print()
+	if isInstall {
+		logging.Print()
+		logging.Log("Target Version: " + color.Blue + release.GetTagName() + color.Gray + " (" + release.GetNodeID() + ")")
+		logging.Log("Description: " + color.Gray + strings.Split(release.GetBody(), "\n")[0])
+		logging.Log("Uploaded:"+color.Blue, release.GetPublishedAt().Month(), release.GetPublishedAt().Day(), release.GetPublishedAt().Year(), color.Gray+" - by @noahonfyre")
+		logging.Print()
+	}
 	for {
 		confirmation := logging.Input(logging.Prefix(0) + " " + "Do you want to download this version? " + color.Gray + "(yes/no): " + color.Reset)
 		if confirmation == "yes" {
@@ -117,7 +119,7 @@ func main() {
 		logging.Input("Press enter to restart your PC.")
 		exec.Command("shutdown", "-r").Run()
 	} else {
-		logging.Input("Press enter to exit updater.")
+		logging.Input(color.Reset + "Press enter to exit updater.")
 		exec.Command("cmd.exe", "/c", "start", "fy").Run()
 	}
 	os.Exit(0)
