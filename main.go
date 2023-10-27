@@ -16,7 +16,7 @@ import (
 var (
 	username, _ = strings.CutPrefix(convert.ValueOf(utils.Catch(os.UserHomeDir())), "C:\\Users\\")
 	device, _   = os.Hostname()
-	version     = "v1.14.0"
+	version     = "v1.15.0"
 	homeDir, _  = os.UserHomeDir()
 	mainDir     = homeDir + "\\.fy\\"
 	configPath  = mainDir + "config.json"
