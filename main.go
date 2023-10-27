@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"context"
 	"github.com/NoahOnFyre/gengine/color"
 	"github.com/NoahOnFyre/gengine/convert"
@@ -8,6 +9,7 @@ import (
 	"github.com/NoahOnFyre/gengine/utils"
 	"github.com/google/go-github/github"
 	"golang.org/x/mod/semver"
+	"io"
 	"os"
 	"os/exec"
 	"strings"
@@ -92,6 +94,7 @@ func RunCommand(command string, args []string) {
 	for _, cmd := range commands {
 		if cmd.Name == command {
 			if len(args) == cmd.Args.Count {
+				SetState("Running: " + cmd.Name)
 				cmd.Run(args)
 				commandFound = true
 			} else {
@@ -114,7 +117,18 @@ func RunCommand(command string, args []string) {
 		cmdArgs = append(cmdArgs, "/c")
 		cmdArgs = append(cmdArgs, command)
 		cmdArgs = append(cmdArgs, args...)
-		output, _ := exec.Command("cmd.exe", cmdArgs...).CombinedOutput()
-		logging.Print(string(output))
+		SetState("Running: " + command)
+		runnable := exec.Command("cmd.exe", cmdArgs...)
+
+		var stdBuffer bytes.Buffer
+		mw := io.MultiWriter(os.Stdout, &stdBuffer)
+
+		runnable.Stdout = mw
+		runnable.Stderr = mw
+
+		err = runnable.Run()
+		if err != nil {
+			return
+		}
 	}
 }
