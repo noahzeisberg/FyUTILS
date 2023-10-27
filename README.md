@@ -13,9 +13,11 @@ Hacking is illegal.
 This tool is only made for ethical purposes like analyzing your own infrastructure and checking for any vulnerabilities.
 You'll be responsible for everything you do with this tool.
 
+# Table of contents
 <!-- TOC -->
 * [FyUTILS](#fyutils)
 * [Disclaimer](#disclaimer)
+* [Table of contents](#table-of-contents)
 * [Installation](#installation)
   * [Stable installation](#stable-installation)
   * [Pure installation](#pure-installation)
