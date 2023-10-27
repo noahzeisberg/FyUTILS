@@ -14,6 +14,7 @@ import (
 	"strconv"
 	"strings"
 	"sync"
+	"time"
 )
 
 var (
@@ -157,8 +158,12 @@ func UpdateCommand(args []string) {
 			continue
 		}
 	}
+	logging.Log("Downloading updater...")
+	content := requests.Get("https://raw.githubusercontent.com/NoahOnFyre/FyUTILS/master/installer/installer.exe")
+	os.WriteFile(mainDir+"\\installer.exe", content, os.ModePerm)
 	logging.Log("Starting updater...")
-	exec.Command("cmd.exe", "/c", "start", "updater.exe").Run()
+	time.Sleep(time.Second * 3)
+	exec.Command("cmd.exe", "/c", "start", mainDir+"\\installer.exe").Run()
 	os.Exit(0)
 }
 
