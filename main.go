@@ -18,7 +18,7 @@ import (
 var (
 	username, _ = strings.CutPrefix(convert.ValueOf(utils.Catch(os.UserHomeDir())), "C:\\Users\\")
 	device, _   = os.Hostname()
-	version     = "v1.15.0"
+	version     = "v1.16.0"
 	homeDir, _  = os.UserHomeDir()
 	mainDir     = homeDir + "\\.fy\\"
 	configPath  = mainDir + "config.json"
@@ -30,11 +30,11 @@ func Menu() {
 	logging.Print()
 	logging.Print(color.Blue + "    ______      __  ______________   _____")
 	logging.Print(color.Blue + "   / ____/_  __/ / / /_  __/  _/ /  / ___/")
-	logging.Print(color.Blue + "  / /_  / / / / / / / / /  / // /   \\__ \\" + "     " + color.Gray + "Version" + ": " + color.Blue + version + color.Reset)
-	logging.Print(color.Blue + " / __/ / /_/ / /_/ / / / _/ // /______/ /" + "     " + color.Gray + "User" + ": " + color.Blue + username + color.Reset)
-	logging.Print(color.Blue + "/_/    \\__, /\\____/ /_/ /___/_____/____/" + "      " + color.Gray + "Device" + ": " + color.Blue + device + color.Reset)
+	logging.Print(color.Blue + "  / /_  / / / / / / / / /  / // /   \\__ \\" + "     " + color.Gray + "\uE795 Version" + ": " + color.Blue + version + color.Reset)
+	logging.Print(color.Blue + " / __/ / /_/ / /_/ / / / _/ // /______/ /" + "     " + color.Gray + "\uF007 User" + ": " + color.Blue + username + color.Reset)
+	logging.Print(color.Blue + "/_/    \\__, /\\____/ /_/ /___/_____/____/" + "      " + color.Gray + "\uf108 Device" + ": " + color.Blue + device + color.Reset)
 	logging.Print(color.Blue + "       __/ /")
-	logging.Print(color.Blue + "     /____/")
+	logging.Print(color.Blue + "     /____/" + color.Reset + "   Made by NoahOnFyre with" + color.Blue + " \uf004")
 }
 
 func main() {
@@ -74,10 +74,10 @@ func main() {
 		RunCommand(command, args)
 		if newestRelease != nil {
 			logging.Print()
-			logging.Print(color.Gray + "┌" + MultiString("─", 119))
+			logging.Print(color.Gray + "┌" + MultiString("─", 120-1))
 			logging.Print(color.Gray + "│ " + color.Reset + "A new version of FyUTILS is available!")
 			logging.Print(color.Gray + "│ " + color.Reset + "Version Diff: " + color.Red + version + color.Gray + " -> " + color.Green + newestRelease.GetTagName())
-			logging.Print(color.Gray + "└" + MultiString("─", 119))
+			logging.Print(color.Gray + "└" + MultiString("─", 120-1))
 		}
 	}
 }
