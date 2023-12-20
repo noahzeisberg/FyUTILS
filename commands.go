@@ -135,7 +135,7 @@ func LsCommand(args []string) {
 }
 
 func UpdateCommand(args []string) {
-	release, _, err := githubClient.Repositories.GetLatestRelease(context.Background(), "NoahOnFyre", "FyUTILS")
+	release, _, err := githubClient.Repositories.GetLatestRelease(context.Background(), "noahonfyre", "FyUTILS")
 	if err != nil {
 		logging.Error("Failed to fetch version information from GitHub.")
 		return
@@ -157,11 +157,7 @@ func UpdateCommand(args []string) {
 			continue
 		}
 	}
-	logging.Log("Downloading updater...")
-	content := requests.Get("https://raw.githubusercontent.com/NoahOnFyre/FyUTILS/master/installer/installer.exe")
-	os.WriteFile(mainDir+"\\installer.exe", content, os.ModePerm)
-	logging.Log("Starting updater...")
-	exec.Command("cmd.exe", "/c", "start", mainDir+"\\installer.exe").Run()
+	exec.Command("powershell.exe", "/c", "Invoke-Expression(Invoke-RestMethod(https://raw.githubusercontent.com/noahonfyre/FyUTILS/master/get.ps1))").Run()
 	os.Exit(0)
 }
 
