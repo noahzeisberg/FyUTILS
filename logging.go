@@ -7,9 +7,13 @@ import (
 	"os"
 )
 
-func Log(msg ...any) {
+func Print(msg ...any) {
 	msg = append(msg, color.Reset)
 	fmt.Println(msg...)
+}
+
+func PrintR(msg ...any) {
+	fmt.Print(msg...)
 }
 
 func Warn(msg ...any) {
@@ -20,14 +24,6 @@ func Warn(msg ...any) {
 func Error(msg ...any) {
 	msg = append(msg, color.Red)
 	fmt.Println(msg...)
-}
-
-func Print(msg ...any) {
-	fmt.Println(msg...)
-}
-
-func PrintR(msg ...any) {
-	fmt.Print(msg...)
 }
 
 func Input(msg string) string {
