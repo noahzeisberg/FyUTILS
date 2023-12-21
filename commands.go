@@ -27,7 +27,7 @@ func FloodCommand(args []string) {
 	conn, err := net.Dial("tcp", net.JoinHostPort(host, port))
 
 	if err != nil {
-		logging.Error("Failed to connect to target: " + err.Error())
+		Error("Failed to connect to target: " + err.Error())
 		return
 	}
 
@@ -47,7 +47,7 @@ func FloodCommand(args []string) {
 			logging.Error("Failed to send data to connection.")
 			break
 		}
-		logging.Log("Bytes successfully sent to", conn.RemoteAddr().String()+color.Gray, "("+strconv.Itoa(i)+")")
+		Print("Bytes successfully sent to", conn.RemoteAddr().String()+color.Gray, "("+strconv.Itoa(i)+")")
 	}
 }
 
@@ -57,7 +57,7 @@ func PortscanCommand(args []string) {
 	addr := args[0]
 	var wg sync.WaitGroup
 
-	logging.Log("Scanning ports...")
+	Print("Scanning ports...")
 
 	for port := 1; port <= 1024; port++ {
 		wg.Add(1)
@@ -65,7 +65,7 @@ func PortscanCommand(args []string) {
 	}
 	wg.Wait()
 
-	logging.Log("Ports successfully scanned!")
+	Print("Ports successfully scanned!")
 }
 
 func GatherCommand(args []string) {
@@ -77,32 +77,32 @@ func GatherCommand(args []string) {
 
 	err := json.Unmarshal(body, &data)
 	if err != nil {
-		logging.Error("Failed to parse data.")
+		Error("Failed to parse data.")
 		return
 	}
 
-	logging.Log("Gathering report for " + color.Blue + data.IP)
-	logging.Log("Address type" + color.Gray + ": " + color.Blue + data.Type)
-	logging.Log("Continent" + color.Gray + ": " + color.Blue + data.Continent + color.Gray + " (" + data.ContinentCode + ")")
-	logging.Log("Country" + color.Gray + ": " + color.Blue + data.Country + color.Gray + " (" + data.CountryCode + ")")
-	logging.Log("Region" + color.Gray + ": " + color.Blue + data.Region + color.Gray + " (" + data.RegionCode + ")")
-	logging.Log("City" + color.Gray + ": " + color.Blue + data.City)
-	logging.Log("Latitude" + color.Gray + ": " + color.Blue + convert.FormatFloat(data.Latitude))
-	logging.Log("Longitude" + color.Gray + ": " + color.Blue + convert.FormatFloat(data.Longitude))
-	logging.Log("Location" + color.Gray + ": " + color.Blue + "https://www.openstreetmap.org/#map=10/" + convert.FormatFloat(data.Latitude) + "/" + convert.FormatFloat(data.Longitude))
-	logging.Log("Is EU country" + color.Gray + ": " + color.Blue + convert.FormatBool(data.IsEU))
-	logging.Log("Postal code" + color.Gray + ": " + color.Blue + data.PostalCode)
-	logging.Log("Calling code" + color.Gray + ": " + color.Blue + data.CallingCode)
-	logging.Log("Capital city" + color.Gray + ": " + color.Blue + data.Capital)
-	logging.Log()
-	logging.Log("System number (ASN)" + color.Gray + ": " + color.Blue + convert.FormatInt(data.Connection.SystemNumber))
-	logging.Log("Organisation (ORG)" + color.Gray + ": " + color.Blue + data.Connection.Organisation)
-	logging.Log("Internet Service Provider (ISP)" + color.Gray + ": " + color.Blue + data.Connection.ServiceProvider)
-	logging.Log("ISP domain" + color.Gray + ": " + color.Blue + data.Connection.ISPDomain)
-	logging.Log()
-	logging.Log("Timezone" + color.Gray + ": " + color.Blue + data.Timezone.ID)
-	logging.Log("Timezone Abbreviation" + color.Gray + ": " + color.Blue + data.Timezone.Abbreviation)
-	logging.Log("UTC" + color.Gray + ": " + color.Blue + data.Timezone.UTC)
+	Print("Gathering report for " + color.Blue + data.IP)
+	Print("Address type" + color.Gray + ": " + color.Blue + data.Type)
+	Print("Continent" + color.Gray + ": " + color.Blue + data.Continent + color.Gray + " (" + data.ContinentCode + ")")
+	Print("Country" + color.Gray + ": " + color.Blue + data.Country + color.Gray + " (" + data.CountryCode + ")")
+	Print("Region" + color.Gray + ": " + color.Blue + data.Region + color.Gray + " (" + data.RegionCode + ")")
+	Print("City" + color.Gray + ": " + color.Blue + data.City)
+	Print("Latitude" + color.Gray + ": " + color.Blue + convert.FormatFloat(data.Latitude))
+	Print("Longitude" + color.Gray + ": " + color.Blue + convert.FormatFloat(data.Longitude))
+	Print("Location" + color.Gray + ": " + color.Blue + "https://www.openstreetmap.org/#map=10/" + convert.FormatFloat(data.Latitude) + "/" + convert.FormatFloat(data.Longitude))
+	Print("Is EU country" + color.Gray + ": " + color.Blue + convert.FormatBool(data.IsEU))
+	Print("Postal code" + color.Gray + ": " + color.Blue + data.PostalCode)
+	Print("Calling code" + color.Gray + ": " + color.Blue + data.CallingCode)
+	Print("Capital city" + color.Gray + ": " + color.Blue + data.Capital)
+	Print()
+	Print("System number (ASN)" + color.Gray + ": " + color.Blue + convert.FormatInt(data.Connection.SystemNumber))
+	Print("Organisation (ORG)" + color.Gray + ": " + color.Blue + data.Connection.Organisation)
+	Print("Internet Service Provider (ISP)" + color.Gray + ": " + color.Blue + data.Connection.ServiceProvider)
+	Print("ISP domain" + color.Gray + ": " + color.Blue + data.Connection.ISPDomain)
+	Print()
+	Print("Timezone" + color.Gray + ": " + color.Blue + data.Timezone.ID)
+	Print("Timezone Abbreviation" + color.Gray + ": " + color.Blue + data.Timezone.Abbreviation)
+	Print("UTC" + color.Gray + ": " + color.Blue + data.Timezone.UTC)
 }
 
 func CdCommand(args []string) {
@@ -117,19 +117,19 @@ func CdCommand(args []string) {
 func LsCommand(args []string) {
 	dir, err := os.Getwd()
 	if err != nil {
-		logging.Error(err)
+		Error(err)
 	}
 	files, err := os.ReadDir(dir)
 	if err != nil {
-		logging.Error(err)
+		Error(err)
 	}
 	for _, file := range files {
 		if file.IsDir() {
-			logging.Log(color.Blue + "/" + file.Name())
+			Print(color.Blue + "/" + file.Name())
 		} else if strings.HasPrefix(file.Name(), ".") {
-			logging.Log(color.Gray + file.Name())
+			Print(color.Gray + file.Name())
 		} else {
-			logging.Log(file.Name())
+			Print(file.Name())
 		}
 	}
 }
@@ -137,18 +137,18 @@ func LsCommand(args []string) {
 func UpdateCommand(args []string) {
 	release, _, err := githubClient.Repositories.GetLatestRelease(context.Background(), "noahonfyre", "FyUTILS")
 	if err != nil {
-		logging.Error("Failed to fetch version information from GitHub.")
+		Error("Failed to fetch version information from GitHub.")
 		return
 	}
 
-	logging.Log("Version Diff: " + color.Red + version + color.Gray + " -> " + color.Green + release.GetTagName())
-	logging.Print()
-	logging.Log("Target Version: " + color.Blue + release.GetTagName() + color.Gray + " (" + release.GetNodeID() + ")")
-	logging.Log("Description: " + color.Gray + strings.Split(release.GetBody(), "\n")[0])
-	logging.Log("Uploaded:"+color.Blue, release.GetPublishedAt().Month(), release.GetPublishedAt().Day(), release.GetPublishedAt().Year(), color.Gray+" - by @noahonfyre")
-	logging.Print()
+	Print("Version Diff: " + color.Red + version + color.Gray + " -> " + color.Green + release.GetTagName())
+	Print()
+	Print("Target Version: " + color.Blue + release.GetTagName() + color.Gray + " (" + release.GetNodeID() + ")")
+	Print("Description: " + color.Gray + strings.Split(release.GetBody(), "\n")[0])
+	Print("Uploaded:"+color.Blue, release.GetPublishedAt().Month(), release.GetPublishedAt().Day(), release.GetPublishedAt().Year(), color.Gray+" - by @noahonfyre")
+	Print()
 	for {
-		confirmation := logging.Input(logging.Prefix(0) + " " + "Do you want to update to this version? " + color.Gray + "(yes/no): " + color.Reset)
+		confirmation := Input(logging.Prefix(0) + " " + "Do you want to update to this version? " + color.Gray + "(yes/no): " + color.Reset)
 		if confirmation == "yes" {
 			break
 		} else if confirmation == "no" {
@@ -157,26 +157,47 @@ func UpdateCommand(args []string) {
 			continue
 		}
 	}
-	exec.Command("powershell.exe", "/c", "Invoke-Expression(Invoke-RestMethod(https://raw.githubusercontent.com/noahonfyre/FyUTILS/master/get.ps1))").Run()
+	err = exec.Command("powershell.exe", "/c", "Invoke-Expression(Invoke-RestMethod(https://raw.githubusercontent.com/noahonfyre/FyUTILS/master/get.ps1))").Run()
+	if err != nil {
+		Error("Failed to update.")
+		return
+	}
 	os.Exit(0)
 }
 
 func HelpCommand(args []string) {
+	Print(color.Blue + "    ______      __  ______________   _____")
+	Print(color.Blue + "   / ____/_  __/ / / /_  __/  _/ /  / ___/")
+	Print(color.Blue + "  / /_  / / / / / / / / /  / // /   \\__ \\")
+	Print(color.Blue + " / __/ / /_/ / /_/ / / / _/ // /______/ /")
+	Print(color.Blue + "/_/    \\__, /\\____/ /_/ /___/_____/____/")
+	Print(color.Blue + "       __/ /")
+	Print(color.Blue + "     /____/" + color.Reset + "   Version: " + version)
+	Print()
+	Print(color.Gray + "┌" + MultiString("─", 120-1))
 	for _, command := range commands {
-		s := ""
+		var usages []string
 		for _, argument := range command.Args.Get {
-			s += "<" + argument + "> "
+			usages = append(usages, "<"+argument+">")
 		}
-		logging.Log(color.Blue + strings.ToUpper(command.Name) + color.Gray + ": " + color.Reset + command.Description + color.Gray + " - " + color.Blue + s)
+		usage := strings.Join(usages, " ")
+		Print(color.Gray + "│ " + color.Blue + SpacingRowColorChange(command.Name+color.Gray+" "+usage, color.Gray, 24) + color.Reset + command.Description)
 	}
+	Print(color.Gray + "└" + MultiString("─", 120-1))
+	Print()
+	Print(color.Gray + "\U000F0219" + color.Reset + " Documentation: " + color.Blue + "https://github.com/noahonfyre/FyUTILS")
+	Print()
+	Print(color.Gray + "\U000F02D6" + color.Reset + " Submit Issue: " + color.Blue + "https://github.com/noahonfyre/FyUTILS/issues/new")
+	Print()
+	Print(color.Gray + "\uF407" + color.Reset + " View Pulls: " + color.Blue + "https://github.com/noahonfyre/FyUTILS/pulls")
 }
 
 func ClearCommand(args []string) {
-	logging.Clear()
+	Clear()
 	Menu()
 }
 
 func ExitCommand(args []string) {
-	logging.Log("Shutting down FyUTILS...")
+	Print("Shutting down FyUTILS...")
 	os.Exit(0)
 }
