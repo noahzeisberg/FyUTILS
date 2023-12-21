@@ -17,7 +17,11 @@ func CheckPaths(paths []string) int {
 	pathsFixed := 0
 	for _, path := range paths {
 		if !filesystem.Exists(path) {
-			os.Mkdir(path, fs.ModeDir)
+			err := os.Mkdir(path, fs.ModeDir)
+			if err != nil {
+				Error("Failed to create directory!")
+				return pathsFixed
+			}
 			pathsFixed += 1
 		}
 	}
