@@ -26,7 +26,6 @@ var (
 )
 
 func Menu() {
-	Print()
 	Print(color.Blue + "    ______      __  ______________   _____")
 	Print(color.Blue + "   / ____/_  __/ / / /_  __/  _/ /  / ___/")
 	Print(color.Blue + "  / /_  / / / / / / / / /  / // /   \\__ \\" + "     " + color.Gray + "\uE795" + color.Reset + " Version" + ": " + color.Blue + version + color.Reset)
