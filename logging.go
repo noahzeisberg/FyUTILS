@@ -4,26 +4,40 @@ import (
 	"bufio"
 	"fmt"
 	"github.com/NoahOnFyre/gengine/color"
+	"github.com/NoahOnFyre/gengine/convert"
 	"os"
+	"strings"
 )
 
 func Print(msg ...any) {
-	msg = append(msg, color.Reset)
-	fmt.Println(msg...)
+	var items []string
+	for _, item := range msg {
+		items = append(items, convert.ValueOf(item))
+	}
+	output := strings.Join(items, " ")
+	fmt.Println(color.Reset + output)
 }
 
-func PrintR(msg ...any) {
-	fmt.Print(msg...)
+func PrintR(msg any) {
+	fmt.Print(msg)
 }
 
 func Warn(msg ...any) {
-	msg = append(msg, color.Yellow)
-	fmt.Println(msg...)
+	var items []string
+	for _, item := range msg {
+		items = append(items, convert.ValueOf(item))
+	}
+	output := strings.Join(items, " ")
+	fmt.Println(color.Yellow + output)
 }
 
 func Error(msg ...any) {
-	msg = append(msg, color.Red)
-	fmt.Println(msg...)
+	var items []string
+	for _, item := range msg {
+		items = append(items, convert.ValueOf(item))
+	}
+	output := strings.Join(items, " ")
+	fmt.Println(color.Red + output)
 }
 
 func Input(msg string) string {

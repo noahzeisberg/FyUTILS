@@ -5,7 +5,6 @@ import (
 	"context"
 	"github.com/NoahOnFyre/gengine/color"
 	"github.com/NoahOnFyre/gengine/convert"
-	"github.com/NoahOnFyre/gengine/logging"
 	"github.com/NoahOnFyre/gengine/utils"
 	"github.com/google/go-github/github"
 	"golang.org/x/mod/semver"
@@ -27,19 +26,17 @@ var (
 )
 
 func Menu() {
-	logging.Print()
-	logging.Print(color.Blue + "    ______      __  ______________   _____")
-	logging.Print(color.Blue + "   / ____/_  __/ / / /_  __/  _/ /  / ___/")
-	logging.Print(color.Blue + "  / /_  / / / / / / / / /  / // /   \\__ \\" + "     " + color.Gray + "\uE795 Version" + ": " + color.Blue + version + color.Reset)
-	logging.Print(color.Blue + " / __/ / /_/ / /_/ / / / _/ // /______/ /" + "     " + color.Gray + "\uF007 User" + ": " + color.Blue + username + color.Reset)
-	logging.Print(color.Blue + "/_/    \\__, /\\____/ /_/ /___/_____/____/" + "      " + color.Gray + "\uf108 Device" + ": " + color.Blue + device + color.Reset)
-	logging.Print(color.Blue + "       __/ /")
-	logging.Print(color.Blue + "     /____/" + color.Reset + "   Made by NoahOnFyre with" + color.Blue + " \uf004")
+	Print()
+	Print(color.Blue + "    ______      __  ______________   _____")
+	Print(color.Blue + "   / ____/_  __/ / / /_  __/  _/ /  / ___/")
+	Print(color.Blue + "  / /_  / / / / / / / / /  / // /   \\__ \\" + "     " + color.Gray + "\uE795" + color.Reset + " Version" + ": " + color.Blue + version + color.Reset)
+	Print(color.Blue + " / __/ / /_/ / /_/ / / / _/ // /______/ /" + "     " + color.Gray + "\uF007" + color.Reset + " User" + ": " + color.Blue + username + color.Reset)
+	Print(color.Blue + "/_/    \\__, /\\____/ /_/ /___/_____/____/" + "      " + color.Gray + "\U000F01C5" + color.Reset + " Device" + ": " + color.Blue + device + color.Reset)
+	Print(color.Blue + "       __/ /")
+	Print(color.Blue + "     /____/" + color.Reset + "   Made by NoahOnFyre with" + color.Blue + " \uf004")
 }
 
 func main() {
-	logging.SetMainColor(color.BlueBg)
-
 	var newestRelease *github.RepositoryRelease
 
 	go func() {
@@ -63,21 +60,21 @@ func main() {
 
 	for {
 		SetState("Idle")
-		logging.Print()
+		Print()
 		currentDir, _ := os.Getwd()
-		input := logging.Input(color.Gray + "┌───[" + color.Blue + username + color.Gray + "@" + color.Reset + device + color.Gray + "]───(" + color.Reset + currentDir + color.Gray + ")\n" + color.Gray + "└─> " + color.Reset)
+		input := Input(color.Gray + "┌─[" + color.Blue + username + color.Gray + "@" + color.Reset + device + color.Gray + "]─(" + color.Reset + "\U000F024B" + " " + currentDir + color.Gray + ")\n" + color.Gray + "└─> " + color.Reset)
 		if input == "" {
 			continue
 		}
-		logging.Print()
+		Print()
 		command, args := ParseCommand(input)
 		RunCommand(command, args)
 		if newestRelease != nil {
-			logging.Print()
-			logging.Print(color.Gray + "┌" + MultiString("─", 120-1))
-			logging.Print(color.Gray + "│ " + color.Reset + "A new version of FyUTILS is available!")
-			logging.Print(color.Gray + "│ " + color.Reset + "Version Diff: " + color.Red + version + color.Gray + " -> " + color.Green + newestRelease.GetTagName())
-			logging.Print(color.Gray + "└" + MultiString("─", 120-1))
+			Print()
+			Print(color.Gray + "┌" + MultiString("─", 120-1))
+			Print(color.Gray + "│ " + color.Reset + "A new version of FyUTILS is available!")
+			Print(color.Gray + "│ " + color.Reset + "Version Diff: " + color.Red + version + color.Gray + " -> " + color.Green + newestRelease.GetTagName())
+			Print(color.Gray + "└" + MultiString("─", 120-1))
 		}
 	}
 }
@@ -102,7 +99,7 @@ func RunCommand(command string, args []string) {
 				for _, argument := range cmd.Args.Get {
 					s = s + "<" + argument + "> "
 				}
-				logging.Error("Invalid arguments!" + color.Gray + " - " + color.Red + "Usage: " + command + " " + s)
+				Error("Invalid arguments!" + color.Gray + " - " + color.Red + "Usage: " + command + " " + s)
 				commandFound = true
 			}
 		}
@@ -110,7 +107,7 @@ func RunCommand(command string, args []string) {
 	if !commandFound {
 		_, err := exec.LookPath(command)
 		if err != nil {
-			logging.Error("Command not found! - Run \"help\" to see all commands.")
+			Error("Command not found! - Run \"help\" to see all commands.")
 			return
 		}
 		var cmdArgs []string

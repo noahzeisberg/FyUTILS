@@ -2,7 +2,6 @@ package main
 
 import (
 	"github.com/NoahOnFyre/gengine/convert"
-	"github.com/NoahOnFyre/gengine/logging"
 	"net"
 	"sync"
 )
@@ -14,6 +13,11 @@ func ScanPort(target string, port int, wg *sync.WaitGroup) {
 	if err != nil {
 		return
 	}
-	defer conn.Close()
-	logging.Log("Port", port, "is open!")
+	defer func(conn net.Conn) {
+		err := conn.Close()
+		if err != nil {
+
+		}
+	}(conn)
+	Print("Port", port, "is open!")
 }
