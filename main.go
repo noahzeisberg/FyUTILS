@@ -20,9 +20,7 @@ var (
 	version     = "v1.16.0"
 	homeDir, _  = os.UserHomeDir()
 	mainDir     = homeDir + "\\.fy\\"
-	configPath  = mainDir + "config.json"
-
-	commands []Command
+	commands    []Command
 )
 
 func Menu() {
