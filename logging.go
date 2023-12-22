@@ -4,40 +4,24 @@ import (
 	"bufio"
 	"fmt"
 	"github.com/NoahOnFyre/gengine/color"
-	"github.com/NoahOnFyre/gengine/convert"
 	"os"
 	"strings"
 )
 
-func Print(msg ...any) {
-	var items []string
-	for _, item := range msg {
-		items = append(items, convert.ValueOf(item))
-	}
-	output := strings.Join(items, " ")
-	fmt.Println(color.Reset + output)
+func Print(msg ...string) {
+	fmt.Println(color.Reset + strings.Join(msg, " "))
 }
 
 func PrintR(msg any) {
 	fmt.Print(msg)
 }
 
-func Warn(msg ...any) {
-	var items []string
-	for _, item := range msg {
-		items = append(items, convert.ValueOf(item))
-	}
-	output := strings.Join(items, " ")
-	fmt.Println(color.Yellow + output)
+func Warn(msg ...string) {
+	fmt.Println(color.Yellow + strings.Join(msg, " "))
 }
 
-func Error(msg ...any) {
-	var items []string
-	for _, item := range msg {
-		items = append(items, convert.ValueOf(item))
-	}
-	output := strings.Join(items, " ")
-	fmt.Println(color.Red + output)
+func Error(msg ...string) {
+	fmt.Println(color.Red + strings.Join(msg, " "))
 }
 
 func Input(msg string) string {
@@ -45,6 +29,23 @@ func Input(msg string) string {
 	PrintR(msg)
 	scanner.Scan()
 	return scanner.Text()
+}
+
+func Confirm(title string) bool {
+	for {
+		confirmation := Input(title + " " + color.Gray + "(yes/no): " + color.Reset)
+		if confirmation == "yes" {
+			return true
+		} else if confirmation == "no" {
+			return false
+		} else {
+			continue
+		}
+	}
+}
+
+func Wait(title string) {
+	Input(title)
 }
 
 func Clear() {

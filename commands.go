@@ -5,12 +5,10 @@ import (
 	"encoding/json"
 	"github.com/NoahOnFyre/gengine/color"
 	"github.com/NoahOnFyre/gengine/convert"
-	"github.com/NoahOnFyre/gengine/logging"
 	"github.com/NoahOnFyre/gengine/networking/requests"
 	"github.com/google/go-github/github"
 	"net"
 	"os"
-	"os/exec"
 	"strconv"
 	"strings"
 	"sync"
@@ -38,20 +36,20 @@ func FloodCommand(args []string) {
 		bytes, err := RandomBytes(1024)
 
 		if err != nil {
-			logging.Error("Cannot generate random bytes.")
+			Error("Cannot generate random bytes.")
 			break
 		}
 
 		_, err = conn.Write(bytes)
 		if err != nil {
-			logging.Error("Failed to send data to connection.")
+			Error("Failed to send data to connection.")
 			break
 		}
 		Print("Bytes successfully sent to", conn.RemoteAddr().String()+color.Gray, "("+strconv.Itoa(i)+")")
 	}
 }
 
-// PortscanCommand Needs a better solution for not crashing, when too many ports are scanned at once.
+// PortscanCommand needs a better solution for not crashing, when too many ports are scanned at once.
 // This is currently fixed by using a limit of 1024 ports to scan.
 func PortscanCommand(args []string) {
 	addr := args[0]
@@ -109,19 +107,19 @@ func CdCommand(args []string) {
 	dir := args[0]
 	err := os.Chdir(dir)
 	if err != nil {
-		logging.Error(err)
+		Error(err.Error())
 		return
 	}
 }
 
-func LsCommand(args []string) {
+func LsCommand(_ []string) {
 	dir, err := os.Getwd()
 	if err != nil {
-		Error(err)
+		Error(err.Error())
 	}
 	files, err := os.ReadDir(dir)
 	if err != nil {
-		Error(err)
+		Error(err.Error())
 	}
 	for _, file := range files {
 		if file.IsDir() {
@@ -134,38 +132,33 @@ func LsCommand(args []string) {
 	}
 }
 
-func UpdateCommand(args []string) {
+func UpdateCommand(_ []string) {
 	release, _, err := githubClient.Repositories.GetLatestRelease(context.Background(), "noahonfyre", "FyUTILS")
 	if err != nil {
 		Error("Failed to fetch version information from GitHub.")
 		return
 	}
 
-	Print("Version Diff: " + color.Red + version + color.Gray + " -> " + color.Green + release.GetTagName())
+	Print(color.Gray + "┌" + MultiString("─", 120-1))
+	Print(color.Gray + "│ " + color.Reset + "Version Diff" + color.Gray + ": " + color.Red + version + color.Gray + " -> " + color.Green + release.GetTagName())
+	Print(color.Gray + "│ " + color.Reset + "Target Version" + color.Gray + ": " + color.Blue + release.GetTagName() + color.Gray + " (" + release.GetNodeID() + ")")
+	Print(color.Gray + "│ " + color.Reset + "Description" + color.Gray + ": " + color.Reset + strings.Split(release.GetBody(), "\n")[0])
+	Print(color.Gray + "│ " + color.Reset + "URL" + color.Gray + ": " + color.Blue + release.GetHTMLURL())
+	Print(color.Gray + "└" + MultiString("─", 120-1))
 	Print()
-	Print("Target Version: " + color.Blue + release.GetTagName() + color.Gray + " (" + release.GetNodeID() + ")")
-	Print("Description: " + color.Gray + strings.Split(release.GetBody(), "\n")[0])
-	Print("Uploaded:"+color.Blue, release.GetPublishedAt().Month(), release.GetPublishedAt().Day(), release.GetPublishedAt().Year(), color.Gray+" - by @noahonfyre")
-	Print()
-	for {
-		confirmation := Input(logging.Prefix(0) + " " + "Do you want to update to this version? " + color.Gray + "(yes/no): " + color.Reset)
-		if confirmation == "yes" {
-			break
-		} else if confirmation == "no" {
+	if Confirm("Do you want to update to this version?") {
+		PowerShellRunElevated("Invoke-RestMethod https://raw.githubusercontent.com/noahonfyre/FyUTILS/master/get.ps1 | Invoke-Expression")
+		if err != nil {
+			Error("Failed to update.", err.Error())
 			return
-		} else {
-			continue
 		}
+	} else {
+		Print("Update cancelled!")
 	}
-	err = exec.Command("powershell.exe", "/c", "Invoke-Expression(Invoke-RestMethod(https://raw.githubusercontent.com/noahonfyre/FyUTILS/master/get.ps1))").Run()
-	if err != nil {
-		Error("Failed to update.")
-		return
-	}
-	os.Exit(0)
 }
 
-func HelpCommand(args []string) {
+func HelpCommand(_ []string) {
+	Clear()
 	Print(color.Blue + "    ______      __  ______________   _____")
 	Print(color.Blue + "   / ____/_  __/ / / /_  __/  _/ /  / ___/")
 	Print(color.Blue + "  / /_  / / / / / / / / /  / // /   \\__ \\")
@@ -175,6 +168,8 @@ func HelpCommand(args []string) {
 	Print(color.Blue + "     /____/" + color.Reset + "   Version: " + version)
 	Print()
 	Print(color.Gray + "┌" + MultiString("─", 120-1))
+	Print(color.Gray + "│ " + color.Reset + "Command Overview:")
+	Print(color.Gray + "│")
 	for _, command := range commands {
 		var usages []string
 		for _, argument := range command.Args.Get {
@@ -190,14 +185,18 @@ func HelpCommand(args []string) {
 	Print(color.Gray + "\U000F02D6" + color.Reset + " Submit Issue: " + color.Blue + "https://github.com/noahonfyre/FyUTILS/issues/new")
 	Print()
 	Print(color.Gray + "\uF407" + color.Reset + " View Pulls: " + color.Blue + "https://github.com/noahonfyre/FyUTILS/pulls")
-}
-
-func ClearCommand(args []string) {
+	Print()
+	Wait("Press enter to return.")
 	Clear()
 	Menu()
 }
 
-func ExitCommand(args []string) {
+func ClearCommand(_ []string) {
+	Clear()
+	Menu()
+}
+
+func ExitCommand(_ []string) {
 	Print("Shutting down FyUTILS...")
 	os.Exit(0)
 }

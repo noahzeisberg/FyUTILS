@@ -60,16 +60,15 @@ func main() {
 		Print()
 		currentDir, _ := os.Getwd()
 		input := Input(color.Gray + "┌─[" + color.Blue + username + color.Gray + "@" + color.Reset + device + color.Gray + "]─(" + color.Reset + "\U000F024B" + " " + currentDir + color.Gray + ")\n" + color.Gray + "└─> " + color.Reset)
-		if input == "" {
-			continue
+		if input != "" {
+			Print()
+			command, args := ParseCommand(input)
+			RunCommand(command, args)
 		}
-		Print()
-		command, args := ParseCommand(input)
-		RunCommand(command, args)
 		if newestRelease != nil {
 			Print()
 			Print(color.Gray + "┌" + MultiString("─", 120-1))
-			Print(color.Gray + "│ " + color.Reset + "A new version of FyUTILS is available!")
+			Print(color.Gray + "│ " + color.Reset + "A new version of FyUTILS is available! Run " + color.Blue + "\"update\"" + color.Reset + " to download.")
 			Print(color.Gray + "│ " + color.Reset + "Version Diff: " + color.Red + version + color.Gray + " -> " + color.Green + newestRelease.GetTagName())
 			Print(color.Gray + "└" + MultiString("─", 120-1))
 		}
