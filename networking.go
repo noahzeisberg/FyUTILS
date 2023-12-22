@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/NoahOnFyre/gengine/color"
 	"github.com/NoahOnFyre/gengine/convert"
 	"net"
 	"sync"
@@ -19,5 +20,5 @@ func ScanPort(target string, port int, wg *sync.WaitGroup) {
 
 		}
 	}(conn)
-	Print("Port", port, "is open!")
+	Print("Port " + color.Black + convert.FormatInt(port) + color.Reset + " is open!")
 }

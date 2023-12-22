@@ -45,6 +45,7 @@ func FloodCommand(args []string) {
 			Error("Failed to send data to connection.")
 			break
 		}
+
 		Print("Bytes successfully sent to", conn.RemoteAddr().String()+color.Gray, "("+strconv.Itoa(i)+")")
 	}
 }
@@ -54,9 +55,7 @@ func FloodCommand(args []string) {
 func PortscanCommand(args []string) {
 	addr := args[0]
 	var wg sync.WaitGroup
-
 	Print("Scanning ports...")
-
 	for port := 1; port <= 1024; port++ {
 		wg.Add(1)
 		go ScanPort(addr, port, &wg)
@@ -68,9 +67,7 @@ func PortscanCommand(args []string) {
 
 func GatherCommand(args []string) {
 	addr := args[0]
-
 	data := AddressInformation{}
-
 	body := requests.Get("https://ipwho.is/" + addr)
 
 	err := json.Unmarshal(body, &data)
