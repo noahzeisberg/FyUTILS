@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"io"
 	"os/exec"
 )
 
@@ -13,12 +14,15 @@ func PowerShellRun(command string) {
 		return
 	}
 	go func() {
-		defer stdin.Close()
-		fmt.Fprintln(stdin, command)
+		defer func(stdin io.WriteCloser) {
+			err = stdin.Close()
+			if err != nil {
+				Error("Failed to close stdin pipe..")
+			}
+		}(stdin)
+		_, err = fmt.Fprintln(stdin, command)
+		if err != nil {
+			Error("Failed to run PowerShell command.")
+		}
 	}()
-	out, err := cmd.CombinedOutput()
-	if err != nil {
-		Error(err.Error())
-	}
-	Print(string(out))
 }
