@@ -6,7 +6,7 @@ import (
 )
 
 func PowerShellRunElevated(command string) {
-	cmd := exec.Command("powershell.exe", "-verb runas", "-nologo", "-noprofile")
+	cmd := exec.Command("powershell.exe", "/c", "Start-Process", "-Verb runas", "powershell.exe")
 	stdin, err := cmd.StdinPipe()
 	if err != nil {
 		Error("Failed to connect to PowerShell session!")

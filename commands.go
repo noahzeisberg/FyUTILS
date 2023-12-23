@@ -155,15 +155,6 @@ func UpdateCommand(_ []string) {
 }
 
 func HelpCommand(_ []string) {
-	Clear()
-	Print(color.Blue + "    ______      __  ______________   _____")
-	Print(color.Blue + "   / ____/_  __/ / / /_  __/  _/ /  / ___/")
-	Print(color.Blue + "  / /_  / / / / / / / / /  / // /   \\__ \\")
-	Print(color.Blue + " / __/ / /_/ / /_/ / / / _/ // /______/ /")
-	Print(color.Blue + "/_/    \\__, /\\____/ /_/ /___/_____/____/")
-	Print(color.Blue + "       __/ /")
-	Print(color.Blue + "     /____/" + color.Reset + "   Version: " + version)
-	Print()
 	Print(color.Gray + "┌" + MultiString("─", 120-1))
 	Print(color.Gray + "│ " + color.Reset + "Command Overview:")
 	Print(color.Gray + "│")
@@ -176,16 +167,6 @@ func HelpCommand(_ []string) {
 		Print(color.Gray + "│ " + color.Blue + SpacingRowColorChange(command.Name+color.Gray+" "+usage, color.Gray, 24) + color.Reset + command.Description)
 	}
 	Print(color.Gray + "└" + MultiString("─", 120-1))
-	Print()
-	Print(color.Gray + "\U000F0219" + color.Reset + " Documentation: " + color.Blue + "https://github.com/noahonfyre/FyUTILS")
-	Print()
-	Print(color.Gray + "\U000F02D6" + color.Reset + " Submit Issue: " + color.Blue + "https://github.com/noahonfyre/FyUTILS/issues/new")
-	Print()
-	Print(color.Gray + "\uF407" + color.Reset + " View Pulls: " + color.Blue + "https://github.com/noahonfyre/FyUTILS/pulls")
-	Print()
-	Wait("Press enter to return.")
-	Clear()
-	Menu()
 }
 
 func ClearCommand(_ []string) {

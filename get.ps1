@@ -1,8 +1,8 @@
 if (-not ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
-    Write-Error "You need to have PowerShell running as administrator."
-    Write-Error "Please exit the installation and try to run again as administrator."
-    $null = $host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown')
-    exit
+    Write-Warning "You need to have PowerShell running as administrator."
+    Write-Warning "Attempting to restart as administrator..."
+    Start-Process powershell -Verb runAs -ArgumentList $arguments "Invoke-RestMethod https://raw.githubusercontent.com/noahonfyre/FyUTILS/master/get.ps1 | Invoke-Expression"
+    Exit
 }
 
 Write-Output "Starting FyUTILS installation..."
