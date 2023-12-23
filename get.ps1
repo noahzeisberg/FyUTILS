@@ -1,7 +1,7 @@
 if (-not ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
     Write-Warning "You need to have PowerShell running as administrator."
     Write-Warning "Attempting to restart as administrator..."
-    Start-Process powershell -Verb runAs -ArgumentList $arguments "Invoke-RestMethod https://raw.githubusercontent.com/noahonfyre/FyUTILS/master/get.ps1 | Invoke-Expression"
+    Start-Process powershell -Verb runAs -ArgumentList "Invoke-RestMethod https://raw.githubusercontent.com/noahonfyre/FyUTILS/master/get.ps1 | Invoke-Expression"
     Exit
 }
 
