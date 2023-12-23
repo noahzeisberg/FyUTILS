@@ -5,8 +5,8 @@ import (
 	"os/exec"
 )
 
-func PowerShellRunElevated(command string) {
-	cmd := exec.Command("powershell.exe", "/c", "Start-Process", "-Verb runas", "powershell.exe")
+func PowerShellRun(command string) {
+	cmd := exec.Command("powershell.exe", "-nologo", "-noprofile")
 	stdin, err := cmd.StdinPipe()
 	if err != nil {
 		Error("Failed to connect to PowerShell session!")
