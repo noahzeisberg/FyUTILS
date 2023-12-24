@@ -17,7 +17,7 @@ import (
 var (
 	username, _ = strings.CutPrefix(convert.ValueOf(utils.Catch(os.UserHomeDir())), "C:\\Users\\")
 	device, _   = os.Hostname()
-	version     = "v1.16.0"
+	version     = "v1.16.1"
 	homeDir, _  = os.UserHomeDir()
 	mainDir     = homeDir + "\\.fy\\"
 	commands    []Command
