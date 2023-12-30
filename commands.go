@@ -7,9 +7,10 @@ import (
 	"github.com/NoahOnFyre/gengine/convert"
 	"github.com/NoahOnFyre/gengine/networking/requests"
 	"github.com/google/go-github/github"
+	"github.com/google/gopacket"
+	"github.com/google/gopacket/pcap"
 	"net"
 	"os"
-	"strconv"
 	"strings"
 	"sync"
 )
@@ -19,10 +20,10 @@ var (
 )
 
 func FloodCommand(args []string) {
-	host := args[0]
+	ip := args[0]
 	port := args[1]
 
-	conn, err := net.Dial("tcp", net.JoinHostPort(host, port))
+	conn, err := net.Dial("tcp", net.JoinHostPort(ip, port))
 
 	if err != nil {
 		Error("Failed to connect to target: " + err.Error())
@@ -46,58 +47,111 @@ func FloodCommand(args []string) {
 			break
 		}
 
-		Print("Bytes successfully sent to", conn.RemoteAddr().String()+color.Gray, "("+strconv.Itoa(i)+")")
+		Print("Bytes successfully sent to " + color.Blue + conn.RemoteAddr().String() + color.Gray + " (" + convert.FormatInt(i) + ")")
 	}
 }
 
-// PortscanCommand needs a better solution for not crashing, when too many ports are scanned at once.
-// This is currently fixed by using a limit of 1024 ports to scan.
 func PortscanCommand(args []string) {
-	addr := args[0]
+	ip := args[0]
 	var wg sync.WaitGroup
 	Print("Scanning ports...")
-	for port := 1; port <= 1024; port++ {
+	for port := 1; port <= 1024*64; port++ {
 		wg.Add(1)
-		go ScanPort(addr, port, &wg)
+		go ScanPort(ip, port, &wg)
 	}
 	wg.Wait()
 
 	Print("Ports successfully scanned!")
 }
 
-func GatherCommand(args []string) {
-	addr := args[0]
-	data := AddressInformation{}
-	body := requests.Get("https://ipwho.is/" + addr)
+func WhoisCommand(args []string) {
+	target := args[0]
+	var data AddressInformation
+	body := requests.Get("https://ipwho.is/" + target)
 
 	err := json.Unmarshal(body, &data)
 	if err != nil {
-		Error("Failed to parse data.")
+		Error("Failed to parse addressInformation.")
 		return
 	}
 
-	Print("Gathering report for " + color.Blue + data.IP)
-	Print("Address type" + color.Gray + ": " + color.Blue + data.Type)
-	Print("Continent" + color.Gray + ": " + color.Blue + data.Continent + color.Gray + " (" + data.ContinentCode + ")")
-	Print("Country" + color.Gray + ": " + color.Blue + data.Country + color.Gray + " (" + data.CountryCode + ")")
-	Print("Region" + color.Gray + ": " + color.Blue + data.Region + color.Gray + " (" + data.RegionCode + ")")
-	Print("City" + color.Gray + ": " + color.Blue + data.City)
-	Print("Latitude" + color.Gray + ": " + color.Blue + convert.FormatFloat(data.Latitude))
-	Print("Longitude" + color.Gray + ": " + color.Blue + convert.FormatFloat(data.Longitude))
-	Print("Location" + color.Gray + ": " + color.Blue + "https://www.openstreetmap.org/#map=10/" + convert.FormatFloat(data.Latitude) + "/" + convert.FormatFloat(data.Longitude))
-	Print("Is EU country" + color.Gray + ": " + color.Blue + convert.FormatBool(data.IsEU))
-	Print("Postal code" + color.Gray + ": " + color.Blue + data.PostalCode)
-	Print("Calling code" + color.Gray + ": " + color.Blue + data.CallingCode)
-	Print("Capital city" + color.Gray + ": " + color.Blue + data.Capital)
+	Print("Gathering Report for " + color.Blue + data.IP)
 	Print()
-	Print("System number (ASN)" + color.Gray + ": " + color.Blue + convert.FormatInt(data.Connection.SystemNumber))
-	Print("Organisation (ORG)" + color.Gray + ": " + color.Blue + data.Connection.Organisation)
-	Print("Internet Service Provider (ISP)" + color.Gray + ": " + color.Blue + data.Connection.ServiceProvider)
-	Print("ISP domain" + color.Gray + ": " + color.Blue + data.Connection.ISPDomain)
-	Print()
-	Print("Timezone" + color.Gray + ": " + color.Blue + data.Timezone.ID)
-	Print("Timezone Abbreviation" + color.Gray + ": " + color.Blue + data.Timezone.Abbreviation)
-	Print("UTC" + color.Gray + ": " + color.Blue + data.Timezone.UTC)
+	Print(GroupContainer([]Group{
+		{A: "Target", B: data.IP},
+		{A: "Address Type", B: data.Type},
+		{A: "Continent", B: data.Continent + " (" + data.ContinentCode + ")"},
+		{A: "Country", B: data.Country + " (" + data.CountryCode + ")"},
+		{A: "Region", B: data.Country + " (" + data.RegionCode + ")"},
+		{A: "City", B: data.Country},
+		{A: "Latitude", B: data.Latitude},
+		{A: "Longitude", B: data.Longitude},
+		{A: "Location", B: "https://www.openstreetmap.org/#map=10/" + convert.FormatFloat(data.Latitude) + "/" + convert.FormatFloat(data.Longitude)},
+		{A: "European Union", B: data.IsEU},
+		{A: "Postal Code", B: data.PostalCode},
+		{A: "Calling Code", B: data.CallingCode},
+		{A: "Capital", B: data.Capital},
+		{A: "", B: ""},
+		{A: "System Number (ASN)", B: data.Connection.SystemNumber},
+		{A: "Organisation (ORG)", B: data.Connection.Organisation},
+		{A: "Service Provider (ISP)", B: data.Connection.ServiceProvider},
+		{A: "ISP Domain", B: data.Connection.ISPDomain},
+		{A: "", B: ""},
+		{A: "Timezone", B: data.Timezone.ID},
+		{A: "Timezone Abbreviation", B: data.Timezone.Abbreviation},
+		{A: "UTC", B: data.Timezone.UTC},
+	}...))
+}
+
+func RetrieveCommand(args []string) {
+	item := args[0]
+	switch item {
+	case "interfaces":
+		devices, err := pcap.FindAllDevs()
+		if err != nil {
+			Error("Failed to retrieve network interfaces!")
+			return
+		}
+		var interfaces []Group
+		for _, dev := range devices {
+			interfaces = append(interfaces, Group{A: dev.Description, B: dev.Name})
+		}
+		Print(GroupContainer(interfaces...))
+	case "":
+
+	default:
+		Error("No valid item to retrieve!")
+	}
+}
+
+func SniffCommand(args []string) {
+	interfaceName := args[0]
+	interfaces, err := pcap.FindAllDevs()
+	if err != nil {
+		Error("Failed to retrieve network interfaces!")
+		return
+	}
+	found := false
+	for _, networkInterface := range interfaces {
+		if networkInterface.Name == interfaceName {
+			found = true
+		}
+	}
+	if !found {
+		Error("Desired interface was not found!")
+		return
+	}
+	handle, err := pcap.OpenLive(interfaceName, 1600, false, pcap.BlockForever)
+	if err != nil {
+		Error("Failed to start network sniffer!")
+		return
+	}
+	defer handle.Close()
+	source := gopacket.NewPacketSource(handle, handle.LinkType())
+
+	for packet := range source.Packets() {
+		Print(packet.String())
+	}
 }
 
 func CdCommand(args []string) {
@@ -118,15 +172,17 @@ func LsCommand(_ []string) {
 	if err != nil {
 		Error(err.Error())
 	}
+	var fileList []string
 	for _, file := range files {
 		if file.IsDir() {
-			Print(color.Blue + "/" + file.Name())
+			fileList = append(fileList, "/"+file.Name())
 		} else if strings.HasPrefix(file.Name(), ".") {
-			Print(color.Gray + file.Name())
+			fileList = append(fileList, color.Gray+file.Name())
 		} else {
-			Print(file.Name())
+			fileList = append(fileList, file.Name())
 		}
 	}
+	Print(Container(fileList...))
 }
 
 func UpdateCommand(_ []string) {
@@ -136,13 +192,14 @@ func UpdateCommand(_ []string) {
 		return
 	}
 
-	Print(color.Gray + "┌" + MultiString("─", 120-1))
-	Print(color.Gray + "│ " + color.Reset + "Version Diff" + color.Gray + ": " + color.Red + version + color.Gray + " -> " + color.Green + release.GetTagName())
-	Print(color.Gray + "│ " + color.Reset + "Target Version" + color.Gray + ": " + color.Blue + release.GetTagName() + color.Gray + " (" + release.GetNodeID() + ")")
-	Print(color.Gray + "│ " + color.Reset + "Description" + color.Gray + ": " + color.Reset + strings.Split(release.GetBody(), "\n")[0])
-	Print(color.Gray + "│ " + color.Reset + "URL" + color.Gray + ": " + color.Blue + release.GetHTMLURL())
-	Print(color.Gray + "└" + MultiString("─", 120-1))
+	Print(Container(
+		"Version Diff"+color.Gray+": "+color.Red+version+color.Gray+" -> "+color.Green+release.GetTagName(),
+		"Target Version"+color.Gray+": "+color.Blue+release.GetTagName()+color.Gray+" ("+release.GetNodeID()+")",
+		"Description"+color.Gray+": "+color.Reset+strings.Split(release.GetBody(), "\n")[0],
+		"URL"+color.Gray+": "+color.Blue+release.GetHTMLURL(),
+	))
 	Print()
+
 	if Confirm("Do you want to update to this version?") {
 		PowerShellRun("Invoke-RestMethod https://raw.githubusercontent.com/noahonfyre/FyUTILS/master/get.ps1 | Invoke-Expression")
 		if err != nil {
@@ -155,18 +212,19 @@ func UpdateCommand(_ []string) {
 }
 
 func HelpCommand(_ []string) {
-	Print(color.Gray + "┌" + MultiString("─", 120-1))
-	Print(color.Gray + "│ " + color.Reset + "Command Overview:")
-	Print(color.Gray + "│")
+	var commandList []Group
 	for _, command := range commands {
 		var usages []string
-		for _, argument := range command.Args.Get {
+		for _, argument := range command.Args.Usage {
 			usages = append(usages, "<"+argument+">")
 		}
 		usage := strings.Join(usages, " ")
-		Print(color.Gray + "│ " + color.Blue + SpacingRowColorChange(command.Name+color.Gray+" "+usage, color.Gray, 24) + color.Reset + command.Description)
+		commandList = append(commandList, Group{
+			A: command.Name + " " + usage,
+			B: command.Description,
+		})
 	}
-	Print(color.Gray + "└" + MultiString("─", 120-1))
+	Print(GroupContainer(commandList...))
 }
 
 func ClearCommand(_ []string) {
