@@ -15,12 +15,16 @@ import (
 )
 
 var (
-	username, _ = strings.CutPrefix(convert.ValueOf(utils.Catch(os.UserHomeDir())), "C:\\Users\\")
-	device, _   = os.Hostname()
-	version     = "v1.16.1"
-	homeDir, _  = os.UserHomeDir()
-	mainDir     = homeDir + "\\.fy\\"
-	commands    []Command
+	username, _   = strings.CutPrefix(convert.ValueOf(utils.Catch(os.UserHomeDir())), "C:\\Users\\")
+	device, _     = os.Hostname()
+	version       = "v1.17.0"
+	homeDir, _    = os.UserHomeDir()
+	mainDir       = homeDir + "\\.fy\\"
+	tempDir       = mainDir + "temp\\"
+	configDir     = mainDir + "config\\"
+	fuelDir       = mainDir + "fuel\\"
+	newestRelease *github.RepositoryRelease
+	commands      []Command
 )
 
 func Menu() {
@@ -34,14 +38,11 @@ func Menu() {
 }
 
 func main() {
-	var newestRelease *github.RepositoryRelease
-
 	go func() {
 		release, _, err := githubClient.Repositories.GetLatestRelease(context.Background(), "NoahOnFyre", "FyUTILS")
 		if err != nil {
 			return
 		}
-
 		if semver.Compare(release.GetTagName(), version) == 1 {
 			newestRelease = release
 		}
@@ -50,6 +51,9 @@ func main() {
 	CheckPaths([]string{
 		homeDir,
 		mainDir,
+		tempDir,
+		configDir,
+		fuelDir,
 	})
 
 	CommandRegistration()
@@ -92,7 +96,7 @@ func RunCommand(command string, args []string) {
 				commandFound = true
 			} else {
 				s := ""
-				for _, argument := range cmd.Args.Get {
+				for _, argument := range cmd.Args.Usage {
 					s = s + "<" + argument + "> "
 				}
 				Error("Invalid arguments!" + color.Gray + " - " + color.Red + "Usage: " + command + " " + s)
