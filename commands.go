@@ -71,7 +71,7 @@ func WhoisCommand(args []string) {
 
 	err := json.Unmarshal(body, &data)
 	if err != nil {
-		Error("Failed to parse addressInformation.")
+		Error("Failed to parse JSON.")
 		return
 	}
 
