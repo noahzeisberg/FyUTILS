@@ -1,5 +1,10 @@
 package main
 
+type Group struct {
+	A string
+	B any
+}
+
 type Command struct {
 	Name        string
 	Description string
@@ -9,7 +14,7 @@ type Command struct {
 
 type Args struct {
 	Count int
-	Get   []string
+	Usage []string
 }
 
 type AddressInformation struct {

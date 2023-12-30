@@ -51,3 +51,29 @@ func Wait(title string) {
 func Clear() {
 	PrintR("\033[H\033[2J")
 }
+
+func Container(rows ...string) string {
+	var container string
+	container += color.Gray + "┌" + MultiString("─", 120-1) + "\n"
+	for _, row := range rows {
+		container += color.Gray + "│ " + color.Reset + row + "\n"
+	}
+	container += color.Gray + "└" + MultiString("─", 120-1)
+	return container
+}
+
+func GroupContainer(contents ...Group) string {
+	var maxLength int
+	for _, item := range contents {
+		if len(item.A) > maxLength {
+			maxLength = len(item.A)
+		}
+	}
+	var container string
+	container += color.Gray + "┌" + MultiString("─", 120-1) + "\n"
+	for _, item := range contents {
+		container += color.Gray + "│ " + color.Blue + item.A + MultiString(" ", maxLength-len(item.A)+3) + color.Reset + fmt.Sprint(item.B) + "\n"
+	}
+	container += color.Gray + "└" + MultiString("─", 120-1)
+	return container
+}
