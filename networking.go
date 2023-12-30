@@ -20,5 +20,5 @@ func ScanPort(target string, port int, wg *sync.WaitGroup) {
 
 		}
 	}(conn)
-	Print("Port " + color.Black + convert.FormatInt(port) + color.Reset + " is open!")
+	Print("Port " + color.Blue + convert.FormatInt(port) + color.Reset + " is open!")
 }
