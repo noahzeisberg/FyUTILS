@@ -17,7 +17,7 @@ import (
 var (
 	username, _   = strings.CutPrefix(convert.ValueOf(utils.Catch(os.UserHomeDir())), "C:\\Users\\")
 	device, _     = os.Hostname()
-	version       = "v1.17.0"
+	version       = "v1.17.1"
 	homeDir, _    = os.UserHomeDir()
 	mainDir       = homeDir + "\\.fy\\"
 	tempDir       = mainDir + "temp\\"
@@ -90,14 +90,14 @@ func RunCommand(command string, args []string) {
 	commandFound := false
 	for _, cmd := range commands {
 		if cmd.Name == command {
-			if len(args) == cmd.Args.Count {
+			if len(args) == len(cmd.Arguments) {
 				SetState("Running: " + cmd.Name)
 				cmd.Run(args)
 				commandFound = true
 			} else {
-				s := ""
-				for _, argument := range cmd.Args.Usage {
-					s = s + "<" + argument + "> "
+				var s string
+				for _, argument := range cmd.Arguments {
+					s = s + "<" + argument.Identifier + "> "
 				}
 				Error("Invalid arguments!" + color.Gray + " - " + color.Red + "Usage: " + command + " " + s)
 				commandFound = true
@@ -125,6 +125,7 @@ func RunCommand(command string, args []string) {
 
 		err = runnable.Run()
 		if err != nil {
+			Error("Failed to run command!", err.Error())
 			return
 		}
 	}

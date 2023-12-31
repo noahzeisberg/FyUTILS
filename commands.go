@@ -24,18 +24,13 @@ func FloodCommand(args []string) {
 	port := args[1]
 
 	conn, err := net.Dial("tcp", net.JoinHostPort(ip, port))
-
 	if err != nil {
 		Error("Failed to connect to target: " + err.Error())
 		return
 	}
 
-	i := 0
-
 	for {
-		i++
 		bytes, err := RandomBytes(1024)
-
 		if err != nil {
 			Error("Cannot generate random bytes.")
 			break
@@ -47,7 +42,7 @@ func FloodCommand(args []string) {
 			break
 		}
 
-		Print("Bytes successfully sent to " + color.Blue + conn.RemoteAddr().String() + color.Gray + " (" + convert.FormatInt(i) + ")")
+		Print("Bytes successfully sent to " + color.Blue + conn.RemoteAddr().String())
 	}
 }
 
@@ -75,7 +70,7 @@ func WhoisCommand(args []string) {
 		return
 	}
 
-	Print("Gathering Report for " + color.Blue + data.IP)
+	Print("WHOIS Report for " + color.Blue + data.IP)
 	Print()
 	Print(GroupContainer([]Group{
 		{A: "Target", B: data.IP},
@@ -103,6 +98,11 @@ func WhoisCommand(args []string) {
 	}...))
 }
 
+func WireCommand(args []string) {
+	method := args[0]
+	println(method)
+}
+
 func RetrieveCommand(args []string) {
 	item := args[0]
 	switch item {
@@ -117,6 +117,10 @@ func RetrieveCommand(args []string) {
 			interfaces = append(interfaces, Group{A: dev.Description, B: dev.Name})
 		}
 		Print(GroupContainer(interfaces...))
+	case "path":
+		pathVar := os.Getenv("PATH")
+		paths := strings.Split(pathVar, string(os.PathListSeparator))
+		Print(Container(paths...))
 	case "":
 
 	default:
@@ -215,8 +219,12 @@ func HelpCommand(_ []string) {
 	var commandList []Group
 	for _, command := range commands {
 		var usages []string
-		for _, argument := range command.Args.Usage {
-			usages = append(usages, "<"+argument+">")
+		for _, argument := range command.Arguments {
+			if argument.Required {
+				usages = append(usages, "<"+argument.Identifier+">")
+			} else {
+				usages = append(usages, "<"+argument.Identifier+">")
+			}
 		}
 		usage := strings.Join(usages, " ")
 		commandList = append(commandList, Group{
