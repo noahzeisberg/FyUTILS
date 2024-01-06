@@ -61,7 +61,7 @@ func CommandRegistration() {
 	RegisterCommand("ls", "List all files in a directory.", []Argument{}, LsCommand)
 	RegisterCommand("update", "Update your FyUTILS instance to the newest version.", []Argument{}, UpdateCommand)
 	RegisterCommand("help", "Show the help about all the commands.", []Argument{}, HelpCommand)
-	RegisterCommand("sys", "Show system and FyUTILS related information.", []Argument{}, HelpCommand)
+	RegisterCommand("sys", "Show system and FyUTILS related information.", []Argument{}, SysCommand)
 	RegisterCommand("clear", "Clear the console screen.", []Argument{}, ClearCommand)
 	RegisterCommand("exit", "Gracefully exit FyUTILS.", []Argument{}, ExitCommand)
 }
