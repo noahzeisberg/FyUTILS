@@ -7,23 +7,38 @@
 FyUTILS is the advanced terminal experience for Windows packed with tools for daily use,
 as well as offering hacking tools like a denial of service attack, a port scanner, OSINT tools and several more.
 
-# Disclaimer
+## Disclaimer
 Hacking is illegal. This tool is only made for ethical purposes.
-You'll be responsible for everything you do with this tool.
+You are responsible for everything you do with this tool.
 
-# Table of contents
+## Table of contents
 <!-- TOC -->
 * [FyUTILS](#fyutils)
-* [Disclaimer](#disclaimer)
-* [Table of contents](#table-of-contents)
-* [Installation](#installation)
+  * [Disclaimer](#disclaimer)
+  * [Table of contents](#table-of-contents)
+  * [Installation](#installation)
+    * [Creating a Terminal profile](#creating-a-terminal-profile)
+  * [Credits and Acknowledgments](#credits-and-acknowledgments)
 <!-- TOC -->
 
-# Installation
+## Installation
 - Install a [Nerd Font](https://www.nerdfonts.com/font-downloads) and apply it to your Windows Terminal.
 - Install FyUTILS by executing the following command in your PowerShell:
 ```powershell
 irm https://raw.githubusercontent.com/noahonfyre/FyUTILS/master/get.ps1 | iex
 ```
 - Restart all your shell sessions.
-- Run `fyutils`.
+- Run `fyutils` in your PowerShell, Command Prompt or [create a new Terminal profile](#creating-a-terminal-profile) if you need to use FyUTILS very often.
+
+### Creating a Terminal profile
+- Open your **Windows Terminal** and press `Ctrl+,` to open the settings.
+- Scroll to the bottom left and click on **Create new profile**.
+- Create an **empty** profile.
+- Change the name to **FyUTILS** and the path to `fyutils.exe`.
+- Go to the **Start** section and change your default profile to **FyUTILS**
+
+## Credits and Acknowledgments
+Huge thanks to:
+- [JetBrains](https://www.jetbrains.com/) for their awesome IDEs and tools.
+- [IPWho.is](https://ipwho.is/) for their API, used in FyUTILS.
+- Everyone else supporting me through contributions and stars. ❤️
