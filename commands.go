@@ -249,7 +249,6 @@ func HelpCommand(_ []string) {
 }
 
 func SysCommand(_ []string) {
-	Clear()
 	Print(GroupContainer([]Group{
 		{A: "Username", B: username},
 		{A: "Device", B: device},
@@ -261,7 +260,6 @@ func SysCommand(_ []string) {
 		{A: "Uptime", B: time.Since(startTime)},
 		{A: "Environment", B: os.Getenv("FyUTILS")},
 	}...))
-	Input("")
 }
 
 func ClearCommand(_ []string) {
