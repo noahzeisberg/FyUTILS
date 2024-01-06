@@ -26,6 +26,17 @@ func CommandRegistration() {
 		},
 	}, WhoisCommand)
 
+	RegisterCommand("wire", "Utilize several wireless network utilities.", []Argument{
+		{
+			Identifier: "item",
+			Required:   true,
+		},
+		{
+			Identifier: "target",
+			Required:   false,
+		},
+	}, WireCommand)
+
 	RegisterCommand("retrieve", "Retrieve local information.", []Argument{
 		{
 			Identifier: "item",
@@ -50,6 +61,7 @@ func CommandRegistration() {
 	RegisterCommand("ls", "List all files in a directory.", []Argument{}, LsCommand)
 	RegisterCommand("update", "Update your FyUTILS instance to the newest version.", []Argument{}, UpdateCommand)
 	RegisterCommand("help", "Show the help about all the commands.", []Argument{}, HelpCommand)
+	RegisterCommand("sys", "Show system and FyUTILS related information.", []Argument{}, HelpCommand)
 	RegisterCommand("clear", "Clear the console screen.", []Argument{}, ClearCommand)
 	RegisterCommand("exit", "Gracefully exit FyUTILS.", []Argument{}, ExitCommand)
 }

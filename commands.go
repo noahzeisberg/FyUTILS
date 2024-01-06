@@ -11,8 +11,11 @@ import (
 	"github.com/google/gopacket/pcap"
 	"net"
 	"os"
+	"os/exec"
+	"runtime"
 	"strings"
 	"sync"
+	"time"
 )
 
 var (
@@ -99,8 +102,20 @@ func WhoisCommand(args []string) {
 }
 
 func WireCommand(args []string) {
-	method := args[0]
-	println(method)
+	item := args[0]
+	switch item {
+	case "list":
+		output, err := exec.Command("cmd.exe", "/c", "netsh", "wlan", "show", "networks").CombinedOutput()
+		if err != nil {
+			Error(err.Error())
+			return
+		}
+		Print(Container(ScanNetworks(string(output))...))
+	case "connect":
+
+	default:
+		Error("Invalid input!")
+	}
 }
 
 func RetrieveCommand(args []string) {
@@ -121,8 +136,6 @@ func RetrieveCommand(args []string) {
 		pathVar := os.Getenv("PATH")
 		paths := strings.Split(pathVar, string(os.PathListSeparator))
 		Print(Container(paths...))
-	case "":
-
 	default:
 		Error("No valid item to retrieve!")
 	}
@@ -223,7 +236,7 @@ func HelpCommand(_ []string) {
 			if argument.Required {
 				usages = append(usages, "<"+argument.Identifier+">")
 			} else {
-				usages = append(usages, "<"+argument.Identifier+">")
+				usages = append(usages, "["+argument.Identifier+"]")
 			}
 		}
 		usage := strings.Join(usages, " ")
@@ -233,6 +246,22 @@ func HelpCommand(_ []string) {
 		})
 	}
 	Print(GroupContainer(commandList...))
+}
+
+func SysCommand(_ []string) {
+	Clear()
+	GroupContainer([]Group{
+		{A: "Username", B: username},
+		{A: "Device", B: device},
+		{A: "Operating System", B: runtime.GOOS},
+		{A: "Uptime", B: "NA"},
+		{A: "", B: ""},
+		{A: "FyUTILS", B: version},
+		{A: "Path", B: mainDir},
+		{A: "Uptime", B: time.Since(startTime)},
+		{A: "Environment", B: os.Getenv("FyUTILS")},
+	}...)
+	Input("")
 }
 
 func ClearCommand(_ []string) {

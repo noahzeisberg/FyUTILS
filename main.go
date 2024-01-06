@@ -12,18 +12,20 @@ import (
 	"os"
 	"os/exec"
 	"strings"
+	"time"
 )
 
 var (
 	username, _   = strings.CutPrefix(convert.ValueOf(utils.Catch(os.UserHomeDir())), "C:\\Users\\")
 	device, _     = os.Hostname()
-	version       = "v1.17.1"
+	version       = "v1.17.2"
 	homeDir, _    = os.UserHomeDir()
 	mainDir       = homeDir + "\\.fy\\"
 	tempDir       = mainDir + "temp\\"
 	configDir     = mainDir + "config\\"
 	fuelDir       = mainDir + "fuel\\"
 	newestRelease *github.RepositoryRelease
+	startTime     = time.Now()
 	commands      []Command
 )
 
@@ -90,16 +92,26 @@ func RunCommand(command string, args []string) {
 	commandFound := false
 	for _, cmd := range commands {
 		if cmd.Name == command {
-			if len(args) == len(cmd.Arguments) {
+			var requiredArgs int
+			for _, argument := range cmd.Arguments {
+				if argument.Required {
+					requiredArgs++
+				}
+			}
+			if len(args) >= requiredArgs {
 				SetState("Running: " + cmd.Name)
 				cmd.Run(args)
 				commandFound = true
 			} else {
-				var s string
+				var usage string
 				for _, argument := range cmd.Arguments {
-					s = s + "<" + argument.Identifier + "> "
+					if argument.Required {
+						usage += "<" + argument.Identifier + "> "
+					} else {
+						usage += "[" + argument.Identifier + "] "
+					}
 				}
-				Error("Invalid arguments!" + color.Gray + " - " + color.Red + "Usage: " + command + " " + s)
+				Error("Invalid arguments!" + color.Gray + " - " + color.Red + "Usage: " + command + " " + usage)
 				commandFound = true
 			}
 		}
