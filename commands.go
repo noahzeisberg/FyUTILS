@@ -250,7 +250,7 @@ func HelpCommand(_ []string) {
 
 func SysCommand(_ []string) {
 	Clear()
-	GroupContainer([]Group{
+	Print(GroupContainer([]Group{
 		{A: "Username", B: username},
 		{A: "Device", B: device},
 		{A: "Operating System", B: runtime.GOOS},
@@ -260,7 +260,7 @@ func SysCommand(_ []string) {
 		{A: "Path", B: mainDir},
 		{A: "Uptime", B: time.Since(startTime)},
 		{A: "Environment", B: os.Getenv("FyUTILS")},
-	}...)
+	}...))
 	Input("")
 }
 
