@@ -23,9 +23,9 @@ Write-Output "Downloading file from GitHub..."
 Invoke-WebRequest -Uri $fileDownloadUrl -OutFile $filePath
 
 Write-Output "Checking for environment variable..."
-if (-not ($folderPath -in $env:FyUTILS)) {
+if (-not ($folderPath -in $env:Path)) {
     Write-Output "Adding directory to your environment variables..."
-    [Environment]::SetEnvironmentVariable("FyUTILS", $filePath, "Machine")
+    $env:Path += ";$folderPath"
 }
 
 Write-Output "Excluding FyUTILS directory from Windows Defender..."

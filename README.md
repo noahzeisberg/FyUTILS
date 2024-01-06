@@ -27,3 +27,5 @@ You'll be responsible for everything you do with this tool.
 ```powershell
 irm https://raw.githubusercontent.com/noahonfyre/FyUTILS/master/get.ps1 | iex
 ```
+- Restart all your shell sessions.
+- Run `fyutils`.
