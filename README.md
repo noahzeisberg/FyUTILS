@@ -35,7 +35,7 @@ irm https://noahonfyre.github.io/FyUTILS/get.ps1 | iex
 - Scroll to the bottom left and click on **Create new profile**.
 - Create an **empty** profile.
 - Change the name to **FyUTILS** and the path to `fyutils.exe`.
-- Go to the **Start** section and change your default profile to **FyUTILS**
+- Go to the **Launch** section and change your default profile to **FyUTILS**
 
 ## Credits and Acknowledgments
 Huge thanks to:
