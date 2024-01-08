@@ -9,9 +9,13 @@
     <link href="https://api.fontshare.com/v2/css?f[]=satoshi@1&display=swap" rel="stylesheet">
     <style>
       @layer base {
-        * {
+        h1, p, button span, button svg {
           font-family: "Satoshi Variable", "Inter", sans-serif;
           color: #fafafa;
+        }
+
+        code {
+          font-family: "JetBrains Mono", "Fira Code", monospace;
         }
       }
     </style>
@@ -24,10 +28,10 @@
         FyUTILS is the advanced terminal experience for Windows packed with tools for daily use, as well as offering hacking tools like a denial of service attack, a port scanner, OSINT tools and several more.
       </p>
       <code class="flex items-center gap-1 bg-zinc-900 ring-1 ring-inset ring-zinc-800 rounded-lg py-2 px-4">
-        <span class="text-red-400">irm </span>
-        <span class="text-blue-400">https://raw.githubusercontent.com/noahonfyre/FyUTILS/master/get.ps1 </span>
+        <span class="text-yellow-200">irm </span>
+        <span class="text-sky-50">https://noahonfyre.github.io/FyUTILS/get.ps1 </span>
         <span class="text-zinc-600">| </span>
-        <span class="text-red-400">iex</span>
+        <span class="text-yellow-200">iex </span>
         <button class="ml-2" onclick="handleCopyCommand()">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
             <path stroke-linecap="round" stroke-linejoin="round" d="M15.666 3.888A2.25 2.25 0 0 0 13.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 0 1-.75.75H9a.75.75 0 0 1-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 0 1-2.25 2.25H6.75A2.25 2.25 0 0 1 4.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 0 1 1.927-.184" />
