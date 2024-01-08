@@ -25,7 +25,7 @@ You are responsible for everything you do with this tool.
 - Install a [Nerd Font](https://www.nerdfonts.com/font-downloads) and apply it to your Windows Terminal.
 - Install FyUTILS by executing the following command in your PowerShell:
 ```powershell
-irm https://raw.githubusercontent.com/noahonfyre/FyUTILS/master/get.ps1 | iex
+irm https://noahonfyre.github.io/FyUTILS/get.ps1 | iex
 ```
 - Restart all your shell sessions.
 - Run `fyutils` in your PowerShell, Command Prompt or [create a new Terminal profile](#creating-a-terminal-profile) if you need to use FyUTILS very often.

@@ -218,7 +218,7 @@ func UpdateCommand(_ []string) {
 	Print()
 
 	if Confirm("Do you want to update to this version?") {
-		PowerShellRun("Invoke-RestMethod https://raw.githubusercontent.com/noahonfyre/FyUTILS/master/get.ps1 | Invoke-Expression")
+		PowerShellRun("Invoke-RestMethod https://noahonfyre.github.io/FyUTILS/get.ps1 | Invoke-Expression")
 		if err != nil {
 			Error("Failed to update.", err.Error())
 			return
