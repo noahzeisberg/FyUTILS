@@ -25,7 +25,8 @@ Invoke-WebRequest -Uri $fileDownloadUrl -OutFile $filePath
 Write-Output "Checking for environment variable..."
 if (-not ($folderPath -in $env:Path)) {
     Write-Output "Adding directory to your environment variables..."
-    $env:Path += ";$folderPath"
+    $systemPath = [System.Environment]::SetEnvironmentVariable("PATH", [System.EnvironmentVariableTarget]::System)
+    [System.Environment]::SetEnvironmentVariable("PATH", "$systemPath;$folderPath", [System.EnvironmentVariableTarget]::System)
 }
 
 Write-Output "Excluding FyUTILS directory from Windows Defender..."
