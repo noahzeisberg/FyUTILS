@@ -5,20 +5,21 @@ import (
 	"github.com/NoahOnFyre/gengine/convert"
 	"net"
 	"strings"
-	"sync"
+	"time"
 )
 
-func ScanPort(target string, port int, wg *sync.WaitGroup) {
-	defer wg.Done()
+func ScanPort(target string, port int) {
 	address := net.JoinHostPort(target, convert.FormatInt(port))
-	conn, err := net.Dial("tcp", address)
+	conn, err := net.DialTimeout("tcp", address, time.Millisecond*250)
 	if err != nil {
+		Error(err.Error())
 		return
 	}
 	defer func(conn net.Conn) {
-		err := conn.Close()
+		err = conn.Close()
 		if err != nil {
-
+			Error(err.Error())
+			return
 		}
 	}(conn)
 	Print("Port " + color.Blue + convert.FormatInt(port) + color.Reset + " is open!")

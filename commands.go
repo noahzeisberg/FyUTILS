@@ -9,6 +9,7 @@ import (
 	"github.com/google/go-github/github"
 	"github.com/google/gopacket"
 	"github.com/google/gopacket/pcap"
+	"golang.org/x/sync/semaphore"
 	"net"
 	"os"
 	"os/exec"
@@ -51,11 +52,22 @@ func FloodCommand(args []string) {
 
 func PortscanCommand(args []string) {
 	ip := args[0]
+	lock := semaphore.NewWeighted(1024)
 	var wg sync.WaitGroup
 	Print("Scanning ports...")
+	Warn("Please be patient as this could take some time.")
+	wg.Add(1024 * 64)
 	for port := 1; port <= 1024*64; port++ {
-		wg.Add(1)
-		go ScanPort(ip, port, &wg)
+		err := lock.Acquire(context.TODO(), 1)
+		if err != nil {
+			Error(err.Error())
+			return
+		}
+		go func(port int) {
+			defer lock.Release(1)
+			defer wg.Done()
+			ScanPort(ip, port)
+		}(port)
 	}
 	wg.Wait()
 
