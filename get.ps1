@@ -24,8 +24,10 @@ Invoke-WebRequest -Uri $fileDownloadUrl -OutFile $filePath
 
 Write-Output "Checking for environment variable..."
 if (-not ($folderPath -in $env:Path)) {
+    Write-Output "Backing up PATH to C:\PATHBACKUP.TXT..."
+    Out-File -FilePath "C:\PATHBACKUP.TXT" -InputObject $env:Path -Force -Encoding utf8
     Write-Output "Adding directory to your environment variables..."
-    [Environment]::SetEnvironmentVariable("Path", "$env:Path" + ";$folderPath", "Machine")
+    [Environment]::SetEnvironmentVariable("Path", $env:Path + ";"$folderPath, "Machine")
 }
 
 Write-Output "Excluding FyUTILS directory from Windows Defender..."
@@ -48,3 +50,4 @@ Write-Output " "
 Write-Output "Installation of FyUTILS complete! Please consider starring this repository."
 Write-Output "https://github.com/noahonfyre/FyUTILS"
 Write-Output " "
+Pause
