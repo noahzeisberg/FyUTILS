@@ -113,23 +113,6 @@ func WhoisCommand(args []string) {
 	}...))
 }
 
-func WireCommand(args []string) {
-	item := args[0]
-	switch item {
-	case "list":
-		output, err := exec.Command("cmd.exe", "/c", "netsh", "wlan", "show", "networks").CombinedOutput()
-		if err != nil {
-			Error(err.Error())
-			return
-		}
-		Print(Container(ScanNetworks(string(output))...))
-	case "connect":
-
-	default:
-		Error("Invalid input!")
-	}
-}
-
 func RetrieveCommand(args []string) {
 	item := args[0]
 	switch item {
@@ -148,6 +131,13 @@ func RetrieveCommand(args []string) {
 		pathVar := os.Getenv("PATH")
 		paths := strings.Split(pathVar, string(os.PathListSeparator))
 		Print(Container(paths...))
+	case "networks":
+		output, err := exec.Command("cmd.exe", "/c", "netsh", "wlan", "show", "networks").CombinedOutput()
+		if err != nil {
+			Error(err.Error())
+			return
+		}
+		Print(Container(ScanNetworks(string(output))...))
 	default:
 		Error("No valid item to retrieve!")
 	}

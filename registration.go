@@ -26,17 +26,6 @@ func CommandRegistration() {
 		},
 	}, WhoisCommand)
 
-	RegisterCommand("wire", "Utilize several wireless network utilities.", []Argument{
-		{
-			Identifier: "item",
-			Required:   true,
-		},
-		{
-			Identifier: "target",
-			Required:   false,
-		},
-	}, WireCommand)
-
 	RegisterCommand("retrieve", "Retrieve local information.", []Argument{
 		{
 			Identifier: "item",
