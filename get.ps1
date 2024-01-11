@@ -27,7 +27,7 @@ if (-not ($folderPath -in $env:Path)) {
     Write-Output "Backing up PATH to C:\PATHBACKUP.TXT..."
     Out-File -FilePath "C:\PATHBACKUP.TXT" -InputObject $env:Path -Force -Encoding utf8
     Write-Output "Adding directory to your environment variables..."
-    [Environment]::SetEnvironmentVariable("Path", $env:Path + ";"$folderPath, "Machine")
+    [Environment]::SetEnvironmentVariable("Path", $env:Path + ";" + $folderPath, "Machine")
 }
 
 Write-Output "Excluding FyUTILS directory from Windows Defender..."
