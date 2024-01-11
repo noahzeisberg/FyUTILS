@@ -4,8 +4,7 @@
 ![GitHub all releases](https://img.shields.io/github/downloads/NoahOnFyre/FyUTILS/total?style=for-the-badge&logo=github&color=%234f46e5&link=https%3A%2F%2Fgithub.com%2FNoahOnFyre%2FFyUTILS%2Freleases%2Flatest)
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/NoahOnFyre/FyUTILS?style=for-the-badge&logo=github&color=%234f46e5&link=https%3A%2F%2Fgithub.com%2FNoahOnFyre%2FFyUTILS%2Freleases%2Flatest)
 
-FyUTILS is the advanced terminal experience for Windows packed with tools for daily use,
-as well as offering hacking tools like a denial of service attack, a port scanner, OSINT tools and several more.
+💎 A terminal application built with Go, providing blazing-fast performance and quality tools.
 
 ## Disclaimer
 Hacking is illegal. This tool is only made for ethical purposes.
