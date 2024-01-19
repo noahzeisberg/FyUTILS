@@ -9,6 +9,7 @@ import (
 	"github.com/google/go-github/github"
 	"golang.org/x/mod/semver"
 	"io"
+	"net/http"
 	"os"
 	"os/exec"
 	"strings"
@@ -22,9 +23,11 @@ var (
 	homeDir, _    = os.UserHomeDir()
 	mainDir       = homeDir + "\\.fy\\"
 	tempDir       = mainDir + "temp\\"
+	downloadDir   = mainDir + "download\\"
 	configDir     = mainDir + "config\\"
 	fuelDir       = mainDir + "fuel\\"
 	newestRelease *github.RepositoryRelease
+	httpClient    = &http.Client{Transport: &http.Transport{}}
 	startTime     = time.Now()
 	commands      []Command
 )
@@ -54,6 +57,7 @@ func main() {
 		homeDir,
 		mainDir,
 		tempDir,
+		downloadDir,
 		configDir,
 		fuelDir,
 	})

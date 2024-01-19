@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"github.com/NoahOnFyre/gengine/color"
 	"github.com/NoahOnFyre/gengine/convert"
 	"github.com/NoahOnFyre/gengine/networking/requests"
@@ -10,7 +11,9 @@ import (
 	"github.com/google/gopacket"
 	"github.com/google/gopacket/pcap"
 	"golang.org/x/sync/semaphore"
+	"io"
 	"net"
+	"net/http"
 	"os"
 	"os/exec"
 	"runtime"
@@ -191,6 +194,71 @@ func CdCommand(args []string) {
 	}
 }
 
+func FetchCommand(args []string) {
+	url := args[0]
+
+	split := strings.Split(url, "/")
+	filename := split[len(split)-1]
+
+	request, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		Error("Failed to create new request instance.")
+		return
+	}
+
+	request.Header.Set("User-Agent", "FyUTILS/"+version)
+	request.Close = true
+
+	downloadStartTime := time.Now()
+
+	response, err := httpClient.Do(request)
+	if err != nil {
+		Error("Failed to make request.")
+		return
+	}
+
+	buffer := make([]byte, 4096)
+	var downloaded int64
+	var downloadedData []byte
+
+	for {
+		n, err := response.Body.Read(buffer)
+		if err != nil && err != io.EOF {
+			Error("Failed to read response body.")
+			return
+		}
+		if n == 0 {
+			break
+		}
+
+		downloaded += int64(n)
+		downloadedData = append(downloadedData, buffer[:n]...)
+
+		currentTime := time.Now()
+		progress := float64(downloaded) / float64(response.ContentLength) * 100
+
+		if currentTime.Sub(startTime).Milliseconds() >= 250 {
+			startTime = currentTime
+			msg := "Downloading... " + color.Blue + convert.FormatInt(int(progress)) + "%" + color.Reset
+			PrintR(msg + "\r")
+		}
+	}
+	err = response.Body.Close()
+	if err != nil {
+		Error("Failed to close body!")
+		return
+	}
+
+	Print("Download succeed!" + MultiString(" ", 20))
+	Print(fmt.Sprint(time.Since(downloadStartTime)), "elapsed!")
+
+	err = os.WriteFile(downloadDir+filename, downloadedData, os.ModePerm)
+	if err != nil {
+		Error("Failed to write data to file.")
+		return
+	}
+}
+
 func LsCommand(_ []string) {
 	dir, err := os.Getwd()
 	if err != nil {
@@ -211,6 +279,14 @@ func LsCommand(_ []string) {
 		}
 	}
 	Print(Container(fileList...))
+}
+
+func DirCommand(_ []string) {
+	err := exec.Command("cmd.exe", "/c", "start", "explorer.exe", mainDir).Run()
+	if err != nil {
+		Error("Failed to start explorer process.")
+		return
+	}
 }
 
 func UpdateCommand(_ []string) {

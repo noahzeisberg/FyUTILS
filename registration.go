@@ -47,7 +47,15 @@ func CommandRegistration() {
 		},
 	}, CdCommand)
 
+	RegisterCommand("fetch", "Download a file from the specific URL.", []Argument{
+		{
+			Identifier: "url",
+			Required:   true,
+		},
+	}, FetchCommand)
+
 	RegisterCommand("ls", "List all files in a directory.", []Argument{}, LsCommand)
+	RegisterCommand("dir", "Open your FyUTILS directory.", []Argument{}, DirCommand)
 	RegisterCommand("update", "Update your FyUTILS instance to the newest version.", []Argument{}, UpdateCommand)
 	RegisterCommand("help", "Show the help about all the commands.", []Argument{}, HelpCommand)
 	RegisterCommand("sys", "Show system and FyUTILS related information.", []Argument{}, SysCommand)
