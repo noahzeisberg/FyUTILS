@@ -12,7 +12,6 @@ func ScanPort(target string, port int) {
 	address := net.JoinHostPort(target, convert.FormatInt(port))
 	conn, err := net.DialTimeout("tcp", address, time.Millisecond*250)
 	if err != nil {
-		Error(err.Error())
 		return
 	}
 	defer func(conn net.Conn) {
