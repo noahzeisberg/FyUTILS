@@ -43,23 +43,9 @@ func MultiString(char string, repeat int) string {
 	return final
 }
 
-func SpacingRow(msg string, trim int) string {
-	spacing := trim - len(msg)
-	return msg + MultiString(" ", spacing)
-}
-
-func SpacingRowColorChange(msg string, color string, trim int) string {
-	spacing := trim - len(msg) + len(color)
-	return msg + MultiString(" ", spacing)
-}
-
 func SetState(msg string) {
 	state = msg
 	utils.SetTitle("FyUTILS " + version + " - " + username + "@" + device + " - " + state)
-}
-
-func GetState() string {
-	return state
 }
 
 func PowerShellRun(command string) {
