@@ -44,10 +44,6 @@ func Confirm(title string) bool {
 	}
 }
 
-func Wait(title string) {
-	Input(title)
-}
-
 func Clear() {
 	PrintR("\033[H\033[2J")
 }
