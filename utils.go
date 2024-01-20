@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"github.com/NoahOnFyre/gengine/filesystem"
 	"github.com/NoahOnFyre/gengine/utils"
-	"io"
 	"io/fs"
 	"os"
 	"os/exec"
@@ -64,22 +63,21 @@ func GetState() string {
 }
 
 func PowerShellRun(command string) {
-	cmd := exec.Command("powershell.exe", "-nologo", "-noprofile")
+	cmd := exec.Command("powershell.exe -nologo -noprofile")
 	stdin, err := cmd.StdinPipe()
 	if err != nil {
 		Error("Failed to connect to PowerShell session!")
 		return
 	}
-	go func() {
-		defer func(stdin io.WriteCloser) {
-			err = stdin.Close()
-			if err != nil {
-				Error("Failed to close stdin pipe..")
-			}
-		}(stdin)
-		_, err = fmt.Fprintln(stdin, command)
-		if err != nil {
-			Error("Failed to run PowerShell command.")
-		}
-	}()
+	bytesWritten, err := fmt.Fprintln(stdin, command)
+	Print(fmt.Sprint(bytesWritten), "bytes written to pipe.")
+	if err != nil {
+		Error("Failed to run PowerShell command.")
+		return
+	}
+	err = stdin.Close()
+	if err != nil {
+		Error("Failed to close pipe..")
+		return
+	}
 }
