@@ -39,5 +39,5 @@ irm https://noahonfyre.github.io/FyUTILS/get.ps1 | iex
 ## Credits and Acknowledgments
 Huge thanks to:
 - [JetBrains](https://www.jetbrains.com/) for their awesome IDEs and tools.
-- [IPWho.is](https://ipwho.is/) for their API, used in FyUTILS.
+- [IPWHOIS](https://ipwhois.io/) for their API, used in FyUTILS.
 - Everyone else supporting me through contributions and stars. ❤️
