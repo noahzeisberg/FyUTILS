@@ -17,6 +17,9 @@ type Argument struct {
 	Required   bool
 }
 
+type Configuration struct {
+}
+
 type AddressInformation struct {
 	IP            string                `json:"ip"`
 	Type          string                `json:"type"`
