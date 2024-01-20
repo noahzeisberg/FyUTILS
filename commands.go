@@ -206,7 +206,6 @@ func FetchCommand(args []string) {
 		return
 	}
 
-	request.Header.Set("User-Agent", "FyUTILS/"+version)
 	request.Close = true
 
 	downloadStartTime := time.Now()
@@ -249,7 +248,7 @@ func FetchCommand(args []string) {
 		return
 	}
 
-	Print("Download succeed!" + MultiString(" ", 20))
+	Print("Downloading... " + color.Blue + "100%" + color.Reset + MultiString(" ", 20))
 	Print(fmt.Sprint(time.Since(downloadStartTime)), "elapsed!")
 
 	err = os.WriteFile(downloadDir+filename, downloadedData, os.ModePerm)
