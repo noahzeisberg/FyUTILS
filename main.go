@@ -48,9 +48,7 @@ func main() {
 		if err != nil {
 			return
 		}
-		if semver.Compare(release.GetTagName(), version) == 1 {
-			newestRelease = release
-		}
+		newestRelease = release
 	}()
 
 	CheckPaths([]string{
@@ -75,7 +73,7 @@ func main() {
 			command, args := ParseCommand(input)
 			RunCommand(command, args)
 		}
-		if newestRelease != nil {
+		if semver.Compare(version, newestRelease.GetTagName()) == -1 {
 			Print()
 			Print(color.Gray + "┌" + MultiString("─", 120-1))
 			Print(color.Gray + "│ " + color.Reset + "A new version of FyUTILS is available! Run " + color.Blue + "\"update\"" + color.Reset + " to download.")
