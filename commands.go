@@ -289,29 +289,20 @@ func DirCommand(_ []string) {
 }
 
 func UpdateCommand(_ []string) {
-	release, _, err := githubClient.Repositories.GetLatestRelease(context.Background(), "noahonfyre", "FyUTILS")
-	if err != nil {
-		Error("Failed to fetch version information from GitHub.")
-		return
-	}
+	Print(GroupContainer([]Group{
+		{A: "Version Diff:", B: color.Red + version + color.Gray + " -> " + color.Green + newestRelease.GetTagName()},
+		{A: "Description:", B: color.Reset + strings.Split(newestRelease.GetBody(), "\n")[0]},
+		{A: "GitHub Release:", B: newestRelease.GetHTMLURL()},
+	}...))
 
-	Print(Container(
-		"Version Diff"+color.Gray+": "+color.Red+version+color.Gray+" -> "+color.Green+release.GetTagName(),
-		"Target Version"+color.Gray+": "+color.Blue+release.GetTagName()+color.Gray+" ("+release.GetNodeID()+")",
-		"Description"+color.Gray+": "+color.Reset+strings.Split(release.GetBody(), "\n")[0],
-		"URL"+color.Gray+": "+color.Blue+release.GetHTMLURL(),
-	))
-	Print()
+	Print(color.Reset)
 
 	if Confirm("Do you want to update to this version?") {
-		PowerShellRun("Invoke-RestMethod https://noahonfyre.github.io/FyUTILS/get.ps1 | Invoke-Expression")
-		if err != nil {
-			Error("Failed to update.", err.Error())
-			return
-		}
+		PowerShellRun("irm https://noahonfyre.github.io/FyUTILS/get.ps1 | iex")
 	} else {
 		Print("Update cancelled!")
 	}
+	os.Exit(0)
 }
 
 func HelpCommand(_ []string) {
@@ -339,12 +330,14 @@ func SysCommand(_ []string) {
 		{A: "Username", B: username},
 		{A: "Device", B: device},
 		{A: "Operating System", B: runtime.GOOS},
-		{A: "Uptime", B: "NA"},
 		{A: "", B: ""},
 		{A: "FyUTILS", B: version},
-		{A: "Path", B: mainDir},
 		{A: "Uptime", B: time.Since(startTime)},
-		{A: "Environment", B: os.Getenv("FyUTILS")},
+		{A: "Root Path", B: mainDir},
+		{A: "Temp Path", B: tempDir},
+		{A: "Download Path", B: downloadDir},
+		{A: "Config Path", B: downloadDir},
+		{A: "FUEL Path", B: fuelDir},
 	}...))
 }
 
