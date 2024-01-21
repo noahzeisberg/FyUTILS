@@ -336,7 +336,7 @@ func SysCommand(_ []string) {
 		{A: "Root Path", B: mainDir},
 		{A: "Temp Path", B: tempDir},
 		{A: "Download Path", B: downloadDir},
-		{A: "Config Path", B: downloadDir},
+		{A: "Config Path", B: configDir},
 		{A: "FUEL Path", B: fuelDir},
 	}...))
 }
