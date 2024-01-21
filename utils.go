@@ -66,4 +66,9 @@ func PowerShellRun(command string) {
 		Error("Failed to close pipe..")
 		return
 	}
+	out, err := cmd.CombinedOutput()
+	if err != nil {
+		Error(err.Error())
+	}
+	Print(string(out))
 }
