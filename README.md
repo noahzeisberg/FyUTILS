@@ -4,7 +4,7 @@
 ![GitHub all releases](https://img.shields.io/github/downloads/NoahOnFyre/FyUTILS/total?style=for-the-badge&logo=github&color=%234f46e5&link=https%3A%2F%2Fgithub.com%2FNoahOnFyre%2FFyUTILS%2Freleases%2Flatest)
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/NoahOnFyre/FyUTILS?style=for-the-badge&logo=github&color=%234f46e5&link=https%3A%2F%2Fgithub.com%2FNoahOnFyre%2FFyUTILS%2Freleases%2Flatest)
 
-💎 A terminal application built with Go, providing blazing-fast performance and quality tools.
+💎 A terminal application built with Go, providing blazing-fast performance and useful tools.
 
 ## Disclaimer
 Hacking is illegal. This tool is only made for ethical purposes.
