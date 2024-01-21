@@ -70,7 +70,9 @@ func main() {
 		input := Input(color.Gray + "┌─[" + color.Blue + username + color.Gray + "@" + color.Reset + device + color.Gray + "]─(" + color.Reset + "\U000F024B" + " " + currentDir + color.Gray + ")\n" + color.Gray + "└─> " + color.Reset)
 		if input != "" {
 			Print()
-			command, args := ParseCommand(input)
+			split := strings.Split(input, " ")
+			command := split[0]
+			args := utils.RemoveElement(split, 0)
 			RunCommand(command, args)
 		}
 		if semver.Compare(version, newestRelease.GetTagName()) == -1 {
@@ -81,13 +83,6 @@ func main() {
 			Print(color.Gray + "└" + MultiString("─", 120-1))
 		}
 	}
-}
-
-func ParseCommand(input string) (string, []string) {
-	split := strings.Split(input, " ")
-	command := split[0]
-	args := utils.RemoveElement(split, 0)
-	return command, args
 }
 
 func RunCommand(command string, args []string) {
