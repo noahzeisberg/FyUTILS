@@ -49,7 +49,7 @@ func SetState(msg string) {
 }
 
 func PowerShellRun(command string) {
-	cmd := exec.Command("powershell.exe -nologo -noprofile")
+	cmd := exec.Command("cmd.exe", "/c", "powershell.exe -nologo -noprofile")
 	stdin, err := cmd.StdinPipe()
 	if err != nil {
 		Error("Failed to connect to PowerShell session!")
