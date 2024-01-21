@@ -299,6 +299,7 @@ func UpdateCommand(_ []string) {
 
 	if Confirm("Do you want to update to this version?") {
 		PowerShellRun("irm https://noahonfyre.github.io/FyUTILS/get.ps1 | iex")
+		time.Sleep(time.Second)
 	} else {
 		Print("Update cancelled!")
 	}
