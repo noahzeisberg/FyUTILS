@@ -176,24 +176,6 @@ func SniffCommand(args []string) {
 	}
 }
 
-func CdCommand(args []string) {
-	if len(args) == 0 {
-		dir, err := os.Getwd()
-		if err != nil {
-			Error(err.Error())
-			return
-		}
-		Print(Container(dir))
-		return
-	}
-	dir := args[0]
-	err := os.Chdir(dir)
-	if err != nil {
-		Error(err.Error())
-		return
-	}
-}
-
 func FetchCommand(args []string) {
 	url := args[0]
 
@@ -254,6 +236,24 @@ func FetchCommand(args []string) {
 	err = os.WriteFile(downloadDir+filename, downloadedData, os.ModePerm)
 	if err != nil {
 		Error("Failed to write data to file.")
+		return
+	}
+}
+
+func CdCommand(args []string) {
+	if len(args) == 0 {
+		dir, err := os.Getwd()
+		if err != nil {
+			Error(err.Error())
+			return
+		}
+		Print(Container(dir))
+		return
+	}
+	dir := args[0]
+	err := os.Chdir(dir)
+	if err != nil {
+		Error(err.Error())
 		return
 	}
 }

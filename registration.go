@@ -40,19 +40,19 @@ func CommandRegistration() {
 		},
 	}, SniffCommand)
 
-	RegisterCommand("cd", "Change your current working directory.", []Argument{
-		{
-			Identifier: "directory",
-			Required:   false,
-		},
-	}, CdCommand)
-
 	RegisterCommand("fetch", "Download a file from the specific URL.", []Argument{
 		{
 			Identifier: "url",
 			Required:   true,
 		},
 	}, FetchCommand)
+
+	RegisterCommand("cd", "Change your current working directory.", []Argument{
+		{
+			Identifier: "directory",
+			Required:   false,
+		},
+	}, CdCommand)
 
 	RegisterCommand("ls", "List all files in a directory.", []Argument{}, LsCommand)
 	RegisterCommand("dir", "Open your FyUTILS directory.", []Argument{}, DirCommand)
