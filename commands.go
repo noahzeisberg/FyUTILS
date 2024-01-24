@@ -42,13 +42,11 @@ func FloodCommand(args []string) {
 			Error("Cannot generate random bytes.")
 			break
 		}
-
 		_, err = conn.Write(bytes)
 		if err != nil {
 			Error("Failed to send data to connection.")
 			break
 		}
-
 		Print("Bytes successfully sent to " + color.Blue + conn.RemoteAddr().String())
 	}
 }
