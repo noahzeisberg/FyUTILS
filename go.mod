@@ -1,4 +1,4 @@
-module FyUTILS
+module github.com/noahonfyre/FyUTILS
 
 go 1.21.0
 
