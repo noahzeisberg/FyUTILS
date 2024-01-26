@@ -44,7 +44,7 @@ func Menu() {
 
 func main() {
 	go func() {
-		release, _, err := githubClient.Repositories.GetLatestRelease(context.Background(), "NoahOnFyre", "FyUTILS")
+		release, _, err := githubClient.Repositories.GetLatestRelease(context.Background(), "noahonfyre", "FyUTILS")
 		if err != nil {
 			return
 		}
