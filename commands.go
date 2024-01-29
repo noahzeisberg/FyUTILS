@@ -289,7 +289,7 @@ func DirCommand(_ []string) {
 func UpdateCommand(_ []string) {
 	Print(GroupContainer([]Group{
 		{A: "Version Diff:", B: color.Red + version + color.Gray + " -> " + color.Green + newestRelease.GetTagName()},
-		{A: "Description:", B: color.Reset + strings.Split(newestRelease.GetBody(), "\n")[0]},
+		{A: "Short:", B: color.Reset + strings.Split(newestRelease.GetBody(), "\n")[0]},
 		{A: "GitHub Release:", B: newestRelease.GetHTMLURL()},
 	}...))
 
@@ -308,7 +308,7 @@ func HelpCommand(_ []string) {
 	var commandList []Group
 	for _, command := range commands {
 		var usages []string
-		for _, argument := range command.Arguments {
+		for _, argument := range command.Args {
 			if argument.Required {
 				usages = append(usages, "<"+argument.Identifier+">")
 			} else {
@@ -318,7 +318,7 @@ func HelpCommand(_ []string) {
 		usage := strings.Join(usages, " ")
 		commandList = append(commandList, Group{
 			A: command.Name + " " + usage,
-			B: command.Description,
+			B: command.Short,
 		})
 	}
 	Print(GroupContainer(commandList...))
