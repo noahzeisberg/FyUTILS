@@ -6,10 +6,10 @@ type Group struct {
 }
 
 type Command struct {
-	Name        string
-	Description string
-	Arguments   []Argument
-	Run         func([]string)
+	Name  string
+	Short string
+	Args  []Argument
+	Run   func([]string)
 }
 
 type Argument struct {
