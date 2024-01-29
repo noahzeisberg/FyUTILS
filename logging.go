@@ -31,6 +31,16 @@ func Input(msg string) string {
 	return scanner.Text()
 }
 
+func Menu() {
+	Print(color.Blue + "    ______      __  ______________   _____")
+	Print(color.Blue + "   / ____/_  __/ / / /_  __/  _/ /  / ___/")
+	Print(color.Blue + "  / /_  / / / / / / / / /  / // /   \\__ \\" + "     " + color.Gray + "\uE795" + color.Reset + " Version" + ": " + color.Blue + version + color.Reset)
+	Print(color.Blue + " / __/ / /_/ / /_/ / / / _/ // /______/ /" + "     " + color.Gray + "\uF007" + color.Reset + " User" + ": " + color.Blue + username + color.Reset)
+	Print(color.Blue + "/_/    \\__, /\\____/ /_/ /___/_____/____/" + "      " + color.Gray + "\U000F01C5" + color.Reset + " Device" + ": " + color.Blue + device + color.Reset)
+	Print(color.Blue + "       __/ /")
+	Print(color.Blue + "     /____/" + color.Reset + "   Made by NoahOnFyre with" + color.Blue + " \uf004")
+}
+
 func Confirm(title string) bool {
 	for {
 		confirmation := Input(title + " " + color.Gray + "(yes/no): " + color.Reset)
