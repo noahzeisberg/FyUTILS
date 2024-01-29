@@ -80,7 +80,7 @@ func RunCommand(command string, args []string) {
 	for _, cmd := range commands {
 		if cmd.Name == command {
 			var requiredArgs int
-			for _, argument := range cmd.Arguments {
+			for _, argument := range cmd.Args {
 				if argument.Required {
 					requiredArgs++
 				}
@@ -91,7 +91,7 @@ func RunCommand(command string, args []string) {
 				commandFound = true
 			} else {
 				var usage string
-				for _, argument := range cmd.Arguments {
+				for _, argument := range cmd.Args {
 					if argument.Required {
 						usage += "<" + argument.Identifier + "> "
 					} else {
