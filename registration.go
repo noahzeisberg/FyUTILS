@@ -1,73 +1,121 @@
 package main
 
 func CommandRegistration() {
-	RegisterCommand("flood", "Run a denial of service attack on the target.", []Argument{
-		{
-			Identifier: "ip",
-			Required:   true,
+	Command{
+		Name:  "flood",
+		Short: "Run a denial of service attack on the target.",
+		Args: []Argument{
+			{
+				Identifier: "ip",
+				Required:   true,
+			},
+			{
+				Identifier: "port",
+				Required:   true,
+			},
 		},
-		{
-			Identifier: "port",
-			Required:   true,
-		},
-	}, FloodCommand)
+		Run: FloodCommand,
+	}.Register()
 
-	RegisterCommand("portscan", "Scan for open ports on the target.", []Argument{
-		{
-			Identifier: "ip",
-			Required:   true,
+	Command{
+		Name:  "portscan",
+		Short: "Scan for open ports on the target.",
+		Args: []Argument{
+			{
+				Identifier: "ip",
+				Required:   true,
+			},
 		},
-	}, PortscanCommand)
+		Run: PortscanCommand,
+	}.Register()
 
-	RegisterCommand("whois", "Gather WHOIS information about the target.", []Argument{
-		{
-			Identifier: "ip",
-			Required:   true,
+	Command{
+		Name:  "whois",
+		Short: "Gather WHOIS information about the target.",
+		Args: []Argument{
+			{
+				Identifier: "ip",
+				Required:   true,
+			},
 		},
-	}, WhoisCommand)
+		Run: WhoisCommand,
+	}.Register()
 
-	RegisterCommand("retrieve", "Retrieve local information.", []Argument{
-		{
-			Identifier: "item",
-			Required:   true,
+	Command{
+		Name:  "retrieve",
+		Short: "Retrieve local information.",
+		Args: []Argument{
+			{
+				Identifier: "item",
+				Required:   true,
+			},
 		},
-	}, RetrieveCommand)
+		Run: RetrieveCommand,
+	}.Register()
 
-	RegisterCommand("sniff", "Capture traffic of a specific interface.", []Argument{
-		{
-			Identifier: "interface",
-			Required:   true,
+	Command{
+		Name:  "sniff",
+		Short: "Capture traffic of a specific interface.",
+		Args: []Argument{
+			{
+				Identifier: "interface",
+				Required:   true,
+			},
 		},
-	}, SniffCommand)
+		Run: SniffCommand,
+	}.Register()
 
-	RegisterCommand("fetch", "Download a file from the specific URL.", []Argument{
-		{
-			Identifier: "url",
-			Required:   true,
+	Command{
+		Name:  "fetch",
+		Short: "Download a file from the specific URL.",
+		Args: []Argument{
+			{
+				Identifier: "url",
+				Required:   true,
+			},
 		},
-	}, FetchCommand)
+		Run: FetchCommand,
+	}.Register()
 
-	RegisterCommand("cd", "Change your current working directory.", []Argument{
-		{
-			Identifier: "directory",
-			Required:   false,
+	Command{
+		Name:  "cd",
+		Short: "Change your current working directory",
+		Args: []Argument{
+			{
+				Identifier: "path",
+				Required:   false,
+			},
 		},
-	}, CdCommand)
+		Run: CdCommand,
+	}.Register()
 
-	RegisterCommand("ls", "List all files in a directory.", []Argument{}, LsCommand)
-	RegisterCommand("dir", "Open your FyUTILS directory.", []Argument{}, DirCommand)
-	RegisterCommand("update", "Update your FyUTILS instance to the newest version.", []Argument{}, UpdateCommand)
-	RegisterCommand("help", "Show the help about all the commands.", []Argument{}, HelpCommand)
-	RegisterCommand("sys", "Show system and FyUTILS related information.", []Argument{}, SysCommand)
-	RegisterCommand("clear", "Clear the console screen.", []Argument{}, ClearCommand)
-	RegisterCommand("exit", "Gracefully exit FyUTILS.", []Argument{}, ExitCommand)
+	Command{Name: "ls", Short: "List all files in a directory.", Args: nil, Run: LsCommand}.Register()
+	Command{Name: "dir", Short: "Open your FyUTILS directory.", Args: nil, Run: DirCommand}.Register()
+	Command{Name: "update", Short: "Update your FyUTILS instance to the newest version.", Args: nil, Run: UpdateCommand}.Register()
+	Command{Name: "help", Short: "Show the help about all the commands.", Args: nil, Run: HelpCommand}.Register()
+	Command{Name: "sys", Short: "Show system and FyUTILS related information", Args: nil, Run: SysCommand}.Register()
+	Command{Name: "clear", Short: "Clear the console screen", Args: nil, Run: ClearCommand}.Register()
+	Command{Name: "exit", Short: "Gracefully exit FyUTILS", Args: nil, Run: ExitCommand}.Register()
 }
 
+func (cmd Command) Register() {
+	commands = append(commands, cmd)
+}
+
+func (cmd Command) Unregister() {
+	for i, command := range commands {
+		if command.Name == cmd.Name {
+			commands = append(commands[:i], commands[i+1:]...)
+		}
+	}
+}
+
+// Deprecated: Will be replaced shortly with `Command.Register()`
 func RegisterCommand(name string, description string, args []Argument, runnable func([]string)) {
 	commands = append(commands, Command{
-		Name:        name,
-		Description: description,
-		Arguments:   args,
-		Run:         runnable,
+		Name:  name,
+		Short: description,
+		Args:  args,
+		Run:   runnable,
 	})
 }
