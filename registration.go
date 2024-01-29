@@ -78,6 +78,18 @@ func CommandRegistration() {
 	}.Register()
 
 	Command{
+		Name:  "unregister",
+		Short: "Unregister a certain command.",
+		Args: []Argument{
+			{
+				Identifier: "commandName",
+				Required:   true,
+			},
+		},
+		Run: UnregisterCommand,
+	}.Register()
+
+	Command{
 		Name:  "cd",
 		Short: "Change your current working directory",
 		Args: []Argument{

@@ -238,6 +238,16 @@ func FetchCommand(args []string) {
 	}
 }
 
+func UnregisterCommand(args []string) {
+	commandName := args[0]
+
+	for _, command := range commands {
+		if commandName == command.Name {
+			command.Unregister()
+		}
+	}
+}
+
 func CdCommand(args []string) {
 	if len(args) == 0 {
 		dir, err := os.Getwd()
