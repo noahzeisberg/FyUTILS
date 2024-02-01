@@ -82,7 +82,7 @@ func CommandRegistration() {
 		Short: "Unregister a certain command.",
 		Args: []Argument{
 			{
-				Identifier: "commandName",
+				Identifier: "name",
 				Required:   true,
 			},
 		},

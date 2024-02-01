@@ -239,10 +239,10 @@ func FetchCommand(args []string) {
 }
 
 func UnregisterCommand(args []string) {
-	commandName := args[0]
+	name := args[0]
 
 	for _, command := range commands {
-		if commandName == command.Name {
+		if name == command.Name {
 			command.Unregister()
 		}
 	}
