@@ -3,10 +3,7 @@ package main
 import (
 	"crypto/rand"
 	"fmt"
-	"github.com/NoahOnFyre/gengine/filesystem"
 	"github.com/NoahOnFyre/gengine/utils"
-	"io/fs"
-	"os"
 	"os/exec"
 )
 
@@ -18,21 +15,6 @@ func RandomBytes(size int) (blk []byte, err error) {
 	blk = make([]byte, size)
 	_, err = rand.Read(blk)
 	return
-}
-
-func CheckPaths(paths []string) int {
-	pathsFixed := 0
-	for _, path := range paths {
-		if !filesystem.Exists(path) {
-			err := os.Mkdir(path, fs.ModeDir)
-			if err != nil {
-				Error("Failed to create directory!")
-				return pathsFixed
-			}
-			pathsFixed += 1
-		}
-	}
-	return pathsFixed
 }
 
 func MultiString(char string, repeat int) string {
