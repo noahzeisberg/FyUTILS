@@ -12,6 +12,8 @@ type Command struct {
 	Run   func([]string)
 }
 
+type Arguments []Argument
+
 type Argument struct {
 	Identifier string
 	Required   bool

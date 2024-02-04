@@ -4,7 +4,7 @@ func CommandRegistration() {
 	Command{
 		Name:  "flood",
 		Short: "Run a denial of service attack on the target.",
-		Args: []Argument{
+		Args: Arguments{
 			{
 				Identifier: "ip",
 				Required:   true,
@@ -20,7 +20,7 @@ func CommandRegistration() {
 	Command{
 		Name:  "portscan",
 		Short: "Scan for open ports on the target.",
-		Args: []Argument{
+		Args: Arguments{
 			{
 				Identifier: "ip",
 				Required:   true,
@@ -32,7 +32,7 @@ func CommandRegistration() {
 	Command{
 		Name:  "whois",
 		Short: "Gather WHOIS information about the target.",
-		Args: []Argument{
+		Args: Arguments{
 			{
 				Identifier: "ip",
 				Required:   true,
@@ -44,7 +44,7 @@ func CommandRegistration() {
 	Command{
 		Name:  "retrieve",
 		Short: "Retrieve local information.",
-		Args: []Argument{
+		Args: Arguments{
 			{
 				Identifier: "item",
 				Required:   true,
@@ -56,7 +56,7 @@ func CommandRegistration() {
 	Command{
 		Name:  "sniff",
 		Short: "Capture traffic of a specific interface.",
-		Args: []Argument{
+		Args: Arguments{
 			{
 				Identifier: "interface",
 				Required:   true,
@@ -68,7 +68,7 @@ func CommandRegistration() {
 	Command{
 		Name:  "fetch",
 		Short: "Download a file from the specific URL.",
-		Args: []Argument{
+		Args: Arguments{
 			{
 				Identifier: "url",
 				Required:   true,
@@ -80,7 +80,7 @@ func CommandRegistration() {
 	Command{
 		Name:  "unregister",
 		Short: "Unregister a certain command.",
-		Args: []Argument{
+		Args: Arguments{
 			{
 				Identifier: "name",
 				Required:   true,
@@ -92,7 +92,7 @@ func CommandRegistration() {
 	Command{
 		Name:  "cd",
 		Short: "Change your current working directory",
-		Args: []Argument{
+		Args: Arguments{
 			{
 				Identifier: "path",
 				Required:   false,
