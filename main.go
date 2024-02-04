@@ -2,7 +2,6 @@ package main
 
 import (
 	"bytes"
-	"context"
 	"github.com/NoahOnFyre/gengine/color"
 	"github.com/NoahOnFyre/gengine/convert"
 	"github.com/NoahOnFyre/gengine/utils"
@@ -33,13 +32,7 @@ var (
 )
 
 func main() {
-	go func() {
-		release, _, err := githubClient.Repositories.GetLatestRelease(context.Background(), "noahonfyre", "FyUTILS")
-		if err != nil {
-			return
-		}
-		newestRelease = release
-	}()
+	go CheckUpdates()
 
 	CheckPaths([]string{
 		homeDir,
