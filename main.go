@@ -115,7 +115,7 @@ func RunCommand(command string, args []string) {
 		runnable.Stdout = mw
 		runnable.Stderr = mw
 
-		err = runnable.Run()
+		err = runnable.Start()
 		if err != nil {
 			Error("Failed to run command!", err.Error())
 			return
