@@ -90,8 +90,24 @@ func CommandRegistration() {
 	}.Register()
 
 	Command{
+		Name:  "fuel",
+		Short: "Manage extensions and libraries.",
+		Args: Arguments{
+			{
+				Identifier: "action",
+				Required:   true,
+			},
+			{
+				Identifier: "pkg",
+				Required:   false,
+			},
+		},
+		Run: FuelCommand,
+	}.Register()
+
+	Command{
 		Name:  "cd",
-		Short: "Change your current working directory",
+		Short: "Change your current working directory.",
 		Args: Arguments{
 			{
 				Identifier: "path",
