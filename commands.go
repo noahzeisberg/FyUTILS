@@ -294,6 +294,7 @@ func FuelCommand(args []string) {
 		}
 	case "run":
 		owner, repository := ParseRepository(pkg)
+		packageDirectory := fuelDir + owner + "." + repository + "\\"
 		var fuelpackage FuelManifest
 
 		file, err := os.ReadFile(fuelDir + owner + "." + repository + "\\fuelpackage.json")
@@ -309,7 +310,10 @@ func FuelCommand(args []string) {
 
 		if fuelpackage.Repository == owner+"/"+repository {
 			if fuelpackage.Type == "extension" {
-				err = exec.Command(fuelpackage.Extension.StartCommand).Run()
+				Print("Starting application...")
+				command := exec.Command(fuelpackage.Extension.StartCommand)
+				command.Path = packageDirectory
+				err = command.Run()
 				if err != nil {
 					Error(err.Error())
 					return

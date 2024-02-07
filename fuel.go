@@ -98,7 +98,9 @@ func FetchRepositoryContent(pkg string, path string, start time.Time) {
 	if fuelpackage.Repository == owner+"/"+repository {
 		if fuelpackage.Type == "extension" && fuelpackage.Extension.NeedsBuilding {
 			Print("Building application...")
-			err = exec.Command(fuelpackage.Extension.BuildCommand).Run()
+			command := exec.Command(fuelpackage.Extension.BuildCommand)
+			command.Path = packageDirectory
+			err = command.Run()
 			if err != nil {
 				Error(err.Error())
 				return
