@@ -1,9 +1,0 @@
-{
-  "repository": "noahonfyre/fyutils",
-  "type": "extension",
-  "extension": {
-    "start_command": "fyutils.exe",
-    "needs_building": true,
-    "build_command": "go build -o fyutils.exe"
-  }
-}
