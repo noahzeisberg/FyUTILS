@@ -292,6 +292,34 @@ func FuelCommand(args []string) {
 			Print("Removed package " + color.Blue + owner + "/" + repository + color.Reset + "!")
 		} else {
 		}
+	case "run":
+		owner, repository := ParseRepository(pkg)
+		var fuelpackage FuelManifest
+
+		file, err := os.ReadFile(fuelDir + owner + "." + repository + "\\fuelpackage.json")
+		if err != nil {
+			Error(err.Error())
+			return
+		}
+		err = json.Unmarshal(file, &fuelpackage)
+		if err != nil {
+			Error(err.Error())
+			return
+		}
+
+		if fuelpackage.Repository == owner+"/"+repository {
+			if fuelpackage.Type == "extension" {
+				err = exec.Command(fuelpackage.Extension.StartCommand).Run()
+				if err != nil {
+					Error(err.Error())
+					return
+				}
+			} else {
+				Error("FUEL is not executable!")
+			}
+		} else {
+			Error("FUEL validation failure")
+		}
 	}
 }
 
