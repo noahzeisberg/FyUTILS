@@ -248,6 +248,53 @@ func UnregisterCommand(args []string) {
 	}
 }
 
+func FuelCommand(args []string) {
+	action := args[0]
+
+	if len(args) == 1 {
+		switch action {
+		case "list":
+			directoryEntries, err := os.ReadDir(fuelDir)
+			if err != nil {
+				return
+			}
+
+			var fuels []Group
+
+			for _, entry := range directoryEntries {
+				fileInfo, err := entry.Info()
+				if err != nil {
+					return
+				}
+				fuels = append(fuels, Group{
+					A: strings.ReplaceAll(fileInfo.Name(), ".", "/"),
+					B: fileInfo.Size(),
+				})
+			}
+
+			Print(GroupContainer(fuels...))
+		}
+		return
+	}
+	pkg := args[1]
+	switch action {
+	case "get", "install", "fetch":
+		FetchRepositoryContent(pkg, "", time.Now())
+	case "remove", "delete", "uninstall":
+		owner, repository := ParseRepository(pkg)
+
+		if Confirm("Do you really want to remove this package?") {
+			err := os.RemoveAll(fuelDir + owner + "." + repository)
+			if err != nil {
+				Error(err.Error())
+				return
+			}
+			Print("Removed package " + color.Blue + owner + "/" + repository + color.Reset + "!")
+		} else {
+		}
+	}
+}
+
 func CdCommand(args []string) {
 	if len(args) == 0 {
 		dir, err := os.Getwd()
