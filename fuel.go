@@ -2,14 +2,12 @@ package main
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"github.com/NoahOnFyre/gengine/color"
 	"github.com/NoahOnFyre/gengine/networking/requests"
 	"github.com/google/go-github/github"
 	"math"
 	"os"
-	"os/exec"
 	"strings"
 	"sync"
 	"time"
@@ -17,7 +15,7 @@ import (
 
 func ParseRepository(repo string) (string, string) {
 	if strings.Contains(repo, "/") {
-		return strings.Split(repo, "/")[0], strings.Split(repo, "/")[1]
+		return strings.ToLower(strings.Split(repo, "/")[0]), strings.ToLower(strings.Split(repo, "/")[1])
 	} else {
 		return "noahonfyre", strings.ToLower(repo)
 	}
@@ -81,35 +79,5 @@ func FetchRepositoryContent(pkg string, path string, start time.Time) {
 	}
 
 	wg.Wait()
-
-	var fuelpackage FuelManifest
-	file, err := os.ReadFile(fuelDir + owner + "." + repository + "\\fuelpackage.json")
-	if err != nil {
-		Error(err.Error())
-		return
-	}
-
-	err = json.Unmarshal(file, &fuelpackage)
-	if err != nil {
-		Error(err.Error())
-		return
-	}
-
-	if fuelpackage.Repository == owner+"/"+repository {
-		if fuelpackage.Type == "extension" && fuelpackage.Extension.NeedsBuilding {
-			Print("Building application...")
-			command := exec.Command(fuelpackage.Extension.BuildCommand)
-			command.Path = packageDirectory
-			err = command.Run()
-			if err != nil {
-				Error(err.Error())
-				return
-			}
-		} else {
-			Error("FUEL is not executable!")
-		}
-	} else {
-		Error("FUEL validation failure")
-	}
 	Print("Successfully collected package " + color.Blue + pkg + color.Reset + "! " + color.Gray + "(" + fmt.Sprint(math.Round(time.Since(start).Seconds())) + "s)")
 }
