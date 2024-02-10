@@ -18,7 +18,7 @@ import (
 var (
 	username, _   = strings.CutPrefix(convert.ValueOf(utils.Catch(os.UserHomeDir())), "C:\\Users\\")
 	device, _     = os.Hostname()
-	version       = "v1.20.0"
+	version       = "v1.21.0"
 	homeDir, _    = os.UserHomeDir()
 	mainDir       = homeDir + "\\.fy\\"
 	tempDir       = mainDir + "temp\\"
@@ -50,7 +50,7 @@ func main() {
 		SetState("Idle")
 		Print()
 		currentDir, _ := os.Getwd()
-		input := Input(color.Gray + "┌─[" + color.Blue + username + color.Gray + "@" + color.Reset + device + color.Gray + "]─(" + color.Reset + "\U000F024B" + " " + currentDir + color.Gray + ")\n" + color.Gray + "└─> " + color.Reset)
+		input := Input(color.Gray + "┌─[" + color.Blue + username + color.Gray + "@" + color.Reset + device + color.Gray + "]─(" + color.Reset + "\U000F024B" + " " + GetPathAlias(currentDir) + color.Gray + ")\n" + color.Gray + "└─> " + color.Reset)
 		if input != "" {
 			Print()
 			split := strings.Split(input, " ")
