@@ -78,18 +78,6 @@ func CommandRegistration() {
 	}.Register()
 
 	Command{
-		Name:  "unregister",
-		Short: "Unregister a certain command.",
-		Args: Arguments{
-			{
-				Identifier: "name",
-				Required:   true,
-			},
-		},
-		Run: UnregisterCommand,
-	}.Register()
-
-	Command{
 		Name:  "fuel",
 		Short: "Manage extensions and libraries.",
 		Args: Arguments{
