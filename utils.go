@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/NoahOnFyre/gengine/utils"
 	"os/exec"
+	"strings"
 )
 
 var (
@@ -53,4 +54,26 @@ func PowerShellRun(command string) {
 		Error(err.Error())
 	}
 	Print(string(out))
+}
+
+func StripPath(path string) string {
+	return strings.TrimSuffix(path, "\\")
+}
+
+func GetPathAlias(path string) string {
+	for _, alias := range pathAliases {
+		if strings.ToLower(alias.Path) == strings.ToLower(path) {
+			return alias.Short
+		}
+	}
+	return path
+}
+
+func GetAliasPath(alias string) string {
+	for _, path := range pathAliases {
+		if path.Short == alias {
+			return path.Path
+		}
+	}
+	return alias
 }
