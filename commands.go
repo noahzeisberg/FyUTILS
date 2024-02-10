@@ -38,12 +38,12 @@ func FloodCommand(args []string) {
 	}
 
 	for {
-		bytes, err := RandomBytes(1024)
+		randomBytes, err := RandomBytes(1024)
 		if err != nil {
 			Error("Cannot generate random bytes.")
 			break
 		}
-		_, err = conn.Write(bytes)
+		_, err = conn.Write(randomBytes)
 		if err != nil {
 			Error("Failed to send data to connection.")
 			break
