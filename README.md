@@ -1,6 +1,6 @@
 # FyUTILS
 
-Welcome to the FyUTILS wiki page!
+Welcome to the [FyUTILS](https://github.com/noahonfyre/FyUTILS) wiki page!
 
 We’ll walk you through the installation process of FyUTILS, how to customize your instance, and several ways to extend it.
 
