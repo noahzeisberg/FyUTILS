@@ -52,19 +52,7 @@ type TimezoneInformation struct {
 	UTC          string `json:"utc"`
 }
 
-type FuelManifest struct {
-	Repository string    `json:"repository"`
-	Type       string    `json:"type"`
-	Extension  Extension `json:"extension"`
-	Theme      Theme     `json:"theme"`
-}
-
-type Theme struct {
-	Color string `json:"color"`
-}
-
-type Extension struct {
-	StartCommand  string `json:"start_command"`
-	NeedsBuilding bool   `json:"needs_building"`
-	BuildCommand  string `json:"build_command"`
+type PathAlias struct {
+	Short string
+	Path  string
 }
