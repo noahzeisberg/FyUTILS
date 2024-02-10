@@ -7,6 +7,23 @@ import (
 	"os"
 )
 
+var (
+	pathAliases = []PathAlias{
+		{
+			Short: "~",
+			Path:  StripPath(homeDir),
+		},
+		{
+			Short: "#",
+			Path:  StripPath(mainDir),
+		},
+		{
+			Short: "/",
+			Path:  "C:\\",
+		},
+	}
+)
+
 func CheckUpdates() {
 	release, _, err := githubClient.Repositories.GetLatestRelease(context.Background(), "noahonfyre", "FyUTILS")
 	if err != nil {
