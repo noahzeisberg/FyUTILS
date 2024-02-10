@@ -25,7 +25,7 @@ We’ll walk you through the installation process of FyUTILS, how to customize y
 
 ## Disclaimer
 
-By proceeding, you acknowledge that you have read, understood, and agreed to comply with our [terms and conditions](https://github.com/NoahOnFyre/FyUTILS/blob/master/TERMS). Failure to adhere to these terms may result in legal consequences. If you do not agree with these terms, refrain from downloading, installing, or using FyUTILS.
+By proceeding, you acknowledge that you have read, understood, and agreed to comply with our [terms and conditions](https://github.com/NoahOnFyre/FyUTILS/blob/master/TERMS.md). Failure to adhere to these terms may result in legal consequences. If you do not agree with these terms, refrain from downloading, installing, or using FyUTILS.
 
 ## Features
 
@@ -37,7 +37,7 @@ FyUTILS is actively developed to ensure a seamless user experience. We promptly 
 
 ### Customizability
 
-You can customize FyUTILS through [Themes](#themes). Themes can change the overall appearance of FyUTILS through simple JSON configuration files. They can be installed via the FUEL manager, just like normal FUELS.
+You can customize FyUTILS through [Themes](#FyUTILS). Themes can change the overall appearance of FyUTILS through simple JSON configuration files. They can be installed via the FUEL manager, just like normal FUELS.
 
 ###  Extensibility
 
