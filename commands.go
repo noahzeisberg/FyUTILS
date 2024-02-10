@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -238,16 +239,6 @@ func FetchCommand(args []string) {
 	}
 }
 
-func UnregisterCommand(args []string) {
-	name := args[0]
-
-	for _, command := range commands {
-		if name == command.Name {
-			command.Unregister()
-		}
-	}
-}
-
 func FuelCommand(args []string) {
 	action := args[0]
 
@@ -295,34 +286,20 @@ func FuelCommand(args []string) {
 	case "run":
 		owner, repository := ParseRepository(pkg)
 		packageDirectory := fuelDir + owner + "." + repository + "\\"
-		var fuelpackage FuelManifest
 
-		file, err := os.ReadFile(fuelDir + owner + "." + repository + "\\fuelpackage.json")
+		cmd := exec.Command("cmd.exe", "/c", packageDirectory+"main")
+
+		var stdBuffer bytes.Buffer
+		mw := io.MultiWriter(os.Stdout, &stdBuffer)
+
+		cmd.Stdout = mw
+		cmd.Stderr = mw
+		cmd.Stdin = os.Stdin
+
+		err := cmd.Run()
 		if err != nil {
 			Error(err.Error())
 			return
-		}
-		err = json.Unmarshal(file, &fuelpackage)
-		if err != nil {
-			Error(err.Error())
-			return
-		}
-
-		if fuelpackage.Repository == owner+"/"+repository {
-			if fuelpackage.Type == "extension" {
-				Print("Starting application...")
-				command := exec.Command(fuelpackage.Extension.StartCommand)
-				command.Path = packageDirectory
-				err = command.Run()
-				if err != nil {
-					Error(err.Error())
-					return
-				}
-			} else {
-				Error("FUEL is not executable!")
-			}
-		} else {
-			Error("FUEL validation failure")
 		}
 	}
 }
@@ -334,11 +311,11 @@ func CdCommand(args []string) {
 			Error(err.Error())
 			return
 		}
-		Print(Container(dir))
+		Print(Container(GetPathAlias(dir) + color.Gray + " - " + color.Reset + "(" + dir + ")"))
 		return
 	}
 	dir := args[0]
-	err := os.Chdir(dir)
+	err := os.Chdir(GetAliasPath(dir))
 	if err != nil {
 		Error(err.Error())
 		return
