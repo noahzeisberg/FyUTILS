@@ -3,28 +3,29 @@ package main
 import (
 	"bufio"
 	"fmt"
-	"github.com/NoahOnFyre/gengine/color"
 	"os"
 	"strings"
+
+	"github.com/NoahOnFyre/gengine/color"
 )
 
-func Print(msg ...string) {
-	fmt.Println(color.Reset + strings.Join(msg, " "))
+func Print(msg ...any) {
+	fmt.Println(append([]any{color.Reset}, msg...))
 }
 
-func PrintR(msg any) {
-	fmt.Print(msg)
+func PrintR(msg ...any) {
+	fmt.Print(append([]any{color.Reset}, msg...))
 }
 
-func Warn(msg ...string) {
-	fmt.Println(color.Yellow + strings.Join(msg, " "))
+func Warn(msg ...any) {
+	fmt.Println(append([]any{color.Yellow}, msg...))
 }
 
-func Error(msg ...string) {
-	fmt.Println(color.Red + strings.Join(msg, " "))
+func Error(msg ...any) {
+	fmt.Println(append([]any{color.Red}, msg...))
 }
 
-func Input(msg string) string {
+func Input(msg ...any) string {
 	scanner := bufio.NewScanner(os.Stdin)
 	PrintR(msg)
 	scanner.Scan()
@@ -43,10 +44,10 @@ func Menu() {
 
 func Confirm(title string) bool {
 	for {
-		confirmation := Input(title + " " + color.Gray + "(yes/no): " + color.Reset)
-		if confirmation == "yes" {
+		confirmation := Input(title + " " + color.Gray + "(y/n): " + color.Reset)
+		if strings.ToLower(confirmation) == "y" {
 			return true
-		} else if confirmation == "no" {
+		} else if strings.ToLower(confirmation) == "n" {
 			return false
 		} else {
 			continue
