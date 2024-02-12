@@ -1,7 +1,7 @@
 package main
 
 type Group struct {
-	A string
+	A any
 	B any
 }
 
