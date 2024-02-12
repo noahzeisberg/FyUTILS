@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/NoahOnFyre/gengine/convert"
+	"github.com/noahzeisberg/gengine/convert"
 	"net"
 	"strings"
 	"time"
