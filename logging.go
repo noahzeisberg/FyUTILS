@@ -10,24 +10,24 @@ import (
 )
 
 func Print(msg ...any) {
-	fmt.Println(append([]any{color.Reset}, msg...))
+	fmt.Println(color.Reset + fmt.Sprint(msg...))
 }
 
 func PrintR(msg ...any) {
-	fmt.Print(append([]any{color.Reset}, msg...))
+	fmt.Print(color.Reset + fmt.Sprint(msg...))
 }
 
 func Warn(msg ...any) {
-	fmt.Println(append([]any{color.Yellow}, msg...))
+	fmt.Println(color.Yellow + fmt.Sprint(msg...))
 }
 
 func Error(msg ...any) {
-	fmt.Println(append([]any{color.Red}, msg...))
+	fmt.Println(color.Red + fmt.Sprint(msg...))
 }
 
 func Input(msg ...any) string {
 	scanner := bufio.NewScanner(os.Stdin)
-	PrintR(msg)
+	PrintR(msg...)
 	scanner.Scan()
 	return scanner.Text()
 }
