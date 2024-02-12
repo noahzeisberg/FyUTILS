@@ -1,14 +1,13 @@
 package main
 
 import (
-	"github.com/NoahOnFyre/gengine/color"
 	"github.com/NoahOnFyre/gengine/convert"
 	"net"
 	"strings"
 	"time"
 )
 
-func ScanPort(target string, port int) {
+func ScanPort(target string, port int, results chan<- int) {
 	address := net.JoinHostPort(target, convert.FormatInt(port))
 	conn, err := net.DialTimeout("tcp", address, time.Millisecond*250)
 	if err != nil {
@@ -21,7 +20,7 @@ func ScanPort(target string, port int) {
 			return
 		}
 	}(conn)
-	Print("Port " + color.Blue + convert.FormatInt(port) + color.Reset + " is open!")
+	results <- port
 }
 
 func ScanNetworks(data string) []string {
