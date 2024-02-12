@@ -115,23 +115,13 @@ func CommandRegistration() {
 }
 
 func (cmd Command) Register() {
-	commands = append(commands, cmd)
+	Commands = append(Commands, cmd)
 }
 
 func (cmd Command) Unregister() {
-	for i, command := range commands {
+	for i, command := range Commands {
 		if command.Name == cmd.Name {
-			commands = append(commands[:i], commands[i+1:]...)
+			Commands = append(Commands[:i], Commands[i+1:]...)
 		}
 	}
-}
-
-// Deprecated: Will be replaced shortly with `Command.Register()`
-func RegisterCommand(name string, description string, args []Argument, runnable func([]string)) {
-	commands = append(commands, Command{
-		Name:  name,
-		Short: description,
-		Args:  args,
-		Run:   runnable,
-	})
 }
