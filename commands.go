@@ -5,13 +5,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/NoahOnFyre/gengine/color"
-	"github.com/NoahOnFyre/gengine/convert"
-	"github.com/NoahOnFyre/gengine/networking/requests"
-	"github.com/google/go-github/github"
-	"github.com/google/gopacket"
-	"github.com/google/gopacket/pcap"
-	"golang.org/x/sync/semaphore"
 	"io"
 	"net"
 	"net/http"
@@ -21,6 +14,14 @@ import (
 	"strings"
 	"sync"
 	"time"
+
+	"github.com/NoahOnFyre/gengine/color"
+	"github.com/NoahOnFyre/gengine/convert"
+	"github.com/NoahOnFyre/gengine/networking/requests"
+	"github.com/google/go-github/github"
+	"github.com/google/gopacket"
+	"github.com/google/gopacket/pcap"
+	"golang.org/x/sync/semaphore"
 )
 
 var (
@@ -55,11 +56,15 @@ func FloodCommand(args []string) {
 func PortscanCommand(args []string) {
 	ip := args[0]
 	lock := semaphore.NewWeighted(1024)
+
+	results := make(chan int, 1024*64)
+
 	var wg sync.WaitGroup
-	Print("Scanning ports...")
-	Warn("Please be patient as this could take some time.")
-	wg.Add(1024 * 64)
-	for port := 1; port <= 1024*64; port++ {
+	Print("Scanning ports... This could take some time.")
+	Print()
+
+	for port := 0; port < 1024*64; port++ {
+		wg.Add(1)
 		err := lock.Acquire(context.TODO(), 1)
 		if err != nil {
 			Error(err.Error())
@@ -68,12 +73,22 @@ func PortscanCommand(args []string) {
 		go func(port int) {
 			defer lock.Release(1)
 			defer wg.Done()
-			ScanPort(ip, port)
+			ScanPort(ip, port, results)
 		}(port)
 	}
+
+	close(results)
 	wg.Wait()
 
-	Print("Ports successfully scanned!")
+	var openPortGroups []Group
+	for port := range results {
+		openPortGroups = append(openPortGroups, Group{
+			A: fmt.Sprint(port),
+			B: GetPortService(port),
+		})
+	}
+
+	Print(GroupContainer(openPortGroups...))
 }
 
 func WhoisCommand(args []string) {
