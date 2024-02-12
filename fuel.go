@@ -3,9 +3,9 @@ package main
 import (
 	"context"
 	"fmt"
-	"github.com/NoahOnFyre/gengine/color"
-	"github.com/NoahOnFyre/gengine/networking/requests"
 	"github.com/google/go-github/github"
+	"github.com/noahzeisberg/gengine/color"
+	"github.com/noahzeisberg/gengine/networking/requests"
 	"math"
 	"os"
 	"strings"
