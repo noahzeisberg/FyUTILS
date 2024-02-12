@@ -1,14 +1,15 @@
-package main
+package networking
 
 import (
-	"github.com/noahzeisberg/gengine/convert"
+	"fmt"
+	"github.com/noahzeisberg/FyUTILS/log"
 	"net"
 	"strings"
 	"time"
 )
 
 func ScanPort(target string, port int, results chan<- int) {
-	address := net.JoinHostPort(target, convert.FormatInt(port))
+	address := net.JoinHostPort(target, fmt.Sprint(port))
 	conn, err := net.DialTimeout("tcp", address, time.Millisecond*250)
 	if err != nil {
 		return
@@ -16,7 +17,7 @@ func ScanPort(target string, port int, results chan<- int) {
 	defer func(conn net.Conn) {
 		err = conn.Close()
 		if err != nil {
-			Error(err.Error())
+			log.Error(err.Error())
 			return
 		}
 	}(conn)
