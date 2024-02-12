@@ -51,4 +51,4 @@ Write-Output "Installation of FyUTILS complete! Please consider starring this re
 Write-Output "https://github.com/noahonfyre/FyUTILS"
 Write-Output " "
 
-Start-Process "fyutils.exe"
+Start-Process "wt.exe fyutils.exe"
