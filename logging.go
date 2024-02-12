@@ -6,7 +6,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/NoahOnFyre/gengine/color"
+	"github.com/noahzeisberg/gengine/color"
 )
 
 func Print(msg ...any) {
