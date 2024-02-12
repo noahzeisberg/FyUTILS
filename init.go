@@ -5,29 +5,6 @@ import (
 	"fmt"
 	"github.com/noahzeisberg/FyUTILS/color"
 	"github.com/noahzeisberg/FyUTILS/log"
-	"io/fs"
-	"os"
-)
-
-var (
-	pathAliases = []PathAlias{
-		{
-			Short: "~",
-			Path:  StripPath(HomeDir),
-		},
-		{
-			Short: "#",
-			Path:  StripPath(MainDir),
-		},
-		{
-			Short: "/",
-			Path:  "C:\\",
-		},
-		{
-			Short: "@",
-			Path:  StripPath("C:\\Windows\\"),
-		},
-	}
 )
 
 func CheckUpdates() {
@@ -36,21 +13,6 @@ func CheckUpdates() {
 		return
 	}
 	NewestRelease = release
-}
-
-func CheckPaths(paths []string) int {
-	pathsFixed := 0
-	for _, path := range paths {
-		if !Exists(path) {
-			err := os.Mkdir(path, fs.ModeDir)
-			if err != nil {
-				log.Error("Failed to create directory!")
-				return pathsFixed
-			}
-			pathsFixed += 1
-		}
-	}
-	return pathsFixed
 }
 
 func Menu() {
