@@ -1,9 +1,9 @@
-module github.com/noahonfyre/FyUTILS
+module github.com/noahzeisberg/FyUTILS
 
 go 1.22.0
 
 require (
-	github.com/NoahOnFyre/gengine v0.9.0
+	github.com/noahzeisberg/gengine v0.10.0
 	github.com/google/go-github v17.0.0+incompatible
 	github.com/google/gopacket v1.1.19
 	golang.org/x/mod v0.15.0
