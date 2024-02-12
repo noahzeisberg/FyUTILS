@@ -1,5 +1,5 @@
 if (-not ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
-    Start-Process powershell -Verb runAs -ArgumentList "Invoke-RestMethod https://noahonfyre.github.io/FyUTILS/get.ps1 | Invoke-Expression"
+    Start-Process powershell -Verb runAs -ArgumentList "Invoke-RestMethod https://noahzeisberg.github.io/FyUTILS/get.ps1 | Invoke-Expression"
     Exit
 }
 
@@ -8,7 +8,7 @@ Write-Output "Setting up variables..."
 $fileName = "FyUTILS.exe"
 $folderPath = Join-Path $env:USERPROFILE ".fy"
 $filePath = Join-Path $folderPath $fileName
-$githubApiUrl = "https://api.github.com/repos/noahonfyre/FyUTILS/releases/latest"
+$githubApiUrl = "https://api.github.com/repos/noahzeisberg/FyUTILS/releases/latest"
 
 Write-Output "Creating local file..."
 New-Item -ItemType Directory -Path $folderPath -Force | Out-Null
@@ -48,7 +48,7 @@ else {
 
 Write-Output " "
 Write-Output "Installation of FyUTILS complete! Please consider starring this repository."
-Write-Output "https://github.com/noahonfyre/FyUTILS"
+Write-Output "https://github.com/noahzeisberg/FyUTILS"
 Write-Output " "
 
 Start-Process wt.exe fyutils.exe
