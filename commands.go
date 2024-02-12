@@ -5,6 +5,8 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/noahzeisberg/FyUTILS/log"
+	"github.com/noahzeisberg/FyUTILS/utils"
 	"io"
 	"net"
 	"net/http"
@@ -18,9 +20,8 @@ import (
 	"github.com/google/go-github/github"
 	"github.com/google/gopacket"
 	"github.com/google/gopacket/pcap"
-	"github.com/noahzeisberg/gengine/color"
-	"github.com/noahzeisberg/gengine/convert"
-	"github.com/noahzeisberg/gengine/networking/requests"
+	"github.com/noahzeisberg/FyUTILS/color"
+	"github.com/noahzeisberg/FyUTILS/networking/requests"
 	"golang.org/x/sync/semaphore"
 )
 
@@ -34,22 +35,22 @@ func FloodCommand(args []string) {
 
 	conn, err := net.Dial("tcp", net.JoinHostPort(ip, port))
 	if err != nil {
-		Error("Failed to connect to target: " + err.Error())
+		log.Error("Failed to connect to target: " + err.Error())
 		return
 	}
 
 	for {
 		randomBytes, err := RandomBytes(1024)
 		if err != nil {
-			Error("Cannot generate random bytes.")
+			log.Error("Cannot generate random bytes.")
 			break
 		}
 		_, err = conn.Write(randomBytes)
 		if err != nil {
-			Error("Failed to send data to connection.")
+			log.Error("Failed to send data to connection.")
 			break
 		}
-		Print("Bytes successfully sent to " + color.Blue + conn.RemoteAddr().String())
+		log.Print("Bytes successfully sent to " + color.Blue + conn.RemoteAddr().String())
 	}
 }
 
@@ -60,14 +61,14 @@ func PortscanCommand(args []string) {
 	results := make(chan int, 1024*64)
 
 	var wg sync.WaitGroup
-	Print("Scanning ports... This could take some time.")
-	Print()
+	log.Print("Scanning ports... This could take some time.")
+	log.Print()
 
 	for port := 0; port < 1024*64; port++ {
 		wg.Add(1)
 		err := lock.Acquire(context.TODO(), 1)
 		if err != nil {
-			Error(err.Error())
+			log.Error(err.Error())
 			return
 		}
 		go func(port int) {
@@ -88,7 +89,7 @@ func PortscanCommand(args []string) {
 		})
 	}
 
-	Print(GroupContainer(openPortGroups...))
+	log.Print(GroupContainer(openPortGroups...))
 }
 
 func WhoisCommand(args []string) {
@@ -98,13 +99,13 @@ func WhoisCommand(args []string) {
 
 	err := json.Unmarshal(body, &data)
 	if err != nil {
-		Error("Failed to parse JSON.")
+		log.Error("Failed to parse JSON.")
 		return
 	}
 
-	Print("WHOIS Report for " + color.Blue + data.IP)
-	Print()
-	Print(GroupContainer([]Group{
+	log.Print("WHOIS Report for " + color.Blue + data.IP)
+	log.Print()
+	log.Print(GroupContainer([]Group{
 		{A: "Target", B: data.IP},
 		{A: "Address Type", B: data.Type},
 		{A: "Continent", B: data.Continent + " (" + data.ContinentCode + ")"},
@@ -113,7 +114,7 @@ func WhoisCommand(args []string) {
 		{A: "City", B: data.Country},
 		{A: "Latitude", B: data.Latitude},
 		{A: "Longitude", B: data.Longitude},
-		{A: "Location", B: "https://www.openstreetmap.org/#map=10/" + convert.FormatFloat(data.Latitude) + "/" + convert.FormatFloat(data.Longitude)},
+		{A: "Location", B: "https://www.openstreetmap.org/#map=10/" + fmt.Sprint(data.Latitude) + "/" + fmt.Sprint(data.Longitude)},
 		{A: "European Union", B: data.IsEU},
 		{A: "Postal Code", B: data.PostalCode},
 		{A: "Calling Code", B: data.CallingCode},
@@ -136,27 +137,27 @@ func RetrieveCommand(args []string) {
 	case "interfaces":
 		devices, err := pcap.FindAllDevs()
 		if err != nil {
-			Error("Failed to retrieve network interfaces!")
+			log.Error("Failed to retrieve network interfaces!")
 			return
 		}
 		var interfaces []Group
 		for _, dev := range devices {
 			interfaces = append(interfaces, Group{A: dev.Description, B: dev.Name})
 		}
-		Print(GroupContainer(interfaces...))
+		log.Print(GroupContainer(interfaces...))
 	case "path":
 		pathVar := os.Getenv("PATH")
 		paths := strings.Split(pathVar, string(os.PathListSeparator))
-		Print(Container(paths...))
+		log.Print(Container(paths...))
 	case "networks":
 		output, err := exec.Command("cmd.exe", "/c", "netsh", "wlan", "show", "networks").CombinedOutput()
 		if err != nil {
-			Error(err.Error())
+			log.Error(err.Error())
 			return
 		}
-		Print(Container(ScanNetworks(string(output))...))
+		log.Print(Container(ScanNetworks(string(output))...))
 	default:
-		Error("No valid item to retrieve!")
+		log.Error("No valid item to retrieve!")
 	}
 }
 
@@ -164,7 +165,7 @@ func SniffCommand(args []string) {
 	interfaceName := args[0]
 	interfaces, err := pcap.FindAllDevs()
 	if err != nil {
-		Error("Failed to retrieve network interfaces!")
+		log.Error("Failed to retrieve network interfaces!")
 		return
 	}
 	found := false
@@ -174,19 +175,19 @@ func SniffCommand(args []string) {
 		}
 	}
 	if !found {
-		Error("Desired interface was not found!")
+		log.Error("Desired interface was not found!")
 		return
 	}
 	handle, err := pcap.OpenLive(interfaceName, 1600, false, pcap.BlockForever)
 	if err != nil {
-		Error("Failed to start network sniffer!")
+		log.Error("Failed to start network sniffer!")
 		return
 	}
 	defer handle.Close()
 	source := gopacket.NewPacketSource(handle, handle.LinkType())
 
 	for packet := range source.Packets() {
-		Print(packet.String())
+		log.Print(packet.String())
 	}
 }
 
@@ -198,7 +199,7 @@ func FetchCommand(args []string) {
 
 	request, err := http.NewRequest("GET", url, nil)
 	if err != nil {
-		Error("Failed to create new request instance.")
+		log.Error("Failed to create new request instance.")
 		return
 	}
 
@@ -206,9 +207,9 @@ func FetchCommand(args []string) {
 
 	downloadStartTime := time.Now()
 
-	response, err := httpClient.Do(request)
+	response, err := HttpClient.Do(request)
 	if err != nil {
-		Error("Failed to make request.")
+		log.Error("Failed to make request.")
 		return
 	}
 
@@ -219,7 +220,7 @@ func FetchCommand(args []string) {
 	for {
 		n, err := response.Body.Read(buffer)
 		if err != nil && err != io.EOF {
-			Error("Failed to read response body.")
+			log.Error("Failed to read response body.")
 			return
 		}
 		if n == 0 {
@@ -232,24 +233,24 @@ func FetchCommand(args []string) {
 		currentTime := time.Now()
 		progress := float64(downloaded) / float64(response.ContentLength) * 100
 
-		if currentTime.Sub(startTime).Milliseconds() >= 250 {
-			startTime = currentTime
-			msg := "Downloading... " + color.Blue + convert.FormatInt(int(progress)) + "%" + color.Reset
-			PrintR(msg + "\r")
+		if currentTime.Sub(StartTime).Milliseconds() >= 250 {
+			StartTime = currentTime
+			msg := "Downloading... " + color.Blue + fmt.Sprint(int(progress)) + "%" + color.Reset
+			log.PrintR(msg + "\r")
 		}
 	}
 	err = response.Body.Close()
 	if err != nil {
-		Error("Failed to close body!")
+		log.Error("Failed to close body!")
 		return
 	}
 
-	Print("Downloading... " + color.Blue + "100%" + color.Reset + MultiString(" ", 20))
-	Print(fmt.Sprint(time.Since(downloadStartTime)), "elapsed!")
+	log.Print("Downloading... " + color.Blue + "100%" + color.Reset + MultiString(" ", 20))
+	log.Print(fmt.Sprint(time.Since(downloadStartTime)), "elapsed!")
 
-	err = os.WriteFile(downloadDir+filename, downloadedData, os.ModePerm)
+	err = os.WriteFile(DownloadDir+filename, downloadedData, os.ModePerm)
 	if err != nil {
-		Error("Failed to write data to file.")
+		log.Error("Failed to write data to file.")
 		return
 	}
 }
@@ -260,7 +261,7 @@ func FuelCommand(args []string) {
 	if len(args) == 1 {
 		switch action {
 		case "list":
-			directoryEntries, err := os.ReadDir(fuelDir)
+			directoryEntries, err := os.ReadDir(FuelDir)
 			if err != nil {
 				return
 			}
@@ -278,7 +279,7 @@ func FuelCommand(args []string) {
 				})
 			}
 
-			Print(GroupContainer(fuels...))
+			log.Print(GroupContainer(fuels...))
 		}
 		return
 	}
@@ -289,18 +290,18 @@ func FuelCommand(args []string) {
 	case "remove", "delete", "uninstall":
 		owner, repository := ParseRepository(pkg)
 
-		if Confirm("Do you really want to remove this package?") {
-			err := os.RemoveAll(fuelDir + owner + "." + repository)
+		if log.Confirm("Do you really want to remove this package?") {
+			err := os.RemoveAll(FuelDir + owner + "." + repository)
 			if err != nil {
-				Error(err.Error())
+				log.Error(err.Error())
 				return
 			}
-			Print("Removed package " + color.Blue + owner + "/" + repository + color.Reset + "!")
+			log.Print("Removed package " + color.Blue + owner + "/" + repository + color.Reset + "!")
 		} else {
 		}
 	case "run":
 		owner, repository := ParseRepository(pkg)
-		packageDirectory := fuelDir + owner + "." + repository + "\\"
+		packageDirectory := FuelDir + owner + "." + repository + "\\"
 
 		cmd := exec.Command("cmd.exe", "/c", packageDirectory+"main")
 
@@ -313,7 +314,7 @@ func FuelCommand(args []string) {
 
 		err := cmd.Run()
 		if err != nil {
-			Error(err.Error())
+			log.Error(err.Error())
 			return
 		}
 	}
@@ -323,16 +324,16 @@ func CdCommand(args []string) {
 	if len(args) == 0 {
 		dir, err := os.Getwd()
 		if err != nil {
-			Error(err.Error())
+			log.Error(err.Error())
 			return
 		}
-		Print(Container(GetPathAlias(dir) + color.Gray + " - " + color.Reset + "(" + dir + ")"))
+		log.Print(Container(GetPathAlias(dir) + color.Gray + " - " + color.Reset + "(" + dir + ")"))
 		return
 	}
 	dir := args[0]
 	err := os.Chdir(GetAliasPath(dir))
 	if err != nil {
-		Error(err.Error())
+		log.Error(err.Error())
 		return
 	}
 }
@@ -340,11 +341,11 @@ func CdCommand(args []string) {
 func LsCommand(_ []string) {
 	dir, err := os.Getwd()
 	if err != nil {
-		Error(err.Error())
+		log.Error(err.Error())
 	}
 	files, err := os.ReadDir(dir)
 	if err != nil {
-		Error(err.Error())
+		log.Error(err.Error())
 	}
 	var fileList []string
 	for _, file := range files {
@@ -356,38 +357,38 @@ func LsCommand(_ []string) {
 			fileList = append(fileList, file.Name())
 		}
 	}
-	Print(Container(fileList...))
+	log.Print(Container(fileList...))
 }
 
 func DirCommand(_ []string) {
-	err := exec.Command("cmd.exe", "/c", "start", "explorer.exe", mainDir).Run()
+	err := exec.Command("cmd.exe", "/c", "start", "explorer.exe", MainDir).Run()
 	if err != nil {
-		Error("Failed to start explorer process.")
+		log.Error("Failed to start explorer process.")
 		return
 	}
 }
 
 func UpdateCommand(_ []string) {
-	Print(GroupContainer([]Group{
-		{A: "Version Diff:", B: color.Red + version + color.Gray + " -> " + color.Green + newestRelease.GetTagName()},
-		{A: "Short:", B: color.Reset + strings.Split(newestRelease.GetBody(), "\n")[0]},
-		{A: "GitHub Release:", B: newestRelease.GetHTMLURL()},
+	log.Print(GroupContainer([]Group{
+		{A: "Version Diff:", B: color.Red + Version + color.Gray + " -> " + color.Green + NewestRelease.GetTagName()},
+		{A: "Short:", B: color.Reset + strings.Split(NewestRelease.GetBody(), "\n")[0]},
+		{A: "GitHub Release:", B: NewestRelease.GetHTMLURL()},
 	}...))
 
-	Print(color.Reset)
+	log.Print(color.Reset)
 
-	if Confirm("Do you want to update to this version?") {
-		PowerShellRun("irm https://noahonfyre.github.io/FyUTILS/get.ps1 | iex")
+	if log.Confirm("Do you want to update to this version?") {
+		utils.PowerShellRun("irm https://noahonfyre.github.io/FyUTILS/get.ps1 | iex")
 		time.Sleep(time.Second)
 		os.Exit(0)
 	} else {
-		Print("Update cancelled!")
+		log.Print("Update cancelled!")
 	}
 }
 
 func HelpCommand(_ []string) {
 	var commandList []Group
-	for _, command := range commands {
+	for _, command := range Commands {
 		var usages []string
 		for _, argument := range command.Args {
 			if argument.Required {
@@ -402,31 +403,31 @@ func HelpCommand(_ []string) {
 			B: command.Short,
 		})
 	}
-	Print(GroupContainer(commandList...))
+	log.Print(GroupContainer(commandList...))
 }
 
 func SysCommand(_ []string) {
-	Print(GroupContainer([]Group{
-		{A: "Username", B: username},
-		{A: "Device", B: device},
+	log.Print(GroupContainer([]Group{
+		{A: "Username", B: Username},
+		{A: "Device", B: Device},
 		{A: "Operating System", B: runtime.GOOS},
 		{A: "", B: ""},
-		{A: "FyUTILS", B: version},
-		{A: "Uptime", B: time.Since(startTime)},
-		{A: "Root Path", B: mainDir},
-		{A: "Temp Path", B: tempDir},
-		{A: "Download Path", B: downloadDir},
-		{A: "Config Path", B: configDir},
-		{A: "FUEL Path", B: fuelDir},
+		{A: "FyUTILS", B: Version},
+		{A: "Uptime", B: time.Since(StartTime)},
+		{A: "Root Path", B: MainDir},
+		{A: "Temp Path", B: TempDir},
+		{A: "Download Path", B: DownloadDir},
+		{A: "Config Path", B: ConfigDir},
+		{A: "FUEL Path", B: FuelDir},
 	}...))
 }
 
 func ClearCommand(_ []string) {
-	Clear()
+	log.Clear()
 	Menu()
 }
 
 func ExitCommand(_ []string) {
-	Print("Shutting down FyUTILS...")
+	log.Print("Shutting down FyUTILS...")
 	os.Exit(0)
 }
