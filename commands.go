@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/noahzeisberg/FyUTILS/log"
+	"github.com/noahzeisberg/FyUTILS/networking"
 	"github.com/noahzeisberg/FyUTILS/utils"
 	"io"
 	"net"
@@ -74,7 +75,7 @@ func PortscanCommand(args []string) {
 		go func(port int) {
 			defer lock.Release(1)
 			defer wg.Done()
-			ScanPort(ip, port, results)
+			networking.ScanPort(ip, port, results)
 		}(port)
 	}
 
@@ -155,7 +156,7 @@ func RetrieveCommand(args []string) {
 			log.Error(err.Error())
 			return
 		}
-		log.Print(Container(ScanNetworks(string(output))...))
+		log.Print(Container(networking.ScanNetworks(string(output))...))
 	default:
 		log.Error("No valid item to retrieve!")
 	}
