@@ -2,7 +2,7 @@ package main
 
 import (
 	"context"
-	"github.com/NoahOnFyre/gengine/filesystem"
+	"github.com/noahzeisberg/gengine/filesystem"
 	"io/fs"
 	"os"
 )
@@ -29,7 +29,7 @@ var (
 )
 
 func CheckUpdates() {
-	release, _, err := githubClient.Repositories.GetLatestRelease(context.Background(), "noahonfyre", "FyUTILS")
+	release, _, err := githubClient.Repositories.GetLatestRelease(context.Background(), "noahzeisberg", "FyUTILS")
 	if err != nil {
 		return
 	}
