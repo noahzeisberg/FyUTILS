@@ -2,10 +2,10 @@ package main
 
 import (
 	"bytes"
-	"github.com/NoahOnFyre/gengine/color"
-	"github.com/NoahOnFyre/gengine/convert"
-	"github.com/NoahOnFyre/gengine/utils"
 	"github.com/google/go-github/github"
+	"github.com/noahzeisberg/gengine/color"
+	"github.com/noahzeisberg/gengine/convert"
+	"github.com/noahzeisberg/gengine/utils"
 	"golang.org/x/mod/semver"
 	"io"
 	"net/http"
