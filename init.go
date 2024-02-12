@@ -21,6 +21,10 @@ var (
 			Short: "/",
 			Path:  "C:\\",
 		},
+		{
+			Short: "@",
+			Path:  StripPath("C:\\Windows\\"),
+		},
 	}
 )
 
