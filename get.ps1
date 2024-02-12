@@ -50,4 +50,5 @@ Write-Output " "
 Write-Output "Installation of FyUTILS complete! Please consider starring this repository."
 Write-Output "https://github.com/noahonfyre/FyUTILS"
 Write-Output " "
-Pause
+
+Start-Process "fyutils.exe"
