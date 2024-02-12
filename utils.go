@@ -38,8 +38,7 @@ func PowerShellRun(command string) {
 		Error("Failed to connect to PowerShell session!")
 		return
 	}
-	bytesWritten, err := fmt.Fprintln(stdin, command)
-	Print(fmt.Sprint(bytesWritten), "bytes written to pipe.")
+	_, err = fmt.Fprintln(stdin, command)
 	if err != nil {
 		Error("Failed to run PowerShell command.")
 		return
