@@ -15,12 +15,12 @@ import (
 	"sync"
 	"time"
 
-	"github.com/NoahOnFyre/gengine/color"
-	"github.com/NoahOnFyre/gengine/convert"
-	"github.com/NoahOnFyre/gengine/networking/requests"
 	"github.com/google/go-github/github"
 	"github.com/google/gopacket"
 	"github.com/google/gopacket/pcap"
+	"github.com/noahzeisberg/gengine/color"
+	"github.com/noahzeisberg/gengine/convert"
+	"github.com/noahzeisberg/gengine/networking/requests"
 	"golang.org/x/sync/semaphore"
 )
 
