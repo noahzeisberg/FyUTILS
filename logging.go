@@ -72,14 +72,14 @@ func Container(rows ...string) string {
 func GroupContainer(contents ...Group) string {
 	var maxLength int
 	for _, item := range contents {
-		if len(item.A) > maxLength {
-			maxLength = len(item.A)
+		if len(fmt.Sprint(item.A)) > maxLength {
+			maxLength = len(fmt.Sprint(item.A))
 		}
 	}
 	var container string
 	container += color.Gray + "┌" + MultiString("─", 120-1) + "\n"
 	for _, item := range contents {
-		container += color.Gray + "│ " + color.Blue + item.A + MultiString(" ", maxLength-len(item.A)+3) + color.Reset + fmt.Sprint(item.B) + "\n"
+		container += color.Gray + "│ " + color.Blue + fmt.Sprint(item.A) + MultiString(" ", maxLength-len(fmt.Sprint(item.A))+3) + color.Reset + fmt.Sprint(item.B) + "\n"
 	}
 	container += color.Gray + "└" + MultiString("─", 120-1)
 	return container
