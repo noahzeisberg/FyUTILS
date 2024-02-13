@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/noahzeisberg/FyUTILS/color"
 	"github.com/noahzeisberg/FyUTILS/log"
+	"github.com/noahzeisberg/FyUTILS/utils"
 )
 
 func CheckUpdates() {
@@ -27,11 +28,11 @@ func Menu() {
 
 func Container(rows ...string) string {
 	var container string
-	container += color.Gray + "┌" + MultiString("─", 120-1) + "\n"
+	container += color.Gray + "┌" + utils.MultiString("─", 120-1) + "\n"
 	for _, row := range rows {
 		container += color.Gray + "│ " + color.Reset + row + "\n"
 	}
-	container += color.Gray + "└" + MultiString("─", 120-1)
+	container += color.Gray + "└" + utils.MultiString("─", 120-1)
 	return container
 }
 
@@ -43,10 +44,10 @@ func GroupContainer(contents ...Group) string {
 		}
 	}
 	var container string
-	container += color.Gray + "┌" + MultiString("─", 120-1) + "\n"
+	container += color.Gray + "┌" + utils.MultiString("─", 120-1) + "\n"
 	for _, item := range contents {
-		container += color.Gray + "│ " + color.Blue + fmt.Sprint(item.A) + MultiString(" ", maxLength-len(fmt.Sprint(item.A))+3) + color.Reset + fmt.Sprint(item.B) + "\n"
+		container += color.Gray + "│ " + color.Blue + fmt.Sprint(item.A) + utils.MultiString(" ", maxLength-len(fmt.Sprint(item.A))+3) + color.Reset + fmt.Sprint(item.B) + "\n"
 	}
-	container += color.Gray + "└" + MultiString("─", 120-1)
+	container += color.Gray + "└" + utils.MultiString("─", 120-1)
 	return container
 }
