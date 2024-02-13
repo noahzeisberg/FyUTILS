@@ -2,7 +2,6 @@ package utils
 
 func GetPortService(port int) string {
 	return map[int]string{
-		1:    "TCPMUX",
 		7:    "Echo",
 		9:    "Discard",
 		11:   "systat",
