@@ -6,6 +6,7 @@ import (
 	"github.com/google/go-github/github"
 	"github.com/noahzeisberg/FyUTILS/color"
 	"github.com/noahzeisberg/FyUTILS/log"
+	"github.com/noahzeisberg/FyUTILS/utils"
 	"golang.org/x/mod/semver"
 	"io"
 	"net/http"
@@ -16,7 +17,7 @@ import (
 )
 
 var (
-	Username, _   = strings.CutPrefix(fmt.Sprint(Catch(os.UserHomeDir())), "C:\\Users\\")
+	Username, _   = strings.CutPrefix(fmt.Sprint(utils.Catch(os.UserHomeDir())), "C:\\Users\\")
 	Device, _     = os.Hostname()
 	Version       = "v1.23.0"
 	HomeDir, _    = os.UserHomeDir()
@@ -54,15 +55,15 @@ func main() {
 			log.Print()
 			split := strings.Split(input, " ")
 			command := split[0]
-			args := RemoveElement(split, 0)
+			args := utils.RemoveElement(split, 0)
 			RunCommand(command, args)
 		}
 		if semver.Compare(Version, NewestRelease.GetTagName()) == -1 {
 			log.Print()
-			log.Print(color.Gray + "┌" + MultiString("─", 120-1))
+			log.Print(color.Gray + "┌" + utils.MultiString("─", 120-1))
 			log.Print(color.Gray + "│ " + color.Reset + "A new version of FyUTILS is available! Run " + color.Blue + "\"update\"" + color.Reset + " to download.")
 			log.Print(color.Gray + "│ " + color.Reset + "Version Diff: " + color.Red + Version + color.Gray + " -> " + color.Green + NewestRelease.GetTagName())
-			log.Print(color.Gray + "└" + MultiString("─", 120-1))
+			log.Print(color.Gray + "└" + utils.MultiString("─", 120-1))
 		}
 	}
 }
