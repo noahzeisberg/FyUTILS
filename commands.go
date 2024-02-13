@@ -41,7 +41,7 @@ func FloodCommand(args []string) {
 	}
 
 	for {
-		randomBytes, err := RandomBytes(1024)
+		randomBytes, err := utils.RandomBytes(1024)
 		if err != nil {
 			log.Error("Cannot generate random bytes.")
 			break
@@ -86,7 +86,7 @@ func PortscanCommand(args []string) {
 	for port := range results {
 		openPortGroups = append(openPortGroups, Group{
 			A: fmt.Sprint(port),
-			B: GetPortService(port),
+			B: utils.GetPortService(port),
 		})
 	}
 
@@ -246,7 +246,7 @@ func FetchCommand(args []string) {
 		return
 	}
 
-	log.Print("Downloading... " + color.Blue + "100%" + color.Reset + MultiString(" ", 20))
+	log.Print("Downloading... " + color.Blue + "100%" + color.Reset + utils.MultiString(" ", 20))
 	log.Print(fmt.Sprint(time.Since(downloadStartTime)), "elapsed!")
 
 	err = os.WriteFile(DownloadDir+filename, downloadedData, os.ModePerm)
