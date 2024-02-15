@@ -1,14 +1,12 @@
 package main
 
 import (
-	"bytes"
 	"fmt"
 	"github.com/google/go-github/github"
 	"github.com/noahzeisberg/FyUTILS/color"
 	"github.com/noahzeisberg/FyUTILS/log"
 	"github.com/noahzeisberg/FyUTILS/utils"
 	"golang.org/x/mod/semver"
-	"io"
 	"net/http"
 	"os"
 	"os/exec"
@@ -107,13 +105,10 @@ func RunCommand(command string, args []string) {
 		cmdArgs = append(cmdArgs, args...)
 		runnable := exec.Command("cmd.exe", cmdArgs...)
 
-		var stdBuffer bytes.Buffer
-		mw := io.MultiWriter(os.Stdout, &stdBuffer)
+		runnable.Stdout = os.Stdout
+		runnable.Stderr = os.Stderr
 
-		runnable.Stdout = mw
-		runnable.Stderr = mw
-
-		err = runnable.Start()
+		err = runnable.Run()
 		if err != nil {
 			log.Error("Failed to run command!", err.Error())
 			return
