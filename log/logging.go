@@ -13,8 +13,12 @@ func Print(msg ...any) {
 	fmt.Println(color.Reset + fmt.Sprint(msg...))
 }
 
-func PrintR(msg ...any) {
+func PrintC(msg ...any) {
 	fmt.Print(color.Reset + fmt.Sprint(msg...))
+}
+
+func PrintR(msg ...any) {
+	fmt.Print(color.Reset + fmt.Sprint(msg...) + "\r")
 }
 
 func Warn(msg ...any) {
@@ -27,7 +31,7 @@ func Error(msg ...any) {
 
 func Input(msg ...any) string {
 	scanner := bufio.NewScanner(os.Stdin)
-	PrintR(msg...)
+	PrintC(msg...)
 	scanner.Scan()
 	return scanner.Text()
 }
