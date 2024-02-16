@@ -9,18 +9,17 @@ import (
 )
 
 func ScanPort(target string, port int, results chan<- int) {
+	log.PrintR("Scanning: ", port, "...")
 	address := net.JoinHostPort(target, fmt.Sprint(port))
-	conn, err := net.DialTimeout("tcp", address, time.Millisecond*250)
+	conn, err := net.DialTimeout("tcp", address, time.Millisecond*500)
 	if err != nil {
 		return
 	}
-	defer func(conn net.Conn) {
-		err = conn.Close()
-		if err != nil {
-			log.Error(err.Error())
-			return
-		}
-	}(conn)
+	err = conn.Close()
+	if err != nil {
+		log.Error(err.Error())
+		return
+	}
 	results <- port
 }
 
