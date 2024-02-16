@@ -23,6 +23,7 @@ func GetPortService(port int) string {
 		123:  "NTP",
 		135:  "DCE",
 		143:  "IMAP",
+		220:  "IMAP",
 		443:  "HTTPS",
 		445:  "SMB",
 		546:  "DHCP",
