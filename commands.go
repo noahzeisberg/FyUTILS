@@ -9,6 +9,7 @@ import (
 	"github.com/noahzeisberg/FyUTILS/networking"
 	"github.com/noahzeisberg/FyUTILS/utils"
 	"io"
+	"math"
 	"net"
 	"net/http"
 	"os"
@@ -62,8 +63,7 @@ func PortscanCommand(args []string) {
 	results := make(chan int, 1024*64)
 
 	var wg sync.WaitGroup
-	log.Print("Scanning ports... This could take some time.")
-	log.Print()
+	commandStartTime := time.Now()
 
 	for port := 0; port < 1024*64; port++ {
 		wg.Add(1)
@@ -73,14 +73,17 @@ func PortscanCommand(args []string) {
 			return
 		}
 		go func(port int) {
-			defer lock.Release(1)
-			defer wg.Done()
 			networking.ScanPort(ip, port, results)
+			lock.Release(1)
+			wg.Done()
 		}(port)
 	}
 
-	close(results)
 	wg.Wait()
+	close(results)
+
+	log.Print("Scan done! - " + fmt.Sprint(math.Trunc(time.Since(commandStartTime).Seconds())) + " seconds elapsed!")
+	log.Print()
 
 	var openPortGroups []Group
 	for port := range results {
@@ -237,7 +240,7 @@ func FetchCommand(args []string) {
 		if currentTime.Sub(StartTime).Milliseconds() >= 250 {
 			StartTime = currentTime
 			msg := "Downloading... " + color.Blue + fmt.Sprint(int(progress)) + "%" + color.Reset
-			log.PrintR(msg + "\r")
+			log.PrintR(msg)
 		}
 	}
 	err = response.Body.Close()
@@ -247,7 +250,7 @@ func FetchCommand(args []string) {
 	}
 
 	log.Print("Downloading... " + color.Blue + "100%" + color.Reset + utils.MultiString(" ", 20))
-	log.Print(fmt.Sprint(time.Since(downloadStartTime)), "elapsed!")
+	log.Print(fmt.Sprint(time.Since(downloadStartTime)) + " elapsed!")
 
 	err = os.WriteFile(DownloadDir+filename, downloadedData, os.ModePerm)
 	if err != nil {
