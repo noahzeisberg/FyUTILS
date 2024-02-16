@@ -17,7 +17,7 @@ import (
 var (
 	Username, _   = strings.CutPrefix(fmt.Sprint(utils.Catch(os.UserHomeDir())), "C:\\Users\\")
 	Device, _     = os.Hostname()
-	Version       = "v1.23.0"
+	Version       = "v1.22.1"
 	HomeDir, _    = os.UserHomeDir()
 	MainDir       = HomeDir + "\\.fy\\"
 	TempDir       = MainDir + "temp\\"
