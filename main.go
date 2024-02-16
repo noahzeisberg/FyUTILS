@@ -17,16 +17,16 @@ import (
 var (
 	Username, _   = strings.CutPrefix(fmt.Sprint(utils.Catch(os.UserHomeDir())), "C:\\Users\\")
 	Device, _     = os.Hostname()
-	Version       = "v1.22.1"
+	Version       = "v1.22.2"
 	HomeDir, _    = os.UserHomeDir()
 	MainDir       = HomeDir + "\\.fy\\"
 	TempDir       = MainDir + "temp\\"
 	DownloadDir   = MainDir + "download\\"
 	ConfigDir     = MainDir + "config\\"
 	FuelDir       = MainDir + "fuel\\"
-	NewestRelease *github.RepositoryRelease
 	HttpClient    = &http.Client{Transport: &http.Transport{}}
 	StartTime     = time.Now()
+	NewestRelease *github.RepositoryRelease
 	Commands      []Command
 )
 
