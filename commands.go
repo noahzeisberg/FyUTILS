@@ -375,7 +375,7 @@ func DirCommand(_ []string) {
 func UpdateCommand(_ []string) {
 	log.Print(GroupContainer([]Group{
 		{A: "Version Diff:", B: color.Red + Version + color.Gray + " -> " + color.Green + NewestRelease.GetTagName()},
-		{A: "Short:", B: color.Reset + strings.Split(NewestRelease.GetBody(), "\n")[0]},
+		{A: "Description:", B: color.Reset + strings.Split(NewestRelease.GetBody(), "\n")[0]},
 		{A: "GitHub Release:", B: NewestRelease.GetHTMLURL()},
 	}...))
 
