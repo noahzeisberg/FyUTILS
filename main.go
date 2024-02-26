@@ -107,10 +107,11 @@ func RunCommand(command string, args []string) {
 
 		runnable.Stdout = os.Stdout
 		runnable.Stderr = os.Stderr
+		runnable.Stdin = os.Stdin
 
 		err = runnable.Run()
 		if err != nil {
-			log.Error("Failed to run command!", err.Error())
+			log.Error("Failed to run command! " + err.Error())
 			return
 		}
 	}
