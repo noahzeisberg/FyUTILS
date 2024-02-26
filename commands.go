@@ -15,6 +15,7 @@ import (
 	"os"
 	"os/exec"
 	"runtime"
+	"slices"
 	"strings"
 	"sync"
 	"time"
@@ -351,17 +352,37 @@ func LsCommand(_ []string) {
 	if err != nil {
 		log.Error(err.Error())
 	}
+	var folderList []string
 	var fileList []string
 	for _, file := range files {
 		if file.IsDir() {
-			fileList = append(fileList, "/"+file.Name())
-		} else if strings.HasPrefix(file.Name(), ".") {
-			fileList = append(fileList, color.Gray+file.Name())
+			folderList = append(folderList, file.Name())
 		} else {
 			fileList = append(fileList, file.Name())
 		}
 	}
-	log.Print(Container(fileList...))
+	slices.Sort(folderList)
+	slices.Sort(fileList)
+
+	var finalList []string
+	for _, folder := range folderList {
+		if strings.HasPrefix(folder, ".") {
+			finalList = append(finalList, color.Gray+"\U000F024B"+" "+folder)
+		} else {
+			finalList = append(finalList, color.Reset+"\U000F024B"+" "+folder)
+		}
+	}
+	for _, file := range fileList {
+		if strings.HasPrefix(file, ".") {
+			finalList = append(finalList, color.Gray+"\U000F0214"+" "+file)
+		} else if strings.HasSuffix(file, ".exe") || strings.HasSuffix(file, ".bat") || strings.HasSuffix(file, ".cmd") || strings.HasSuffix(file, ".ps1") || strings.HasSuffix(file, ".msi") {
+			finalList = append(finalList, color.Blue+"\uF500"+" "+file)
+		} else {
+			finalList = append(finalList, color.Reset+"\U000F0214"+" "+file)
+		}
+	}
+
+	log.Print(Container(finalList...))
 }
 
 func DirCommand(_ []string) {
@@ -373,11 +394,10 @@ func DirCommand(_ []string) {
 }
 
 func UpdateCommand(_ []string) {
-	log.Print(GroupContainer([]Group{
-		{A: "Version Diff:", B: color.Red + Version + color.Gray + " -> " + color.Green + NewestRelease.GetTagName()},
-		{A: "Description:", B: color.Reset + strings.Split(NewestRelease.GetBody(), "\n")[0]},
-		{A: "GitHub Release:", B: NewestRelease.GetHTMLURL()},
-	}...))
+	log.Print(Container(
+		color.Red+Version+color.Gray+" -> "+color.Green+NewestRelease.GetTagName(),
+		strings.Split(NewestRelease.GetBody(), "\n")[0],
+	))
 
 	log.Print(color.Reset)
 
