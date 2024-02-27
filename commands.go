@@ -394,9 +394,15 @@ func DirCommand(_ []string) {
 }
 
 func UpdateCommand(_ []string) {
+	description := strings.Split(NewestRelease.GetBody(), "\n")[0]
+	if len(description) > 118 {
+		description = description[:115] + "..."
+	}
+
 	log.Print(Container(
 		color.Red+Version+color.Gray+" -> "+color.Green+NewestRelease.GetTagName(),
-		strings.Split(NewestRelease.GetBody(), "\n")[0],
+		description,
+		color.Gray+NewestRelease.GetHTMLURL(),
 	))
 
 	log.Print(color.Reset)
