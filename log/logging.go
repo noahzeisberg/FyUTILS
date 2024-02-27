@@ -36,9 +36,16 @@ func Input(msg ...any) string {
 	return scanner.Text()
 }
 
+func InputR(msg ...any) string {
+	scanner := bufio.NewScanner(os.Stdin)
+	PrintR(msg...)
+	scanner.Scan()
+	return scanner.Text()
+}
+
 func Confirm(title string) bool {
 	for {
-		confirmation := Input(title + " " + color.Gray + "(y/n): " + color.Reset)
+		confirmation := InputR(title + " " + color.Gray + "(y/n): " + color.Reset)
 		if strings.ToLower(confirmation) == "y" {
 			return true
 		} else if strings.ToLower(confirmation) == "n" {
