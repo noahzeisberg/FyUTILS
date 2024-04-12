@@ -56,3 +56,9 @@ type PathAlias struct {
 	Short string
 	Path  string
 }
+
+type FuelPackage struct {
+	Owner      string `json:"owner"`
+	Repository string `json:"repository"`
+	Branch     string `json:"branch"`
+}
