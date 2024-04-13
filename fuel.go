@@ -14,27 +14,52 @@ import (
 	"time"
 )
 
-func ParseRepository(repo string) (string, string) {
-	if strings.Contains(repo, "/") {
-		return strings.ToLower(strings.Split(repo, "/")[0]), strings.ToLower(strings.Split(repo, "/")[1])
-	} else {
-		return "noahonfyre", strings.ToLower(repo)
+func ParseRepository(input string) (FuelPackage, error) {
+	unparsedRepoString, branch, _ := strings.Cut(input, "@")
+	if branch == "" {
+		branch = "master"
 	}
+
+	owner, repository, _ := strings.Cut(unparsedRepoString, "/")
+	if owner == unparsedRepoString {
+		owner = "noahzeisberg"
+	}
+
+	if repository == "" {
+		repository = unparsedRepoString
+	}
+
+	return FuelPackage{
+		Owner:      owner,
+		Repository: repository,
+		Branch:     branch,
+	}, nil
 }
 
-func FetchRepositoryContent(pkg string, path string, start time.Time) {
-	owner, repository := ParseRepository(pkg)
-	pkg = owner + "/" + repository
-	packageDirectory := FuelDir + owner + "." + repository + "\\"
+func (pkg FuelPackage) AsPackage() string {
+	return pkg.Owner + "." + pkg.Repository
+}
 
-	log.Print("Fetching FUEL " + color.Blue + pkg + color.Reset + "...")
+func (pkg FuelPackage) AsRepository() string {
+	return pkg.Owner + "/" + pkg.Repository
+}
 
-	_, repositoryContents, r, err := githubClient.Repositories.GetContents(context.Background(), owner, repository, path, nil)
+func FetchRepositoryContent(input string, path string, start time.Time) {
+	pkg, err := ParseRepository(input)
 	if err != nil {
 		log.Error(err.Error())
 		return
 	}
-	log.Print("Server returned " + color.Blue + fmt.Sprint(r.StatusCode) + color.Reset + " via " + r.Proto)
+	packageDirectory := FuelDir + pkg.AsPackage() + "\\"
+
+	log.Print("Fetching FUEL " + color.Blue + pkg.AsRepository() + color.Reset + "...")
+
+	_, repositoryContents, res, err := githubClient.Repositories.GetContents(context.Background(), pkg.Owner, pkg.Repository, path, &github.RepositoryContentGetOptions{Ref: pkg.Branch})
+	if err != nil {
+		log.Error(err.Error())
+		return
+	}
+	log.Print("Server returned " + color.Blue + fmt.Sprint(res.StatusCode) + color.Reset + " via " + res.Proto)
 
 	err = os.MkdirAll(packageDirectory+strings.ReplaceAll(path, "/", "\\"), os.ModePerm)
 	if err != nil {
@@ -80,5 +105,5 @@ func FetchRepositoryContent(pkg string, path string, start time.Time) {
 	}
 
 	wg.Wait()
-	log.Print("Successfully collected package " + color.Blue + pkg + color.Reset + "! " + color.Gray + "(" + fmt.Sprint(math.Round(time.Since(start).Seconds())) + "s)")
+	log.Print("Successfully collected package " + color.Blue + pkg.AsRepository() + color.Reset + "! " + color.Gray + "(" + fmt.Sprint(math.Round(time.Since(start).Seconds())) + "s)")
 }

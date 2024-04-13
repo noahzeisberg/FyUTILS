@@ -288,25 +288,33 @@ func FuelCommand(args []string) {
 		}
 		return
 	}
-	pkg := args[1]
+	input := args[1]
 	switch action {
 	case "get", "install", "fetch":
-		FetchRepositoryContent(pkg, "", time.Now())
+		FetchRepositoryContent(input, "", time.Now())
 	case "remove", "delete", "uninstall":
-		owner, repository := ParseRepository(pkg)
+		pkg, err := ParseRepository(input)
+		if err != nil {
+			log.Error("Failed to parse repository.")
+			return
+		}
 
 		if log.Confirm("Do you really want to remove this package?") {
-			err := os.RemoveAll(FuelDir + owner + "." + repository)
+			err := os.RemoveAll(FuelDir + pkg.AsPackage())
 			if err != nil {
 				log.Error(err.Error())
 				return
 			}
-			log.Print("Removed package " + color.Blue + owner + "/" + repository + color.Reset + "!")
+			log.Print("Removed package " + color.Blue + pkg.AsRepository() + color.Reset + "!")
 		} else {
 		}
 	case "run":
-		owner, repository := ParseRepository(pkg)
-		packageDirectory := FuelDir + owner + "." + repository + "\\"
+		pkg, err := ParseRepository(input)
+		if err != nil {
+			log.Error("Failed to parse repository.")
+			return
+		}
+		packageDirectory := FuelDir + pkg.AsPackage() + "\\"
 
 		cmd := exec.Command("cmd.exe", "/c", packageDirectory+"main")
 
@@ -317,7 +325,7 @@ func FuelCommand(args []string) {
 		cmd.Stderr = mw
 		cmd.Stdin = os.Stdin
 
-		err := cmd.Run()
+		err = cmd.Run()
 		if err != nil {
 			log.Error(err.Error())
 			return
