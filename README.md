@@ -47,11 +47,7 @@ FyUTILS is extendable through so-called **FUELS** (*FyUTILS Extensions and Libra
 
 To install FyUTILS, ensure you're running the latest versions of Windows, Windows Terminal, and Windows Console Host. Also, you should be using an account with administrator permissions.
 
-1. **Install a Nerd Font:**
-
-   Download and install a [Nerd Font](https://www.nerdfonts.com/font-downloads) and apply it to your Terminal. This step is crucial for the installation, as it provides the icons used in FyUTILS.
-
-2. **Setting up the execution policy:**
+1. **Setting up the execution policy:**
 
    Open your PowerShell and paste the following command to bypass the remote code execution policy. This step is necessary for the installation to proceed.
 
@@ -60,7 +56,7 @@ To install FyUTILS, ensure you're running the latest versions of Windows, Window
 Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy Bypass -Force
 ```
 
-1. **Installing FyUTILS:**
+2. **Installing FyUTILS:**
 
    Execute the following command in the current PowerShell session to start the installation:
 
@@ -69,7 +65,7 @@ Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy Bypass -Force
 irm https://noahonfyre.github.io/FyUTILS/get.ps1 | iex
 ```
 
-1. **Starting FyUTILS:**
+3. **Starting FyUTILS:**
 
    To run FyUTILS, execute the `fyutils` command in a new shell session.
 
