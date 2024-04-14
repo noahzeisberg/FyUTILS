@@ -4,69 +4,31 @@ Welcome to the [FyUTILS](https://github.com/noahonfyre/FyUTILS) wiki page!
 
 We’ll walk you through the installation process of FyUTILS, how to customize your instance, and several ways to extend it.
 
-## Table of Contents
+# Table of Contents
 
-<!-- TOC -->
-* [FyUTILS](#fyutils)
-  * [Table of Contents](#table-of-contents)
-  * [Disclaimer](#disclaimer)
-  * [Features](#features)
-    * [Reliability](#reliability)
-    * [Customizability](#customizability)
-    * [Extensibility](#extensibility)
-  * [Installation](#installation)
-    * [Creating a Terminal profile](#creating-a-terminal-profile)
-    * [Troubleshooting Guide](#troubleshooting-guide)
-  * [Used in FyUTILS](#used-in-fyutils)
-    * [Languages](#languages)
-    * [Tools](#tools)
-  * [Credits and Acknowledgement](#credits-and-acknowledgement)
-<!-- TOC -->
 
-## Disclaimer
 
-By proceeding, you acknowledge that you have read, understood, and agreed to comply with our [terms and conditions](https://github.com/NoahOnFyre/FyUTILS/blob/master/TERMS.md). Failure to adhere to these terms may result in legal consequences. If you do not agree with these terms, refrain from downloading, installing, or using FyUTILS.
+# Disclaimer
 
-## Features
+By proceeding, you acknowledge that you have read, understood, and agreed to comply with our [terms and conditions](https://github.com/noahzeisberg/FyUTILS/blob/master/TERMS.md). Failure to adhere to these terms may result in legal consequences. If you do not agree with these terms, refrain from downloading, installing, or using FyUTILS.
 
-Here’s a brief overview of the features, FyUTILS has to offer. If you’d like to skip this part click here to get to [the installation](#installation).
+# Installation
 
-### Reliability
-
-FyUTILS is actively developed to ensure a seamless user experience. We promptly address reported bugs and welcome feature requests from our community. Your input, whether bug reports or feature ideas, is crucial in shaping FyUTILS. Join our forums to engage in discussions and contribute to the tool's ongoing evolution. Rest assured, our commitment to regular updates and improvements is unwavering. Thank you for being part of the FyUTILS community and helping us, building an even more robust and quality tool in upcoming releases.
-
-### Customizability
-
-You can customize FyUTILS through [Themes](#FyUTILS). Themes can change the overall appearance of FyUTILS through simple JSON configuration files. They can be installed via the FUEL manager, just like normal FUELS.
-
-###  Extensibility
-
-FyUTILS is extendable through so-called **FUELS** (*FyUTILS Extensions and Libraries*), which can be installed via the `fuel` command. It also offers a wide range of support through the integrated execution support of executables in the PATH variable.
-
-## Installation
-
-To install FyUTILS, ensure you're running the latest versions of Windows, Windows Terminal, and Windows Console Host. Also, you should be using an account with administrator permissions.
+To install FyUTILS, ensure you're running the latest versions of Windows and Windows Terminal. Also, you should be using an account with administrator permissions.
 
 1. **Setting up the execution policy:**
-
    Open your PowerShell and paste the following command to bypass the remote code execution policy. This step is necessary for the installation to proceed.
-
-
-```powershell
-Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy Bypass -Force
-```
+   ```powershell
+   Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy Bypass -Force
+   ```
 
 2. **Installing FyUTILS:**
-
    Execute the following command in the current PowerShell session to start the installation:
-
-
-```powershell
-irm https://noahonfyre.github.io/FyUTILS/get.ps1 | iex
-```
+   ```powershell
+   irm https://noahonfyre.github.io/FyUTILS/get.ps1 | iex
+   ```
 
 3. **Starting FyUTILS:**
-
    To run FyUTILS, execute the `fyutils` command in a new shell session.
 
 
@@ -103,7 +65,6 @@ If you’re going to use FyUTILS very often, you may like to create a Terminal p
    Close the Settings menu and restart Windows Terminal to see your new profile. You can switch between profiles using the tabs at the top of the terminal window.
 
 ### Troubleshooting Guide
-
 If something doesn't work, or you can't get FyUTILS to start, try the following steps:
 
 1. **Restart your shell sessions:**
@@ -116,7 +77,7 @@ If something doesn't work, or you can't get FyUTILS to start, try the following 
 
 3. **Check your PATH variable:**
 
-   Open your search bar and search for PATH. Check your PATH for the path “C:\Users\USERNAME\.fyutils”. If the path doesn't exist, add it to the variable.
+   Open your search bar and search for `PATH`. Click on the section `Environment Variables`. Check the `PATH` variable for the path `C:\\Users\\%USERNAME%\\.fyutils`. If the path doesn't exist, add it to the variable.
 
 4. **Get technical support:**
 
@@ -126,30 +87,26 @@ If something doesn't work, or you can't get FyUTILS to start, try the following 
 ## Used in FyUTILS
 
 ### Languages
-
 Here’s a list of every programming language involved in FyUTILS.
 
-| Language:   | Use case:                       |
-|-------------|---------------------------------|
-| Go (Golang) | Main Application                |
-| Batch       | System Interactions             |
-| PowerShell  | Installer / System Interactions |
-| Markdown    | Documentation                   |
+| Language:  | Use case:                       |
+|------------|---------------------------------|
+| Go         | Main Application                |
+| Batch      | System Interactions             |
+| PowerShell | Installer & System Interactions |
+| Markdown   | Documentation                   |
 
 ### Tools
 
 Here’s a list of tools, I use to develop and maintain FyUTILS.
 
-| Tool:              | Use case:                                 |
-|--------------------|-------------------------------------------|
-| Goland             | Go & PowerShell Development               |
-| GitHub             | Version Control, Publishing, Distribution |
-| GitHub API         | Updating System                           |
-| Notion             | Documentation & Writing                   |
-| Visual Studio Code | Additional Development                    |
+| Tool:                                      | Use case:                                 |
+|--------------------------------------------|:------------------------------------------|
+| [Goland](https://www.jetbrains.com/go/)    | Go & PowerShell Development               |
+| [GitHub](https://github.com)               | Version Control, Publishing, Distribution |
+| [GitHub API](https://docs.github.com/rest) | Updating System                           |
+| [Notion](https://notion.so)                | Documentation & Writing                   |
+| [VS Code](https://vscode.dev)              | Additional Development                    |
 
 ## Credits and Acknowledgement
-
-FyUTILS would not have been possible without the contributions from the open-source community. I am very grateful for their efforts and dedication. I would also like to thank the users for their valuable feedback, which has helped me improve and evolve this tool.
-
-I would also like to thank JetBrains. Their IDEs have been instrumental in my work, providing me with an efficient and reliable platform for coding. Their innovative tools have greatly enhanced my productivity and I appreciate their contribution to this project. You can check out their IDEs [here](https://jetbrains.com).
+A huge thank you to all [contributors](https://github.com/noahzeisberg/FyUTILS/graphs/contributors) of this project. ♥️
