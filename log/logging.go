@@ -3,10 +3,9 @@ package log
 import (
 	"bufio"
 	"fmt"
+	"github.com/noahzeisberg/FyUTILS/color"
 	"os"
 	"strings"
-
-	"github.com/noahzeisberg/FyUTILS/color"
 )
 
 func Print(msg ...any) {
