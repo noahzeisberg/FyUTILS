@@ -161,6 +161,20 @@ func RetrieveCommand(args []string) {
 			return
 		}
 		log.Print(Container(networking.ScanNetworks(string(output))...))
+	case "user":
+		log.Print(color.Blue + Username + color.Gray + "@" + color.Reset + Device + color.Gray + " (" + runtime.GOOS + "-" + runtime.GOARCH + ")")
+	case "version":
+		log.Print(Version)
+	case "uptime":
+		log.Print(int(math.Trunc(time.Since(StartTime).Seconds())))
+	case "paths":
+		log.Print(GroupContainer([]Group{
+			{A: "Root Path", B: MainDir},
+			{A: "Temp Path", B: TempDir},
+			{A: "Download Path", B: DownloadDir},
+			{A: "Config Path", B: ConfigDir},
+			{A: "FUEL Path", B: FuelDir},
+		}...))
 	default:
 		log.Error("No valid item to retrieve!")
 	}
@@ -442,22 +456,6 @@ func HelpCommand(_ []string) {
 		})
 	}
 	log.Print(GroupContainer(commandList...))
-}
-
-func SysCommand(_ []string) {
-	log.Print(GroupContainer([]Group{
-		{A: "Username", B: Username},
-		{A: "Device", B: Device},
-		{A: "Operating System", B: runtime.GOOS},
-		{A: "", B: ""},
-		{A: "FyUTILS", B: Version},
-		{A: "Uptime", B: time.Since(StartTime)},
-		{A: "Root Path", B: MainDir},
-		{A: "Temp Path", B: TempDir},
-		{A: "Download Path", B: DownloadDir},
-		{A: "Config Path", B: ConfigDir},
-		{A: "FUEL Path", B: FuelDir},
-	}...))
 }
 
 func ClearCommand(_ []string) {
