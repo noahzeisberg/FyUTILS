@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"github.com/google/go-github/github"
 	"github.com/noahzeisberg/FyUTILS/color"
@@ -31,7 +32,13 @@ var (
 )
 
 func main() {
-	go CheckUpdates()
+	go func() {
+		release, _, err := githubClient.Repositories.GetLatestRelease(context.Background(), "noahzeisberg", "FyUTILS")
+		if err != nil {
+			return
+		}
+		NewestRelease = release
+	}()
 
 	CheckPaths([]string{
 		HomeDir,
@@ -48,7 +55,7 @@ func main() {
 	for {
 		log.Print()
 		currentDir, _ := os.Getwd()
-		input := log.Input(color.Gray + "┌─[" + color.Blue + Username + color.Gray + "@" + color.Reset + Device + color.Gray + "]─(" + color.Reset + "\U000F024B" + " " + GetPathAlias(currentDir) + color.Gray + ")\n" + color.Gray + "└─> " + color.Reset)
+		input := log.Input(color.Gray + "┌─[" + color.Blue + Username + color.Gray + "@" + color.Reset + Device + color.Gray + "]─(" + color.Reset + GetPathAlias(currentDir) + color.Gray + ")\n" + color.Gray + "└─> " + color.Reset)
 		if input != "" {
 			log.Print()
 			split := strings.Split(input, " ")
