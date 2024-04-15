@@ -17,7 +17,7 @@ type Command struct {
 type Argument struct {
 	Identifier string
 	Required   bool
-	Expect     []*regexp.Regexp
+	Expect     *regexp.Regexp
 }
 
 type AddressInformation struct {
