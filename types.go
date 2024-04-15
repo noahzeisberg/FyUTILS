@@ -1,5 +1,7 @@
 package main
 
+import "regexp"
+
 type Group struct {
 	A any
 	B any
@@ -12,11 +14,10 @@ type Command struct {
 	Run   func([]string)
 }
 
-type Arguments []Argument
-
 type Argument struct {
 	Identifier string
 	Required   bool
+	Expect     []*regexp.Regexp
 }
 
 type AddressInformation struct {
