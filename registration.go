@@ -1,17 +1,23 @@
 package main
 
+import (
+	"github.com/noahzeisberg/FyUTILS/regex"
+)
+
 func CommandRegistration() {
 	Command{
 		Name:  "flood",
 		Short: "Run a denial of service attack on the target.",
-		Args: Arguments{
+		Args: []Argument{
 			{
 				Identifier: "ip",
 				Required:   true,
+				Expect:     regex.AcceptsIP,
 			},
 			{
 				Identifier: "port",
 				Required:   true,
+				Expect:     regex.AcceptsPort,
 			},
 		},
 		Run: FloodCommand,
@@ -20,10 +26,11 @@ func CommandRegistration() {
 	Command{
 		Name:  "portscan",
 		Short: "Scan for open ports on the target.",
-		Args: Arguments{
+		Args: []Argument{
 			{
 				Identifier: "ip",
 				Required:   true,
+				Expect:     regex.AcceptsIP,
 			},
 		},
 		Run: PortscanCommand,
@@ -32,10 +39,11 @@ func CommandRegistration() {
 	Command{
 		Name:  "whois",
 		Short: "Gather WHOIS information about the target.",
-		Args: Arguments{
+		Args: []Argument{
 			{
 				Identifier: "ip",
 				Required:   true,
+				Expect:     regex.AcceptsIP,
 			},
 		},
 		Run: WhoisCommand,
@@ -44,7 +52,7 @@ func CommandRegistration() {
 	Command{
 		Name:  "retrieve",
 		Short: "Retrieve local information.",
-		Args: Arguments{
+		Args: []Argument{
 			{
 				Identifier: "item",
 				Required:   true,
@@ -56,7 +64,7 @@ func CommandRegistration() {
 	Command{
 		Name:  "sniff",
 		Short: "Capture traffic of a specific interface.",
-		Args: Arguments{
+		Args: []Argument{
 			{
 				Identifier: "interface",
 				Required:   true,
@@ -68,7 +76,7 @@ func CommandRegistration() {
 	Command{
 		Name:  "fetch",
 		Short: "Download a file from the specific URL.",
-		Args: Arguments{
+		Args: []Argument{
 			{
 				Identifier: "url",
 				Required:   true,
@@ -80,7 +88,7 @@ func CommandRegistration() {
 	Command{
 		Name:  "fuel",
 		Short: "Manage extensions and libraries.",
-		Args: Arguments{
+		Args: []Argument{
 			{
 				Identifier: "action",
 				Required:   true,
@@ -96,7 +104,7 @@ func CommandRegistration() {
 	Command{
 		Name:  "cd",
 		Short: "Change your current working directory.",
-		Args: Arguments{
+		Args: []Argument{
 			{
 				Identifier: "path",
 				Required:   false,
@@ -109,19 +117,10 @@ func CommandRegistration() {
 	Command{Name: "dir", Short: "Open your FyUTILS directory.", Args: nil, Run: DirCommand}.Register()
 	Command{Name: "update", Short: "Update your FyUTILS instance to the newest version.", Args: nil, Run: UpdateCommand}.Register()
 	Command{Name: "help", Short: "Show the help about all the commands.", Args: nil, Run: HelpCommand}.Register()
-	Command{Name: "sys", Short: "Show system and FyUTILS related information", Args: nil, Run: SysCommand}.Register()
 	Command{Name: "clear", Short: "Clear the console screen", Args: nil, Run: ClearCommand}.Register()
 	Command{Name: "exit", Short: "Gracefully exit FyUTILS", Args: nil, Run: ExitCommand}.Register()
 }
 
 func (cmd Command) Register() {
 	Commands = append(Commands, cmd)
-}
-
-func (cmd Command) Unregister() {
-	for i, command := range Commands {
-		if command.Name == cmd.Name {
-			Commands = append(Commands[:i], Commands[i+1:]...)
-		}
-	}
 }
