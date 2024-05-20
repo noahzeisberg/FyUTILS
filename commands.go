@@ -79,11 +79,10 @@ func PortscanCommand(args []string) {
 			wg.Done()
 		}(port)
 	}
-
 	wg.Wait()
 	close(results)
 
-	log.Print("Scan done! - " + fmt.Sprint(math.Trunc(time.Since(commandStartTime).Seconds())) + " seconds elapsed!")
+	log.Print("Scan took " + fmt.Sprint(math.Trunc(time.Since(commandStartTime).Seconds())) + "!")
 	log.Print()
 
 	var openPortGroups []Group
@@ -150,10 +149,6 @@ func RetrieveCommand(args []string) {
 			interfaces = append(interfaces, Group{A: dev.Description, B: dev.Name})
 		}
 		log.Print(GroupContainer(interfaces...))
-	case "path":
-		pathVar := os.Getenv("PATH")
-		paths := strings.Split(pathVar, string(os.PathListSeparator))
-		log.Print(Container(paths...))
 	case "networks":
 		output, err := exec.Command("cmd.exe", "/c", "netsh", "wlan", "show", "networks").CombinedOutput()
 		if err != nil {
