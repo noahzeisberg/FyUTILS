@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"fmt"
-	"github.com/google/go-github/github"
 	"github.com/noahzeisberg/FyUTILS/color"
 	"github.com/noahzeisberg/FyUTILS/log"
 	"github.com/noahzeisberg/FyUTILS/utils"
@@ -16,28 +15,32 @@ import (
 )
 
 var (
-	Username, _   = strings.CutPrefix(fmt.Sprint(utils.Catch(os.UserHomeDir())), "C:\\Users\\")
-	Device, _     = os.Hostname()
-	Version       = "v1.22.2"
-	HomeDir, _    = os.UserHomeDir()
-	MainDir       = HomeDir + "\\.fy\\"
-	TempDir       = MainDir + "temp\\"
-	DownloadDir   = MainDir + "download\\"
-	ConfigDir     = MainDir + "config\\"
-	FuelDir       = MainDir + "fuel\\"
-	HttpClient    = &http.Client{Transport: &http.Transport{}}
-	StartTime     = time.Now()
-	NewestRelease *github.RepositoryRelease
-	Commands      []Command
+	Username, _ = strings.CutPrefix(fmt.Sprint(utils.Catch(os.UserHomeDir())), "C:\\Users\\")
+	Device, _   = os.Hostname()
+	Version     = "v1.22.2"
+	HomeDir, _  = os.UserHomeDir()
+	MainDir     = HomeDir + "\\.fy\\"
+	TempDir     = MainDir + "temp\\"
+	DownloadDir = MainDir + "download\\"
+	ConfigDir   = MainDir + "config\\"
+	FuelDir     = MainDir + "fuel\\"
+	HttpClient  = &http.Client{Transport: &http.Transport{}}
+	StartTime   = time.Now()
+
+	UpdateAvailable bool
+	UpdateVersion   string
+	Commands        []Command
 )
 
 func main() {
 	go func() {
 		release, _, err := githubClient.Repositories.GetLatestRelease(context.Background(), "noahzeisberg", "FyUTILS")
 		if err != nil {
+			log.Error("Failed to get latest release! " + err.Error())
 			return
 		}
-		NewestRelease = release
+		UpdateVersion = release.GetTagName()
+		UpdateAvailable = semver.Compare(UpdateVersion, Version) == 1
 	}()
 
 	CheckPaths([]string{
@@ -63,11 +66,11 @@ func main() {
 			args := utils.RemoveElement(split, 0)
 			RunCommand(command, args)
 		}
-		if semver.Compare(Version, NewestRelease.GetTagName()) == -1 {
+		if UpdateAvailable {
 			log.Print()
 			log.Print(color.Gray + "┌" + utils.MultiString("─", 120-1))
 			log.Print(color.Gray + "│ " + color.Reset + "A new version of FyUTILS is available! Run " + color.Blue + "\"update\"" + color.Reset + " to download.")
-			log.Print(color.Gray + "│ " + color.Reset + "Version Diff: " + color.Red + Version + color.Gray + " -> " + color.Green + NewestRelease.GetTagName())
+			log.Print(color.Gray + "│ " + color.Reset + "Version Diff: " + color.Red + Version + color.Gray + " -> " + color.Green + UpdateVersion)
 			log.Print(color.Gray + "└" + utils.MultiString("─", 120-1))
 		}
 	}
