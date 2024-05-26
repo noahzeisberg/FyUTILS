@@ -384,18 +384,18 @@ func LsCommand(_ []string) {
 	var finalList []string
 	for _, folder := range folderList {
 		if strings.HasPrefix(folder, ".") {
-			finalList = append(finalList, color.Gray+"\U000F024B"+" "+folder)
+			finalList = append(finalList, color.Gray+folder)
 		} else {
-			finalList = append(finalList, color.Reset+"\U000F024B"+" "+folder)
+			finalList = append(finalList, color.Reset+folder)
 		}
 	}
 	for _, file := range fileList {
 		if strings.HasPrefix(file, ".") {
-			finalList = append(finalList, color.Gray+"\U000F0214"+" "+file)
+			finalList = append(finalList, color.Gray+file)
 		} else if strings.HasSuffix(file, ".exe") || strings.HasSuffix(file, ".bat") || strings.HasSuffix(file, ".cmd") || strings.HasSuffix(file, ".ps1") || strings.HasSuffix(file, ".msi") {
-			finalList = append(finalList, color.Blue+"\uF500"+" "+file)
+			finalList = append(finalList, color.Blue+file)
 		} else {
-			finalList = append(finalList, color.Reset+"\U000F0214"+" "+file)
+			finalList = append(finalList, color.Reset+file)
 		}
 	}
 
@@ -411,15 +411,20 @@ func DirCommand(_ []string) {
 }
 
 func UpdateCommand(_ []string) {
-	description := strings.Split(NewestRelease.GetBody(), "\n")[0]
-	if len(description) > 118 {
+	release, _, err := githubClient.Repositories.GetLatestRelease(context.Background(), "noahzeisberg", "FyUTILS")
+	if err != nil {
+		log.Error("Failed to get latest release! " + err.Error())
+		return
+	}
+	description := strings.Split(release.GetBody(), "\n")[0]
+	if len(description) >= 118 {
 		description = description[:115] + "..."
 	}
 
 	log.Print(Container(
-		color.Red+Version+color.Gray+" -> "+color.Green+NewestRelease.GetTagName(),
+		color.Red+Version+color.Gray+" -> "+color.Green+release.GetTagName(),
 		description,
-		color.Gray+NewestRelease.GetHTMLURL(),
+		color.Gray+release.GetHTMLURL(),
 	))
 
 	log.Print(color.Reset)
