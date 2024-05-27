@@ -9,7 +9,7 @@ import (
 
 func RegisterCommands() {
 	register("info", "<text> [number]", "Test command used for debugging.", cmd.Info)
-	register("exit", "", "Exit the application.", cmd.Exit)
+	register("exit", "[code]", "Exit the application.", cmd.Exit)
 }
 
 func register(name string, argString string, help string, runnable func([]string)) {
