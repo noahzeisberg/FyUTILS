@@ -10,7 +10,7 @@ We’ll walk you through the installation process of FyUTILS, how to customize y
 
 # Disclaimer
 
-By proceeding, you acknowledge that you have read, understood, and agreed to comply with our [terms and conditions](https://github.com/noahzeisberg/FyUTILS/blob/master/TERMS.md). Failure to adhere to these terms may result in legal consequences. If you do not agree with these terms, refrain from downloading, installing, or using FyUTILS.
+By proceeding, you acknowledge that you have read, understood, and agreed to comply with our [ToS](https://github.com/noahzeisberg/FyUTILS/blob/master/TERMS.md). Failure to adhere to these terms may result in legal consequences. If you do not agree with these terms, refrain from downloading, installing, or using FyUTILS.
 
 # Installation
 
