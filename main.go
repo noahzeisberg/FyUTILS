@@ -1,14 +1,14 @@
 package main
 
 import (
-	"fyutils/cmd"
 	"fyutils/log"
 	"fyutils/parser"
 	"fyutils/registration"
 )
 
 func main() {
-	registration.Register("info", "<text> [number]", "Test command used for debugging.", cmd.Info)
+	registration.RegisterCommands()
+
 	for {
 		input := log.Input("Enter command: ")
 		cmdName, args := parser.ParseInput(input)
