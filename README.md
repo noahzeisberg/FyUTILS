@@ -1,6 +1,6 @@
 # FyUTILS
 
-Welcome to the [FyUTILS](https://github.com/noahonfyre/FyUTILS) wiki page!
+Welcome to the [FyUTILS](https://github.com/noahonfyre/FyUTILS) readme page!
 
 We’ll walk you through the installation process of FyUTILS, how to customize your instance, and several ways to extend it.
 
@@ -20,7 +20,7 @@ We’ll walk you through the installation process of FyUTILS, how to customize y
 
 # Disclaimer
 
-By proceeding, you acknowledge that you have read, understood, and agreed to comply with our [ToS](https://github.com/noahzeisberg/FyUTILS/blob/master/TERMS.md). Failure to adhere to these terms may result in legal consequences. If you do not agree with these terms, refrain from downloading, installing, or using FyUTILS.
+By proceeding, you acknowledge that you have read, understood, and agreed to comply with our [ToS](https://github.com/noahzeisberg/FyUTILS/blob/master/TERMS.md). If you do not agree with these terms, refrain from downloading, installing, or using FyUTILS.
 
 # Installation
 
@@ -48,27 +48,27 @@ If you’re going to use FyUTILS very often, you may like to create a Terminal p
 
 1. **Open Windows Terminal:**
 
-   Launch the Windows Terminal application on your computer. You can find it in the Start menu or by searching for **“Windows Terminal”** in the search bar.
+   Launch the Windows Terminal application on your computer. You can find it in the Start menu or by searching for **"Windows Terminal"** in the search bar.
 
 2. **Access Settings:**
 
-   Click on the downward arrow icon located in the title bar or press `Ctrl` + `,` to open the Settings menu.
+   Click on the downward arrow icon located in the title bar or press `Ctrl + ,` to open the Settings menu.
 
 3. **Navigate to Profiles:**
 
-   In the Settings menu, select the **“Profiles”** tab on the left sidebar.
+   In the Settings menu, select the **"Profiles"** tab on the left sidebar.
 
 4. **Create a New Profile:**
 
-   Scroll down to the “Add a profile” section. Click on the **“Add”** button to create a new profile.
+   Scroll down to the "Add a profile" section. Click on the **"Add"** button to create a new profile.
 
 5. **Configure the New Profile:**
 
-   Change the name of the Profile to **“FyUTILS”** and the command line to `fyutils`.
+   Change the name of the Profile to **"FyUTILS"** and the command line to `fyutils`.
 
 6. **Save Changes:**
 
-   Once you have configured the new profile, click the **“Save”** button to apply the changes.
+   Once you have configured the new profile, click the **"Save"** button to apply the changes.
 
 7. **Close and Reopen Windows Terminal:**
 
@@ -101,9 +101,9 @@ Here’s a list of every programming language involved in FyUTILS.
 
 | Language:  | Use case:                       |
 |------------|---------------------------------|
-| Go         | Main Application                |
-| Batch      | System Interactions             |
-| PowerShell | Installer & System Interactions |
+| Go         | Command line interface          |
+| Batch      | System interactions             |
+| PowerShell | Installer & system interactions |
 | Markdown   | Documentation                   |
 
 ### Tools
@@ -111,7 +111,7 @@ Here’s a list of every programming language involved in FyUTILS.
 Here’s a list of tools, I use to develop and maintain FyUTILS.
 
 | Tool:                                      | Use case:                                 |
-|--------------------------------------------|:------------------------------------------|
+|--------------------------------------------|-------------------------------------------|
 | [Goland](https://www.jetbrains.com/go/)    | Go & PowerShell Development               |
 | [GitHub](https://github.com)               | Version Control, Publishing, Distribution |
 | [GitHub API](https://docs.github.com/rest) | Updating System                           |
