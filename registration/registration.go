@@ -8,7 +8,6 @@ import (
 )
 
 func RegisterCommands() {
-	register("info", "<text> [number]", "Test command used for debugging.", cmd.Info)
 	register("exit", "[code]", "Exit the application.", cmd.Exit)
 }
 
