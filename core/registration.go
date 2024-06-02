@@ -1,9 +1,8 @@
-package registration
+package core
 
 import (
 	"fyutils/cmd"
 	"fyutils/log"
-	"fyutils/parser"
 	"fyutils/types"
 )
 
@@ -12,12 +11,12 @@ func RegisterCommands() {
 }
 
 func register(name string, argString string, help string, runnable func([]string)) {
-	args, err := parser.ComposeArguments(argString)
+	args, err := ComposeArguments(argString)
 	if err != nil {
 		log.Error(err)
 		return
 	}
-	types.Commands = append(types.Commands, types.Command{
+	Commands = append(Commands, types.Command{
 		Name:     name,
 		Args:     args,
 		Help:     help,

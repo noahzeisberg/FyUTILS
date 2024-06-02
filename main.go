@@ -2,9 +2,10 @@ package main
 
 import (
 	"fyutils/color"
+	"fyutils/core"
 	"fyutils/log"
-	"fyutils/parser"
-	"fyutils/registration"
+	"golang.org/x/text/cases"
+	"golang.org/x/text/language"
 )
 
 func main() {
@@ -17,16 +18,22 @@ func main() {
 	log.Print(color.Blue + "     /____/")
 	log.Print()
 
-	registration.RegisterCommands()
+	core.RegisterCommands()
+	go core.InitializeReleaseSubscriber()
 
 	for {
 		input := log.Input(color.Gray + "┌──(" + color.Blue + "noah" + color.Gray + "@" + color.Reset + "DESKTOP" + color.Gray + ")─[" + color.Reset + "~" + color.Gray + "]\n└─> " + color.Reset)
-		cmdName, args := parser.ParseInput(input)
-		command, err := parser.GetCommand(cmdName)
+		cmdName, args := core.ParseInput(input)
+		command, err := core.GetCommand(cmdName)
 		if err != nil {
 			log.Error("Command not found!")
 			continue
 		}
-		command.Run(args)
+
+		err = command.Run(args)
+		if err != nil {
+			log.Error(cases.Title(language.English, cases.Compact).String(err.Error()) + ".")
+			return
+		}
 	}
 }

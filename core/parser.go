@@ -1,4 +1,4 @@
-package parser
+package core
 
 import (
 	"errors"
@@ -13,7 +13,7 @@ func ParseInput(input string) (string, []string) {
 }
 
 func GetCommand(name string) (types.Command, error) {
-	for _, command := range types.Commands {
+	for _, command := range Commands {
 		if command.Name == name {
 			return command, nil
 		}

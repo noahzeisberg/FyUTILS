@@ -4,8 +4,6 @@ import (
 	"errors"
 )
 
-var Commands []Command
-
 type Command struct {
 	Name     string
 	Args     []Argument
