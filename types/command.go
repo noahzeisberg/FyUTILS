@@ -1,7 +1,7 @@
 package types
 
 import (
-	"fyutils/log"
+	"errors"
 )
 
 var Commands []Command
@@ -18,7 +18,7 @@ type Argument struct {
 	Required bool
 }
 
-func (c *Command) Run(args []string) {
+func (c *Command) Run(args []string) error {
 	var minArgs int
 	maxArgs := len(c.Args)
 	for _, arg := range c.Args {
@@ -27,12 +27,12 @@ func (c *Command) Run(args []string) {
 		}
 	}
 	if len(args) < minArgs {
-		log.Error("Not enough arguments to execute command.")
-		return
+		return errors.New("not enough arguments")
 	}
 	if len(args) > maxArgs {
-		log.Error("Too many arguments to execute command.")
-		return
+		return errors.New("too much arguments")
 	}
+
 	c.Runnable(args)
+	return nil
 }
