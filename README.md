@@ -5,8 +5,18 @@ Welcome to the [FyUTILS](https://github.com/noahonfyre/FyUTILS) wiki page!
 We’ll walk you through the installation process of FyUTILS, how to customize your instance, and several ways to extend it.
 
 # Table of Contents
-
-
+<!-- TOC -->
+* [FyUTILS](#fyutils)
+* [Table of Contents](#table-of-contents)
+* [Disclaimer](#disclaimer)
+* [Installation](#installation)
+    * [Creating a Terminal profile](#creating-a-terminal-profile)
+    * [Troubleshooting Guide](#troubleshooting-guide)
+  * [Used in FyUTILS](#used-in-fyutils)
+    * [Languages](#languages)
+    * [Tools](#tools)
+  * [Credits and Acknowledgement](#credits-and-acknowledgement)
+<!-- TOC -->
 
 # Disclaimer
 
