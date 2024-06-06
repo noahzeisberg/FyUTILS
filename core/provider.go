@@ -11,7 +11,8 @@ import (
 var (
 	User, _       = user.Current()
 	Device, _     = os.Hostname()
-	Home, _       = os.UserHomeDir()
+	HomeDir, _    = os.UserHomeDir()
+	MainDir       = HomeDir + "\\.fy\\"
 	Version       = "v1.23.0"
 	HttpClient    = http.Client{Transport: &http.Transport{}}
 	GithubClient  = github.NewClient(&HttpClient)
