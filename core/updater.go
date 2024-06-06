@@ -5,13 +5,13 @@ import (
 	"time"
 )
 
-func InitializeReleaseSubscriber(bridge chan bool) {
+func InitializeReleaseSubscriber() {
 	for {
-		latestRelease, _, err := GithubClient.Repositories.GetLatestRelease(context.Background(), "noahzeisberg", "fyutils")
-		if err != nil {
+		release, _, err := GithubClient.Repositories.GetLatestRelease(context.Background(), "noahzeisberg", "fyutils")
+		if err != nil || release == nil {
 			return
 		}
-		bridge <- latestRelease.GetTagName() == ""
-		time.Sleep(5 * time.Minute)
+		LatestRelease = release
+		time.Sleep(1 * time.Minute)
 	}
 }
