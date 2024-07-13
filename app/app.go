@@ -3,6 +3,7 @@ package app
 import (
 	"context"
 	"fmt"
+	"github.com/google/go-github/github"
 	"github.com/noahzeisberg/FyUTILS/color"
 	"github.com/noahzeisberg/FyUTILS/log"
 	"github.com/noahzeisberg/FyUTILS/utils"
@@ -17,7 +18,7 @@ import (
 var (
 	Username, _ = strings.CutPrefix(fmt.Sprint(utils.Catch(os.UserHomeDir())), "C:\\Users\\")
 	Device, _   = os.Hostname()
-	Version     = "v1.22.2"
+	Version     = "v1.23.0"
 	HomeDir, _  = os.UserHomeDir()
 	MainDir     = HomeDir + "\\.fy\\"
 	TempDir     = MainDir + "temp\\"
@@ -27,9 +28,8 @@ var (
 	HttpClient  = &http.Client{Transport: &http.Transport{}}
 	StartTime   = time.Now()
 
-	UpdateAvailable bool
-	UpdateVersion   string
-	Commands        []Command
+	NewestRelease *github.RepositoryRelease
+	Commands      []Command
 )
 
 func Main() {
@@ -39,8 +39,7 @@ func Main() {
 			log.Error("Failed to get latest release! " + err.Error())
 			return
 		}
-		UpdateVersion = release.GetTagName()
-		UpdateAvailable = semver.Compare(UpdateVersion, Version) == 1
+		NewestRelease = release
 	}()
 
 	CheckPaths([]string{
@@ -66,11 +65,11 @@ func Main() {
 			args := utils.RemoveElement(split, 0)
 			RunCommand(command, args)
 		}
-		if UpdateAvailable {
+		if semver.Compare(NewestRelease.GetTagName(), Version) == 1 {
 			log.Print()
 			log.Print(color.Gray + "┌" + utils.MultiString("─", 120-1))
 			log.Print(color.Gray + "│ " + color.Reset + "A new version of FyUTILS is available! Run " + color.Blue + "\"update\"" + color.Reset + " to download.")
-			log.Print(color.Gray + "│ " + color.Reset + "Version Diff: " + color.Red + Version + color.Gray + " -> " + color.Green + UpdateVersion)
+			log.Print(color.Gray + "│ " + color.Reset + "Version Diff: " + color.Red + Version + color.Gray + " -> " + color.Green + NewestRelease.GetTagName())
 			log.Print(color.Gray + "└" + utils.MultiString("─", 120-1))
 		}
 	}
@@ -106,18 +105,14 @@ func RunCommand(command string, args []string) {
 	if !commandFound {
 		_, err := exec.LookPath(command)
 		if err != nil {
-			log.Error("Command not found! - Run \"help\" to see all Commands.")
+			log.Error("Command not found! - Run \"help\" to see all commands.")
 			return
 		}
 		var cmdArgs []string
-		cmdArgs = append(cmdArgs, "/c")
-		cmdArgs = append(cmdArgs, command)
-		cmdArgs = append(cmdArgs, args...)
-		runnable := exec.Command("cmd.exe", cmdArgs...)
+		cmdArgs = append(cmdArgs, "/c", command)
+		runnable := exec.Command("cmd.exe", append(cmdArgs, args...)...)
 
-		runnable.Stdout = os.Stdout
-		runnable.Stderr = os.Stderr
-		runnable.Stdin = os.Stdin
+		runnable.Stdout, runnable.Stderr, runnable.Stdin = os.Stdout, os.Stderr, os.Stdin
 
 		err = runnable.Run()
 		if err != nil {
