@@ -89,15 +89,15 @@ func RunCommand(command string, args []string) {
 				cmd.Run(args)
 				commandFound = true
 			} else {
-				var usage string
+				var usage []string
 				for _, argument := range cmd.Args {
 					if argument.Required {
-						usage += "<" + argument.Identifier + "> "
+						usage = append(usage, "<"+argument.Identifier+">")
 					} else {
-						usage += "[" + argument.Identifier + "] "
+						usage = append(usage, "["+argument.Identifier+"]")
 					}
 				}
-				log.Error("Invalid arguments!" + color.Gray + " - " + color.Red + "Usage: " + command + " " + usage)
+				log.Error("Invalid arguments!" + color.Gray + " - " + color.Red + "Usage: " + command + " " + strings.Join(usage, " "))
 				commandFound = true
 			}
 		}
