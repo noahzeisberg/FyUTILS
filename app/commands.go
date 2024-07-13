@@ -1,7 +1,6 @@
 package app
 
 import (
-	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -266,79 +265,6 @@ func FetchCommand(args []string) {
 	if err != nil {
 		log.Error("Failed to write data to file.")
 		return
-	}
-}
-
-func FuelCommand(args []string) {
-	action := args[0]
-
-	if len(args) == 1 {
-		switch action {
-		case "list":
-			directoryEntries, err := os.ReadDir(FuelDir)
-			if err != nil {
-				return
-			}
-
-			var fuels []Group
-
-			for _, entry := range directoryEntries {
-				fileInfo, err := entry.Info()
-				if err != nil {
-					return
-				}
-				fuels = append(fuels, Group{
-					A: strings.ReplaceAll(fileInfo.Name(), ".", "/"),
-					B: fileInfo.Size(),
-				})
-			}
-
-			log.Print(GroupContainer(fuels...))
-		}
-		return
-	}
-	input := args[1]
-	switch action {
-	case "get", "install", "fetch":
-		FetchRepositoryContent(input, "", time.Now())
-	case "remove", "delete", "uninstall":
-		pkg, err := ParseRepository(input)
-		if err != nil {
-			log.Error("Failed to parse repository.")
-			return
-		}
-
-		if log.Confirm("Do you really want to remove this package?") {
-			err := os.RemoveAll(FuelDir + pkg.AsPackage())
-			if err != nil {
-				log.Error(err.Error())
-				return
-			}
-			log.Print("Removed package " + color.Blue + pkg.AsRepository() + color.Reset + "!")
-		} else {
-		}
-	case "run":
-		pkg, err := ParseRepository(input)
-		if err != nil {
-			log.Error("Failed to parse repository.")
-			return
-		}
-		packageDirectory := FuelDir + pkg.AsPackage() + "\\"
-
-		cmd := exec.Command("cmd.exe", "/c", packageDirectory+"main")
-
-		var stdBuffer bytes.Buffer
-		mw := io.MultiWriter(os.Stdout, &stdBuffer)
-
-		cmd.Stdout = mw
-		cmd.Stderr = mw
-		cmd.Stdin = os.Stdin
-
-		err = cmd.Run()
-		if err != nil {
-			log.Error(err.Error())
-			return
-		}
 	}
 }
 
