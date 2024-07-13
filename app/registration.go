@@ -1,9 +1,5 @@
 package app
 
-import (
-	"github.com/noahzeisberg/FyUTILS/regex"
-)
-
 func CommandRegistration() {
 	Command{
 		Name:  "flood",
@@ -12,12 +8,10 @@ func CommandRegistration() {
 			{
 				Identifier: "ip",
 				Required:   true,
-				Expect:     regex.AcceptsIP,
 			},
 			{
 				Identifier: "port",
 				Required:   true,
-				Expect:     regex.AcceptsPort,
 			},
 		},
 		Run: FloodCommand,
@@ -30,7 +24,6 @@ func CommandRegistration() {
 			{
 				Identifier: "ip",
 				Required:   true,
-				Expect:     regex.AcceptsIP,
 			},
 		},
 		Run: PortscanCommand,
@@ -43,7 +36,6 @@ func CommandRegistration() {
 			{
 				Identifier: "ip",
 				Required:   true,
-				Expect:     regex.AcceptsIP,
 			},
 		},
 		Run: WhoisCommand,
@@ -83,22 +75,6 @@ func CommandRegistration() {
 			},
 		},
 		Run: FetchCommand,
-	}.Register()
-
-	Command{
-		Name:  "fuel",
-		Short: "Manage extensions and libraries.",
-		Args: []Argument{
-			{
-				Identifier: "action",
-				Required:   true,
-			},
-			{
-				Identifier: "pkg",
-				Required:   false,
-			},
-		},
-		Run: FuelCommand,
 	}.Register()
 
 	Command{
