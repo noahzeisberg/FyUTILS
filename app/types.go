@@ -1,7 +1,5 @@
 package app
 
-import "regexp"
-
 type Group struct {
 	A any
 	B any
@@ -17,7 +15,6 @@ type Command struct {
 type Argument struct {
 	Identifier string
 	Required   bool
-	Expect     *regexp.Regexp
 }
 
 type AddressInformation struct {
@@ -56,10 +53,4 @@ type TimezoneInformation struct {
 type PathAlias struct {
 	Short string
 	Path  string
-}
-
-type FuelPackage struct {
-	Owner      string `json:"owner"`
-	Repository string `json:"repository"`
-	Branch     string `json:"branch"`
 }
