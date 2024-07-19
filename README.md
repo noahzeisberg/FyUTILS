@@ -6,7 +6,17 @@ We’ll walk you through the installation process of FyUTILS, how to customize y
 
 # Table of Contents
 
-
+<!-- TOC -->
+* [FyUTILS](#fyutils)
+* [Table of Contents](#table-of-contents)
+* [Disclaimer](#disclaimer)
+* [Installation](#installation)
+    * [Troubleshooting Guide](#troubleshooting-guide)
+  * [Used in FyUTILS](#used-in-fyutils)
+    * [Languages](#languages)
+    * [Tools](#tools)
+  * [Credits and Acknowledgement](#credits-and-acknowledgement)
+<!-- TOC -->
 
 # Disclaimer
 
@@ -31,38 +41,6 @@ To install FyUTILS, ensure you're running the latest versions of Windows and Win
 3. **Starting FyUTILS:**
    To run FyUTILS, execute the `fyutils` command in a new shell session.
 
-
-### Creating a Terminal profile
-
-If you’re going to use FyUTILS very often, you may like to create a Terminal profile for FyUTILS:
-
-1. **Open Windows Terminal:**
-
-   Launch the Windows Terminal application on your computer. You can find it in the Start menu or by searching for **“Windows Terminal”** in the search bar.
-
-2. **Access Settings:**
-
-   Click on the downward arrow icon located in the title bar or press `Ctrl` + `,` to open the Settings menu.
-
-3. **Navigate to Profiles:**
-
-   In the Settings menu, select the **“Profiles”** tab on the left sidebar.
-
-4. **Create a New Profile:**
-
-   Scroll down to the “Add a profile” section. Click on the **“Add”** button to create a new profile.
-
-5. **Configure the New Profile:**
-
-   Change the name of the Profile to **“FyUTILS”** and the command line to `fyutils`.
-
-6. **Save Changes:**
-
-   Once you have configured the new profile, click the **“Save”** button to apply the changes.
-
-7. **Close and Reopen Windows Terminal:**
-
-   Close the Settings menu and restart Windows Terminal to see your new profile. You can switch between profiles using the tabs at the top of the terminal window.
 
 ### Troubleshooting Guide
 If something doesn't work, or you can't get FyUTILS to start, try the following steps:
