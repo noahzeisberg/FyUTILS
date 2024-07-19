@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"github.com/noahzeisberg/FyUTILS/log"
 	"github.com/noahzeisberg/FyUTILS/networking"
+	"github.com/noahzeisberg/FyUTILS/typing"
 	"github.com/noahzeisberg/FyUTILS/utils"
 	"io"
 	"math"
@@ -84,20 +85,20 @@ func PortscanCommand(args []string) {
 	log.Print("Scan took " + fmt.Sprint(math.Trunc(time.Since(commandStartTime).Seconds())) + "!")
 	log.Print()
 
-	var openPortGroups []Group
+	var openPortGroups []typing.Group
 	for port := range results {
-		openPortGroups = append(openPortGroups, Group{
+		openPortGroups = append(openPortGroups, typing.Group{
 			A: fmt.Sprint(port),
 			B: utils.GetPortService(port),
 		})
 	}
 
-	log.Print(GroupContainer(openPortGroups...))
+	log.Print(log.GroupContainer(openPortGroups...))
 }
 
 func WhoisCommand(args []string) {
 	target := args[0]
-	var data AddressInformation
+	var data typing.AddressInformation
 	body := requests.Get("https://ipwho.is/" + target)
 
 	err := json.Unmarshal(body, &data)
@@ -108,7 +109,7 @@ func WhoisCommand(args []string) {
 
 	log.Print("WHOIS Report for " + color.Blue + data.IP)
 	log.Print()
-	log.Print(GroupContainer([]Group{
+	log.Print(log.GroupContainer([]typing.Group{
 		{A: "Target", B: data.IP},
 		{A: "Address Type", B: data.Type},
 		{A: "Continent", B: data.Continent + " (" + data.ContinentCode + ")"},
@@ -122,12 +123,10 @@ func WhoisCommand(args []string) {
 		{A: "Postal Code", B: data.PostalCode},
 		{A: "Calling Code", B: data.CallingCode},
 		{A: "Capital", B: data.Capital},
-		{A: "", B: ""},
 		{A: "System Number (ASN)", B: data.Connection.SystemNumber},
 		{A: "Organisation (ORG)", B: data.Connection.Organisation},
 		{A: "Service Provider (ISP)", B: data.Connection.ServiceProvider},
 		{A: "ISP Domain", B: data.Connection.ISPDomain},
-		{A: "", B: ""},
 		{A: "Timezone", B: data.Timezone.ID},
 		{A: "Timezone Abbreviation", B: data.Timezone.Abbreviation},
 		{A: "UTC", B: data.Timezone.UTC},
@@ -143,18 +142,18 @@ func RetrieveCommand(args []string) {
 			log.Error("Failed to retrieve network interfaces!")
 			return
 		}
-		var interfaces []Group
+		var interfaces []typing.Group
 		for _, dev := range devices {
-			interfaces = append(interfaces, Group{A: dev.Description, B: dev.Name})
+			interfaces = append(interfaces, typing.Group{A: dev.Description, B: dev.Name})
 		}
-		log.Print(GroupContainer(interfaces...))
+		log.Print(log.GroupContainer(interfaces...))
 	case "networks":
 		output, err := exec.Command("cmd.exe", "/c", "netsh", "wlan", "show", "networks").CombinedOutput()
 		if err != nil {
 			log.Error(err.Error())
 			return
 		}
-		log.Print(Container(networking.ScanNetworks(string(output))...))
+		log.Print(log.Container(networking.ScanNetworks(string(output))...))
 	case "user":
 		log.Print(color.Blue + Username + color.Gray + "@" + color.Reset + Device + color.Gray + " (" + runtime.GOOS + "-" + runtime.GOARCH + ")")
 	case "version":
@@ -162,7 +161,7 @@ func RetrieveCommand(args []string) {
 	case "uptime":
 		log.Print(int(math.Trunc(time.Since(StartTime).Seconds())))
 	case "paths":
-		log.Print(GroupContainer([]Group{
+		log.Print(log.GroupContainer([]typing.Group{
 			{A: "Root Path", B: MainDir},
 			{A: "Temp Path", B: TempDir},
 			{A: "Download Path", B: DownloadDir},
@@ -275,7 +274,7 @@ func CdCommand(args []string) {
 			log.Error(err.Error())
 			return
 		}
-		log.Print(Container(GetPathAlias(dir) + color.Gray + " - " + color.Reset + "(" + dir + ")"))
+		log.Print(log.Container(GetPathAlias(dir) + color.Gray + " - " + color.Reset + "(" + dir + ")"))
 		return
 	}
 	dir := args[0]
@@ -325,7 +324,7 @@ func LsCommand(_ []string) {
 		}
 	}
 
-	log.Print(Container(finalList...))
+	log.Print(log.Container(finalList...))
 }
 
 func DirCommand(_ []string) {
@@ -347,7 +346,7 @@ func UpdateCommand(_ []string) {
 		description = description[:115] + "..."
 	}
 
-	log.Print(Container(
+	log.Print(log.Container(
 		color.Red+Version+color.Gray+" -> "+color.Green+release.GetTagName(),
 		description,
 		color.Gray+release.GetHTMLURL(),
@@ -356,8 +355,13 @@ func UpdateCommand(_ []string) {
 	log.Print(color.Reset)
 
 	if log.Confirm("Do you want to update to this version?") {
-		utils.PowerShellRun("irm https://noahonfyre.github.io/FyUTILS/get.ps1 | iex")
-		time.Sleep(time.Second)
+		output, err := utils.PowerShellRun("irm https://noahonfyre.github.io/FyUTILS/get.ps1 | iex")
+		if err != nil {
+			log.Error(err)
+			return
+		}
+		log.Print(output)
+		log.Input("Press enter to restart... ")
 		os.Exit(0)
 	} else {
 		log.Print("Update cancelled!")
@@ -365,7 +369,7 @@ func UpdateCommand(_ []string) {
 }
 
 func HelpCommand(_ []string) {
-	var commandList []Group
+	var commandList []typing.Group
 	for _, command := range Commands {
 		var usages []string
 		for _, argument := range command.Args {
@@ -375,18 +379,15 @@ func HelpCommand(_ []string) {
 				usages = append(usages, "["+argument.Identifier+"]")
 			}
 		}
-		usage := strings.Join(usages, " ")
-		commandList = append(commandList, Group{
-			A: command.Name + " " + usage,
-			B: command.Short,
-		})
+		usage := " " + strings.Join(usages, " ")
+		commandList = append(commandList, typing.Group{A: command.Name + usage, B: command.Short})
 	}
-	log.Print(GroupContainer(commandList...))
+	log.Print(log.GroupContainer(commandList...))
 }
 
 func ClearCommand(_ []string) {
 	log.Clear()
-	Menu()
+	log.Menu()
 }
 
 func ExitCommand(_ []string) {
