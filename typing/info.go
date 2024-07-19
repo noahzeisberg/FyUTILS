@@ -1,21 +1,4 @@
-package app
-
-type Group struct {
-	A any
-	B any
-}
-
-type Command struct {
-	Name  string
-	Short string
-	Args  []Argument
-	Run   func([]string)
-}
-
-type Argument struct {
-	Identifier string
-	Required   bool
-}
+package typing
 
 type AddressInformation struct {
 	IP            string                `json:"ip"`
@@ -48,9 +31,4 @@ type TimezoneInformation struct {
 	ID           string `json:"id"`
 	Abbreviation string `json:"abbr"`
 	UTC          string `json:"utc"`
-}
-
-type PathAlias struct {
-	Short string
-	Path  string
 }
