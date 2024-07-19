@@ -2,10 +2,10 @@ package app
 
 import (
 	"context"
-	"fmt"
 	"github.com/google/go-github/github"
 	"github.com/noahzeisberg/FyUTILS/color"
 	"github.com/noahzeisberg/FyUTILS/log"
+	"github.com/noahzeisberg/FyUTILS/typing"
 	"github.com/noahzeisberg/FyUTILS/utils"
 	"golang.org/x/mod/semver"
 	"net/http"
@@ -16,7 +16,7 @@ import (
 )
 
 var (
-	Username, _ = strings.CutPrefix(fmt.Sprint(utils.Catch(os.UserHomeDir())), "C:\\Users\\")
+	Username, _ = strings.CutPrefix(HomeDir, "C:\\Users\\")
 	Device, _   = os.Hostname()
 	Version     = "v1.23.0"
 	HomeDir, _  = os.UserHomeDir()
@@ -29,7 +29,7 @@ var (
 	StartTime   = time.Now()
 
 	NewestRelease *github.RepositoryRelease
-	Commands      []Command
+	Commands      []typing.Command
 )
 
 func Main() {
@@ -52,7 +52,7 @@ func Main() {
 	})
 
 	CommandRegistration()
-	Menu()
+	log.Menu()
 
 	for {
 		log.Print()
@@ -61,8 +61,7 @@ func Main() {
 		if input != "" {
 			log.Print()
 			split := strings.Split(input, " ")
-			command := split[0]
-			args := utils.RemoveElement(split, 0)
+			command, args := split[0], utils.RemoveElement(split, 0)
 			RunCommand(command, args)
 		}
 		if semver.Compare(NewestRelease.GetTagName(), Version) == 1 {
