@@ -2,13 +2,14 @@ package app
 
 import (
 	"github.com/noahzeisberg/FyUTILS/log"
+	"github.com/noahzeisberg/FyUTILS/typing"
 	"io/fs"
 	"os"
 	"strings"
 )
 
 var (
-	PathAliases = []PathAlias{
+	PathAliases = []typing.PathAlias{
 		{
 			Short: "~",
 			Path:  StripPath(HomeDir),
