@@ -2,30 +2,26 @@ package utils
 
 import (
 	"fmt"
-	"github.com/noahzeisberg/FyUTILS/log"
 	"os/exec"
 )
 
-func PowerShellRun(command string) {
+func PowerShellRun(command string) (string, error) {
 	cmd := exec.Command("cmd.exe", "/c", "powershell.exe -nologo -noprofile")
 	stdin, err := cmd.StdinPipe()
 	if err != nil {
-		log.Error("Failed to connect to PowerShell session!")
-		return
+		return "", err
 	}
 	_, err = fmt.Fprintln(stdin, command)
 	if err != nil {
-		log.Error("Failed to run PowerShell command.")
-		return
+		return "", err
 	}
 	err = stdin.Close()
 	if err != nil {
-		log.Error("Failed to close pipe..")
-		return
+		return "", err
 	}
 	out, err := cmd.CombinedOutput()
 	if err != nil {
-		log.Error(err.Error())
+		return "", err
 	}
-	log.Print(string(out))
+	return string(out), nil
 }
