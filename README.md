@@ -15,12 +15,13 @@ We’ll walk you through the installation process of FyUTILS, how to customize y
   * [Used in FyUTILS](#used-in-fyutils)
     * [Languages](#languages)
     * [Tools](#tools)
+  * [Terms of Service](#terms-of-service)
   * [Credits and Acknowledgement](#credits-and-acknowledgement)
 <!-- TOC -->
 
 # Disclaimer
 
-By proceeding, you acknowledge that you have read, understood, and agreed to comply with our [terms and conditions](https://github.com/noahzeisberg/FyUTILS/blob/master/TERMS.md). Failure to adhere to these terms may result in legal consequences. If you do not agree with these terms, refrain from downloading, installing, or using FyUTILS.
+By proceeding, you acknowledge that you have read, understood, and agreed to comply with our [terms and conditions](#terms-of-service). Failure to adhere to these terms may result in legal consequences. If you do not agree with these terms, refrain from downloading, installing, or using FyUTILS.
 
 # Installation
 
@@ -83,8 +84,15 @@ Here’s a list of tools, I use to develop and maintain FyUTILS.
 | [Goland](https://www.jetbrains.com/go/)    | Go & PowerShell Development               |
 | [GitHub](https://github.com)               | Version Control, Publishing, Distribution |
 | [GitHub API](https://docs.github.com/rest) | Updating System                           |
-| [Notion](https://notion.so)                | Documentation & Writing                   |
+| [Notion](https://notion.so)                | Documentation, Writing & Organisation     |
 | [VS Code](https://vscode.dev)              | Additional Development                    |
+
+## Terms of Service
+FyUTILS is designed exclusively for ethical, legal, and authorized purposes.
+If you want to test a system for vulnerabilities, make sure you are authorized to do so.
+You can do so by either being the owner of the system or by getting explicit permission from the administrators.
+You are fully responsible for everything you do with this tool.
+The developers and contributors are not responsible for your actions.
 
 ## Credits and Acknowledgement
 A huge thank you to all [contributors](https://github.com/noahzeisberg/FyUTILS/graphs/contributors) of this project. ♥️
