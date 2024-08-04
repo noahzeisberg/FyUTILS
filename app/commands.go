@@ -306,25 +306,25 @@ func LsCommand(_ []string) {
 	slices.Sort(folderList)
 	slices.Sort(fileList)
 
-	var finalList []string
+	var combinedList []string
 	for _, folder := range folderList {
 		if strings.HasPrefix(folder, ".") {
-			finalList = append(finalList, color.Gray+folder)
+			combinedList = append(combinedList, color.Gray+folder)
 		} else {
-			finalList = append(finalList, color.Reset+folder)
+			combinedList = append(combinedList, color.Reset+folder)
 		}
 	}
 	for _, file := range fileList {
 		if strings.HasPrefix(file, ".") {
-			finalList = append(finalList, color.Gray+file)
+			combinedList = append(combinedList, color.Gray+file)
 		} else if strings.HasSuffix(file, ".exe") || strings.HasSuffix(file, ".bat") || strings.HasSuffix(file, ".cmd") || strings.HasSuffix(file, ".ps1") || strings.HasSuffix(file, ".msi") {
-			finalList = append(finalList, color.Blue+file)
+			combinedList = append(combinedList, color.Blue+file)
 		} else {
-			finalList = append(finalList, color.Reset+file)
+			combinedList = append(combinedList, color.Reset+file)
 		}
 	}
 
-	log.Print(log.Container(finalList...))
+	log.Print(log.Container(combinedList...))
 }
 
 func DirCommand(_ []string) {
