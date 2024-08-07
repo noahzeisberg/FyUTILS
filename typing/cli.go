@@ -12,9 +12,6 @@ type Argument struct {
 	Required   bool
 }
 
-type T struct {
-}
-
 func (cmd Command) Register(list *[]Command) {
 	*list = append(*list, cmd)
 }
