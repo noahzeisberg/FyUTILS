@@ -1,7 +1,10 @@
 package main
 
-import "github.com/noahzeisberg/FyUTILS/app"
+import (
+	"github.com/noahzeisberg/FyUTILS/cli"
+	"os"
+)
 
 func main() {
-	app.Main()
+	cli.Main(append(os.Args[:0], os.Args[1:]...))
 }
