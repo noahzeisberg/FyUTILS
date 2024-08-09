@@ -32,7 +32,7 @@ func Error(err error, fatal bool) {
 	Println(stackTrace.FileName)
 	Println(stackTrace.Line)
 	Println(stackTrace.FuncName)
-	Println(stackTrace.Package) // github.com/noahzeisberg/fyutils
+	Println(stackTrace.Package)
 	Println(stackTrace.SubPackage)
 
 	if fatal {
