@@ -4,29 +4,41 @@ import (
 	"bufio"
 	"fmt"
 	"github.com/noahzeisberg/FyUTILS/cli/color"
+	"github.com/noahzeisberg/FyUTILS/cli/log/trace"
 	"os"
+	"runtime"
 	"strings"
 )
 
-// Println prints the
-func Println(msg ...any) {
-	fmt.Println(append([]any{color.Reset}, msg...))
-}
-
+// Print prints the given objects to `os.Stdout`. It takes the objects as arguments.
 func Print(msg ...any) {
-	fmt.Print(append([]any{color.Reset}, msg...))
+	fmt.Print(append([]any{color.Reset}, msg...)...)
 }
 
+// Println prints the given objects to `os.Stdout` and appends a newline. It takes the objects as arguments.
+func Println(msg ...any) {
+	Print(append(msg, "\n")...)
+}
+
+// PrintR prints the given objects to `os.Stdout` and appends a carriage return. It takes the objects as arguments.
 func PrintR(msg ...any) {
-	fmt.Print(append(append([]any{color.Reset}, msg...), "\r"))
+	Print(append(msg, "\r")...)
 }
 
-func Warn(msg ...any) {
-	fmt.Println(append([]any{color.Yellow}, msg...))
-}
+func Error(err error, fatal bool) {
+	pc, filename, line, _ := runtime.Caller(1)
+	stackTrace := trace.GenerateTrace(err, pc, filename, line)
+	Println(stackTrace.Error.Error())
+	Println(stackTrace.FileName)
+	Println(stackTrace.Line)
+	Println(stackTrace.FuncName)
+	Println(stackTrace.Package) // github.com/noahzeisberg/fyutils
+	Println(stackTrace.SubPackage)
 
-func Error(msg ...any) {
-	fmt.Println(append([]any{color.Red}, msg...))
+	if fatal {
+		Input(color.Red + "Press enter to exit.")
+		os.Exit(1)
+	}
 }
 
 func Input(msg ...any) string {
