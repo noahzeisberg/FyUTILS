@@ -28,12 +28,15 @@ func PrintR(msg ...any) {
 func Error(err error, fatal bool) {
 	pc, filename, line, _ := runtime.Caller(1)
 	stackTrace := trace.GenerateTrace(err, pc, filename, line)
-	Println(stackTrace.Error.Error())
-	Println(stackTrace.FileName)
-	Println(stackTrace.Line)
-	Println(stackTrace.FuncName)
-	Println(stackTrace.Package)
-	Println(stackTrace.SubPackage)
+	Println(color.Red + "We've encountered an error during the execution of function \"" + stackTrace.FuncName + "()\".")
+	Println(color.Red)
+
+	Println(color.Red + stackTrace.Error.Error())
+	Println(color.Red + stackTrace.FileName)
+	Println(color.Red + fmt.Sprint(stackTrace.Line))
+	Println(color.Red + stackTrace.FuncName)
+	Println(color.Red + stackTrace.Package)
+	Println(color.Red + stackTrace.SubPackage)
 
 	if fatal {
 		Input(color.Red + "Press enter to exit.")
