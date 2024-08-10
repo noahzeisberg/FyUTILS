@@ -1,8 +1,8 @@
 package cli
 
 import (
+	"errors"
 	"github.com/noahzeisberg/FyUTILS/cli/log"
-	"net/http"
 )
 
 var (
@@ -11,6 +11,5 @@ var (
 
 func Main(args []string) {
 	log.Println(args)
-	_, err := http.Get("https://asigansiiagsidnasndaw.tk")
-	log.Error(err, true)
+	log.Error(errors.New("failed to do something lol"), true)
 }
