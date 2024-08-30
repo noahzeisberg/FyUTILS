@@ -6,5 +6,5 @@ import (
 )
 
 func main() {
-	cli.Main(os.Args[:1])
+	cli.Main(os.Args[0], os.Args[:1])
 }

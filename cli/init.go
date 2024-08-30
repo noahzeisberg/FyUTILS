@@ -9,7 +9,8 @@ var (
 	Version string = "v2.0.0"
 )
 
-func Main(args []string) {
+func Main(filepath string, args []string) {
+	log.Println(filepath)
 	log.Println(args)
 	log.Error(errors.New("failed to do something lol"), true)
 }
