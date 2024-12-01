@@ -6,5 +6,12 @@ import (
 )
 
 func main() {
-	cli.Main(os.Args[0], os.Args[:1])
+	var filepath = os.Args[0]
+	var args = os.Args[:1]
+
+	if filepath == args[0] {
+		args = []string{}
+	}
+
+	cli.Main(filepath, args)
 }
