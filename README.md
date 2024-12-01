@@ -62,30 +62,9 @@ If something doesn't work, or you can't get FyUTILS to start, try the following 
 
    If you need further help with the installation or setup of FyUTILS, you can check out our [discord server](https://dsc.gg/nyronium).
 
+5. **Standalone EXE:**
 
-## Used in FyUTILS
-
-### Languages
-Here’s a list of every programming language involved in FyUTILS.
-
-| Language:  | Use case:                       |
-|------------|---------------------------------|
-| Go         | Main Application                |
-| Batch      | System Interactions             |
-| PowerShell | Installer & System Interactions |
-| Markdown   | Documentation                   |
-
-### Tools
-
-Here’s a list of tools, I use to develop and maintain FyUTILS.
-
-| Tool:                                      | Use case:                                 |
-|--------------------------------------------|:------------------------------------------|
-| [Goland](https://www.jetbrains.com/go/)    | Go & PowerShell Development               |
-| [GitHub](https://github.com)               | Version Control, Publishing, Distribution |
-| [GitHub API](https://docs.github.com/rest) | Updating System                           |
-| [Notion](https://notion.so)                | Documentation, Writing & Organisation     |
-| [VS Code](https://vscode.dev)              | Additional Development                    |
+   If you only want to run FyUTILS standalone, just download the [latest release](https://github.com/noahzeisberg/fyutils/releases/latest).
 
 ## Terms of Service
 FyUTILS is designed exclusively for ethical, legal, and authorized purposes.
@@ -95,4 +74,6 @@ You are fully responsible for everything you do with this tool.
 The developers and contributors are not responsible for your actions.
 
 ## Credits and Acknowledgement
-A huge thank you to all [contributors](https://github.com/noahzeisberg/FyUTILS/graphs/contributors) of this project. ♥️
+A huge thank you to all [contributors](https://github.com/noahzeisberg/FyUTILS/graphs/contributors) of this project and also to JetBrains for providing me with their [Open Source License](https://www.jetbrains.com/community/opensource/).
+
+Without you, this project wouldn't be possible. ♥️
