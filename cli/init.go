@@ -12,5 +12,6 @@ var (
 func Main(filepath string, args []string) {
 	log.Println(filepath)
 	log.Println(args)
+	log.Println(Version)
 	log.Error(errors.New("failed to do something lol"), true)
 }
