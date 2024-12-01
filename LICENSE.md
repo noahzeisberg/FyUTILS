@@ -77,8 +77,8 @@
 
 ## 2.0 Branding
 "Branding" as defined in [1.1](#11-branding) found in this project is licensed under "All Rights Reserved".
-- Branding material of the project is reserved by the project owner or owning organisation.
-- Branding material of the organisation is always reserved by [Nyronium](https://github.com/nyronium).
+    - Branding material of the project is reserved by the project owner or owning organisation.
+    - Branding material of the organisation is always reserved by [Nyronium](https://github.com/nyronium).
 
 ## 3.0 Code
 "Code" as defined in [1.2](#12-code) found in this project is licensed under the "MIT" license, with an available copy in [3.1](#31-mit-license) and the changes stated in [3.2](#32-additional-changes)
@@ -104,7 +104,7 @@
 
 ### 3.2 Additional Changes
 - Besides the copy of the license, a link to the project, the license and content originated from must be provided.
-- Please be fair and don't use the project for commercial purposes to preserve the revenue for the projects developers.
+- Please be fair and do not use the project for commercial purposes in order to preserve the revenue, if any, for the project developers.
 
 ## 4.0 Models
 "Models" as defined in [1.3](#13-models) found in this project are licensed as "All Rights Reserved".
@@ -127,4 +127,4 @@ Out of courtesy, a link to their work should be provided if possible, even if th
 Any content for which the license is not explicitly stated is licensed as "All Rights Reserved".
 
 ## 8.0 Changes
-The maintainers of this project reserve the right to change the license of the project either by switching to another license or adjusting the contents of this one at any time whereas immediate compliance is expected.
+The maintainers of this project or the license reserve the right to change the license of the project either by switching to another license or adjusting the contents of this one at any time whereas immediate compliance is expected.
