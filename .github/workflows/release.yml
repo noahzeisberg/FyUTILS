@@ -1,9 +1,7 @@
-: Go Build and Release
-
 on:
   push:
     tags:
-      - "v*"
+      - "v*.*.*"
 
 jobs:
   build:
@@ -12,22 +10,22 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v3.1.0
 
       - name: Extract Go version from go.mod
         id: go-version
         run: |
           GO_VERSION=$(grep '^go ' go.mod | awk '{print $2}')
-          echo "go-version=$GO_VERSION" >> $GITHUB_ENV
+          echo "go_version=$GO_VERSION" >> $GITHUB_ENV
 
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
-          go-version: ${{ env.go-version }}
+          go-version: ${{ env.go_version }}
 
       - name: Build
         run: |
-          GOOS=windows GOARCH=amd64 go build -o FyUTILS ./...
+          GOOS=windows GOARCH=amd64 go build -o FyUTILS.exe
 
       - name: Upload Release Asset
         id: upload-release-asset
@@ -45,9 +43,26 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Download Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: FyUTILS.exe
+        continue-on-error: false
+
       - name: Generate Release Notes
         id: release_notes
         run: |
+          PREVIOUS_TAG=$(git describe --tags --abbrev=0 HEAD^)
+          CURRENT_TAG=${{ github.ref_name }}
+    
+          REPO_URL="https://github.com/${{ github.repository }}"
+          FIXED_ISSUES=$(git log $PREVIOUS_TAG..HEAD --grep="#[0-9]\+" --pretty=format:"- [%h]($REPO_URL/commit/%H) fixes %s")
+          CHANGELOG=$(git log $PREVIOUS_TAG..HEAD --pretty=format:"- %s by %an ([%h]($REPO_URL/commit/%H))")
+          
+          RELEASE_BODY="#Release notes for FyUTILS ${{ github.ref_name }}:\n\n### Changelog:\n$CHANGELOG\n\nThank you for using FyUTILS!"
+          
+          echo "release_body=$RELEASE_BODY" >> $GITHUB_ENV
+        shell: bash
           
 
       - name: Create GitHub Release
