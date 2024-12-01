@@ -6,8 +6,8 @@ import (
 )
 
 func main() {
-	var filepath = os.Args[0]
-	var args = os.Args[:1]
+	filepath := os.Args[0]
+	args := os.Args[:1]
 
 	if filepath == args[0] {
 		args = []string{}
