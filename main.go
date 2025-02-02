@@ -7,11 +7,7 @@ import (
 
 func main() {
 	filepath := os.Args[0]
-	args := os.Args[:1]
-
-	if filepath == args[0] {
-		args = []string{}
-	}
+	args := os.Args[1:]
 
 	cli.Main(filepath, args)
 }
